@@ -1,0 +1,125 @@
+.main-container{
+    color:whitesmoke;
+    background-color: 	#193549;  
+    overflow-x: hidden;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #193549;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+.bocs{
+    min-height: 400px!important; 
+    /* height: auto; */
+    /* border: 1px solid red; */ 
+    text-align: center !important; 
+    padding-bottom: 20px;
+}
+.navigation-bar{
+    background-color: #193549 !important; 
+}
+.navbar-brand{  
+    color: whitesmoke;
+}
+#navbarSupportedContent > ul > li> a{
+    color: whitesmoke;
+}
+.navbar-toggler{
+    background-color: white !important;
+}
+.carousel-control-next-icon{
+    background-color: whitesmoke;
+} 
+.carousel-control-prev-icon{
+    background-color: whitesmoke;
+}
+.bocs2{
+    background-color:#193549; 
+    color: whitesmoke;
+    margin: 2px; 
+    box-shadow: 0 0 5px gray;  
+    margin-bottom:10px;  
+    border-radius: 10px;
+    padding-bottom: 20px; 
+}
+.bocs2:hover{
+    margin: 2px; 
+    box-shadow: 0 0 10px gray;  
+    margin-bottom:10px;  
+    border-radius: 10px;
+}
+.image,.carsl{
+    width: 100%; 
+    border-radius: 10px;
+    /* padding-bottom: 20px; */
+}
+.main-carsl{
+    height: 400px;
+}
+.butn{
+    width: 45%; 
+    background-color: #193549; 
+    color: whitesmoke; 
+    border: 1px solid whitesmoke !important;
+    /* border: 1px solid black;  */ 
+    box-shadow: 0px 0px 5px gray;
+    outline: none; 
+    border-radius: 5px;
+    -webkit-text-size-adjust: auto;
+} 
+.butn:hover{
+    width: 45%; 
+    background-color: whitesmoke; 
+    color: black; 
+    /* border: 1px solid black;  */ 
+    box-shadow: 0px 0px 10px gray;
+}
+.main-show-case{
+    min-height: 400px; 
+    /* background-color: lightblue;  */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 99%; 
+    border-radius: 10px;
+}
+.main-show-case-footer{
+    min-height: 200px; 
+    background-color: lightblue; 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 98%; 
+    border-radius: 10px; 
+    box-shadow: 0 0 10px gray;
+}
+.c-1{
+    background-color: aliceblue; 
+    border-radius: 10px;
+    height: 300px; 
+    margin: 2px; 
+    margin-top: 20px; 
+    box-shadow: 0 0 5px gray;
+}
+.c-1:hover{
+    background-color: aliceblue; 
+    border-radius: 10px;
+    height: 300px; 
+    margin: 2px; 
+    margin-top: 20px; 
+    box-shadow: 0 0 10px gray;
+}
