@@ -1,7 +1,7 @@
 .main-container{
     color:whitesmoke;
     background-color: 	#193549;  
-    overflow-x: hidden;
+    overflow-x: hidden !important;
 }
 /* width */
 ::-webkit-scrollbar {
@@ -103,7 +103,7 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 98%; 
+    width: 95% !important; 
     border-radius: 10px; 
     box-shadow: 0 0 10px gray;
 }
@@ -122,4 +122,99 @@
     margin: 2px; 
     margin-top: 20px; 
     box-shadow: 0 0 10px gray;
+} 
+
+/* Add some CSS styling for the form */
+form {
+    border: 2px solid #2196f3;
+    padding: 20px;
+    width: 300px;
+    margin: auto;
+    background-color: #e3f2fd;
+  }
+  h2{
+    text-align: center;
+    color: #2196f3;
+  }
+  label{
+    color: #2196f3;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    display: block;
+  }
+  input[type="text"], input[type="password"] {
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 2px solid #2196f3;
+    width: 100%;
+    font-size: 1.2em;
+  }
+  input[type="submit"] {
+    background-color: #2196f3;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.2em;
+  }
+  input[type="submit"]:hover {
+    background-color: #1e88e5;
+  }
+  input:focus, textarea:focus, select:focus{
+    outline: none;
+    }
+  
+/* Designing dialog box */
+#containerr {
+    display: none;
+    background-color: #e3f2fd;
+    color: #1e88e5;
+    position: absolute;
+    width: 350px;
+    border-radius: 5px;
+    left: 50%;
+    margin-left: -160px;
+    padding: 10px 10px 10px;
+    box-sizing: border-box; 
+    text-align: center; 
+    border-bottom: 5px solid #2196f3; 
+    position: absolute; 
+    top: 200px; 
+    -webkit-animation-name: fadeIn;
+    -webkit-animation-duration: 1s;
+    animation-name: fadeIn;
+    animation-duration: 0.5s; 
 }
+@-webkit-keyframes fadeIn { 
+    40% { opacity: 0.3; }
+    60% { opacity: 0.5; }
+    80% { opacity: 0.9; }
+    100% { opacity: 1; }
+  }
+  
+  @keyframes fadeIn {
+    40% { opacity: 0.3; }
+    60% { opacity: 0.5; }
+    80% { opacity: 0.9; }
+    100% { opacity: 1; }
+  }
+/* Designing dialog box's okay button */
+#containerr button {
+    background-color: #1e88e5;
+    display: inline-block;
+    border-radius: 5px;
+    border: 2px solid gray;
+    padding: 5px;
+    text-align: center;
+    width: 60px;
+}
+    
+/* Dialog box message decorating */
+#containerr .message {
+    text-align: left;
+    padding: 10px 30px; 
+} 
