@@ -1,1 +1,5 @@
-all_module
+all_module 
+.vscode 
+.gitignore
+.pyc
+__pycache__

@@ -1,6 +1,11 @@
 from urllib import request
 from django.shortcuts import render
 
-# Create your views here.
+# Render home page 
 def home(request): 
-    return render(request, 'index.html')
+    data="Hello world"
+    return render(request, 'index.html', {'data':data}) 
+
+# Login function 
+def login(request): 
+    return render(request, 'login.html')  
