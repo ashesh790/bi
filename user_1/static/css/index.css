@@ -128,7 +128,7 @@
 form {
     border: 2px solid #2196f3;
     padding: 20px;
-    width: 300px;
+    width: 500px !important;
     margin: auto;
     background-color: #e3f2fd;
   }

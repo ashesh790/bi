@@ -1,0 +1,13 @@
+if request.method =='POST':
+        form = MyForm(request.POST)
+        if form.is_valid:
+            image_1=form.cleaned_data['a'] 
+            image_2=form.cleaned_data['a2']
+            print(image_1,image_2)
+            images_list=[image_1,image_2]
+            form=main_seller_info(property_images=images_list) 
+            form.save()
+        else: 
+            form.save()
+            print("Data is not cleaned")  
+    return render(request, 'sample.html', {'form':form})
