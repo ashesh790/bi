@@ -1,220 +1,278 @@
-.main-container{
-    color:whitesmoke;
-    background-color: 	#193549;  
-    overflow-x: hidden !important;
+body {
+  overflow-x: hidden;
 }
+
+.main-container {
+  color: whitesmoke;
+  background-color: #193549;
+  overflow-x: hidden !important;
+}
+
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #193549;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-.bocs{
-    min-height: 400px!important; 
-    /* height: auto; */
-    /* border: 1px solid red; */ 
-    text-align: center !important; 
-    padding-bottom: 20px;
+  width: 10px;
 }
-.navigation-bar{
-    background-color: #193549 !important; 
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
 }
-.navbar-brand{  
-    color: whitesmoke;
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #193549;
 }
-#navbarSupportedContent > ul > li> a{
-    color: whitesmoke;
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
-.navbar-toggler{
-    background-color: white !important;
+
+.bocs {
+  min-height: 400px !important;
+  /* height: auto; */
+  /* border: 1px solid red; */
+  text-align: center !important;
+  padding-bottom: 20px;
 }
-.carousel-control-next-icon{
-    background-color: whitesmoke;
-} 
-.carousel-control-prev-icon{
-    background-color: whitesmoke;
+
+.navigation-bar {
+  background-color: #193549 !important;
 }
-.bocs2{
-    background-color:#193549; 
-    color: whitesmoke;
-    margin: 2px; 
-    box-shadow: 0 0 5px gray;  
-    margin-bottom:10px;  
-    border-radius: 10px;
-    padding-bottom: 20px; 
+
+.navbar-brand {
+  color: whitesmoke;
 }
-.bocs2:hover{
-    margin: 2px; 
-    box-shadow: 0 0 10px gray;  
-    margin-bottom:10px;  
-    border-radius: 10px;
+
+#navbarSupportedContent>ul>li>a {
+  color: whitesmoke;
 }
-.image,.carsl{
-    width: 100%; 
-    border-radius: 10px;
-    /* padding-bottom: 20px; */
+
+.navbar-toggler {
+  background-color: white !important;
 }
-.main-carsl{
-    height: 400px;
+
+.carousel-control-next-icon {
+  background-color: whitesmoke;
 }
-.butn{
-    width: 45%; 
-    background-color: #193549; 
-    color: whitesmoke; 
-    border: 1px solid whitesmoke !important;
-    /* border: 1px solid black;  */ 
-    box-shadow: 0px 0px 5px gray;
-    outline: none; 
-    border-radius: 5px;
-    -webkit-text-size-adjust: auto;
-} 
-.butn:hover{
-    width: 45%; 
-    background-color: whitesmoke; 
-    color: black; 
-    /* border: 1px solid black;  */ 
-    box-shadow: 0px 0px 10px gray;
+
+.carousel-control-prev-icon {
+  background-color: whitesmoke;
 }
-.main-show-case{
-    min-height: 400px; 
-    /* background-color: lightblue;  */
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 99%; 
-    border-radius: 10px;
+
+.bocs2 {
+  background-color: #193549;
+  color: whitesmoke;
+  margin: 2px;
+  box-shadow: 0 0 5px gray;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  padding-bottom: 20px;
 }
-.main-show-case-footer{
-    min-height: 200px; 
-    background-color: lightblue; 
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 95% !important; 
-    border-radius: 10px; 
-    box-shadow: 0 0 10px gray;
+
+.bocs2:hover {
+  margin: 2px;
+  box-shadow: 0 0 10px gray;
+  margin-bottom: 10px;
+  border-radius: 10px;
 }
-.c-1{
-    background-color: aliceblue; 
-    border-radius: 10px;
-    height: 300px; 
-    margin: 2px; 
-    margin-top: 20px; 
-    box-shadow: 0 0 5px gray;
+
+.image,
+.carsl {
+  width: 100%;
+  border-radius: 10px;
+  /* padding-bottom: 20px; */
 }
-.c-1:hover{
-    background-color: aliceblue; 
-    border-radius: 10px;
-    height: 300px; 
-    margin: 2px; 
-    margin-top: 20px; 
-    box-shadow: 0 0 10px gray;
-} 
+
+.main-carsl {
+  height: 400px;
+}
+
+.butn {
+  width: 45%;
+  background-color: #193549;
+  color: whitesmoke;
+  border: 1px solid whitesmoke !important;
+  /* border: 1px solid black;  */
+  box-shadow: 0px 0px 5px gray;
+  outline: none;
+  border-radius: 5px;
+  -webkit-text-size-adjust: auto;
+}
+
+.butn:hover {
+  width: 45%;
+  background-color: whitesmoke;
+  color: black;
+  /* border: 1px solid black;  */
+  box-shadow: 0px 0px 10px gray;
+}
+
+.main-show-case {
+  min-height: 400px;
+  /* background-color: lightblue;  */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 99%;
+  border-radius: 10px;
+}
+
+.main-show-case-footer {
+  min-height: 200px;
+  background-color: lightblue;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95% !important;
+  border-radius: 10px;
+  box-shadow: 0 0 10px gray;
+}
+
+.c-1 {
+  background-color: aliceblue;
+  border-radius: 10px;
+  height: 300px;
+  margin: 2px;
+  margin-top: 20px;
+  box-shadow: 0 0 5px gray;
+}
+
+.c-1:hover {
+  background-color: aliceblue;
+  border-radius: 10px;
+  height: 300px;
+  margin: 2px;
+  margin-top: 20px;
+  box-shadow: 0 0 10px gray;
+}
 
 /* Add some CSS styling for the form */
 form {
-    border: 2px solid #2196f3;
-    padding: 20px;
-    width: 500px !important;
-    margin: auto;
-    background-color: #e3f2fd;
-  }
-  h2{
-    text-align: center;
-    color: #2196f3;
-  }
-  label{
-    color: #2196f3;
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    display: block;
-  }
-  input[type="text"], input[type="password"] {
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: none;
-    border-bottom: 2px solid #2196f3;
-    width: 100%;
-    font-size: 1.2em;
-  }
-  input[type="submit"] {
-    background-color: #2196f3;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    font-size: 1.2em;
-  }
-  input[type="submit"]:hover {
-    background-color: #1e88e5;
-  }
-  input:focus, textarea:focus, select:focus{
-    outline: none;
-    }
-  
+  border: 2px solid #2196f3;
+  padding: 20px;
+  width: 700px !important;
+  margin: auto;
+  background-color: #e3f2fd;
+}
+
+h2 {
+  text-align: center;
+  color: #2196f3;
+}
+
+label {
+  color: #2196f3;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  display: block;
+}
+
+input[type="text"],
+input[type="password"] {
+  /* padding: 12px 20px; */
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid #2196f3;
+  width: 100%;
+  font-size: 1.2em;
+  outline: none;
+}
+
+input[type="submit"] {
+  background-color: #2196f3;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1.2em;
+}
+
+input[type="submit"]:active {
+  background-color: #1e88e5;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border: none;
+}
+
 /* Designing dialog box */
 #containerr {
-    display: none;
-    background-color: #e3f2fd;
-    color: #1e88e5;
-    position: absolute;
-    width: 350px;
-    border-radius: 5px;
-    left: 50%;
-    margin-left: -160px;
-    padding: 10px 10px 10px;
-    box-sizing: border-box; 
-    text-align: center; 
-    border-bottom: 5px solid #2196f3; 
-    position: absolute; 
-    top: 200px; 
-    -webkit-animation-name: fadeIn;
-    -webkit-animation-duration: 1s;
-    animation-name: fadeIn;
-    animation-duration: 0.5s; 
+  display: none;
+  background-color: #e3f2fd;
+  color: #1e88e5;
+  position: absolute;
+  width: 350px;
+  border-radius: 5px;
+  left: 50%;
+  margin-left: -160px;
+  padding: 10px 10px 10px;
+  box-sizing: border-box;
+  text-align: center;
+  border: 5px solid #2196f3;
+  position: absolute;
+  top: 200px;
+  -webkit-animation-name: fadeIn;
+  -webkit-animation-duration: 1s;
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
 }
-@-webkit-keyframes fadeIn { 
-    40% { opacity: 0.3; }
-    60% { opacity: 0.5; }
-    80% { opacity: 0.9; }
-    100% { opacity: 1; }
+
+@-webkit-keyframes fadeIn {
+  40% {
+    opacity: 0.3;
   }
-  
-  @keyframes fadeIn {
-    40% { opacity: 0.3; }
-    60% { opacity: 0.5; }
-    80% { opacity: 0.9; }
-    100% { opacity: 1; }
+
+  60% {
+    opacity: 0.5;
   }
+
+  80% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  40% {
+    opacity: 0.3;
+  }
+
+  60% {
+    opacity: 0.5;
+  }
+
+  80% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 /* Designing dialog box's okay button */
 #containerr button {
-    background-color: #1e88e5;
-    display: inline-block;
-    border-radius: 5px;
-    border: 2px solid gray;
-    padding: 5px;
-    text-align: center;
-    width: 60px;
+  background-color: #1e88e5;
+  display: inline-block;
+  border-radius: 5px;
+  border: 2px solid gray;
+  padding: 5px;
+  text-align: center;
+  width: 60px;
 }
-    
+
 /* Dialog box message decorating */
 #containerr .message {
-    text-align: left;
-    padding: 10px 30px; 
-} 
+  text-align: left;
+  padding: 10px 30px;
+}

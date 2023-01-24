@@ -22,5 +22,5 @@ from user_1 import views
 urlpatterns = [
     path('', views.home, name="home"), 
     path('login',views.login, name="login"),  
-    path('sample',views.sample, name="sample"), 
+    path('add_property_details',views.add_property_details, name="add_property_details"), 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
