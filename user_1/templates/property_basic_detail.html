@@ -1,0 +1,149 @@
+{% extends 'master.html' %}
+{% block form_ui %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="property_type" class="form-label">Property Type</label>
+        <select class="form-select property_type" name="property_type" id="property_type">
+            <option selected>Select Property</option>
+            <option value="home">Home, Tenament</option>
+            <option value="shop">Shop</option>
+            <option value="flat">Flat</option>
+            <option value="villa">Villa</option>
+            <option value="agriculture_land">Agriculture land</option>
+            <option value="complex">Complex</option>
+            <option value="pg">PG(Paying Guest)</option>
+            <option value="hostel">Hostel</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="property_age" class="form-label">How many years old your property (Age of property)</label>
+        <input type="number" name="property_age" id="property_age" class="form-control">
+    </div>
+    <!-- ---------------------------------- -->
+    <div class="mb-3">
+        <label for="selling_option" class="form-label">Sell or Rent</label>
+        <select class="form-select" name="selling_option">
+            <option value="sell">Sell</option>
+            <option value="rent">Rent</option>
+            <option value="rent">Sell / Rent</option>
+        </select>
+    </div>
+    <!-- ---------------------------------- -->
+    <div class="mb-3">
+        <label class="form-label">Construction Status</label>
+        <select class="form-select" name="construction_status">
+            <option class="form-option" value="ready_to_move">Ready To Move</option>
+            <option class="form-option" value="under_construction">Under Construction</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Floor</label>
+        <input type="number" name="floor" class="form-control" min="1">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">BHK Detail</label>
+        <select class="form-select" name="bhk">
+            <option value="1">1 BHK</option>
+            <option value="2">2 BHK</option>
+            <option value="3">3 BHK</option>
+            <option value="4">4 BHK</option>
+            <option value="5">5 BHK</option>
+            <option value="6">6 BHK</option>
+            <option value="7">7 BHK</option>
+            <option value="8">8 BHK</option>
+            <option value="9">9 BHK</option>
+            <option value="10">10 BHK</option>
+            <option value="11">11 BHK</option>
+            <option value="12">12 BHK</option>
+            <option value="13">13 BHK</option>
+            <option value="14">14 BHK</option>
+            <option value="15">15 BHK</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="bathroom" class="form-label">Bathroom</label>
+        <select class="form-select" name="bathroom">
+            <option value="1">1 Bathroom</option>
+            <option value="2">2 Bathroom</option>
+            <option value="3">3 Bathroom</option>
+            <option value="4">4 Bathroom</option>
+            <option value="5">5 Bathroom</option>
+            <option value="6">6 Bathroom</option>
+            <option value="7">7 Bathroom</option>
+            <option value="8">8 Bathroom</option>
+            <option value="9">9 Bathroom</option>
+            <option value="10">10 Bathroom</option>
+            <option value="11">11 Bathroom</option>
+            <option value="12">12 Bathroom</option>
+            <option value="13">13 Bathroom</option>
+            <option value="14">14 Bathroom</option>
+            <option value="15">15 Bathroom</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="balcony" class="form-label balcony">Balcony</label>
+        <select class="form-select" name="balcony">
+            <option selected>Select Balcony</option>
+            <option value="1">1 Balcony</option>
+            <option value="2">2 Balcony</option>
+            <option value="3">3 Balcony</option>
+            <option value="4">4 Balcony</option>
+            <option value="5">5 Balcony</option>
+            <option value="6">6 Balcony</option>
+            <option value="7">7 Balcony</option>
+            <option value="8">8 Balcony</option>
+            <option value="9">9 Balcony</option>
+            <option value="10">10 Balcony</option>
+            <option value="11">11 Balcony</option>
+            <option value="12">12 Balcony</option>
+            <option value="13">13 Balcony</option>
+            <option value="14">14 Balcony</option>
+            <option value="15">15 Balcony</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="furnish_type" class="form-label">Furnish Type</label>
+        <select class="form-select furnish_type" name="furnish_type" id="furnish_type">
+            <option value="fully_furnished">Fully Furnished</option>
+            <option value="semi_furnished">Semi Furnished</option>
+            <option value="no_furnish">No Furnished</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="geo_area" class="form-label">Geographical Area In Square Feet</label>
+        <input type="text" name="geography_area" class="form-control" id="geo_area"
+            placeholder="500 sq. ft, 1000 sq. ft">
+    </div>
+    <div class="mb-3">
+        <label for="parking_type" class="form-label">Parking Detail</label>
+        <select class="form-select" name="parking_type">
+            <option value="covered">Covered</option>
+            <option value="open">Open</option>
+            <option value="covered_and_open">Both, Covered and Open</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="property_value" class="form-label">Property Sell Price</label>
+        <input type="text" name="property_value" class="form-control property_value" id="property_value">
+    </div>
+    <div class="mb-3">
+        <label for="property_rent_price" class="form-label">Property Rent Price</label>
+        <input type="text" name="property_rent_price" class="form-control property_rent_price" id="property_rent_price">
+    </div>
+    <div class="mb-3">
+        <label for="from_avail_property_date" class="form-label">When will available property</label>
+        <input type="date" name="from_avail_property_date" class="form-control" id="from_avail_property_date">
+    </div>
+    <div class="mb-3">
+        <label for="property_address" class="form-label">Property Address</label>
+        <textarea type="textarea" name="property_address" class="form-control property_address"
+            id="property_address"></textarea>
+    </div>
+    <div class="mb-3">
+        <input type="submit" class="form-control submit_button">
+        <input type="reset" class="form-control clear_button">
+    </div>
+</form>
+
+{% endblock %}

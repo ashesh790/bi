@@ -16,10 +16,11 @@ Including another URLconf
 from django import views
 from django.contrib import admin
 from django.urls import path
-
+from django.conf import settings
+from django.conf.urls.static import static
 from user_1 import views 
 urlpatterns = [
     path('', views.home, name="home"), 
     path('login',views.login, name="login"),  
-    path('sample',views.sample, name="sample"), 
-]
+    path('add_property_details',views.add_property_details, name="add_property_details"), 
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
