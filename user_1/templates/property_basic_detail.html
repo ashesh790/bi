@@ -1,16 +1,18 @@
 {% extends 'master.html' %}
 {% block form_ui %}
-<form method="POST" enctype="multipart/form-data">
+<script src="static/js/form_mangement.js"></script>
+<form method="post" action="add_property_details" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="mb-3">
         <label for="property_type" class="form-label">Property Type</label>
-        <select class="form-select property_type" name="property_type" id="property_type">
+        <select class="form-select property_type" name="property_type" id="property_type"
+            onChange="myNewFunction(this);">
             <option selected>Select Property</option>
             <option value="home">Home, Tenament</option>
             <option value="shop">Shop</option>
             <option value="flat">Flat</option>
             <option value="villa">Villa</option>
-            <option value="agriculture_land">Agriculture land</option>
+            <option value="agricultureLand">Agriculture land</option>
             <option value="complex">Complex</option>
             <option value="pg">PG(Paying Guest)</option>
             <option value="hostel">Hostel</option>
@@ -21,16 +23,16 @@
         <input type="number" name="property_age" id="property_age" class="form-control">
     </div>
     <!-- ---------------------------------- -->
-    <div class="mb-3">
-        <label for="selling_option" class="form-label">Sell or Rent</label>
-        <select class="form-select" name="selling_option">
+    <div class="mb-3" id="selling_option_div">
+        <label for="selling_option" class="form-label selling_option" id="selling_option_label">Sell or Rent</label>
+        <select class="form-select" name="selling_option" id="selling_option" class="selling_option">
             <option value="sell">Sell</option>
             <option value="rent">Rent</option>
             <option value="rent">Sell / Rent</option>
         </select>
     </div>
     <!-- ---------------------------------- -->
-    <div class="mb-3">
+    <div class="mb-3 construction_status_div" id="construction_status_div">
         <label class="form-label">Construction Status</label>
         <select class="form-select" name="construction_status">
             <option class="form-option" value="ready_to_move">Ready To Move</option>
@@ -145,5 +147,4 @@
         <input type="reset" class="form-control clear_button">
     </div>
 </form>
-
 {% endblock %}
