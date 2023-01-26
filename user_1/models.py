@@ -20,9 +20,6 @@ class Property_detail(models.Model):
     from_avail_property_date=models.DateField()
     property_address=models.CharField(max_length=150)
 
-    def __str__(self) -> str:
-        return super().__str__()
-
 class Property_other_detail(models.Model): 
     # Property media like image and video or many other detail will be here.
     media_id=models.ForeignKey(Property_detail, on_delete=models.CASCADE) 

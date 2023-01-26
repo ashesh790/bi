@@ -2,6 +2,10 @@ body {
   overflow-x: hidden;
 }
 
+#exampleModalLabel {
+  color: #193549 !important;
+}
+
 .main-container {
   color: whitesmoke;
   background-color: #193549;

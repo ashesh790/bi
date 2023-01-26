@@ -1,8 +1,12 @@
-from email import message
+import json
 from urllib import request
+from django.http import HttpResponse, JsonResponse
+from django.template import loader
 from django.shortcuts import render
-
-from user_1.models import Property_detail
+from django.contrib import messages
+from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, get_all_property_data, update_property_data_record
+from user_1.models import Property_detail 
+from django.core.serializers import serialize 
 # from user_1.forms import MyForm
 
 # Note: Create login and signup in single html page 
@@ -24,49 +28,32 @@ def home(request):
     data="Hello world"
     return render(request, 'index.html', {'data':data})   
 
-def add_property_details(request):   
-    if request.method =='POST': 
-        property_type=request.POST['property_type'] 
-        property_age=request.POST['property_age'] 
-        selling_option=request.POST['selling_option'] 
-        construction_status=request.POST['construction_status'] 
-        floor=request.POST['floor']
-        bhk=request.POST['bhk']  
-        bathroom=request.POST['bathroom'] 
-        balcony=request.POST['balcony'] 
-        furnish_type=request.POST['furnish_type'] 
-        geography_area=request.POST['geography_area'] 
-        parking_type=request.POST['parking_type'] 
-        property_value=request.POST['property_value'] 
-        property_rent_price=request.POST['property_rent_price'] 
-        from_avail_property_date=request.POST['from_avail_property_date'] 
-        property_address=request.POST['property_address'] 
-
-        property_detail=Property_detail.objects.create(
-            property_type=property_type,
-            property_age=property_age,
-            selling_option=selling_option, 
-            construction_status=construction_status,
-            floor=floor,
-            bhk=bhk,
-            bathroom=bathroom,
-            balcony=balcony,
-            furnish_type=furnish_type,
-            geography_area=geography_area,
-            parking_type=parking_type, 
-            property_value=property_value,
-            property_rent_price=property_rent_price, 
-            from_avail_property_date=from_avail_property_date, 
-            property_address=property_address
-        )
-        message.success(request,'Data has been submitted')
+def add_property_details(request):    
+    if request.method =='POST' and len(request.POST) is not None: 
+        add_property_details_in_database(request) 
+    else: 
+        print("Please Fill tha all necessary fields")  
     return render(request, 'property_basic_detail.html') 
 
-def show_property_detail(request): 
-    pass 
+def show_property_detail(request,property_id):
+    property_id=property_id  
+    data=get_all_property_data(property_id=property_id)   
+    template=loader.get_template('show_property_detail.html')
+    context={
+        "data":data, 
+    }
+    return HttpResponse(template.render(context, request))
 
-def delete_property(request): 
-    pass 
+def delete_property(request, property_id):
+    property_id=property_id  
+    delete_all_property_data(property_id)  
+    # template=loader.get_template('property_basic_detail.html') 
+    context={}
+    return render(request,'property_basic_detail.html') 
 
+def update_property(request, property_id): 
+    property_id=property_id
+    update=update_property_data_record(property_id) 
+    return render(request, 'property_basic_detail.html')  
 def property_status(request): 
     pass 

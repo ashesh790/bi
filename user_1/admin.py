@@ -2,18 +2,38 @@ from django.contrib import admin
 
 from user_1.models import Property_detail, Property_other_detail
 
+class Property_detail_admin(admin.ModelAdmin): 
+    list_display=[
+        'property_id',
+        'property_type',
+        'property_age',
+        'selling_option',
+        'construction_status',
+        'floor',
+        'bhk',
+        'bathroom',
+        'balcony',
+        'furnish_type',
+        'geography_area',
+        'parking_type',
+        'property_value',
+        'property_rent_price',
+        'from_avail_property_date',
+        'property_address', 
+    ] 
+
+class Property_other_detail_admin(admin.ModelAdmin): 
+    list_display=[
+        'media_id', 'property_image_1','property_image_2','property_image_3'
+    ]
+    model=Property_other_detail 
+
+class Brand_admin(admin.ModelAdmin): 
+    model=Property_detail
+    inlines=[
+        Property_other_detail_admin 
+    ]
+
 # Register your models here.
-# class main_seller_infoAdmin(admin.ModelAdmin): 
-#     list_display = ("order_id",
-#                     "seller_id",
-#                     "property_title",
-#                     "selling_option",
-#                     "property_desc",
-#                     "property_media",
-#                     "property_current_status",
-#                     "property_location",
-#                     "property_other_info",
-#                     "update_time_stamp",
-#                     )
-admin.site.register(Property_detail) 
-admin.site.register(Property_other_detail)
+admin.site.register(Property_detail, Property_detail_admin) 
+admin.site.register(Property_other_detail, Property_other_detail_admin) 
