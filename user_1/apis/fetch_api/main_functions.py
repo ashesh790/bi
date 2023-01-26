@@ -1,30 +1,8 @@
-from email import message
+import json
 from urllib import request
-from django.shortcuts import render
-
 from user_1.models import Property_detail
-# from user_1.forms import MyForm
 
-# Note: Create login and signup in single html page 
-
-# Login function 
-def login(request): 
-    return render(request, 'login.html')
-
-# sign up
-def sign_up(request): 
-    pass 
-
-# logout 
-def logout(request): 
-    pass 
-
-# Render home page 
-def home(request): 
-    data="Hello world"
-    return render(request, 'index.html', {'data':data})   
-
-def add_property_details(request):   
+def add_property_details_in_database(request): 
     if request.method =='POST': 
         property_type=request.POST['property_type'] 
         property_age=request.POST['property_age'] 
@@ -59,14 +37,31 @@ def add_property_details(request):
             from_avail_property_date=from_avail_property_date, 
             property_address=property_address
         )
-        message.success(request,'Data has been submitted')
-    return render(request, 'property_basic_detail.html') 
+        return True 
+    else: 
+        return False 
 
-def show_property_detail(request): 
-    pass 
+def get_all_property_data(property_id=None): 
+    if property_id == None: 
+        my_data=Property_detail.objects.values()
+        json_data=my_data[0]
+        data=json.dumps(json_data, indent=4, sort_keys=True, default=str)  
+    elif property_id is not None: 
+        data=Property_detail.objects.get(pk=property_id) 
+        # json_data=my_data[0]
+        # data=json.dumps(my_data, indent=4, sort_keys=True, default=str)
+    return data 
 
-def delete_property(request): 
-    pass 
+def delete_all_property_data(property_id): 
+    # if request.method=='POST': 
+    instance=Property_detail.objects.filter(pk=property_id) 
+    instance.delete() 
+    # else: 
+        # print("Record is not available")
+        # return False 
+    return True 
 
-def property_status(request): 
-    pass 
+def update_property_data_record(property_id): 
+    instance=Property_detail.objects.filter(pk=property_id) 
+    instance.save() 
+    return True 
