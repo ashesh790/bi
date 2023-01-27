@@ -2,22 +2,26 @@ import json
 from urllib import request
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.models import User
 from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, get_all_property_data, update_property_data_record
-from user_1.models import Property_detail 
+from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
+from user_1.models import User_register 
 from django.core.serializers import serialize 
 # from user_1.forms import MyForm
 
 # Note: Create login and signup in single html page 
 
 # Login function 
-def login(request): 
-    return render(request, 'login.html')
+def sign_up(request): 
+    signup_user(request) 
+    return render(request, 'sign_up.html')
 
 # sign up
-def sign_up(request): 
-    pass 
+def login(request): 
+    login_user(request)  
+    return render(request, "login.html") 
 
 # logout 
 def logout(request): 

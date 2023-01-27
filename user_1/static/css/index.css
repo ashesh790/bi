@@ -153,11 +153,13 @@ body {
 
 /* Add some CSS styling for the form */
 form {
+  overflow: hidden;
   border: 2px solid #2196f3;
   padding: 20px;
-  width: 700px !important;
+  width: 400px !important;
   margin: auto;
   background-color: #e3f2fd;
+  border-radius: 5px;
 }
 
 h2 {
@@ -172,8 +174,7 @@ label {
   display: block;
 }
 
-input[type="text"],
-input[type="password"] {
+.form-control-2 {
   /* padding: 12px 20px; */
   margin: 8px 0;
   box-sizing: border-box;
@@ -202,7 +203,7 @@ input[type="submit"]:active {
 input:focus,
 textarea:focus,
 select:focus {
-  outline: none;
+  /* outline: none; */
   border: none;
 }
 

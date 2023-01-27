@@ -20,7 +20,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from user_1 import views 
 urlpatterns = [
-    path('', views.home, name="home"), 
+    path('home', views.home, name="home"), 
+    path('signup',views.sign_up, name="signup"),  
     path('login',views.login, name="login"),  
     path('add_property_details',views.add_property_details, name="add_property_details"), 
     path('show_property_detail/<int:property_id>/', views.show_property_detail, name="show-property-detail"), 

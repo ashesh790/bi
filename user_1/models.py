@@ -26,3 +26,10 @@ class Property_other_detail(models.Model):
     property_image_1=models.FileField(upload_to="media/") 
     property_image_2=models.FileField(upload_to="media/") 
     property_image_3=models.FileField(upload_to="media/") 
+
+class User_register(models.Model): 
+    user_name=models.CharField(max_length=20)
+    user_email=models.CharField(max_length=25)
+    user_mobile=models.CharField(max_length=20, null=True)
+    user_gender=models.CharField(max_length=5)
+    user_psw=models.CharField(max_length=10)
