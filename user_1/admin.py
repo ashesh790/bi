@@ -1,7 +1,11 @@
 from django.contrib import admin
 
-from user_1.models import Property_detail, Property_other_detail
+from user_1.models import Property_detail, Property_other_detail, User_register
 
+class User_register_admin(admin.ModelAdmin): 
+    list_display=[
+        'user_name','user_email','user_mobile','user_gender','user_psw' 
+    ]
 class Property_detail_admin(admin.ModelAdmin): 
     list_display=[
         'property_id',
@@ -37,3 +41,4 @@ class Brand_admin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(Property_detail, Property_detail_admin) 
 admin.site.register(Property_other_detail, Property_other_detail_admin) 
+admin.site.register(User_register, User_register_admin) 
