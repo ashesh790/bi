@@ -152,7 +152,7 @@ body {
 }
 
 /* Add some CSS styling for the form */
-.form_css {
+form {
   overflow: hidden;
   border: 2px solid #2196f3;
   padding: 20px;
