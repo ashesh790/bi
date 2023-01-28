@@ -39,6 +39,7 @@ def add_property_details_in_database(request):
             from_avail_property_date=from_avail_property_date, 
             property_address=property_address
         )
+        # fetching last property detail from databases 
         return True 
     else: 
         return False 
