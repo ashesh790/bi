@@ -33,12 +33,15 @@ def signup_user(request):
             return False 
 
 def login_user(request): 
-    if request.method=="POST": 
-        user_name=request.POST['user_name'] 
-        user_psw=request.POST['user_psw']
-
-        login=User_register.objects.filter(user_name=user_name) 
-        if login: 
-            return redirect('home') 
-        else: 
-            return redirect('signup')
+    try: 
+        if request.method=="POST": 
+            user_name=request.POST['user_name'] 
+            user_psw=request.POST['user_psw']
+            request.session['user_name']=user_name 
+            login=User_register.objects.filter(user_name=user_name) 
+            if login: 
+                return redirect('home') 
+            else: 
+                return redirect('signup')
+    except Exception as ex: 
+        print(f"Solve this: {ex}")
