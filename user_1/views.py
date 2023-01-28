@@ -20,12 +20,19 @@ def sign_up(request):
 
 # sign up
 def login(request): 
-    login_user(request)  
+    login=login_user(request)  
+    if login == True: 
+        return redirect('home')
     return render(request, "login.html") 
 
 # logout 
 def logout(request): 
-    pass 
+    if "user_name" in request.session: 
+        if request.method == 'POST': 
+            del request.session['user_name']
+        else: 
+            del request.session['user_name']
+    return render(request, 'index.html')  
 
 # Render home page 
 def home(request): 

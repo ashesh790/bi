@@ -47,31 +47,38 @@
               <input type="button" value="Subscribe" onclick="geeks();" />
             </li>
           </ul>
-          <button class="btn btn-outline-primary" type="submit" data-bs-toggle="modal"
-            data-bs-target="#exampleModal">Login/Sign up</button>
-          <!-- Modal for login and signup -->
-          <div class="modal fade text-center" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body pt-2">
-                  <input class="form-control mt-2" type="text" placeholder="Enter Your Name">
-                  <input class="form-control mt-2" type="text" placeholder="Enter Your Email">
-                  <input class="form-control mt-2" type="text" placeholder="Enter Your Password">
-                </div>
-                <hr>
-                <button class="btn btn-primary fb">Login</button>
-                <!-- <div class="modal-footer">
+          {% if 'user_name' in request.session %}
+          Hello, {{request.session.user_name}}
+          <form method="post" action="logout" class="form-control">
+            {% csrf_token %}
+            <input type="submit" class="form-control">
+          </form>
+          {% else %}
+          <a href="login">Login/Sign up</button>
+            {% endif %}
+            <!-- Modal for login and signup -->
+            <div class="modal fade text-center" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body pt-2">
+                    <input class="form-control mt-2" type="text" placeholder="Enter Your Name">
+                    <input class="form-control mt-2" type="text" placeholder="Enter Your Email">
+                    <input class="form-control mt-2" type="text" placeholder="Enter Your Password">
+                  </div>
+                  <hr>
+                  <button class="btn btn-primary fb">Login</button>
+                  <!-- <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                   <button type="button" class="btn btn-primary">Login</button>
                 </div> -->
+                </div>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </nav>
