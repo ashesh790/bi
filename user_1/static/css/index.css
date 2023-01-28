@@ -152,7 +152,7 @@ body {
 }
 
 /* Add some CSS styling for the form */
-form {
+.form_css {
   overflow: hidden;
   border: 2px solid #2196f3;
   padding: 20px;
@@ -185,7 +185,7 @@ label {
   outline: none;
 }
 
-input[type="submit"] {
+/* input[type="submit"] {
   background-color: #2196f3;
   color: white;
   padding: 14px 20px;
@@ -194,7 +194,7 @@ input[type="submit"] {
   cursor: pointer;
   width: 100%;
   font-size: 1.2em;
-}
+} */
 
 input[type="submit"]:active {
   background-color: #1e88e5;
