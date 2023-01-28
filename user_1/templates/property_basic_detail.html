@@ -3,6 +3,7 @@
 <script src="static/js/form_mangement.js"></script>
 <form method="post" action="add_property_details" enctype="multipart/form-data">
     {% csrf_token %}
+    <input type="text" value="{{request.session.user_id}}" name="user_id" id="user_id" hidden>
     <div class="mb-3">
         <label for="property_type" class="form-label">Property Type</label>
         <select class="form-select property_type" name="property_type" id="property_type"

@@ -39,6 +39,8 @@ def login_user(request):
             user_psw=request.POST['user_psw']
             request.session['user_name']=user_name 
             login=User_register.objects.filter(user_name=user_name) 
+            user_id=login[0].user_id
+            request.session['user_id']=user_id 
             if login: 
                 return redirect('home') 
             else: 

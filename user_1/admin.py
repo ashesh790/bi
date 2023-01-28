@@ -8,6 +8,7 @@ class User_register_admin(admin.ModelAdmin):
     ]
 class Property_detail_admin(admin.ModelAdmin): 
     list_display=[
+        'seller_id', 
         'property_id',
         'property_type',
         'property_age',

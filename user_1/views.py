@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, get_all_property_data, update_property_data_record
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
-from user_1.models import User_register 
+from user_1.models import Property_detail, Property_other_detail, User_register 
 from django.core.serializers import serialize 
 # from user_1.forms import MyForm
 
@@ -51,13 +51,35 @@ def home(request):
 def add_property_details(request):    
     try:
         if request.method =='POST' and len(request.POST) is not None: 
-            add_property_details_in_database(request) 
+            property_details=add_property_details_in_database(request) 
+            return render(request, 'property_basic_detail.html')   
         else: 
             print("Please Fill tha all necessary fields")  
-        return render(request, 'property_basic_detail.html') 
+        return render(request, 'property_basic_detail.html')  
     except Exception as ex: 
-        print(f"Solve this: {ex}")
+        print(f"Solve this: {ex}") 
+    return render(request, 'property_basic_detail.html') 
 
+def add_property_image(request): 
+    try: 
+        last_pro_dtl=Property_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id'])).last() 
+        request.session['property_id']=last_pro_dtl.pk 
+        if request.method == 'POST' or request.method == "FILES": 
+            property_image_1=request.FILES.getlist('property_media') 
+            property_media=[]
+            for i in range(len(property_image_1)): 
+                property_media.append(property_image_1[i].name) 
+            property_media=json.dumps(property_media)
+
+            property_image=Property_other_detail.objects.create(
+                media_id=Property_detail.objects.get(property_id=last_pro_dtl.pk),
+                property_image_1=property_media, 
+                # property_image_2=property_image_2,
+                # property_image_3=property_image_3
+            )
+    except Exception as ex: 
+        print(f"solved this: {ex}")
+    return render(request, 'add_property_image.html') 
 def show_property_detail(request,property_id):
     try: 
         property_id=property_id  
