@@ -51,12 +51,14 @@ def home(request):
 def add_property_details(request):    
     try:
         if request.method =='POST' and len(request.POST) is not None: 
-            add_property_details_in_database(request) 
+            property_details=add_property_details_in_database(request) 
+            return render(request, 'property_basic_detail.html')   
         else: 
             print("Please Fill tha all necessary fields")  
-        return render(request, 'property_basic_detail.html') 
+        return render(request, 'property_basic_detail.html')  
     except Exception as ex: 
-        print(f"Solve this: {ex}")
+        print(f"Solve this: {ex}") 
+    return render(request, 'property_basic_detail.html') 
 
 def show_property_detail(request,property_id):
     try: 

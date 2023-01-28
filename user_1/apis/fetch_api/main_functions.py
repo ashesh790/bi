@@ -1,9 +1,10 @@
 import json
 from urllib import request
-from user_1.models import Property_detail
+from user_1.models import Property_detail, User_register
 
 def add_property_details_in_database(request): 
     if request.method =='POST': 
+        seller_id=request.POST['user_id'] 
         property_type=request.POST['property_type'] 
         property_age=request.POST['property_age'] 
         selling_option=request.POST['selling_option'] 
@@ -21,6 +22,7 @@ def add_property_details_in_database(request):
         property_address=request.POST['property_address'] 
 
         property_detail=Property_detail.objects.create(
+            seller_id=User_register.objects.get(user_id=seller_id), 
             property_type=property_type,
             property_age=property_age,
             selling_option=selling_option, 
