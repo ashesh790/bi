@@ -1,4 +1,7 @@
 import json
+import os
+import uuid
+from django.core.files.storage import default_storage
 from urllib import request
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
@@ -9,6 +12,7 @@ from user_1.apis.fetch_api.main_functions import add_property_details_in_databas
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
 from user_1.models import Property_detail, Property_other_detail, User_register 
 from django.core.serializers import serialize 
+import shutil 
 # from user_1.forms import MyForm
 
 # Note: Create login and signup in single html page 
@@ -65,18 +69,17 @@ def add_property_image(request):
         last_pro_dtl=Property_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id'])).last() 
         request.session['property_id']=last_pro_dtl.pk 
         if request.method == 'POST' or request.method == "FILES": 
-            property_image_1=request.FILES.getlist('property_media') 
-            property_media=[]
-            for i in range(len(property_image_1)): 
-                property_media.append(property_image_1[i].name) 
-            property_media=json.dumps(property_media)
+            property_image_1=request.FILES['property_image_1']
+            property_image_2=request.FILES['property_image_2']
+            property_image_3=request.FILES['property_image_1']  
 
-            property_image=Property_other_detail.objects.create(
-                media_id=Property_detail.objects.get(property_id=last_pro_dtl.pk),
-                property_image_1=property_media, 
-                # property_image_2=property_image_2,
-                # property_image_3=property_image_3
+            property_media=Property_other_detail.objects.create(
+                media_id=Property_detail.objects.get(property_id=last_pro_dtl.pk), 
+                property_image_1=property_image_1, 
+                property_image_2=property_image_2, 
+                property_image_3=property_image_3 
             )
+            return redirect('home') 
     except Exception as ex: 
         print(f"solved this: {ex}")
     return render(request, 'add_property_image.html') 
