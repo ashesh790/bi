@@ -25,6 +25,7 @@ def sign_up(request):
     except Exception as ex: 
         print(f"Solve this: {ex}") 
 
+
 # sign up
 def login(request): 
     try: 
@@ -35,6 +36,7 @@ def login(request):
     except Exception as ex: 
         print(f"Solve this: {ex}") 
 
+
 # logout 
 def logout(request): 
     if request: 
@@ -44,13 +46,19 @@ def logout(request):
             print("Logout") 
     return render(request, 'login.html') 
 
+
 # Render home page 
 def home(request): 
     try: 
-        data="Hello world"
+        data=Property_detail.objects.all()   
+        for i in data: 
+            print(i) 
         return render(request, 'index.html', {'data':data})   
     except Exception as ex: 
         print(f"Solve this: {ex}") 
+    return render(request, 'index.html', {'data':data})
+    
+
 
 def add_property_details(request):    
     try:
@@ -63,6 +71,7 @@ def add_property_details(request):
     except Exception as ex: 
         print(f"Solve this: {ex}") 
     return render(request, 'property_basic_detail.html') 
+
 
 def add_property_image(request): 
     try: 
@@ -83,6 +92,8 @@ def add_property_image(request):
     except Exception as ex: 
         print(f"solved this: {ex}")
     return render(request, 'add_property_image.html') 
+
+
 def show_property_detail(request,property_id):
     try: 
         property_id=property_id  
@@ -95,6 +106,7 @@ def show_property_detail(request,property_id):
     except Exception as ex: 
         print(f"Solve this: {ex}") 
 
+
 def delete_property(request, property_id): 
     try: 
         property_id=property_id  
@@ -105,6 +117,7 @@ def delete_property(request, property_id):
     except Exception as ex: 
         print(f"Solve this: {ex}") 
 
+
 def update_property(request, property_id): 
     try: 
         property_id=property_id
@@ -112,6 +125,7 @@ def update_property(request, property_id):
         return render(request, 'property_basic_detail.html')  
     except Exception as ex: 
         print(f"Solve this: {ex}") 
+
 
 def property_status(request): 
     pass 
