@@ -50,13 +50,15 @@ def logout(request):
 # Render home page 
 def home(request): 
     try: 
-        data=Property_detail.objects.all()   
+        other_data=Property_other_detail.objects.all()
+        image_url=[other_data[0].property_image_1.url, other_data[1].property_image_1.url, other_data[2].property_image_1.url] 
+        data=Property_detail.objects.all()     
         for i in data: 
             print(i) 
-        return render(request, 'index.html', {'data':data})   
+        return render(request, 'index.html', {'data':data, 'image_url':image_url})   
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-    return render(request, 'index.html', {'data':data})
+    return render(request, 'index.html', {'data':data, 'image_url':image_url}) 
     
 
 
