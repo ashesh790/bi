@@ -22,11 +22,11 @@ def add_property_details_in_database(request):
         property_data['from_avail_property_date']=request.POST['from_avail_property_date'] 
         property_data['property_address']=request.POST['property_address'] 
 
+        # fetching last property detail from databases  
         property_detail=p_detail.objects.create(
             seller_id=User_register.objects.get(user_id=seller_id), 
             property_data=property_data,  
         )
-        # fetching last property detail from databases 
         return True 
     else: 
         return False 
@@ -37,14 +37,14 @@ def get_all_property_data(property_id=None):
         json_data=my_data[0]
         data=json.dumps(json_data, indent=4, sort_keys=True, default=str)  
     elif property_id is not None: 
-        data=Property_detail.objects.get(pk=property_id) 
+        data=p_detail.objects.get(pk=property_id) 
         # json_data=my_data[0]
         # data=json.dumps(my_data, indent=4, sort_keys=True, default=str)
     return data 
 
 def delete_all_property_data(property_id): 
     # if request.method=='POST': 
-    instance=Property_detail.objects.filter(pk=property_id) 
+    instance=p_detail.objects.filter(pk=property_id) 
     instance.delete() 
     # else: 
         # print("Record is not available")
@@ -52,6 +52,6 @@ def delete_all_property_data(property_id):
     return True 
 
 def update_property_data_record(property_id): 
-    instance=Property_detail.objects.filter(pk=property_id) 
+    instance=p_detail.objects.filter(pk=property_id) 
     instance.save() 
     return True 

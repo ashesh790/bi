@@ -51,9 +51,10 @@ def logout(request):
 def home(request): 
     # try: 
     other_data=Property_other_detail.objects.all()
-    data=p_detail.objects.all() 
-    image_url=other_data
-    return render(request, 'index.html', {'data':data, 'image_url':image_url}) 
+    list_object=[]
+    for i in other_data: 
+        list_object.append(i) 
+    return render(request, 'index.html', {'data':list_object})  
     
 def add_property_details(request):    
     try:
@@ -70,7 +71,7 @@ def add_property_details(request):
 
 def add_property_image(request): 
     try: 
-        last_pro_dtl=Property_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id'])).last() 
+        last_pro_dtl=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id'])).last() 
         request.session['property_id']=last_pro_dtl.pk 
         if request.method == 'POST' or request.method == "FILES": 
             property_image_1=request.FILES['property_image_1']
@@ -78,7 +79,7 @@ def add_property_image(request):
             property_image_3=request.FILES['property_image_1']  
 
             property_media=Property_other_detail.objects.create(
-                media_id=Property_detail.objects.get(property_id=last_pro_dtl.pk), 
+                media_id=p_detail.objects.get(property_id=last_pro_dtl.pk), 
                 property_image_1=property_image_1, 
                 property_image_2=property_image_2, 
                 property_image_3=property_image_3 
