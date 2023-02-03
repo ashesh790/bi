@@ -85,27 +85,27 @@
                 </div>
 
                 <br>
-                <p><b>Property Type </b>: {{i.property_type}}</p>
+                <p><b>Property Type </b>: {{i.property_data.property_type}}</p>
                 <hr>
-                <p><b>For </b>: {{i.selling_option}}</p>
-                <p><b>Construction Status </b>: {{i.construction_status}}</p>
-                <p><b>Floors </b>: {{i.floor}}</p>
-                <p><b>BHK </b>: {{i.bhk}}</p>
-                <p><b>Bathroom </b>: {{i.bathroom}}</p>
-                <p><b>Balcony </b>: {{i.balcony}}</p>
-                <p><b>Furnish Type </b>: {{i.furnish_type}}</p>
-                <p><b>Geography Area </b>: {{i.geography_area}}</p>
-                <p><b>Parking Type </b>: {{i.parking_type}}</p>
+                <p><b>For </b>: {{i.property_data.selling_option}}</p>
+                <p><b>Construction Status </b>: {{i.property_data.construction_status}}</p>
+                <p><b>Floors </b>: {{i.property_data.floor}}</p>
+                <p><b>BHK </b>: {{i.property_data.bhk}}</p>
+                <p><b>Bathroom </b>: {{i.property_data.bathroom}}</p>
+                <p><b>Balcony </b>: {{i.property_data.balcony}}</p>
+                <p><b>Furnish Type </b>: {{i.property_data.furnish_type}}</p>
+                <p><b>Geography Area </b>: {{i.property_data.geography_area}}</p>
+                <p><b>Parking Type </b>: {{i.property_data.parking_type}}</p>
                 {% if i.selling_option == 'rent' %}
-                <p><b>Rent Price </b>: {{i.property_rent_price}}</p>
+                <p><b>Rent Price </b>: {{i.property_data.property_rent_price}}</p>
                 {% elif i.selling_option == 'sell'%}
-                <p><b>Sell Price </b>: {{i.property_value}}</p>
+                <p><b>Sell Price </b>: {{i.property_data.property_value}}</p>
                 {% else %}
-                <p><b>Rent Price </b>: {{i.property_rent_price}}</p>
-                <p><b>Sell Price </b>: {{i.property_value}}</p>
+                <p><b>Rent Price </b>: {{i.property_data.property_rent_price}}</p>
+                <p><b>Sell Price </b>: {{i.property_data.property_value}}</p>
                 {% endif %}
-                <p><b>From property available </b>: {{i.from_avail_property_date}}</p>
-                <p><b>Property Address </b>: {{i.property_address}}</p>
+                <p><b>From property available </b>: {{i.property_data.from_avail_property_date}}</p>
+                <p><b>Property Address </b>: {{i.property_data.property_address}}</p>
                 <button class="btn btn-primary butn">Sample</button>
                 <button class="btn btn-success butn">Sample</button>
             </div>

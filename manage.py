@@ -16,7 +16,7 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     try: 
-         execute_from_command_line(sys.argv) 
+        execute_from_command_line(sys.argv) 
     except Exception as ex: 
         print(f"Solve this: {ex}")
 

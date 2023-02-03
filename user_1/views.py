@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, get_all_property_data, update_property_data_record
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
-from user_1.models import Property_detail, Property_other_detail, User_register 
+from user_1.models import Property_detail, Property_other_detail, User_register, p_detail 
 from django.core.serializers import serialize 
 import shutil 
 # from user_1.forms import MyForm
@@ -49,19 +49,12 @@ def logout(request):
 
 # Render home page 
 def home(request): 
-    try: 
-        other_data=Property_other_detail.objects.all()
-        image_url=[other_data[0].property_image_1.url, other_data[1].property_image_1.url, other_data[2].property_image_1.url] 
-        data=Property_detail.objects.all()     
-        for i in data: 
-            print(i) 
-        return render(request, 'index.html', {'data':data, 'image_url':image_url})   
-    except Exception as ex: 
-        print(f"Solve this: {ex}") 
+    # try: 
+    other_data=Property_other_detail.objects.all()
+    data=p_detail.objects.all() 
+    image_url=other_data
     return render(request, 'index.html', {'data':data, 'image_url':image_url}) 
     
-
-
 def add_property_details(request):    
     try:
         if request.method =='POST' and len(request.POST) is not None: 
