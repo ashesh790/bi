@@ -11,7 +11,7 @@
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 </head>
 
-<body class="main-container">
+<body class="main-container" id="container">
   <div class="main">
     <!-- Navigation bar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary navigation-bar">
@@ -124,5 +124,12 @@
   <script src="static/js/main.js"></script>
   <script src="static/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
+<script>
+  $(document).ready(function () {
+    debugger
+    $('#container').addClass("container");
+    $('#container').removeClass("main-container");
+  });
+</script>
 
 </html>
