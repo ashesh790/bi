@@ -45,70 +45,26 @@
 
 {% block box-content %}
 <!-- Boxes for content -->
+
 <div class="container container-fluid mt-5">
-    <div class="row">
+    <div class="row p-2">
         {% if data %}
         {% for i in data %}
-        {{i.media_id.property_data}}
         <div class="col-sm-3 bocs">
             <div class="bocs2">
                 <div id="carouselExampleIndicators" class="carousel slide">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                            class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                            aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                            aria-label="Slide 3"></button>
-                    </div>
                     <div class="carousel-inner carsl">
                         <div class="carousel-item active">
-                            <!-- <img src="..{{i.media_id.property_image_1}}"> -->
                             <img src="media/{{i.property_image_1}}" class="d-block w-100" alt="...">
                         </div>
-                        <div class="carousel-item">
-                            <img src="media/{{i.property_image_2}}" class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="media/{{i.property_image_3}}" class="d-block w-100" alt="...">
-                        </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
                 </div>
-
                 <br>
                 <p><b>Property Type </b>: {{i.media_id.property_data.property_type}}</p>
                 <hr>
                 <p><b>For </b>: {{i.media_id.property_data.selling_option}}</p>
                 <p><b>Construction Status </b>: {{i.media_id.property_data.construction_status}}</p>
                 <p><b>Floors </b>: {{i.media_id.property_data.floor}}</p>
-                <p><b>BHK </b>: {{i.media_id.property_data.bhk}}</p>
-                <p><b>Bathroom </b>: {{i.media_id.property_data.bathroom}}</p>
-                <p><b>Balcony </b>: {{i.media_id.property_data.balcony}}</p>
-                <p><b>Furnish Type </b>: {{i.media_id.property_data.furnish_type}}</p>
-                <p><b>Geography Area </b>: {{i.media_id.property_data.geography_area}}</p>
-                <p><b>Parking Type </b>: {{i.media_id.property_data.parking_type}}</p>
-                {% if i.selling_option == 'rent' %}
-                <p><b>Rent Price </b>: {{i.media_id.property_data.property_rent_price}}</p>
-                {% elif i.selling_option == 'sell'%}
-                <p><b>Sell Price </b>: {{i.media_id.property_data.property_value}}</p>
-                {% else %}
-                <p><b>Rent Price </b>: {{i.media_id.property_data.property_rent_price}}</p>
-                <p><b>Sell Price </b>: {{i.media_id.property_data.property_value}}</p>
-                {% endif %}
-                <p><b>From property available </b>: {{i.media_id.property_data.from_avail_property_date}}</p>
-                <p><b>Property Address </b>: {{i.media_id.property_data.property_address}}</p>
-                <button class="btn btn-primary butn">Sample</button>
-                <button class="btn btn-success butn">Sample</button>
             </div>
         </div>
         {% endfor %}
