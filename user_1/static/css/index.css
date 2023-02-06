@@ -14,17 +14,17 @@ body {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgb(240, 227, 255);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #193549;
+  background: whitesmoke;
 }
 
 /* Handle on hover */
@@ -73,7 +73,7 @@ body {
   /* border-radius: 10px; */
   padding-bottom: 20px;
   height: 450px;
-  /* overflow-y: scroll; */
+  overflow-y: scroll;
 }
 
 .bocs2:hover {
