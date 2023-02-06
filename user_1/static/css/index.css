@@ -7,8 +7,8 @@ body {
 }
 
 .main-container {
-  color: whitesmoke;
-  background-color: #193549;
+  color: rgb(255, 240, 240);
+  background-color: #ffffff;
   overflow-x: hidden !important;
 }
 
@@ -65,26 +65,28 @@ body {
 }
 
 .bocs2 {
-  background-color: #193549;
-  color: whitesmoke;
+  background-color: rgb(240, 227, 255);
+  color: rgb(0, 0, 0);
   margin: 2px;
   box-shadow: 0 0 5px gray;
   margin-bottom: 10px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   padding-bottom: 20px;
+  height: 450px;
+  /* overflow-y: scroll; */
 }
 
 .bocs2:hover {
   margin: 2px;
   box-shadow: 0 0 10px gray;
   margin-bottom: 10px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
 }
 
 .image,
 .carsl {
   width: 100%;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   /* padding-bottom: 20px; */
 }
 
