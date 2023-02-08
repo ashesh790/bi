@@ -8,7 +8,7 @@ body {
 
 .main-container {
   color: rgb(255, 240, 240);
-  background-color: #ffffff;
+  background-color: rgb(0, 18, 56);
   overflow-x: hidden !important;
 }
 
@@ -68,7 +68,7 @@ body {
 .bocs2 {
   text-align: start;
   padding: 10px;
-  background-color: rgb(240, 227, 255);
+  background-color: whitesmoke;
   color: rgb(0, 0, 0);
   margin: 2px;
   box-shadow: 0 0 5px gray;
@@ -285,4 +285,12 @@ select:focus {
 #containerr .message {
   text-align: left;
   padding: 10px 30px;
+}
+
+.p_button {
+  border-radius: 0%;
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  right: 0;
 }
