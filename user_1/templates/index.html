@@ -56,16 +56,19 @@
                     <div id="carouselExampleIndicators" class="carousel slide">
                         <div class="carousel-inner carsl">
                             <div class="carousel-item active">
-                                <img src="media/{{i.property_image_1}}" class="d-block w-100" alt="...">
+                                <img src="{{i.property_data.property_image_1}}" class="d-block w-100" alt="...">
                             </div>
+                            {{i.property_data.property_image_1}} 
+                            {{i.property_data.property_image_2}}
+                            {{i.property_data.property_image_3}} 
                         </div>
                     </div>
                     <br>
-                    <span><b>Property Type </b>: {{i.media_id.property_data.property_type}}</span>
+                    <span><b>Property Type </b>: {{i.property_data.property_type}}</span>
                     <hr>
-                    <span><b>For </b>: {{i.media_id.property_data.selling_option}}</span><br> 
-                    <span><b>Construction Status </b>: {{i.media_id.property_data.construction_status}}</span><br> 
-                    <span><b>Floors </b>: {{i.media_id.property_data.floor}}</span><br> 
+                    <span><b>For </b>: {{i.property_data.selling_option}}</span><br> 
+                    <span><b>Status </b>: {{i.property_data.construction_status}}</span><br> 
+                    <span><b>Floors </b>: {{i.property_data.floor}}</span><br> 
                 </div>
                 <button class="btn btn-outline-primary p_button" style="background-color:whitesmoke;"><b>More Details!</b></button> 
             </div>

@@ -51,7 +51,7 @@ def logout(request):
 # Render home page 
 def home(request): 
     # try:
-    other_data=Property_other_detail.objects.all()
+    other_data=p_detail.objects.all()
     list_object=[]
     for i in other_data: 
         list_object.append(i) 
