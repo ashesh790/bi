@@ -51,20 +51,23 @@
         {% if data %}
         {% for i in data %}
         <div class="col-sm-3 bocs">
-            <div class="bocs2">
-                <div id="carouselExampleIndicators" class="carousel slide">
-                    <div class="carousel-inner carsl">
-                        <div class="carousel-item active">
-                            <img src="media/{{i.property_image_1}}" class="d-block w-100" alt="...">
+            <div style="background-color:whitesmoke; position:relative;">
+                <div class="bocs2">
+                    <div id="carouselExampleIndicators" class="carousel slide">
+                        <div class="carousel-inner carsl">
+                            <div class="carousel-item active">
+                                <img src="media/{{i.property_image_1}}" class="d-block w-100" alt="...">
+                            </div>
                         </div>
                     </div>
+                    <br>
+                    <span><b>Property Type </b>: {{i.media_id.property_data.property_type}}</span>
+                    <hr>
+                    <span><b>For </b>: {{i.media_id.property_data.selling_option}}</span><br> 
+                    <span><b>Construction Status </b>: {{i.media_id.property_data.construction_status}}</span><br> 
+                    <span><b>Floors </b>: {{i.media_id.property_data.floor}}</span><br> 
                 </div>
-                <br>
-                <p><b>Property Type </b>: {{i.media_id.property_data.property_type}}</p>
-                <hr>
-                <p><b>For </b>: {{i.media_id.property_data.selling_option}}</p>
-                <p><b>Construction Status </b>: {{i.media_id.property_data.construction_status}}</p>
-                <p><b>Floors </b>: {{i.media_id.property_data.floor}}</p>
+                <button class="btn btn-outline-primary p_button" style="background-color:whitesmoke;"><b>More Details!</b></button> 
             </div>
         </div>
         {% endfor %}

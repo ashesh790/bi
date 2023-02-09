@@ -8,23 +8,23 @@ body {
 
 .main-container {
   color: rgb(255, 240, 240);
-  background-color: #ffffff;
+  background-color: rgb(0, 18, 56);
   overflow-x: hidden !important;
 }
 
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgb(240, 227, 255);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #193549;
+  background: whitesmoke;
 }
 
 /* Handle on hover */
@@ -33,6 +33,7 @@ body {
 }
 
 .bocs {
+  /* text-align: left !important; */
   min-height: 400px !important;
   /* height: auto; */
   /* border: 1px solid red; */
@@ -65,7 +66,9 @@ body {
 }
 
 .bocs2 {
-  background-color: rgb(240, 227, 255);
+  text-align: start;
+  padding: 10px;
+  background-color: whitesmoke;
   color: rgb(0, 0, 0);
   margin: 2px;
   box-shadow: 0 0 5px gray;
@@ -73,7 +76,7 @@ body {
   /* border-radius: 10px; */
   padding-bottom: 20px;
   height: 450px;
-  /* overflow-y: scroll; */
+  overflow-y: scroll;
 }
 
 .bocs2:hover {
@@ -126,32 +129,32 @@ body {
 
 .main-show-case-footer {
   min-height: 200px;
-  background-color: lightblue;
+  background-color: rgb(240, 227, 255);
   display: block;
   margin-left: auto;
   margin-right: auto;
   width: 95% !important;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   box-shadow: 0 0 10px gray;
 }
 
 .c-1 {
-  background-color: aliceblue;
-  border-radius: 10px;
+  background-color: rgb(240, 227, 255);
+  /* border-radius: 10px; */
   height: 300px;
   margin: 2px;
   margin-top: 20px;
   box-shadow: 0 0 5px gray;
 }
 
-.c-1:hover {
-  background-color: aliceblue;
+/* .c-1:hover {
+  background-color: rgb(240, 227, 255);
   border-radius: 10px;
   height: 300px;
   margin: 2px;
   margin-top: 20px;
   box-shadow: 0 0 10px gray;
-}
+} */
 
 /* Add some CSS styling for the form */
 form {
@@ -282,4 +285,21 @@ select:focus {
 #containerr .message {
   text-align: left;
   padding: 10px 30px;
+}
+
+.p_button {
+  border-radius: 0%;
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  right: 0;
+}
+
+.p_button:hover {
+  border-radius: 0%;
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  right: 0;
+  background-color: #1e88e5 !important;
 }
