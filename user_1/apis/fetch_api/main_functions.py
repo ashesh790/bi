@@ -1,12 +1,24 @@
 import json
 from urllib import request
 from user_1.models import Property_detail, User_register, p_detail
+from django.core.files.storage import FileSystemStorage
 
 def add_property_details_in_database(request): 
-    if request.method =='POST': 
+    if request.method =='POST' or request.method == 'FILES': 
+        property_image_1=request.FILES['property_image_1']
+        property_image_2=request.FILES['property_image_2']
+        property_image_3=request.FILES['property_image_3']
+        property_media=[property_image_1, property_image_2, property_image_3] 
+        fss = FileSystemStorage() 
+        for i in property_media: 
+            file = fss.save(i.name, i)
+            file_url = fss.url(file)
         seller_id=request.POST['user_id'] 
         property_data={} 
         property_data['property_type']=request.POST['property_type'] 
+        property_data['property_image_1']=request.FILES['property_image_1']
+        property_data['property_image_2']=request.FILES['property_image_2']
+        property_data['property_image_3']=request.FILES['property_image_3']
         property_data['property_age']=request.POST['property_age'] 
         property_data['selling_option']=request.POST['selling_option'] 
         property_data['construction_status']=request.POST['construction_status'] 

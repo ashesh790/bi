@@ -50,7 +50,7 @@ def logout(request):
 
 # Render home page 
 def home(request): 
-    # try: 
+    # try:
     other_data=Property_other_detail.objects.all()
     list_object=[]
     for i in other_data: 
