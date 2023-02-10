@@ -1,6 +1,6 @@
 import json
 from urllib import request
-from user_1.models import Property_detail, User_register, p_detail
+from user_1.models import User_register, p_detail
 from django.core.files.storage import FileSystemStorage
 
 def add_property_details_in_database(request): 
@@ -9,16 +9,18 @@ def add_property_details_in_database(request):
         property_image_2=request.FILES['property_image_2']
         property_image_3=request.FILES['property_image_3']
         property_media=[property_image_1, property_image_2, property_image_3] 
+        property_media_save=[] 
         fss = FileSystemStorage() 
         for i in property_media: 
             file = fss.save(i.name, i)
             file_url = fss.url(file)
+            property_media_save.append(file_url)
         seller_id=request.POST['user_id'] 
         property_data={} 
         property_data['property_type']=request.POST['property_type'] 
-        property_data['property_image_1']='media' + '/' + property_image_1.name
-        property_data['property_image_2']='media' + '/' + property_image_1.name
-        property_data['property_image_3']='media' + '/' + property_image_1.name
+        property_data['property_image_1']=property_media_save[0]
+        property_data['property_image_2']=property_media_save[1]
+        property_data['property_image_3']=property_media_save[2]
         property_data['property_age']=request.POST['property_age'] 
         property_data['selling_option']=request.POST['selling_option'] 
         property_data['construction_status']=request.POST['construction_status'] 
@@ -65,5 +67,5 @@ def delete_all_property_data(property_id):
 
 def update_property_data_record(property_id): 
     instance=p_detail.objects.filter(pk=property_id) 
-    instance.save() 
+    # instance.save() 
     return True 

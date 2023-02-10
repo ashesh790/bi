@@ -1,5 +1,7 @@
 {% extends 'master.html' %}
 
+{% load static %}
+
 {% block login-system %}
 <form class="mt-5 form-control" method="POST" action="signup">
     {% csrf_token %}

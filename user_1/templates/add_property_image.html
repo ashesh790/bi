@@ -1,6 +1,8 @@
 {% extends 'master.html' %}
+
+{% load static %}
 {% block form_ui %}
-<script src="static/js/form_mangement.js"></script>
+<script src="{% static 'js/form_mangement.js' %}"></script>
 <form method="post" action="add_property_image" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="text" value="{{request.session.user_id}}" name="user_id" id="user_id" hidden>

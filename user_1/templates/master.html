@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
 
@@ -5,8 +6,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Bootstrap demo</title>
-  <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="static/css/index.css" rel="stylesheet">
+  <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/index.css' %}" rel="stylesheet"  >
   <!-- <link href="static/fonts/font.css" rel="stylesheet">  -->
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 </head>
@@ -119,10 +120,10 @@
     </div>
   </div>
   <!-- <script src="static/bootstrap/js/bootstrap.min.js"></script>  -->
-  <script src="static/js/form_mangement.js"></script>
-  <script src="static/js/popper.js"></script>
-  <script src="static/js/main.js"></script>
-  <script src="static/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'js/form_mangement.js' %}"></script>
+  <script src="{% static 'js/popper.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
 <script>
   $(document).ready(function () {
