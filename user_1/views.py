@@ -47,7 +47,9 @@ def logout(request):
             print("Logout") 
     return render(request, 'login.html') 
 
-
+def crud_property(request): 
+    data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))  
+    return render(request, 'record.html', {'data':data}) 
 # Render home page 
 def home(request): 
     # try:
