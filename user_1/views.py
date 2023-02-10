@@ -98,8 +98,9 @@ def delete_property(request, property_id):
 def update_property(request, property_id): 
     try: 
         property_id=property_id
-        update=update_property_data_record(property_id) 
-        return render(request, 'property_basic_detail.html')  
+        instace_data=update_property_data_record(property_id) 
+        instace_data=instace_data[0].property_data
+        return render(request, 'property_basic_detail.html', {'instace_data':instace_data})  
     except Exception as ex: 
         print(f"Solve this: {ex}") 
     return render(request, 'property_basic_detail.html')

@@ -68,4 +68,4 @@ def delete_all_property_data(property_id):
 def update_property_data_record(property_id): 
     instance=p_detail.objects.filter(pk=property_id) 
     # instance.save() 
-    return True 
+    return instance  
