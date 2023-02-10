@@ -47,7 +47,9 @@ def logout(request):
             print("Logout") 
     return render(request, 'login.html') 
 
-
+def crud_property(request): 
+    data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))  
+    return render(request, 'record.html', {'data':data}) 
 # Render home page 
 def home(request): 
     # try:
@@ -99,11 +101,12 @@ def update_property(request, property_id):
     try: 
         property_id=property_id
         instace_data=update_property_data_record(property_id) 
-        instace_data=instace_data[0].property_data
-        return render(request, 'property_basic_detail.html', {'instace_data':instace_data})  
+        instace_data=instace_data[0].property_data 
+        return render(request, 'property_basic_detail.html', {'instace_data':instace_data})
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-    return render(request, 'property_basic_detail.html')
+    return render(request, 'property_basic_detail.html', {'instace_data':instace_data})  
+
 
 def property_status(request): 
     pass

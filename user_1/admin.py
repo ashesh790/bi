@@ -4,7 +4,7 @@ from user_1.models import Property_detail, Property_other_detail, User_register,
 
 class User_register_admin(admin.ModelAdmin): 
     list_display=[
-        'user_name','user_email','user_mobile','user_gender','user_psw' 
+        'user_id','user_name','user_email','user_mobile','user_gender','user_psw' 
     ]
 class p_detail_admin(admin.ModelAdmin): 
     list_display=[
