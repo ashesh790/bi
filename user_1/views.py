@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from staying_source.settings import MEDIA_ROOT, MEDIA_URL
 from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, get_all_property_data, update_property_data_record
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
-from user_1.models import Property_detail, Property_other_detail, User_register, p_detail 
+from user_1.models import User_register, p_detail 
 from django.core.serializers import serialize 
 import shutil 
 # from user_1.forms import MyForm
@@ -55,6 +55,7 @@ def home(request):
     list_object=[]
     for i in other_data: 
         list_object.append(i) 
+    # list_object=json.dumps(str(list_object[0].property_data).replace('_', ' '))
     return render(request, 'index.html', {'data':list_object})  
     
 def add_property_details(request):    
@@ -68,27 +69,6 @@ def add_property_details(request):
     except Exception as ex: 
         print(f"Solve this: {ex}") 
     return render(request, 'property_basic_detail.html') 
-
-
-def add_property_image(request): 
-    try: 
-        last_pro_dtl=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id'])).last() 
-        request.session['property_id']=last_pro_dtl.pk 
-        if request.method == 'POST' or request.method == "FILES": 
-            property_image_1=request.FILES['property_image_1']
-            property_image_2=request.FILES['property_image_2']
-            property_image_3=request.FILES['property_image_1']  
-
-            property_media=Property_other_detail.objects.create(
-                media_id=p_detail.objects.get(property_id=last_pro_dtl.pk), 
-                property_image_1=property_image_1, 
-                property_image_2=property_image_2, 
-                property_image_3=property_image_3 
-            )
-            return redirect('home') 
-    except Exception as ex: 
-        print(f"solved this: {ex}")
-    return render(request, 'add_property_image.html') 
 
 
 def show_property_detail(request,property_id):
@@ -113,7 +93,7 @@ def delete_property(request, property_id):
         return render(request,'property_basic_detail.html') 
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-
+    return render(request,'property_basic_detail.html')
 
 def update_property(request, property_id): 
     try: 
@@ -122,7 +102,7 @@ def update_property(request, property_id):
         return render(request, 'property_basic_detail.html')  
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-
+    return render(request, 'property_basic_detail.html')
 
 def property_status(request): 
     pass

@@ -1,6 +1,6 @@
 import json
 from urllib import request
-from user_1.models import Property_detail, User_register, p_detail
+from user_1.models import User_register, p_detail
 from django.core.files.storage import FileSystemStorage
 
 def add_property_details_in_database(request): 
@@ -67,5 +67,5 @@ def delete_all_property_data(property_id):
 
 def update_property_data_record(property_id): 
     instance=p_detail.objects.filter(pk=property_id) 
-    instance.save() 
+    # instance.save() 
     return True 
