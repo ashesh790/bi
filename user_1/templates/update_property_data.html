@@ -16,7 +16,9 @@
 <!-- {{data}} -->
 
 <div class="text-center p-3">
-    <p style="color:white;" id="notes" hidden>Note : Data will be automatically save as per your data change.</p>
+    <!-- <p style="color:white;" id="notes" hidden>Note : Data will be automatically save as per your data change.</p> -->
+    <button id="save_btn" class="btn btn-success w-75">Save data</button>
+
     <h3 style="color:whitesmoke;">Update Propery Details</h3>
     <div class="row">
         <div class="row g-2 mt-3 col-md-9">
@@ -53,7 +55,7 @@
                         Rent</label>
                     <select class="form-select" name="selling_option" id="selling_option"
                         class="selling_option prop_val">
-                        <option value="{{instace_data.selling_option}}">&#x2713; :
+                        <option value="{{data.selling_option}}">&#x2713; :
                             {{data.selling_option|title}}</option>
                         <option value="sell">Sell</option>
                         <option value="rent">Rent</option>
@@ -65,8 +67,8 @@
             <div class="col-md-6 col-sm-12">
                 <div class="p-3 border bg-light">
                     <label class="form-label">Construction Status</label>
-                    <select class="form-select prop_val" name="construction_status">
-                        <option class="form-option" value="{{instace_data.construction_status}}">&#x2713; :
+                    <select class="form-select prop_val" name="construction_status" id="construction_status">
+                        <option class="form-option" value="{{data.construction_status}}">&#x2713; :
                             {{data.construction_status|title}}</option>
                         <option class="form-option" value="ready_to_move">Ready To Move</option>
                         <option class="form-option" value="under_construction">Under Construction</option>
@@ -77,14 +79,15 @@
             <div class="col-md-6 col-sm-12">
                 <div class="p-3 border bg-light">
                     <label class="form-label">Floor</label>
-                    <input type="number" name="floor" class="form-control prop_val" min="1" value="{{data.floor}}">
+                    <input type="number" name="floor" class="form-control prop_val" id="floor" min="1"
+                        value="{{data.floor}}">
                 </div>
             </div>
             <!-- ------------------------------------------------------------------- -->
             <div class="col-md-6 col-sm-12">
                 <div class="p-3 border bg-light">
                     <label class="form-label">BHK Detail</label>
-                    <select class="form-select prop_val" name="bhk">
+                    <select class="form-select prop_val" name="bhk" id="bhk">
                         <option value="{{data.bhk}}" selected>&#x2713; : {{data.bhk}} BHK
                         </option>
                         <option value="1">1 BHK</option>
@@ -109,7 +112,7 @@
             <div class="col-md-6 col-sm-12">
                 <div class="p-3 border bg-light">
                     <label for="bathroom" class="form-label">Bathroom</label>
-                    <select class="form-select prop_val" name="bathroom">
+                    <select class="form-select prop_val" name="bathroom" id="bathroom">
                         <option value="{{data.bathroom}}" selected>&#x2713; :
                             {{data.bathroom}}
                             Bathroom
@@ -136,8 +139,8 @@
             <div class="col-md-6 col-sm-12">
                 <div class="p-3 border bg-light">
                     <label for="balcony" class="form-label balcony">Balcony</label>
-                    <select class="form-select prop_val" name="balcony">
-                        <option value="{{instace_data.balcony}}" selected>&#x2713; : {{data.balcony}}
+                    <select class="form-select prop_val" name="balcony" id="balcony">
+                        <option value="{{data.balcony}}" selected>&#x2713; : {{data.balcony}}
                             Balcony
                         </option>
                         <option value="1">1 Balcony</option>
@@ -185,7 +188,7 @@
             <div class="col-md-6 col-sm-12">
                 <div class="p-3 border bg-light">
                     <label for="parking_type" class="form-label">Parking Detail</label>
-                    <select class="form-select prop_val" name="parking_type">
+                    <select class="form-select prop_val" name="parking_type" id="parking_type">
                         <option value="{{data.parking_type}}" selected>&#x2713; :
                             {{data.parking_type|title}}
                         </option>
@@ -253,14 +256,73 @@
                             style="height:200px;">
                     </div>
                 </div>
+                <form enctype="multipart/form-data">
+                    <input type="file" id="file-selector" multiple>
+                </form>
             </div>
         </div>
     </div>
+    <hr>
 </div>
+
 <script>
+    const fileSelector = document.getElementById('file-selector');
+    fileSelector.addEventListener('change', (event) => {
+        const fileList = event.target.files;
+        var file_name = "media/" + fileList[0].name;
+        alert(file_name);
+    });
     $(document).ready(function () {
+        var property_type = $("#property_type").val();
+        var property_age = $("#property_age").val();
+        var selling_option = $("#selling_option").val();
+        var construction_status = $("#construction_status").val();
+        var floor = $("#floor").val();
+        var bhk = $("#bhk").val();
+        var bathroom = $("#bathroom").val();
+        var balcony = $("#balcony").val();
+        var geo_area = $("#geo_area").val();
+        var property_value = $("#property_value").val();
+        var property_rent_price = $("#property_rent_price").val();
+        var from_avail_property_date = $("#from_avail_property_date").val();
+        var property_address = $("#property_address").val();
+        var property_type = $("#property_type").val();
+        var furnish_type = $("#furnish_type").val();
+        data =
+        {
+            "property_type": "home",
+            "property_image_1": "/media/UI-1_M000NNo.png",
+            "property_image_2": "/media/UI-1_b78WM9W.png",
+            "property_image_3": "/media/UI-1_9So19Rz.png",
+            "property_age": "2",
+            "selling_option": "sell",
+            "construction_status": "ready_to_move",
+            "floor": "2",
+            "bhk": "10",
+            "bathroom": "10",
+            "balcony": "10",
+            "furnish_type": "fully_furnished",
+            "geography_area": "9000",
+            "parking_type": "covered",
+            "property_value": "9000",
+            "property_rent_price": "9000",
+            "from_avail_property_date": "2023-02-02",
+            "property_address": "updated"
+        }
         $(".prop_val").change(function () {
-            $("#notes").removeAttr('hidden');
+
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "/likepost",
+                    data: {
+                        post_id: catid
+                    },
+                    success: function (data) {
+                        $('#like' + catid).remove();
+                        $('#message').text(data);
+                    }
+                })
         });
         $(".property_address").keyup(function () {
             $("#notes").removeAttr('hidden');
