@@ -18,8 +18,9 @@
 <div class="text-center p-3">
     <!-- <p style="color:white;" id="notes" hidden>Note : Data will be automatically save as per your data change.</p> -->
     <button id="save_btn" class="btn btn-success w-75">Save data</button>
-
     <h3 style="color:whitesmoke;">Update Propery Details</h3>
+
+    <input value="{{id}}" id="id" hidden>
     <div class="row">
         <div class="row g-2 mt-3 col-md-9">
             <div class="col-md-6 col-sm-12">
@@ -237,7 +238,8 @@
                     <hr>
                     <div class="bg-light">
                         <img src="{{data.property_image_1}}" class="d-block w-100 prop_val" alt="..."
-                            style="height:200px;">
+                            style="height:200px;" id="property_image_1">
+                        <input type="file" id="file-selector-1">
                     </div>
                 </div>
                 <div class="p-3 mt-2 border bg-light">
@@ -245,7 +247,8 @@
                     <hr>
                     <div class="bg-light">
                         <img src="{{data.property_image_2}}" class="d-block w-100 prop_val" alt="..."
-                            style="height:200px;">
+                            style="height:200px;" id="property_image_2">
+                        <input type="file" id="file-selector-2">
                     </div>
                 </div>
                 <div class="p-3 mt-2 border bg-light">
@@ -253,12 +256,11 @@
                     <hr>
                     <div class="bg-light">
                         <img src="{{data.property_image_3}}" class="d-block w-100 prop_val" alt="..."
-                            style="height:200px;">
+                            style="height:200px;" id="property_image_3">
+                        <input type="file" id="file-selector-3">
                     </div>
                 </div>
-                <form enctype="multipart/form-data">
-                    <input type="file" id="file-selector" multiple>
-                </form>
+
             </div>
         </div>
     </div>
@@ -266,8 +268,21 @@
 </div>
 
 <script>
-    const fileSelector = document.getElementById('file-selector');
-    fileSelector.addEventListener('change', (event) => {
+    const fileSelector_1 = document.getElementById('file-selector-1');
+    const fileSelector_2 = document.getElementById('file-selector-1');
+    const fileSelector_3 = document.getElementById('file-selector-1');
+
+    fileSelector_1.addEventListener('change', (event) => {
+        const fileList = event.target.files;
+        var file_name = "media/" + fileList[0].name;
+        alert(file_name);
+    });
+    fileSelector_2.addEventListener('change', (event) => {
+        const fileList = event.target.files;
+        var file_name = "media/" + fileList[0].name;
+        alert(file_name);
+    });
+    fileSelector_3.addEventListener('change', (event) => {
         const fileList = event.target.files;
         var file_name = "media/" + fileList[0].name;
         alert(file_name);
@@ -286,37 +301,43 @@
         var property_rent_price = $("#property_rent_price").val();
         var from_avail_property_date = $("#from_avail_property_date").val();
         var property_address = $("#property_address").val();
-        var property_type = $("#property_type").val();
         var furnish_type = $("#furnish_type").val();
-        data =
+        var property_image_1 = $("#property_image_1").attr('src');
+        var property_image_2 = $("#property_image_2").attr('src');
+        var property_image_3 = $("#property_image_3").attr('src');
+        var parking_type = $("#parking_type").val();
+        var data =
         {
-            "property_type": "home",
-            "property_image_1": "/media/UI-1_M000NNo.png",
-            "property_image_2": "/media/UI-1_b78WM9W.png",
-            "property_image_3": "/media/UI-1_9So19Rz.png",
-            "property_age": "2",
-            "selling_option": "sell",
-            "construction_status": "ready_to_move",
-            "floor": "2",
-            "bhk": "10",
-            "bathroom": "10",
-            "balcony": "10",
-            "furnish_type": "fully_furnished",
-            "geography_area": "9000",
-            "parking_type": "covered",
-            "property_value": "9000",
-            "property_rent_price": "9000",
-            "from_avail_property_date": "2023-02-02",
-            "property_address": "updated"
+            "property_type": property_type,
+            "property_image_1": property_image_1,
+            "property_image_2": property_image_2,
+            "property_image_3": property_image_3,
+            "property_age": property_age,
+            "selling_option": selling_option,
+            "construction_status": construction_status,
+            "floor": floor,
+            "bhk": bhk,
+            "bathroom": bathroom,
+            "balcony": balcony,
+            "furnish_type": furnish_type,
+            "geography_area": geo_area,
+            "parking_type": parking_type,
+            "property_value": property_value,
+            "property_rent_price": property_rent_price,
+            "from_avail_property_date": from_avail_property_date,
+            "property_address": property_address
         }
+        console.log(data);
+        var id = $("#id").val();
+        //alert(id);
         $(".prop_val").change(function () {
-
             $.ajax(
                 {
                     type: "POST",
-                    url: "/likepost",
+                    url: "update_property_record/" + id + "/",
                     data: {
-                        post_id: catid
+                        data: data,
+                        id: id
                     },
                     success: function (data) {
                         $('#like' + catid).remove();
