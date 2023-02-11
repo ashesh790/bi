@@ -1,7 +1,10 @@
 import json
 from urllib import request
+
+from django.http import HttpResponse
 from user_1.models import User_register, p_detail
 from django.core.files.storage import FileSystemStorage
+from django.template import loader
 
 def add_property_details_in_database(request): 
     if request.method =='POST' or request.method == 'FILES': 
@@ -66,6 +69,6 @@ def delete_all_property_data(property_id):
     return True 
 
 def update_property_data_record(property_id): 
-    instance=p_detail.objects.filter(pk=property_id) 
-    # instance.save() 
-    return instance  
+    # update will be here 
+    data=p_detail.objects.get(id=property_id)  
+    return data      
