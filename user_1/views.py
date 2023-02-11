@@ -102,10 +102,10 @@ def update_property(request, property_id):
         property_id=property_id
         property_data=update_property_data_record(property_id) 
         property_data=property_data.property_data 
-        return render(request, 'update_property_data.html', {'data':property_data})
+        return render(request, 'update_property_data.html', {'data':property_data, "id":property_id})
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-    return render(request, 'update_property_data.html', {'data':property_data})  
+    return render(request, 'update_property_data.html', {'data':property_data, "id":property_id})  
 
 
 def property_status(request): 

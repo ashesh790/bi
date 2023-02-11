@@ -43,6 +43,19 @@
 </div>
 <script>
   $(document).ready(function () {
+
+    $.ajax(
+      {
+        type: "GET",
+        url: "/likepost",
+        data: {
+          post_id: catid
+        },
+        success: function (data) {
+          $('#like' + catid).remove();
+          $('#message').text(data);
+        }
+      })
   }); 
 </script>
 {% endblock %}
