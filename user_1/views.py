@@ -100,12 +100,12 @@ def delete_property(request, property_id):
 def update_property(request, property_id): 
     try: 
         property_id=property_id
-        instace_data=update_property_data_record(property_id) 
-        instace_data=instace_data[0].property_data 
-        return render(request, 'property_basic_detail.html', {'instace_data':instace_data})
+        property_data=update_property_data_record(property_id) 
+        property_data=property_data.property_data 
+        return render(request, 'update_property_data.html', {'data':property_data})
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-    return render(request, 'property_basic_detail.html', {'instace_data':instace_data})  
+    return render(request, 'update_property_data.html', {'data':property_data})  
 
 
 def property_status(request): 
