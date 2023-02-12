@@ -14,6 +14,8 @@ from user_1.apis.fetch_api.state_management.handle_state import login_user, sign
 from user_1.models import User_register, p_detail 
 from django.core.serializers import serialize 
 import shutil 
+from django.core.files.storage import FileSystemStorage
+
 # from user_1.forms import MyForm
 
 # Note: Create login and signup in single html page 
@@ -97,17 +99,26 @@ def delete_property(request, property_id):
         print(f"Solve this: {ex}") 
     return render(request,'property_basic_detail.html')
 
-def update_property(request, property_id): 
+def update_property(request, property_id=0): 
     # postData = request.get_json()
     try: 
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
-        if request.method == 'POST':
+        if request.method == 'POST': 
+            data=p_detail.objects.get(id=property_id)
+            if request.method =="FILES": 
+                data.property_data['property_image_1'],property_image_1 = request.FILES['property_image_1']
+                data.property_data['property_image_2'],property_image_2 = request.FILES['property_image_2']
+                data.property_data['property_image_3'],property_image_3 = request.FILES['property_image_3']
+
+                property_media=[property_image_1, property_image_2, property_image_3] 
+                property_media_save=[] 
+                fss = FileSystemStorage() 
+                for i in property_media: 
+                    file = fss.save(i.name, i)
+                    file_url = fss.url(file)
+                    property_media_save.append(file_url) 
             property_id=property_id
-            data=p_detail.objects.get(id=property_id) 
             data.property_data['property_type'] = request.POST['data[property_type]']  
-            data.property_data['property_image_1'] = request.POST['data[property_image_1]']  
-            data.property_data['property_image_2'] = request.POST['data[property_image_2]']  
-            data.property_data['property_image_3'] = request.POST['data[property_image_3]']  
             data.property_data['property_age'] = request.POST['data[property_age]']  
             data.property_data['selling_option'] = request.POST['data[selling_option]']  
             data.property_data['construction_status'] = request.POST['data[construction_status]']  
@@ -121,7 +132,7 @@ def update_property(request, property_id):
             data.property_data['property_value'] = request.POST['data[property_value]']  
             data.property_data['property_rent_price'] = request.POST['data[property_rent_price]']  
             data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]']  
-            data.property_data['property_address'] = request.POST['data[property_address]']  
+            data.property_data['property_address'] = request.POST['data[property_address]']               
             data.save()  
             return render(request, 'update_property_data.html', {'data':data, "id":property_id})
         property_id=property_id

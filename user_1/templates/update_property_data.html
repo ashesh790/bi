@@ -17,7 +17,7 @@
 
 <div class="text-center p-3">
     <!-- <p style="color:white;" id="notes" hidden>Note : Data will be automatically save as per your data change.</p> -->
-    <button id="save_btn" class="btn btn-success w-">Save data</button>
+    <!-- <button id="save_btn" class="btn btn-success w-">Save data</button> -->
     <h3 style="color:whitesmoke;">Update Propery Details</h3>
     {% csrf_token %}
     <input value="{{id}}" id="id" hidden>
@@ -30,14 +30,14 @@
                         <option value="{{data.property_type}}">&#x2713; :
                             {{data.property_type}}
                         </option>
-                        <option value="home">Home</option>
-                        <option value="shop">Shop</option>
-                        <option value="flat">Flat</option>
-                        <option value="villa">Villa</option>
-                        <option value="agricultureLand">Agriculture land</option>
-                        <option value="complex">Complex</option>
-                        <option value="pg">PG(Paying Guest)</option>
-                        <option value="hostel">Hostel</option>
+                        <option value="Home">Home</option>
+                        <option value="Shop">Shop</option>
+                        <option value="Flat">Flat</option>
+                        <option value="Villa">Villa</option>
+                        <option value="Agriculture land">Agriculture land</option>
+                        <option value="Complex">Complex</option>
+                        <option value="PG(Paying Guest)">PG(Paying Guest)</option>
+                        <option value="Hostel">Hostel</option>
                     </select>
                 </div>
             </div>
@@ -58,9 +58,9 @@
                         class="selling_option prop_val">
                         <option value="{{data.selling_option}}">&#x2713; :
                             {{data.selling_option|title}}</option>
-                        <option value="sell">Sell</option>
-                        <option value="rent">Rent</option>
-                        <option value="rent">Sell / Rent</option>
+                        <option value="Sell">Sell</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Sell / Rent">Sell / Rent</option>
                     </select>
                 </div>
             </div>
@@ -71,8 +71,8 @@
                     <select class="form-select prop_val" name="construction_status" id="construction_status">
                         <option class="form-option" value="{{data.construction_status}}">&#x2713; :
                             {{data.construction_status|title}}</option>
-                        <option class="form-option" value="ready_to_move">Ready To Move</option>
-                        <option class="form-option" value="under_construction">Under Construction</option>
+                        <option class="form-option" value="Ready To Move">Ready To Move</option>
+                        <option class="form-option" value="Under Construction">Under Construction</option>
                     </select>
                 </div>
             </div>
@@ -171,9 +171,9 @@
                         <option value="{{data.furnish_type}}" selected>&#x2713; :
                             {{data.furnish_type|title}}
                         </option>
-                        <option value="fully_furnished">Fully Furnished</option>
-                        <option value="semi_furnished">Semi Furnished</option>
-                        <option value="no_furnish">No Furnished</option>
+                        <option value="Fully Furnished">Fully Furnished</option>
+                        <option value="Semi Furnished">Semi Furnished</option>
+                        <option value="No Furnished">No Furnished</option>
                     </select>
                 </div>
             </div>
@@ -193,9 +193,9 @@
                         <option value="{{data.parking_type}}" selected>&#x2713; :
                             {{data.parking_type|title}}
                         </option>
-                        <option value="covered">Covered</option>
-                        <option value="open">Open</option>
-                        <option value="covered_and_open">Both, Covered and Open</option>
+                        <option value="Covered">Covered</option>
+                        <option value="Open">Open</option>
+                        <option value="Both, Covered and Open">Both, Covered and Open</option>
                     </select>
                 </div>
             </div>
@@ -211,7 +211,7 @@
             <div class="col-md-4 col-sm-12">
                 <div class="p-3 border bg-light">
                     <label for="property_rent_price" class="form-label">Property Rent Price</label>
-                    <input type="text" name="property_rent_price" class="form-control property_rent_price prop_val"
+                    <input type="text" name="property_rent_price" class="form-control property_rent_price"
                         id="property_rent_price" value="{{data.property_rent_price}}">
                 </div>
             </div>
@@ -219,78 +219,85 @@
             <div class="col-md-4 col-sm-12">
                 <div class="p-3 border bg-light">
                     <label for="from_avail_property_date" class="form-label">When will available property</label>
-                    <input type="date" name="from_avail_property_date" class="form-control prop_val"
+                    <input type="date" name="from_avail_property_date" class="form-control"
                         id="from_avail_property_date" value="{{data.from_avail_property_date}}">
                 </div>
             </div>
             <div class="col-md-4 col-sm-12">
                 <div class="p-3 border bg-light">
                     <label for="property_address" class="form-label">Property Address</label>
-                    <textarea type="textarea" name="property_address" class="form-control property_address prop_val"
+                    <textarea type="textarea" name="property_address" class="form-control property_address"
                         id="property_address" style="height: 38px;">{{data.property_address}}</textarea>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row col-md-12 g-2 mt-3">
-        <div class="row" style="height:100px;">
-            <div class="col-md-4">
-                <div class="p-3 border bg-light">
-                    <h5>Property image 1</h5>
-                    <hr>
-                    <div class="bg-light">
-                        <img src="{{data.property_image_1}}" class="d-block w-100 prop_val" alt="..."
-                            style="height:200px;" id="property_image_1">
-                        <input type="file" id="file-selector-1">
+    <form method="POST" action="update_property_record/<int:property_id>/" enctype="multipart/form-data">
+        <div class="row col-md-12 g-2 mt-3">
+            <div class="row" style="height:100px;">
+                <div class="col-md-4">
+                    <div class="p-3 border bg-light">
+                        <h5>Property image 1</h5>
+                        <hr>
+                        <div class="bg-light">
+                            <img src="{{data.property_image_1}}" class="d-block w-100 " alt="..." style="height:200px;"
+                                id="property_image_1">
+                            <input type="file" id="file-selector-1" class="prop_val" name="property_image_1">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="p-3 border bg-light">
-                    <h5>Property image 2</h5>
-                    <hr>
-                    <div class="bg-light">
-                        <img src="{{data.property_image_2}}" class="d-block w-100 prop_val" alt="..."
-                            style="height:200px;" id="property_image_2">
-                        <input type="file" id="file-selector-2">
+                <div class="col-md-4">
+                    <div class="p-3 border bg-light">
+                        <h5>Property image 2</h5>
+                        <hr>
+                        <div class="bg-light">
+                            <img src="{{data.property_image_2}}" class="d-block w-100 " alt="..." style="height:200px;"
+                                id="property_image_2">
+                            <input type="file" id="file-selector-2" class="prop_val" name="property_image_2">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="p-3 border bg-light">
-                    <h5>Property image 3</h5>
-                    <hr>
-                    <div class="bg-light">
-                        <img src="{{data.property_image_3}}" class="d-block w-100 prop_val" alt="..."
-                            style="height:200px;" id="property_image_3">
-                        <input type="file" id="file-selector-3">
+                <div class="col-md-4">
+                    <div class="p-3 border bg-light">
+                        <h5>Property image 3</h5>
+                        <hr>
+                        <div class="bg-light">
+                            <img src="{{data.property_image_3}}" class="d-block w-100 " alt="..." style="height:200px;"
+                                id="property_image_3">
+                            <input type="file" id="file-selector-3" class="prop_val" name="property_image_3">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <hr>
+    </form>
 </div>
 
 <script>
+    var property_image_1_update = $("#property_image_1").attr('src');
+    var property_image_2_update = $("#property_image_2").attr('src');
+    var property_image_3_update = $("#property_image_3").attr('src');
+
     const fileSelector_1 = document.getElementById('file-selector-1');
-    const fileSelector_2 = document.getElementById('file-selector-1');
-    const fileSelector_3 = document.getElementById('file-selector-1');
+    const fileSelector_2 = document.getElementById('file-selector-2');
+    const fileSelector_3 = document.getElementById('file-selector-3');
 
     fileSelector_1.addEventListener('change', (event) => {
+        debugger
         const fileList = event.target.files;
-        var file_name = "media/" + fileList[0].name;
-        alert(file_name);
+        var file_name_1 = "media/" + fileList[0].name;
+        property_image_1 = file_name_1;
+        property_image_1_update = property_image_1;
     });
     fileSelector_2.addEventListener('change', (event) => {
         const fileList = event.target.files;
-        var file_name = "media/" + fileList[0].name;
-        alert(file_name);
+        var file_name_2 = "media/" + fileList[0].name;
+        property_image_2_update = property_image_2;
     });
     fileSelector_3.addEventListener('change', (event) => {
         const fileList = event.target.files;
-        var file_name = "media/" + fileList[0].name;
-        alert(file_name);
+        var file_name_3 = "media/" + fileList[0].name;
+        property_image_3_update = property_image_3;
     });
     $(document).ready(function () {
         $(".prop_val").change(function (e) {
@@ -308,10 +315,12 @@
             var from_avail_property_date = $("#from_avail_property_date").val();
             var property_address = $("#property_address").val();
             var furnish_type = $("#furnish_type").val();
-            var property_image_1 = $("#property_image_1").attr('src');
-            var property_image_2 = $("#property_image_2").attr('src');
-            var property_image_3 = $("#property_image_3").attr('src');
+            var property_image_1 = property_image_1_update;
+            var property_image_2 = property_image_2_update;
+            var property_image_3 = property_image_3_update;
             var parking_type = $("#parking_type").val();
+
+
             var data =
             {
                 "property_type": property_type,
