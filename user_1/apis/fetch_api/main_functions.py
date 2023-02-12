@@ -70,5 +70,7 @@ def delete_all_property_data(property_id):
 
 def update_property_data_record(property_id): 
     # update will be here 
-    data=p_detail.objects.get(id=property_id)  
+    data=p_detail.objects.get(id=property_id)   
+    if request.method =='POST' or request.method == 'FILES': 
+        pass 
     return data      

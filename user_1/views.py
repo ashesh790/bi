@@ -98,10 +98,35 @@ def delete_property(request, property_id):
     return render(request,'property_basic_detail.html')
 
 def update_property(request, property_id): 
+    # postData = request.get_json()
     try: 
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+        if request.method == 'POST':
+            property_id=property_id
+            data=p_detail.objects.get(id=property_id) 
+            data.property_data['property_type'] = request.POST['data[property_type]']  
+            data.property_data['property_image_1'] = request.POST['data[property_image_1]']  
+            data.property_data['property_image_2'] = request.POST['data[property_image_2]']  
+            data.property_data['property_image_3'] = request.POST['data[property_image_3]']  
+            data.property_data['property_age'] = request.POST['data[property_age]']  
+            data.property_data['selling_option'] = request.POST['data[selling_option]']  
+            data.property_data['construction_status'] = request.POST['data[construction_status]']  
+            data.property_data['floor'] = request.POST['data[floor]']  
+            data.property_data['bathroom'] = request.POST['data[bathroom]']  
+            data.property_data['balcony'] = request.POST['data[balcony]']  
+            data.property_data['bhk'] = request.POST['data[bhk]']  
+            data.property_data['furnish_type'] = request.POST['data[furnish_type]']  
+            data.property_data['geography_area'] = request.POST['data[geography_area]']  
+            data.property_data['parking_type'] = request.POST['data[parking_type]']  
+            data.property_data['property_value'] = request.POST['data[property_value]']  
+            data.property_data['property_rent_price'] = request.POST['data[property_rent_price]']  
+            data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]']  
+            data.property_data['property_address'] = request.POST['data[property_address]']  
+            data.save()  
+            return render(request, 'update_property_data.html', {'data':data, "id":property_id})
         property_id=property_id
-        property_data=update_property_data_record(property_id) 
-        property_data=property_data.property_data 
+        data=p_detail.objects.get(id=property_id) 
+        property_data=data.property_data
         return render(request, 'update_property_data.html', {'data':property_data, "id":property_id})
     except Exception as ex: 
         print(f"Solve this: {ex}") 
@@ -112,11 +137,5 @@ def property_status(request):
     pass
 
 def test_html_page(request): 
-    return render(request, 'test.html')
-##########################
-# Create test function for move file from one filder to another - Work In Progress   
-##########################  
-def file_move(request): 
-    if request.method=="GET" or request.method=="FILES": 
-        data=request  
-    return render(request, 'file_move.html')
+    return render(request, 'test.html') 
+
