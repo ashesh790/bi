@@ -29,5 +29,6 @@ urlpatterns = [
     path('delete_property_record/<int:property_id>/', views.delete_property, name="delete-property-record"), 
     path('update_property_record/<int:property_id>/',views.update_property, name="update-property"), 
     path("", views.test_html_page, name="test_html_page"), 
-    path("crud_property", views.crud_property, name="crud_property")
+    path("crud_property", views.crud_property, name="crud_property"), 
+    path("images", views.manage_image_upload, name="manage_image_upload")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

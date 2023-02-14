@@ -104,19 +104,19 @@ def update_property(request, property_id=0):
     try: 
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
         if request.method == 'POST': 
-            data=p_detail.objects.get(id=property_id)
-            if request.method =="FILES": 
-                data.property_data['property_image_1'],property_image_1 = request.FILES['property_image_1']
-                data.property_data['property_image_2'],property_image_2 = request.FILES['property_image_2']
-                data.property_data['property_image_3'],property_image_3 = request.FILES['property_image_3']
+            # data=p_detail.objects.get(id=property_id)
+            # if request.method =="FILES": 
+            #     data.property_data['property_image_1'],property_image_1 = request.FILES['property_image_1']
+            #     data.property_data['property_image_2'],property_image_2 = request.FILES['property_image_2']
+            #     data.property_data['property_image_3'],property_image_3 = request.FILES['property_image_3']
 
-                property_media=[property_image_1, property_image_2, property_image_3] 
-                property_media_save=[] 
-                fss = FileSystemStorage() 
-                for i in property_media: 
-                    file = fss.save(i.name, i)
-                    file_url = fss.url(file)
-                    property_media_save.append(file_url) 
+            #     property_media=[property_image_1, property_image_2, property_image_3] 
+            #     property_media_save=[] 
+            #     fss = FileSystemStorage() 
+            #     for i in property_media: 
+            #         file = fss.save(i.name, i)
+            #         file_url = fss.url(file)
+            #         property_media_save.append(file_url) 
             property_id=property_id
             data.property_data['property_type'] = request.POST['data[property_type]']  
             data.property_data['property_age'] = request.POST['data[property_age]']  
@@ -143,7 +143,16 @@ def update_property(request, property_id=0):
         print(f"Solve this: {ex}") 
     return render(request, 'update_property_data.html', {'data':property_data, "id":property_id})  
 
-
+def manage_image_upload(request): 
+    if request.method =="POST": 
+        images=request.FILES.getlist('images')
+        property_media_save=[] 
+        fss = FileSystemStorage() 
+        for i in images: 
+            file = fss.save(i.name, i)
+            file_url = fss.url(file)
+            property_media_save.append(file_url)  
+    return render(request, "image.html") 
 def property_status(request): 
     pass
 
