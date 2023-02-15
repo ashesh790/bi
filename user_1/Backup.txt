@@ -1,0 +1,27 @@
+<-------------- code for fetch data from foreign key -----------------------> 
+
+https://stackoverflow.com/questions/59884902/how-to-fetch-data-from-different-tables-in-django
+
+https://stackoverflow.com/questions/48596388/fetching-data-from-multiple-tables-in-django
+
+https://stackoverflow.com/questions/41598801/django-get-all-related-objects-from-model-with-through-relationship-tables
+
+class Student(models.Model):
+    sid = models.BigIntegerField(primary_key=True)
+    nm = models.CharField(max_length=20, blank=True, null=True)
+    subject = models.ForeignKey("Subject", related_name="student", blank=True, null=True)
+
+class Subject(models.Model):
+    sub = models.CharField(max_length=30, blank=True, null=True)
+views.py
+
+from App.models import Student, Subject
+def myFunc():
+    students = Student.objects.all()
+    for student in students:
+        subj = student.subject.sub
+
+def myFunc2():
+    subjects = Subject.objects.all()
+    for subject in subjects:
+        student_name = subject.student.nm

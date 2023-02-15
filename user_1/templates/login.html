@@ -1,0 +1,23 @@
+{% extends 'master.html' %}
+
+{% load static %}
+
+{% block login-system %}
+<form class="mt-5 form-control" method="POST" action="login">
+  {% csrf_token %}
+  <fieldset>
+    <legend>
+      <h2>Login</h2>
+    </legend>
+    <label for="user_name">Username:</label>
+    <input class="form-control form-control-2" type="text" id="user_name" name="user_name">
+    <hr>
+    <label for="user_psw">Password:</label>
+    <input class="form-control form-control-2" type="password" id="user_psw" name="user_psw">
+    <input type="submit" value="Submit" id="login_submit_button">
+  </fieldset>
+</form>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

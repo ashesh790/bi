@@ -1,125 +1,306 @@
-.main-container{
-    color:whitesmoke;
-    background-color: 	#193549;  
-    overflow-x: hidden;
+body {
+  overflow-x: hidden;
 }
+
+#exampleModalLabel {
+  color: #193549 !important;
+}
+
+.main-container {
+  color: rgb(255, 240, 240);
+  background-color: rgb(0, 18, 56);
+  overflow-x: hidden !important;
+}
+
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(240, 227, 255);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: whitesmoke;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.bocs {
+  /* text-align: left !important; */
+  min-height: 400px !important;
+  /* height: auto; */
+  /* border: 1px solid red; */
+  text-align: center !important;
+  padding-bottom: 20px;
+}
+
+.navigation-bar {
+  background-color: #193549 !important;
+}
+
+.navbar-brand {
+  color: whitesmoke;
+}
+
+#navbarSupportedContent>ul>li>a {
+  color: whitesmoke;
+}
+
+.navbar-toggler {
+  background-color: white !important;
+}
+
+.carousel-control-next-icon {
+  background-color: whitesmoke;
+}
+
+.carousel-control-prev-icon {
+  background-color: whitesmoke;
+}
+
+.bocs2 {
+  text-align: start;
+  padding: 10px;
+  background-color: whitesmoke;
+  color: rgb(0, 0, 0);
+  margin: 2px;
+  box-shadow: 0 0 5px gray;
+  margin-bottom: 10px;
+  /* border-radius: 10px; */
+  padding-bottom: 20px;
+  height: 450px;
+  overflow-y: scroll;
+}
+
+.bocs2:hover {
+  margin: 2px;
+  box-shadow: 0 0 10px gray;
+  margin-bottom: 10px;
+  /* border-radius: 10px; */
+}
+
+.image,
+.carsl {
+  width: 100%;
+  /* border-radius: 10px; */
+  /* padding-bottom: 20px; */
+}
+
+.main-carsl {
+  height: 400px;
+}
+
+.butn {
+  width: 45%;
+  background-color: #193549;
+  color: whitesmoke;
+  border: 1px solid whitesmoke !important;
+  /* border: 1px solid black;  */
+  box-shadow: 0px 0px 5px gray;
+  outline: none;
+  border-radius: 5px;
+  -webkit-text-size-adjust: auto;
+}
+
+.butn:hover {
+  width: 45%;
+  background-color: whitesmoke;
+  color: black;
+  /* border: 1px solid black;  */
+  box-shadow: 0px 0px 10px gray;
+}
+
+.main-show-case {
+  min-height: 400px;
+  /* background-color: lightblue;  */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 99%;
+  border-radius: 10px;
+}
+
+.main-show-case-footer {
+  min-height: 200px;
+  background-color: rgb(240, 227, 255);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95% !important;
+  /* border-radius: 10px; */
+  box-shadow: 0 0 10px gray;
+}
+
+.c-1 {
+  background-color: rgb(240, 227, 255);
+  /* border-radius: 10px; */
+  height: 300px;
+  margin: 2px;
+  margin-top: 20px;
+  box-shadow: 0 0 5px gray;
+}
+
+/* .c-1:hover {
+  background-color: rgb(240, 227, 255);
+  border-radius: 10px;
+  height: 300px;
+  margin: 2px;
+  margin-top: 20px;
+  box-shadow: 0 0 10px gray;
+} */
+
+/* Add some CSS styling for the form */
+.form {
+  overflow: hidden;
+  border: 2px solid #2196f3;
+  padding: 20px;
+  width: 400px !important;
+  margin: auto;
+  background-color: #e3f2fd;
+  border-radius: 5px;
+}
+
+h2 {
+  text-align: center;
+  color: #2196f3;
+}
+
+label {
+  color: #2196f3;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.form-control-2 {
+  /* padding: 12px 20px; */
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid #2196f3;
+  width: 100%;
+  font-size: 1.2em;
+  outline: none;
+}
+
+/* input[type="submit"] {
+  background-color: #2196f3;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1.2em;
+} */
+
+input[type="submit"]:active {
+  background-color: #1e88e5;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  /* outline: none; */
+  border: none;
+}
+
+/* Designing dialog box */
+#containerr {
+  display: none;
+  background-color: #e3f2fd;
+  color: #1e88e5;
+  position: absolute;
+  width: 350px;
+  border-radius: 5px;
+  left: 50%;
+  margin-left: -160px;
+  padding: 10px 10px 10px;
+  box-sizing: border-box;
+  text-align: center;
+  border: 5px solid #2196f3;
+  position: absolute;
+  top: 200px;
+  -webkit-animation-name: fadeIn;
+  -webkit-animation-duration: 1s;
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
+}
+
+@-webkit-keyframes fadeIn {
+  40% {
+    opacity: 0.3;
   }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+
+  60% {
+    opacity: 0.5;
   }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #193549;
+
+  80% {
+    opacity: 0.9;
   }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+
+  100% {
+    opacity: 1;
   }
-.bocs{
-    min-height: 400px!important; 
-    /* height: auto; */
-    /* border: 1px solid red; */ 
-    text-align: center !important; 
-    padding-bottom: 20px;
 }
-.navigation-bar{
-    background-color: #193549 !important; 
+
+@keyframes fadeIn {
+  40% {
+    opacity: 0.3;
+  }
+
+  60% {
+    opacity: 0.5;
+  }
+
+  80% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
-.navbar-brand{  
-    color: whitesmoke;
+
+/* Designing dialog box's okay button */
+#containerr button {
+  background-color: #1e88e5;
+  display: inline-block;
+  border-radius: 5px;
+  border: 2px solid gray;
+  padding: 5px;
+  text-align: center;
+  width: 60px;
 }
-#navbarSupportedContent > ul > li> a{
-    color: whitesmoke;
+
+/* Dialog box message decorating */
+#containerr .message {
+  text-align: left;
+  padding: 10px 30px;
 }
-.navbar-toggler{
-    background-color: white !important;
+
+.p_button {
+  border-radius: 0%;
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  right: 0;
 }
-.carousel-control-next-icon{
-    background-color: whitesmoke;
-} 
-.carousel-control-prev-icon{
-    background-color: whitesmoke;
-}
-.bocs2{
-    background-color:#193549; 
-    color: whitesmoke;
-    margin: 2px; 
-    box-shadow: 0 0 5px gray;  
-    margin-bottom:10px;  
-    border-radius: 10px;
-    padding-bottom: 20px; 
-}
-.bocs2:hover{
-    margin: 2px; 
-    box-shadow: 0 0 10px gray;  
-    margin-bottom:10px;  
-    border-radius: 10px;
-}
-.image,.carsl{
-    width: 100%; 
-    border-radius: 10px;
-    /* padding-bottom: 20px; */
-}
-.main-carsl{
-    height: 400px;
-}
-.butn{
-    width: 45%; 
-    background-color: #193549; 
-    color: whitesmoke; 
-    border: 1px solid whitesmoke !important;
-    /* border: 1px solid black;  */ 
-    box-shadow: 0px 0px 5px gray;
-    outline: none; 
-    border-radius: 5px;
-    -webkit-text-size-adjust: auto;
-} 
-.butn:hover{
-    width: 45%; 
-    background-color: whitesmoke; 
-    color: black; 
-    /* border: 1px solid black;  */ 
-    box-shadow: 0px 0px 10px gray;
-}
-.main-show-case{
-    min-height: 400px; 
-    /* background-color: lightblue;  */
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 99%; 
-    border-radius: 10px;
-}
-.main-show-case-footer{
-    min-height: 200px; 
-    background-color: lightblue; 
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 98%; 
-    border-radius: 10px; 
-    box-shadow: 0 0 10px gray;
-}
-.c-1{
-    background-color: aliceblue; 
-    border-radius: 10px;
-    height: 300px; 
-    margin: 2px; 
-    margin-top: 20px; 
-    box-shadow: 0 0 5px gray;
-}
-.c-1:hover{
-    background-color: aliceblue; 
-    border-radius: 10px;
-    height: 300px; 
-    margin: 2px; 
-    margin-top: 20px; 
-    box-shadow: 0 0 10px gray;
+
+.p_button:hover {
+  border-radius: 0%;
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  right: 0;
+  /* background-color: rgb(0, 18, 56) !important; */
+  color: rgb(0, 18, 56) !important;
 }

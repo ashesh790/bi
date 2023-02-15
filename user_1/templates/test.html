@@ -1,0 +1,26 @@
+<!-- -------------------Backup ------------------- -->
+<p><b>BHK </b>: {{i.media_id.property_data.bhk}}</p>
+<p><b>Bathroom </b>: {{i.media_id.property_data.bathroom}}</p>
+<p><b>Balcony </b>: {{i.media_id.property_data.balcony}}</p>
+<p><b>Furnish Type </b>: {{i.media_id.property_data.furnish_type}}</p>
+<p><b>Geography Area </b>: {{i.media_id.property_data.geography_area}}</p>
+<p><b>Parking Type </b>: {{i.media_id.property_data.parking_type}}</p>
+{% if i.selling_option == 'rent' %}
+<p><b>Rent Price </b>: {{i.media_id.property_data.property_rent_price}}</p>
+{% elif i.selling_option == 'sell'%}
+<p><b>Sell Price </b>: {{i.media_id.property_data.property_value}}</p>
+{% else %}
+<p><b>Rent Price </b>: {{i.media_id.property_data.property_rent_price}}</p>
+<p><b>Sell Price </b>: {{i.media_id.property_data.property_value}}</p>
+{% endif %}
+<p><b>From property available </b>: {{i.media_id.property_data.from_avail_property_date}}</p>
+<p><b>Property Address </b>: {{i.media_id.property_data.property_address}}</p>
+<button class="btn btn-primary butn">Show more</button>
+
+{% comment %} Upload file locally in django {% endcomment %} 
+
+if request.method == 'POST' and request.FILES['upload']:
+        upload = request.FILES['upload']
+        fss = FileSystemStorage()
+        file = fss.save(upload.name, upload)
+        file_url = fss.url(file)

@@ -1,0 +1,24 @@
+{% extends 'master.html' %}
+
+{% load static %}
+{% block form_ui %}
+<script src="{% static 'js/form_mangement.js' %}"></script>
+<form method="post" action="add_property_image" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="text" value="{{request.session.user_id}}" name="user_id" id="user_id" hidden>
+    <div class="mb-3">
+        <label for="property_type" class="form-label">Property Image 1</label>
+        <input type="file" class="form-control" name="property_image_1">
+
+        <label for="property_type" class="form-label">Property Image 2</label>
+        <input type="file" class="form-control" name="property_image_2">
+
+        <label for="property_type" class="form-label">Property Image 3</label>
+        <input type="file" class="form-control" name="property_image_3">
+    </div>
+    <div class="mb-3">
+        <input type="submit" class="form-control submit_button">
+        <input type="reset" class="form-control clear_button">
+    </div>
+</form>
+{% endblock %}
