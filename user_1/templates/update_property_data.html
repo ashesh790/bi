@@ -232,7 +232,8 @@
             </div>
         </div>
     </div>
-    <form method="post" action="update_property_record/<int:property_id>/" enctype="multipart/form-data">
+    <form method="post" action="/images/" enctype="multipart/form-data"> 
+        {% csrf_token %}
         <div class="row col-md-12 g-2 mt-3">
             <div class="row" style="height:100px;">
                 <div class="col-md-4">
@@ -242,7 +243,8 @@
                         <div class="bg-light">
                             <img src="{{data.property_image_1}}" class="d-block w-100 " alt="..." style="height:200px;"
                                 id="property_image_1">
-                            <input type="file" id="file-selector-1" class="prop_val" name="property_image_1">
+                            <input type="file" id="file-selector-1" class="prop_val" name="property_image_1"> 
+                            <input type="submit">
                         </div>
                     </div>
                 </div>

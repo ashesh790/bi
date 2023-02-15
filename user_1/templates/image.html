@@ -9,8 +9,9 @@
 </head>
 
 <body>
-    <form method="post" action="images" enctype="multipart/form-data">
+    <form method="post" action="/images/{{id}}/" enctype="multipart/form-data">
         {% csrf_token %}
+        {{id}}
         <input type="file" name="images" multiple>
         <input type="submit">
     </form>
