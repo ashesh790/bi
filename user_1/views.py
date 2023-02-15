@@ -147,9 +147,7 @@ def manage_image_upload(request,property_id):
     # user_id=request.session['user_id'] 
     data=p_detail.objects.get(id=property_id)  
     if request.method =="POST": 
-        data.property_data['property_value'] = "909090909"  
         images=request.FILES.getlist('images')
-        data.save()
         property_media_save=[] 
         fss = FileSystemStorage() 
         for i in images: 
