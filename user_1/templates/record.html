@@ -33,11 +33,15 @@
           <span><b>Status </b>: {{i.property_data.construction_status}}</span><br>
           <span><b>Floors </b>: {{i.property_data.floor}}</span><br>
         </div>
+        <a href="delete_property_record/{{i.id}}/" class="btn btn-outline-primary p_button"
+          style="background-color:whitesmoke;"><b>Delete Property
+            Data</b></a>
         <a href="update_property_record/{{i.id}}/" class="btn btn-outline-primary p_button"
           style="background-color:whitesmoke;"><b>Update Property
             Data</b></a>
       </div>
     </div>
+    
     {% endfor %}
   </div>
 </div>
