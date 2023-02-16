@@ -289,7 +289,7 @@ select:focus {
 
 .p_button {
   border-radius: 0%;
-  position: absolute;
+  position: relative;
   display: flex;
   bottom: 0;
   right: 0;
@@ -297,7 +297,7 @@ select:focus {
 
 .p_button:hover {
   border-radius: 0%;
-  position: absolute;
+  position: relative;
   display: flex;
   bottom: 0;
   right: 0;
