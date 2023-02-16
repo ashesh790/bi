@@ -232,9 +232,10 @@
             </div>
         </div>
     </div>
-    <form method="post" action="/images/" enctype="multipart/form-data"> 
-        {% csrf_token %}
-        <div class="row col-md-12 g-2 mt-3">
+
+    <div class="row g-2 mt-3">
+        <form method="post" action="/images/" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="row" style="height:100px;">
                 <div class="col-md-4">
                     <div class="p-3 border bg-light">
@@ -243,8 +244,11 @@
                         <div class="bg-light">
                             <img src="{{data.property_image_1}}" class="d-block w-100 " alt="..." style="height:200px;"
                                 id="property_image_1">
-                            <input type="file" id="file-selector-1" class="prop_val" name="property_image_1"> 
-                            <input type="submit">
+                            <input type="file" id="file-selector-1" class="prop_val" name="property_image_1">
+                            <input type="submit"> 
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Launch static backdrop modal
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -271,8 +275,28 @@
                     </div>
                 </div>
             </div>
+        </form>
+
+    </div>
+    <!-- Update image modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
         </div>
-    </form>
+    </div>
 </div>
 
 <script>
