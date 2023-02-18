@@ -2,41 +2,48 @@
 
 {% block admin_main_content %}
 
-<div class="container-fluid pt-4 px-4"> 
+<div class="container-fluid pt-4 px-4">
     <h3>Dashboard</h3>
 
     <div class="row bg-light rounded mx-0 p-2">
-        <div class="col-md-4 bg-light parent-props-box" >
-            <div class="prop-box text-center p-2" style="position: relative;">
-                <i class="fas fa-trash-alt me-lg-2 h3" style="position: absolute; left: 15px; bottom:0px;"></i> 
-                <i class="fas fa-pen me-lg-2 h3" style="position: absolute; right: 0; bottom:0px;"></i> 
-                <span>   
-                    <b>Properties Name</b> 
-                    
-                </span> 
+        {% for i in data %}
+        <div class="col-md-4 bg-light parent-props-box">
+            <div class="prop-box text-center p-2">
+                <i class="fas fa-trash-alt me-lg-2 h4 trash" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Delete"></i>
+                <i class="fas fa-pen me-lg-2 h4 edit" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Edit"></i>
                 <span>
-                    <img src="https://imgd.aeplcdn.com/1056x594/n/cw/ec/40087/thar-exterior-right-front-three-quarter-11.jpeg?q=75&wm=1" alt="" style="width:100%;"> 
+                    <b class="text-dark">{{i.property_data.property_type}}</b>
                 </span>
-                <span>
-                    qwqwqwqwqw 
-                </span> 
+                <div style="height:230px;">
+                    <img src="{{i.property_data.property_image_1}}" alt="" style="width:100%;height:230px;">
+                </div>
+                <div class="text-left">
+                    <span>
+                        <label>Property Type: </label>
+                        <b class="text-dark">{{i.property_data.property_type}}</b>
+                        <br>
+                        <label>For: </label>
+                        <b class="text-dark">{{i.property_data.selling_option}}</b>
+                        {% if i.property_data.selling_option == "sell" or "Sell"%}
+                        <br>
+                        <label>Sell Price: </label>
+                        <b class="text-dark">{{i.property_data.property_value}}</b>
+                        {% elif i.property_data.selling_option == "rent" %}
+                        <label>Rent Price: </label>
+                        <b class="text-dark">{{i.property_data.property_rent_price}}</b>
+                        {% else % }
+                        <label>Sell Price: </label>
+                        <b class="text-dark">{{i.property_data.property_value}}</b> <br>
+                        <label>Rent Price: </label>
+                        <b class="text-dark">{{i.property_data.property_rent_price}}</b>
+                        {% endif %}
+                    </span>
+                </div>
             </div>
         </div>
-        <div class="col-md-4 bg-light parent-props-box" >
-            <div class="prop-box">
-                
-            </div>
-        </div>
-        <div class="col-md-4 bg-light parent-props-box" >
-            <div class="prop-box">
-                
-            </div>
-        </div>
-        <div class="col-md-4 bg-light parent-props-box" >
-            <div class="prop-box">
-                
-            </div>
-        </div> 
+        {% endfor %}
     </div>
 </div>
 

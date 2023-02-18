@@ -50,7 +50,8 @@ def logout(request):
     return render(request, 'login.html') 
 
 def dashboard(request): 
-    return render(request, 'admin/admin2/dashboard.html')
+    data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))
+    return render(request, 'admin/admin2/dashboard.html', {'data':data})
 def crud_property(request): 
     data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))  
     return render(request, 'record.html', {'data':data}) 
