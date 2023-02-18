@@ -56,7 +56,10 @@ def crud_property(request):
     data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))  
     return render(request, 'record.html', {'data':data}) 
 # Render home page 
-def home(request): 
+
+def home(request):
+    return render(request, 'theme/index.html') 
+def home1(request): 
     # try:
     other_data=p_detail.objects.all()
     list_object=[]
