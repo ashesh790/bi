@@ -282,4 +282,11 @@
     margin: 5px; 
     overflow: auto; 
     border-radius: 5px; 
+    position: relative;
+}
+.trash{
+    position: absolute; left: 15px; bottom:0px;color:var(--primary);
+}
+.edit{
+    position: absolute; right: 0; bottom:0px; color:var(--primary);  
 }
