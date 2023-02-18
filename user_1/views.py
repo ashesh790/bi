@@ -56,7 +56,10 @@ def crud_property(request):
     data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))  
     return render(request, 'record.html', {'data':data}) 
 # Render home page 
-def home(request): 
+
+def home(request):
+    return render(request, 'theme/index.html') 
+def home1(request): 
     # try:
     other_data=p_detail.objects.all()
     list_object=[]
@@ -64,7 +67,21 @@ def home(request):
         list_object.append(i) 
     # list_object=json.dumps(str(list_object[0].property_data).replace('_', ' '))
     return render(request, 'index.html', {'data':list_object})  
-    
+
+def about_us(request): 
+    return render(request, 'theme/about.html') 
+
+def contact(request): 
+    return render(request, 'theme/contact.html')
+
+def property_agent(request): 
+    return render(request, 'theme/property-agent.html')
+
+def property_type(request): 
+    return render(request, 'theme/property-type.html')
+
+def property_list(request): 
+    return render(request, 'theme/property-list.html') 
 def add_property_details(request):    
     try:
         if request.method =='POST' and len(request.POST) is not None: 
