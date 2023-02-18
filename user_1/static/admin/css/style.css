@@ -275,3 +275,11 @@
     background: var(--dark);
     border-color: var(--primary);
 }
+/* #############################-----CSS by Ashesh-----########################### */  
+.prop-box{
+    height:350px;
+    background-color: #ffffff; 
+    margin: 5px; 
+    overflow: auto; 
+    border-radius: 5px; 
+}
