@@ -127,7 +127,7 @@
     color: var(--dark);
     font-weight: 500;
     border-left: 3px solid var(--light);
-    border-radius: 0 30px 30px 0;
+    border-radius: 0 9px 9px 0;
     outline: none;
 }
 
