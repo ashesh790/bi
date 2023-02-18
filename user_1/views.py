@@ -35,9 +35,10 @@ def login(request):
         if request.POST: 
             login_user(request)  
             return redirect("home")
-        return render(request, "login.html") 
+        return render(request, "theme/login.html") 
     except Exception as ex: 
         print(f"Solve this: {ex}") 
+    return render(request, "theme/login.html") 
 
 
 # logout 
