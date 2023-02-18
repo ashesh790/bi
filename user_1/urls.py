@@ -31,5 +31,11 @@ urlpatterns = [
     path("", views.test_html_page, name="test_html_page"), 
     path("crud_property", views.crud_property, name="crud_property"), 
     path("images/<int:property_id>/", views.manage_image_upload, name="manage_image_upload"), 
-    path("dashboard", views.dashboard, name="dashboard")
+    path("dashboard", views.dashboard, name="dashboard"), 
+    path("about", views.about_us, name="about_us"), 
+    path("contact", views.contact, name="contact"), 
+    path("property_agent", views.property_agent, name="property_agent"), 
+    path("property_type", views.property_type, name="property_type"), 
+    path("property_list", views.property_list, name="property_list"), 
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
