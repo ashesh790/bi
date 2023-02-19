@@ -24,7 +24,7 @@ from django.core.files.storage import FileSystemStorage
 def sign_up(request): 
     try: 
         signup_user(request) 
-        return render(request, 'sign_up.html') 
+        return render(request, 'theme/signup.html') 
     except Exception as ex: 
         print(f"Solve this: {ex}") 
 
