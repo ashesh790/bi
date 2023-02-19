@@ -52,7 +52,7 @@
                         <img class="img-fluid" src="{% static 'theme/img/icon-deal.png' %}" alt="Icon" style="width: 30px; height: 30px;">
                     </div> -->
                     <h1 class="m-0 text-primary">audrr.com</h1>
-                </a>
+                </a> 
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -66,8 +66,12 @@
                             <a href="property_type" class="nav-item nav-link">Property Type</a>
                         <a href="contact" class="nav-item nav-link">Contact</a>
                     </div>
-                    <button class="btn btn-primary px-3 d-none d-lg-flex" id="login_btn">Login</button>
-
+                    {% if 'user_name' in request.session %}
+                        Welcome {{request.session.user_name}} :&nbsp;
+                        <a href="logout" class="btn btn-primary px-3 d-none d-lg-flex" id="logout_btn">Logout</a>
+                    {% else%}
+                    <a href="login" class="btn btn-primary px-3 d-none d-lg-flex" id="login_btn">Login</a>
+                    {% endif %}
                 </div>
             </nav>
         <!-- Navbar End -->

@@ -2,33 +2,41 @@
 {% load static %}
 {% block main_content %}
     <div class="row g-3 mt-5 p-5" style="margin-left:auto;margin-right:auto; width:50%;"> 
-        <div class="col-md-12">
+        <div class="col-md-12"> 
+            <form method="POST" action="/signup">
+                {% csrf_token %}
             <div class="col-md-12 m-3">
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="name" placeholder="Your Name">
+                    <input type="text" class="form-control" name="user_name" id="name" placeholder="Your Name">
                     <label for="name">Your Name, Email, Contact Number</label>
                 </div>
             </div> 
             <div class="col-md-12 m-3">
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="name" placeholder="Your Name">
+                    <input type="text" class="form-control" name="user_number" id="number" placeholder="Your Name">
                     <label for="name">Your Contact Number</label>
                 </div>
             </div>
             <div class="col-md-12 m-3">
                 <div class="form-floating">
-                    <input type="email" class="form-control" id="email" placeholder="Your Email">
+                    <input type="text" class="form-control" name="user_email" id="email" placeholder="Your Email">
                     <label for="email">Your Email</label>
                 </div>
             </div>
-            
+            <div class="col-md-12 m-3">
+                <div class="form-floating">
+                    <input type="password" class="form-control" name="user_psw" id="email" placeholder="Your Email">
+                    <label for="email">Your Password</label>
+                </div>
+            </div>
             <div class="col-12 m-3">
-                <button class="btn btn-primary w-100 py-3" type="submit">Login</button>
+                <input href="signup" class="btn btn-primary w-100 py-3" value="Register" type="submit">
             </div> 
             <div class="mt-2 m-3">
                 <span>Already Registered ?</span>
-                <span><a href="login">Login Here!</a></span>
-            </div>
+                <span><a href="login">Login Here!</a></span> 
+            </div> 
+            </form>
         </div>
     </div> 
 {% endblock %}
