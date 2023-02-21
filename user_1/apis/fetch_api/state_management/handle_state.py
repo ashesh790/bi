@@ -35,8 +35,8 @@ def signup_user(request):
 def login_user(request): 
     try: 
         if request.method=="POST": 
-            user_name=request.POST['user_name'] 
-            user_psw=request.POST['user_psw']
+            user_name=request.POST['data[name]'] 
+            user_psw=request.POST['data[email]']
             request.session['user_name']=user_name 
             login=User_register.objects.filter(user_name=user_name) 
             user_id=login[0].user_id

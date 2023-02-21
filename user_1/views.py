@@ -22,25 +22,40 @@ from django.core.files.storage import FileSystemStorage
 
 # Login function 
 def sign_up(request): 
-    try: 
-        signup_user(request) 
-        return render(request, 'sign_up.html') 
-    except Exception as ex: 
-        print(f"Solve this: {ex}") 
+    if request.method =="POST": 
+        user_name=request.POST['user_name'] 
+        user_email=request.POST['user_email'] 
+        user_mobile=request.POST['user_number'] 
+        user_psw=request.POST['user_psw'] 
 
+        if User_register.objects.filter(user_name=user_name): 
+            print("Existing User!") 
+            return redirect("login") 
+        if User_register.objects.filter(user_email=user_email).exists():
+            print("Email is already exist!") 
+            return redirect("login") 
+        if len(user_name)>20: 
+            print("USer must be under 20 character") 
+            return redirect("login") 
+        if not user_name.isalnum(): 
+            print("User name must be alphanumeric") 
+            return redirect("login") 
+        
+        new_user=User_register.objects.create(user_name=user_name, user_email=user_email, user_mobile=user_mobile,user_psw=user_psw) 
+        if new_user: 
+            return redirect('login') 
+        else: 
+            return False 
+    else: 
+        return render(request, "theme/signup.html")
 
 # sign up
 def login(request): 
-    try: 
-        if request.POST: 
-            login_user(request)  
-            return redirect("home")
-        return render(request, "theme/login.html") 
-    except Exception as ex: 
-        print(f"Solve this: {ex}") 
+    if request.POST: 
+        login_user(request)  
+        return render(request, 'theme/index.html')
     return render(request, "theme/login.html") 
-
-
+     
 # logout 
 def logout(request): 
     if request: 
@@ -48,7 +63,7 @@ def logout(request):
             del request.session['user_name'] 
         except: 
             print("Logout") 
-    return render(request, 'login.html') 
+    return render(request, 'theme/login.html') 
 
 def dashboard(request): 
     data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))

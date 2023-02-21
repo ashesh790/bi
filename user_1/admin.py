@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from user_1.models import Property_detail, Property_other_detail, User_register, p_detail
+from user_1.models import User_register, p_detail
 
 class User_register_admin(admin.ModelAdmin): 
     list_display=[
