@@ -126,12 +126,10 @@ def delete_property(request, property_id):
     try: 
         property_id=property_id  
         delete_all_property_data(property_id)  
-        # template=loader.get_template('property_basic_detail.html') 
-        context={}
-        return render(request,'property_basic_detail.html') 
+        return render(request,'admin/admin2/add_property.html') 
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-    return render(request,'property_basic_detail.html')
+    return render(request,'admin/admin2/add_property.html')
 
 def update_property(request, property_id=0): 
     # postData = request.get_json()
