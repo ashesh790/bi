@@ -154,7 +154,8 @@ def update_property(request, property_id=0):
             data.property_data['property_value'] = request.POST['data[property_value]']  
             data.property_data['property_rent_price'] = request.POST['data[property_rent_price]']  
             data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]']  
-            data.property_data['property_address'] = request.POST['data[property_address]']               
+            data.property_data['property_address'] = request.POST['data[property_address]'] 
+                      
             data.save()  
             return render(request, 'update_property_data.html', {'data':data, "id":property_id})
         property_id=property_id

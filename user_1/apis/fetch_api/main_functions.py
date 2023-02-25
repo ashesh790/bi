@@ -9,6 +9,15 @@ from django.template import loader
 
 def add_property_details_in_database(request): 
     if request.method =='POST' or request.method == 'FILES': 
+        media_data=request.FILES.getlist('images')
+        property_image_save=[] 
+        property_video_save=[]
+        fss = FileSystemStorage()
+        for i in media_data: 
+            file = fss.save(i.name, i)
+            file_url = fss.url(file)
+            property_image_save.append(file_url)
+
         seller_id=request.POST['user_id'] 
         property_data={} 
         property_data['property_type']=request.POST['property_type'] 
@@ -26,7 +35,7 @@ def add_property_details_in_database(request):
         property_data['property_rent_price']=request.POST['property_rent_price'] 
         property_data['from_avail_property_date']=request.POST['from_avail_property_date'] 
         property_data['property_address']=request.POST['property_address'] 
-        property_data['property_image']= {} 
+        property_data['property_image']= property_image_save
         property_data['property_video']= {}  
         # fetching last property detail from databases  
         property_detail=p_detail.objects.create(
