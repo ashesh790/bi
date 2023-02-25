@@ -8,4 +8,4 @@ user_1/migrations/__pycache__
 user_1/apis/fetch_api/__pycache__ 
 user_1/apis/fetch_api/state_management/__pycache__
 user_1/migrations 
-media
+media/
