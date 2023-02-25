@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from staying_source.settings import MEDIA_ROOT, MEDIA_URL
-from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, get_all_property_data, update_property_data_record
+from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, get_all_property_data, update_property_data_record, upload_property_image
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
 from user_1.models import User_register, p_detail 
 from django.core.serializers import serialize 
@@ -102,13 +102,11 @@ def add_property_details(request):
     try:
         if request.method =='POST' and len(request.POST) is not None: 
             property_details=add_property_details_in_database(request) 
-            return render(request, 'property_basic_detail.html')   
-        else: 
-            print("Please Fill tha all necessary fields")  
-        return render(request, 'property_basic_detail.html')  
+            return render(request, 'admin/admin2/add_property.html')   
+        return render(request, 'admin/admin2/add_property.html')  
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-    return render(request, 'property_basic_detail.html') 
+    return render(request, 'admin/admin2/add_property.html') 
 
 
 def show_property_detail(request,property_id):
@@ -141,18 +139,6 @@ def update_property(request, property_id=0):
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
         if request.method == 'POST': 
             data=p_detail.objects.get(id=property_id)
-            # if request.method =="FILES": 
-            #     data.property_data['property_image_1'],property_image_1 = request.FILES['property_image_1']
-            #     data.property_data['property_image_2'],property_image_2 = request.FILES['property_image_2']
-            #     data.property_data['property_image_3'],property_image_3 = request.FILES['property_image_3']
-
-            #     property_media=[property_image_1, property_image_2, property_image_3] 
-            #     property_media_save=[] 
-            #     fss = FileSystemStorage() 
-            #     for i in property_media: 
-            #         file = fss.save(i.name, i)
-            #         file_url = fss.url(file)
-            #         property_media_save.append(file_url) 
             property_id=property_id
             data.property_data['property_type'] = request.POST['data[property_type]']  
             data.property_data['property_age'] = request.POST['data[property_age]']  
@@ -180,23 +166,7 @@ def update_property(request, property_id=0):
     return render(request, 'update_property_data.html', {'data':property_data, "id":property_id})  
 
 def manage_image_upload(request,property_id): 
-    user_id=request.session['user_id'] 
-    data=p_detail.objects.get(id=property_id)  
-    if request.method =="POST": 
-        data.property_data['property_value'] = "909090909"  
-        images=request.FILES.getlist('images')
-        data.save()
-        property_media_save=[] 
-        fss = FileSystemStorage() 
-        for i in images: 
-            file = fss.save(i.name, i)
-            file_url = fss.url(file)
-            property_media_save.append(file_url)  
-            
-        for ii in range(len(property_media_save)):
-            image_name=property_media_save[ii]
-            data.property_data[f'property_image_new_{image_name}']=image_name   
-        data.save() 
+    upload_property_image(request, property_id) 
     return render(request, "image.html", {'id':property_id})  
 def property_status(request): 
     pass
