@@ -50,7 +50,7 @@ def add_property_details_in_database(request):
 
 def update_property_image(request, property_id): 
     user_id=request.session['user_id'] 
-    property_data=p_detail.objects.get(id=property_id)  
+    property_data=p_detail.objects.get(id=property_id)
     if request.method =="POST": 
         data=request.FILES.getlist('images')
         property_image_save=[] 
@@ -60,7 +60,7 @@ def update_property_image(request, property_id):
             file = fss.save(i.name, i)
             file_url = fss.url(file)
             property_image_save.append(file_url)  
-        property_data.property_data['property_image'].append(property_image_save) 
+        property_data.property_data['property_image'] = property_data.property_data['property_image'] + property_image_save  
         property_data.save() 
 def get_all_property_data(property_id=None): 
     if property_id == None: 
@@ -69,8 +69,6 @@ def get_all_property_data(property_id=None):
         data=json.dumps(json_data, indent=4, sort_keys=True, default=str)  
     elif property_id is not None: 
         data=p_detail.objects.get(pk=property_id) 
-        # json_data=my_data[0]
-        # data=json.dumps(my_data, indent=4, sort_keys=True, default=str)
     return data 
 
 def delete_all_property_data(property_id): 
