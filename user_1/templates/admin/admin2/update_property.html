@@ -221,52 +221,16 @@
                 </div>
             </div>
         </div>
-
-        <!-- <div class="row g-2 mt-3">
-            <form method="post" action="/images/" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="row" style="height:100px;">
-                    <div class="col-md-4">
-                        <div class="p-3 border bg-light">
-                            <h5>Property image 1</h5>
-                            <hr>
-                            <div class="bg-light">
-                                <img src="{{data.property_image_1}}" class="d-block w-100 " alt="..."
-                                    style="height:200px;" id="property_image_1">
-                                <input type="file" id="file-selector-1" class="prop_val" name="property_image_1">
-                                <input type="submit">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop">
-                                    Launch static backdrop modal
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="p-3 border bg-light">
-                            <h5>Property image 2</h5>
-                            <hr>
-                            <div class="bg-light">
-                                <img src="{{data.property_image_2}}" class="d-block w-100 " alt="..."
-                                    style="height:200px;" id="property_image_2">
-                                <input type="file" id="file-selector-2" class="prop_val" name="property_image_2">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="p-3 border bg-light">
-                            <h5>Property image 3</h5>
-                            <hr>
-                            <div class="bg-light">
-                                <img src="{{data.property_image_3}}" class="d-block w-100 " alt="..."
-                                    style="height:200px;" id="property_image_3">
-                                <input type="file" id="file-selector-3" class="prop_val" name="property_image_3">
-                            </div>
-                        </div>
-                    </div>
+        <div class="div1" style="display:flex; overflow:auto;">
+            {% for i in data.property_image %}
+            <div class="div2" style="margin:10px;">
+                <div style="width:20%;">
+                    <img src="{{i}}" alt="" style="height:230px;">
                 </div>
-            </form>
-        </div> -->
+                <a href="delete_property_image{{i|slice:'6:'}}">Delete</a>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 

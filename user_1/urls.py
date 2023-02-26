@@ -27,6 +27,7 @@ urlpatterns = [
     path('add_property_details',views.add_property_details, name="add_property_details"), 
     path('show_property_detail/<int:property_id>/', views.show_property_detail, name="show-property-detail"), 
     path('delete_property_record/<int:property_id>/', views.delete_property, name="delete-property-record"), 
+    path('update_property_record/<int:property_id>/delete_property_image/<str:image_name>/', views.delete_property_image, name="delete-property-image"), 
     path('update_property_record/<int:property_id>/',views.update_property, name="update-property"), 
     path("", views.test_html_page, name="test_html_page"), 
     path("crud_property", views.crud_property, name="crud_property"), 

@@ -9,8 +9,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from staying_source.settings import MEDIA_ROOT, MEDIA_URL
-from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, get_all_property_data, update_property_data_record, upload_property_image
-from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
+from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, delete_property_image_from_database, get_all_property_data, update_property_data_record, update_property_image
+from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user 
 from user_1.models import User_register, p_detail 
 from django.core.serializers import serialize 
 import shutil 
@@ -165,8 +165,12 @@ def update_property(request, property_id=0):
     return render(request, 'admin/admin2/update_property.html', {'data':property_data, "id":property_id})  
 
 def manage_image_upload(request,property_id): 
-    upload_property_image(request, property_id) 
-    return render(request, "image.html", {'id':property_id})  
+    update_property_image(request, property_id) 
+    return render(request, "admin/admin2/update_property.html", {'id':property_id})  
+
+def delete_property_image(request,property_id, image_name): 
+    delete_property_image_from_database(request, property_id, image_name) 
+    return render(request, "admin/admin2/update_property.html", {'id':property_id}) 
 def property_status(request): 
     pass
 
