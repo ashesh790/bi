@@ -92,7 +92,7 @@ def update_property_data_record(property_id):
 def delete_property_image_from_database(request, property_id, image_name): 
     property_data=p_detail.objects.get(id=property_id) 
     property_image_data= MEDIA_URL + image_name
-    # property_data.property_data['property_image'].remove(property_image_data) 
+    property_data.property_data['property_image'].remove(property_image_data) 
     if image_name in os.listdir(MEDIA_ROOT): 
         os.remove("media/"+image_name) 
     else: 

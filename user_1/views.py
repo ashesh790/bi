@@ -170,7 +170,7 @@ def manage_image_upload(request,property_id):
 
 def delete_property_image(request,property_id, image_name): 
     delete_property_image_from_database(request, property_id, image_name) 
-    return render(request, "admin/admin2/update_property.html", {'id':property_id}) 
+    return redirect(f'/update_property_record/{property_id}') 
 def property_status(request): 
     pass
 
