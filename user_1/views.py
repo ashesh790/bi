@@ -9,8 +9,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from staying_source.settings import MEDIA_ROOT, MEDIA_URL
-from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, get_all_property_data, update_property_data_record, upload_property_image
-from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
+from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, delete_property_image_from_database, get_all_property_data, update_property_data_record, update_property_image
+from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user 
 from user_1.models import User_register, p_detail 
 from django.core.serializers import serialize 
 import shutil 
@@ -126,12 +126,10 @@ def delete_property(request, property_id):
     try: 
         property_id=property_id  
         delete_all_property_data(property_id)  
-        # template=loader.get_template('property_basic_detail.html') 
-        context={}
-        return render(request,'property_basic_detail.html') 
+        return render(request,'admin/admin2/add_property.html') 
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-    return render(request,'property_basic_detail.html')
+    return render(request,'admin/admin2/add_property.html')
 
 def update_property(request, property_id=0): 
     # postData = request.get_json()
@@ -154,20 +152,25 @@ def update_property(request, property_id=0):
             data.property_data['property_value'] = request.POST['data[property_value]']  
             data.property_data['property_rent_price'] = request.POST['data[property_rent_price]']  
             data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]']  
-            data.property_data['property_address'] = request.POST['data[property_address]']               
+            data.property_data['property_address'] = request.POST['data[property_address]'] 
+                      
             data.save()  
-            return render(request, 'update_property_data.html', {'data':data, "id":property_id})
+            return render(request, 'admin/admin2/update_property.html', {'data':data, "id":property_id})
         property_id=property_id
         data=p_detail.objects.get(id=property_id) 
         property_data=data.property_data
-        return render(request, 'update_property_data.html', {'data':property_data, "id":property_id})
+        return render(request, 'admin/admin2/update_property.html', {'data':property_data, "id":property_id})
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-    return render(request, 'update_property_data.html', {'data':property_data, "id":property_id})  
+    return render(request, 'admin/admin2/update_property.html', {'data':property_data, "id":property_id})  
 
 def manage_image_upload(request,property_id): 
-    upload_property_image(request, property_id) 
-    return render(request, "image.html", {'id':property_id})  
+    update_property_image(request, property_id) 
+    return render(request, "admin/admin2/update_property.html", {'id':property_id})  
+
+def delete_property_image(request,property_id, image_name): 
+    delete_property_image_from_database(request, property_id, image_name) 
+    return redirect(f'/update_property_record/{property_id}') 
 def property_status(request): 
     pass
 

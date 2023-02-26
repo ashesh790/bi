@@ -1,14 +1,25 @@
 import json
+import os
 from urllib import request
 
 from pymediainfo import MediaInfo
 from django.http import HttpResponse
+from staying_source.settings import MEDIA_ROOT, MEDIA_URL
 from user_1.models import User_register, p_detail
 from django.core.files.storage import FileSystemStorage
 from django.template import loader
 
 def add_property_details_in_database(request): 
     if request.method =='POST' or request.method == 'FILES': 
+        media_data=request.FILES.getlist('images')
+        property_image_save=[] 
+        property_video_save=[]
+        fss = FileSystemStorage()
+        for i in media_data: 
+            file = fss.save(i.name, i)
+            file_url = fss.url(file)
+            property_image_save.append(file_url)
+
         seller_id=request.POST['user_id'] 
         property_data={} 
         property_data['property_type']=request.POST['property_type'] 
@@ -26,7 +37,7 @@ def add_property_details_in_database(request):
         property_data['property_rent_price']=request.POST['property_rent_price'] 
         property_data['from_avail_property_date']=request.POST['from_avail_property_date'] 
         property_data['property_address']=request.POST['property_address'] 
-        property_data['property_image']= {} 
+        property_data['property_image']= property_image_save
         property_data['property_video']= {}  
         # fetching last property detail from databases  
         property_detail=p_detail.objects.create(
@@ -37,7 +48,7 @@ def add_property_details_in_database(request):
     else: 
         return False 
 
-def upload_property_image(request, property_id): 
+def update_property_image(request, property_id): 
     user_id=request.session['user_id'] 
     property_data=p_detail.objects.get(id=property_id)  
     if request.method =="POST": 
@@ -77,3 +88,15 @@ def update_property_data_record(property_id):
     if request.method =='POST' or request.method == 'FILES': 
         pass 
     return data      
+
+def delete_property_image_from_database(request, property_id, image_name): 
+    property_data=p_detail.objects.get(id=property_id) 
+    property_image_data= MEDIA_URL + image_name
+    property_data.property_data['property_image'].remove(property_image_data) 
+    if image_name in os.listdir(MEDIA_ROOT): 
+        os.remove("media/"+image_name) 
+    else: 
+        print("Not found") 
+    property_data.save() 
+    return True 
+    
