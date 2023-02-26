@@ -136,8 +136,16 @@ def update_property(request, property_id=0):
     try: 
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
         if request.method == 'POST': 
+            media_data=request.FILES.getlist('images')
             data=p_detail.objects.get(id=property_id)
-            property_id=property_id
+            property_id=property_id 
+            property_image_save=[] 
+            property_video_save=[]
+            fss = FileSystemStorage()
+            for i in media_data: 
+                file = fss.save(i.name, i)
+                file_url = fss.url(file)
+            property_image_save.append(file_url)
             data.property_data['property_type'] = request.POST['data[property_type]']  
             data.property_data['property_age'] = request.POST['data[property_age]']  
             data.property_data['selling_option'] = request.POST['data[selling_option]']  
@@ -153,7 +161,7 @@ def update_property(request, property_id=0):
             data.property_data['property_rent_price'] = request.POST['data[property_rent_price]']  
             data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]']  
             data.property_data['property_address'] = request.POST['data[property_address]'] 
-                      
+            data.property_data['property_image']= property_image_save
             data.save()  
             return render(request, 'admin/admin2/update_property.html', {'data':data, "id":property_id})
         property_id=property_id
