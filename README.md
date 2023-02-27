@@ -1,7 +1,5 @@
 # bi 
-########################################### Bug List ######################################### 
-# while update any details then images are not saving, delete automatically 
-# Sell or Rent - field is not saved 
+########################################### Bug List #########################################  
 # Onchange is not more fesiable when input type is text or number 
 
 ########################################### Task List ######################################### 
