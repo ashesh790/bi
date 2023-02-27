@@ -62,6 +62,7 @@ def update_property_image(request, property_id):
             property_image_save.append(file_url)  
         property_data.property_data['property_image'] = property_data.property_data['property_image'] + property_image_save  
         property_data.save() 
+        return True
 def get_all_property_data(property_id=None): 
     if property_id == None: 
         my_data=p_detail.objects.values()
@@ -75,9 +76,6 @@ def delete_all_property_data(property_id):
     # if request.method=='POST': 
     instance=p_detail.objects.filter(pk=property_id) 
     instance.delete() 
-    # else: 
-        # print("Record is not available")
-        # return False 
     return True 
 
 def update_property_data_record(property_id): 

@@ -1,4 +1,9 @@
 # bi 
+########################################### Bug List ######################################### 
+# while update any details then images are not saving, delete automatically 
+# Sell or Rent - field is not saved 
+# Onchange is not more fesiable when input type is text or number 
+
 ########################################### Task List ######################################### 
 
 # Implement full CRUD Feature 
@@ -13,4 +18,5 @@
 
 ################# User Flow Diagram ############## 
 
-(1) UFD_1 : https://www.canva.com/design/DAFbpAtnjaI/4NfoDhN4ADemJwjouI4x2A/edit?utm_content=DAFbpAtnjaI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+(1) UFD_1 : https://www.canva.com/design/DAFbpAtnjaI/4NfoDhN4ADemJwjouI4x2A/edit?utm_content=DAFbpAtnjaI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton 
+
