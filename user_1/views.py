@@ -146,7 +146,8 @@ def update_property(request, property_id=0):
                 for i in media_data: 
                     file = fss.save(i.name, i)
                     file_url = fss.url(file)
-                property_image_save.append(file_url)
+                property_image_save.append(file_url) 
+                property_data['property_image']= property_image_save
             data.property_data['property_type'] = request.POST['data[property_type]']  
             data.property_data['property_age'] = request.POST['data[property_age]']  
             data.property_data['selling_option'] = request.POST['data[selling_option]']  
@@ -162,7 +163,6 @@ def update_property(request, property_id=0):
             data.property_data['property_rent_price'] = request.POST['data[property_rent_price]']  
             data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]']  
             data.property_data['property_address'] = request.POST['data[property_address]'] 
-            data.property_data['property_image']= property_image_save
             data.save()  
             return render(request, 'admin/admin2/update_property.html', {'data':data, "id":property_id})
         property_id=property_id
