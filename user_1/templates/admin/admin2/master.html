@@ -51,7 +51,7 @@
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
-                <a href="dashboard" class="navbar-brand mx-4 mb-3">
+                <a href="{% url 'dashboard' %}" class="navbar-brand mx-4 mb-3">
                     <h4 class="text-primary">audrr.com
                     </h4>
                 </a>
@@ -60,7 +60,7 @@
                     <a href="{% url 'dashboard' %}" class="nav-item nav-link dropdown-item active"><i
                             class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                 </div>
-                <div class="navbar-nav w-100">
+                <div class="navbar-nav w-100 mt-2">
                     <a href="{% url 'add_property_details' %}" class="nav-item nav-link dropdown-item active"><i
                             class="fa fa-home" aria-hidden="true"></i>Add new property</a>
                 </div>

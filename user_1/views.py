@@ -141,11 +141,13 @@ def update_property(request, property_id=0):
             property_id=property_id 
             property_image_save=[] 
             property_video_save=[]
-            fss = FileSystemStorage()
-            for i in media_data: 
-                file = fss.save(i.name, i)
-                file_url = fss.url(file)
-            property_image_save.append(file_url)
+            fss = FileSystemStorage() 
+            if len(media_data) >0 and media_data is not None:
+                for i in media_data: 
+                    file = fss.save(i.name, i)
+                    file_url = fss.url(file)
+                property_image_save.append(file_url) 
+                property_data['property_image']= property_image_save
             data.property_data['property_type'] = request.POST['data[property_type]']  
             data.property_data['property_age'] = request.POST['data[property_age]']  
             data.property_data['selling_option'] = request.POST['data[selling_option]']  
@@ -161,7 +163,6 @@ def update_property(request, property_id=0):
             data.property_data['property_rent_price'] = request.POST['data[property_rent_price]']  
             data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]']  
             data.property_data['property_address'] = request.POST['data[property_address]'] 
-            data.property_data['property_image']= property_image_save
             data.save()  
             return render(request, 'admin/admin2/update_property.html', {'data':data, "id":property_id})
         property_id=property_id
@@ -174,7 +175,7 @@ def update_property(request, property_id=0):
 
 def manage_image_upload(request,property_id): 
     update_property_image(request, property_id) 
-    return render(request, "admin/admin2/update_property.html", {'id':property_id})  
+    return redirect(f'/update_property_record/{property_id}')  
 
 def delete_property_image(request,property_id, image_name): 
     delete_property_image_from_database(request, property_id, image_name) 
