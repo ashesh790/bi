@@ -8,11 +8,7 @@
 
 # Create functional code 
 
-# Set link in master.html 
-
-# Fetch all property catagories in website home page 
-
-# Changes database for image save (multiple images) 
+# Set link in master.html  
 
 ################# User Flow Diagram ############## 
 

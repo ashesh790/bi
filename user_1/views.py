@@ -1,6 +1,7 @@
 import json
 import os
 import uuid
+from django.conf import settings
 from django.core.files.storage import default_storage
 from urllib import request
 from django.http import HttpResponse, JsonResponse
@@ -8,7 +9,7 @@ from django.template import loader
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
-from staying_source.settings import MEDIA_ROOT, MEDIA_URL
+from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
 from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, delete_property_image_from_database, get_all_property_data, update_property_data_record, update_property_image
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user 
 from user_1.models import User_register, p_detail 
@@ -64,46 +65,25 @@ def logout(request):
         except: 
             print("Logout") 
     return render(request, 'theme/login.html') 
-
-def dashboard(request): 
-    data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))
-    return render(request, 'admin/admin2/dashboard.html', {'data':data})
-def crud_property(request): 
-    data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))  
-    return render(request, 'record.html', {'data':data}) 
-# Render home page 
-
-def home(request):
-    return render(request, 'theme/index.html') 
-def home1(request): 
-    # try:
-    other_data=p_detail.objects.all()
-    list_object=[]
-    for i in other_data: 
-        list_object.append(i) 
-    # list_object=json.dumps(str(list_object[0].property_data).replace('_', ' '))
-    return render(request, 'index.html', {'data':list_object})  
-
-def about_us(request): 
-    return render(request, 'theme/about.html') 
-
-def contact(request): 
-    return render(request, 'theme/contact.html')
-
-def property_agent(request): 
-    return render(request, 'theme/property-agent.html')
-
-def property_type(request): 
-    return render(request, 'theme/property-type.html')
-
-def property_list(request): 
-    return render(request, 'theme/property-list.html') 
+ 
 def add_property_details(request):    
     try:
         if request.method =='POST' and len(request.POST) is not None: 
             property_details=add_property_details_in_database(request) 
-            return render(request, 'admin/admin2/add_property.html')   
-        return render(request, 'admin/admin2/add_property.html')  
+        data = settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json"  
+        with open(data) as f:
+            data = json.load(f)  
+        data = data  
+        return render(request, 'admin/admin2/add_property.html', {
+            "property_type":data["property_type"], 
+            "deal_option":data["deal_option"],
+            "construction_status":data["construction_status"], 
+            "furnish_type":data["furnish_type"], 
+            "bhk_details":data["bhk_details"], 
+            "bathroom_details":data["bathroom_details"],
+            "balcony_details":data["balcony_details"], 
+            "parking_details":data["parking_details"],
+            })  
     except Exception as ex: 
         print(f"Solve this: {ex}") 
     return render(request, 'admin/admin2/add_property.html') 
@@ -186,3 +166,51 @@ def property_status(request):
 def test_html_page(request): 
     return render(request, 'test.html') 
 
+
+################################################## userside functions ################################
+
+def dashboard(request): 
+    data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))
+    return render(request, 'admin/admin2/dashboard.html', {'data':data})
+def crud_property(request): 
+    data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))  
+    return render(request, 'record.html', {'data':data}) 
+# Render home page 
+
+def home(request):
+    return render(request, 'theme/index.html') 
+def home1(request): 
+    # try:
+    other_data=p_detail.objects.all()
+    list_object=[]
+    for i in other_data: 
+        list_object.append(i) 
+    # list_object=json.dumps(str(list_object[0].property_data).replace('_', ' '))
+    return render(request, 'index.html', {'data':list_object})  
+
+def about_us(request): 
+    return render(request, 'theme/about.html') 
+
+def contact(request): 
+    return render(request, 'theme/contact.html')
+
+def property_agent(request): 
+    return render(request, 'theme/property-agent.html')
+
+def property_type(request): 
+    data = settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json"  
+    with open(data) as f:
+        data = json.load(f)  
+    property_data = data['property_type'] 
+    property_count = p_detail.objects.all() 
+    property_c={} 
+    for i in property_count: 
+        if i.property_data["property_type"] in property_c: 
+            property_c[i.property_data["property_type"]]+=1
+        else:
+            property_c[i.property_data["property_type"]]=1
+        # property_c[i.property_data["property_type"]] = i.property_data["property_type"]  
+    return render(request, 'theme/property-type.html', {"property_c":property_c}) 
+
+def property_list(request): 
+    return render(request, 'theme/property-list.html')

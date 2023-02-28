@@ -15,24 +15,11 @@
                     <label for="property_type" class="form-label">Property Type</label>
                     <select class="form-select property_type" name="property_type" id="property_type"
                         value="{{instace_data.property_type}}" onChange="myNewFunction(this);">
-                        {% if instace_data %}
-                        <option value="{{instace_data.property_type}}">&#x2713; : {{instace_data.property_type|title}}
-                        </option>
-                        {% else %}
-                        <option value="" selected>Select Property</option>
+                        {% if property_type %}
+                        {% for property_type in property_type %}
+                        <option value="{{property_type}}">{{property_type}}</option>
+                        {% endfor %}
                         {% endif %}
-                        <option value="Home">Home</option>
-                        <option value="Shop">Shop</option>
-                        <option value="Flat">Flat</option>
-                        <option value="Villa">Villa</option>
-                        <option value="Agriculture land">Agriculture land</option>
-                        <option value="Complex">Complex</option>
-                        <option value="PG(Paying Guest)">PG(Paying Guest)</option>
-                        <option value="Hostel">Hostel</option>
-                        <option value="Office">Office</option>
-                        <option value="Apartment">Apartment</option>
-                        <option value="Building">Building</option>
-                        <option value="Town House">Town House</option>
                     </select>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
@@ -46,16 +33,11 @@
                         <label for="selling_option" class="form-label selling_option" id="selling_option_label">Sell or
                             Rent</label>
                         <select class="form-select" name="selling_option" id="selling_option" class="selling_option">
-                            {% if instace_data %}
-                            <option value="{{instace_data.selling_option}}">&#x2713; :
-                                {{instace_data.selling_option|title}}
-                            </option>
-                            {% else %}
-                            <option value="">Select Option </option>
+                            {% if deal_option %}
+                            {% for key, deal_option in deal_option.items %}
+                            <option value="{{deal_option}}">{{deal_option}}</option>
+                            {% endfor %}
                             {% endif %}
-                            <option value="Sell">Sell</option>
-                            <option value="Rent">Rent</option>
-                            <option value="Sell / Rent">Sell / Rent</option>
                         </select>
                     </div>
                 </div>
@@ -63,14 +45,11 @@
                     <div class="construction_status_div" id="construction_status_div">
                         <label class="form-label">Construction Status</label>
                         <select class="form-select" name="construction_status">
-                            {% if instace_data %}
-                            <option class="form-option" value="{{instace_data.construction_status}}">&#x2713; :
-                                {{instace_data.construction_status|title}}</option>
-                            {% else %}
-                            <option value="" selected>Select Construction Status</option>
+                            {% if construction_status %}
+                            {% for key, construction_status in construction_status.items %}
+                            <option value="{{construction_status}}">{{construction_status}}</option>
+                            {% endfor %}
                             {% endif %}
-                            <option class="form-option" value="Ready To Move">Ready To Move</option>
-                            <option class="form-option" value="Under Construction">Under Construction</option>
                         </select>
                     </div>
                 </div>
@@ -81,93 +60,41 @@
                 <div class="col-md-6 col-sm-12 mb-3">
                     <label class="form-label">BHK Detail</label>
                     <select class="form-select" name="bhk">
-                        {% if instace_data %}
-                        <option value="{{instace_data.bhk}}" selected>&#x2713; : {{instace_data.bhk}} BHK</option>
-                        {% else %}
-                        <option value="" selected>Select number of BHK</option>
+                        {% if bhk_details %}
+                        {% for key, bhk_details in bhk_details.items %}
+                        <option value="{{bhk_details}}">{{bhk_details}} BHK</option>
+                        {% endfor %}
                         {% endif %}
-                        <option value="1">1 BHK</option>
-                        <option value="2">2 BHK</option>
-                        <option value="3">3 BHK</option>
-                        <option value="4">4 BHK</option>
-                        <option value="5">5 BHK</option>
-                        <option value="6">6 BHK</option>
-                        <option value="7">7 BHK</option>
-                        <option value="8">8 BHK</option>
-                        <option value="9">9 BHK</option>
-                        <option value="10">10 BHK</option>
-                        <option value="11">11 BHK</option>
-                        <option value="12">12 BHK</option>
-                        <option value="13">13 BHK</option>
-                        <option value="14">14 BHK</option>
-                        <option value="15">15 BHK</option>
                     </select>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
                     <label for="bathroom" class="form-label">Bathroom</label>
                     <select class="form-select" name="bathroom">
-                        {% if instace_data %}
-                        <option value="{{instace_data.bathroom}}" selected>&#x2713; : {{instace_data.bathroom}} Bathroom
-                        </option>
-                        {% else %}
-                        <option value="" selected>Select number of Bathroom</option>
+                        {% if bathroom_details %}
+                        {% for key, bathroom_details in bathroom_details.items %}
+                        <option value="{{bathroom_details}}">{{bathroom_details}} Bathroom</option>
+                        {% endfor %}
                         {% endif %}
-                        <option value="1">1 Bathroom</option>
-                        <option value="2">2 Bathroom</option>
-                        <option value="3">3 Bathroom</option>
-                        <option value="4">4 Bathroom</option>
-                        <option value="5">5 Bathroom</option>
-                        <option value="6">6 Bathroom</option>
-                        <option value="7">7 Bathroom</option>
-                        <option value="8">8 Bathroom</option>
-                        <option value="9">9 Bathroom</option>
-                        <option value="10">10 Bathroom</option>
-                        <option value="11">11 Bathroom</option>
-                        <option value="12">12 Bathroom</option>
-                        <option value="13">13 Bathroom</option>
-                        <option value="14">14 Bathroom</option>
-                        <option value="15">15 Bathroom</option>
                     </select>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
                     <label for="balcony" class="form-label balcony">Balcony</label>
                     <select class="form-select" name="balcony">
-                        {% if instace_data %}
-                        <option value="{{instace_data.balcony}}" selected>&#x2713; : {{instace_data.balcony}} Balcony
-                        </option>
-                        {% else %}
-                        <option value="" selected>Select Balcony</option>
+                        {% if balcony_details %}
+                        {% for key, balcony_details in balcony_details.items %}
+                        <option value="{{balcony_details}}">{{balcony_details}} Balcony</option>
+                        {% endfor %}
                         {% endif %}
-                        <option value="1">1 Balcony</option>
-                        <option value="2">2 Balcony</option>
-                        <option value="3">3 Balcony</option>
-                        <option value="4">4 Balcony</option>
-                        <option value="5">5 Balcony</option>
-                        <option value="6">6 Balcony</option>
-                        <option value="7">7 Balcony</option>
-                        <option value="8">8 Balcony</option>
-                        <option value="9">9 Balcony</option>
-                        <option value="10">10 Balcony</option>
-                        <option value="11">11 Balcony</option>
-                        <option value="12">12 Balcony</option>
-                        <option value="13">13 Balcony</option>
-                        <option value="14">14 Balcony</option>
-                        <option value="15">15 Balcony</option>
                     </select>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
                     <label for="furnish_type" class="form-label">Furnish Type</label>
                     <select class="form-select furnish_type" name="furnish_type" id="furnish_type">
-                        {% if instace_data %}
-                        <option value="{{instace_data.furnish_type}}" selected>&#x2713; :
-                            {{instace_data.furnish_type|title}}
-                        </option>
-                        {% else %}
-                        <option value="" selected>Select Furnish Type</option>
+                        {% if furnish_type %}
+                        {% for key,furnish_type in furnish_type.items %}
+                        <option value="{{furnish_type}}">{{furnish_type}}</option>
+                        {% endfor %}
                         {% endif %}
-                        <option value="Fully Furnished">Fully Furnished</option>
-                        <option value="Semi Furnished">Semi Furnished</option>
-                        <option value="No Furnished">No Furnished</option>
                     </select>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
@@ -178,16 +105,11 @@
                 <div class="col-md-6 col-sm-12 mb-3">
                     <label for="parking_type" class="form-label">Parking Detail</label>
                     <select class="form-select" name="parking_type">
-                        {% if instace_data %}
-                        <option value="{{instace_data.parking_type}}" selected>&#x2713; :
-                            {{instace_data.parking_type|title}}
-                        </option>
-                        {% else %}
-                        <option value="" selected>Select Parking details</option>
+                        {% if parking_details %}
+                        {% for key, parking_details in parking_details.items %}
+                        <option value="{{parking_details}}">{{parking_details}}</option>
+                        {% endfor %}
                         {% endif %}
-                        <option value="Covered">Covered</option>
-                        <option value="Open">Open</option>
-                        <option value="Both, Covered and Open">Both, Covered and Open</option>
                     </select>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
