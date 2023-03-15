@@ -36,7 +36,7 @@ urlpatterns = [
     path("about", views.about_us, name="about_us"), 
     path("contact", views.contact, name="contact"), 
     path("property_agent", views.property_agent, name="property_agent"), 
-    path("property_type", views.property_type, name="property_type"), 
+    path("property_type", views.print_property_type, name="property_type"), 
     path("property_list", views.property_list, name="property_list"), 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

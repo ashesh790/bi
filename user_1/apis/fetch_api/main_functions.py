@@ -1,6 +1,7 @@
 import json
 import os
 from urllib import request
+from django.conf import settings 
 
 from pymediainfo import MediaInfo
 from django.http import HttpResponse
@@ -95,4 +96,18 @@ def delete_property_image_from_database(request, property_id, image_name):
         print("Not found") 
     property_data.save() 
     return True 
-    
+
+def property_bound_data(): 
+    data = settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json"  
+    with open(data) as f:
+        data = json.load(f)  
+    property_data = data['property_type'] 
+    property_count = p_detail.objects.all() 
+    property_c={} 
+    for i in property_count: 
+        if i.property_data["property_type"] in property_c: 
+            property_c[i.property_data["property_type"]]+=1
+        else:
+            property_c[i.property_data["property_type"]]=1
+        # property_c[i.property_data["property_type"]] = i.property_data["property_type"]  
+    return property_c
