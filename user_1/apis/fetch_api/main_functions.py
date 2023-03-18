@@ -119,6 +119,12 @@ def search_property_type(request, p_type):
             prop_data[i.id]=i.property_data
         data=prop_data  
         return data  
+    elif(property_category_type == "all"): 
+        data = p_detail.objects.all() 
+        for i in data:
+            prop_data[i.id]=i.property_data
+        data=prop_data  
+        return data
     else:
         data = p_detail.objects.filter(property_data__property_type=property_category_type) 
         data=data[0].property_data 
