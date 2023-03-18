@@ -221,3 +221,8 @@ def property_list(request):
 def property_category_wise(request, property_type): 
     data = search_property_type(request, property_type) 
     return render(request, 'theme/property-category-wise.html', {'data':data}) 
+
+def property_sell_option_wise(request): 
+    sell_option = request.POST['property_type'] 
+    data = search_property_type(request, sell_option)  
+    return HttpResponse(json.dumps({"data":data})) 

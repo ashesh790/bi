@@ -95,28 +95,32 @@
             <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
                 <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
                     <li class="nav-item me-2">
-                        <a class="btn btn-outline-primary active" data-bs-toggle="pill" href="#tab-1">Featured</a>
+                        <button class="btn btn-outline-primary active" data-bs-toggle="pill" value="all"
+                            id="all">All</a>
                     </li>
                     <li class="nav-item me-2">
-                        <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-2">For Sell</a>
+                        <button class="btn btn-outline-primary" data-bs-toggle="pill" value="Sale" id="sell">For
+                            Sale</button>
                     </li>
                     <li class="nav-item me-0">
-                        <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-3">For Rent</a>
+                        <button class="btn btn-outline-primary" data-bs-toggle="pill" value="Rent" id="rent">For
+                            Rent</button>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="tab-content">
+            <div class="abc"></div>
             <div id="tab-1" class="tab-pane fade show p-0 active">
-                <div class="row g-4">
+                <div class="row g-4" id="filtered">
                     {% for property in property_data %}
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="col-lg-4 col-md-6 wow fadeInUp filtered_data" data-wow-delay="0.1s">
                         <div class="property-item rounded overflow-hidden">
                             <div class="position-relative overflow-hidden">
-                                <a href=""><img class="img-fluid" src="{% static 'theme/img/property-1.jpg' %}"
+                                <a href=""><img class="img-fluid" src="{{property.property_data.property_image|last}}"
                                         alt=""></a>
                                 <div
-                                    class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                    class="selling_option bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
                                     For {{property.property_data.selling_option}}</div>
                                 <div
                                     class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
@@ -343,11 +347,74 @@
         </div>
     </div>
 </div>
+{% csrf_token %}
+
 <!-- Testimonial End -->
 
 <!-- javaScript code -->
 
 <script>
+    $("#all").click(function () {
+        if ($("#all").val() == "all") {
+            window.location.href = "home";
+        }
+    });
+    $("#sell, #rent, #all").click(function () {
+        var property_type = $(this).val();
+        $.ajax({
+            url: "{% url 'property_sell_option_wise' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                'property_type': property_type,
+            },
+            success: function (response) {
+                var response_array = [response]
+                data = JSON.parse(response)
+                data = data['data']
+                for (let [key, value] of Object.entries(data)) {
+                    var prop_design = ""
+                    console.log(key, value.property_type);
+                    $("#filtered").html(
+                        `<div class="col-lg-4 col-md-6 wow fadeInUp filtered_data" data-wow-delay="0.1s">
+                                <div class="property-item rounded overflow-hidden">
+                                    <div class="position-relative overflow-hidden">
+                                        <a href=""><img class="img-fluid" src="`+ value.property_image[0] + `"
+                                                alt=""></a>
+                                        <div
+                                            class="selling_option bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                            For `+ value.selling_option + `</div>
+                                        <div
+                                            class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                            `+ value.property_type + `</div>
+                                    </div>
+                                    <div class="p-4 pb-0">
+                                        <h5 class="text-primary mb-3">`+ value.property_value + `+</h5>
+                                        <a class="d-block h5 mb-2" href="">`+ value.property_type + `</a>
+                                        <p><i
+                                                class="fa fa-map-marker-alt text-primary me-2"></i>`+ value.property_address + `
+                                        </p> 
+                                    </div>
+                                    <div class="d-flex border-top">
+                                        <small class="flex-fill text-center border-end py-2"><i
+                                                class="fa fa-ruler-combined text-primary me-2"></i>`+ value.geography_area + `
+                                            Sqft</small>
+                                        <small class="flex-fill text-center border-end py-2"><i
+                                                class="fa fa-bed text-primary me-2"></i>`+ value.construction_status + `</small>
+                                        <small class="flex-fill text-center py-2"><i
+                                                class="fa fa-bath text-primary me-2"></i>`+ value.property_age + `
+                                            Year old</small>
+                                    </div>
+                                </div>
+                                </div>`
+                    );
+                }
+            },
+            error: function (response) {
+                alert("Error Occured");
+            }
+        });
 
+    }); 
 </script>
 {% endblock %}
