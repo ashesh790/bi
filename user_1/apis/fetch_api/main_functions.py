@@ -3,12 +3,9 @@ import os
 from urllib import request
 from django.conf import settings 
 
-from pymediainfo import MediaInfo
-from django.http import HttpResponse
 from staying_source.settings import MEDIA_ROOT, MEDIA_URL
 from user_1.models import User_register, p_detail
 from django.core.files.storage import FileSystemStorage
-from django.template import loader
 
 def add_property_details_in_database(request): 
     if request.method =='POST' or request.method == 'FILES': 
@@ -111,3 +108,10 @@ def property_bound_data():
             property_c[i.property_data["property_type"]]=1
         # property_c[i.property_data["property_type"]] = i.property_data["property_type"]  
     return property_c
+
+def search_property_type(request, p_type): 
+    property_category_type = p_type 
+    print(property_category_type)
+    data = p_detail.objects.filter(property_data__property_type=property_category_type) 
+    data=data[0].property_data 
+    return data  

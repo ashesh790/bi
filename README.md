@@ -6,7 +6,7 @@
 
 # Implement full CRUD Feature 
 
-# Create functional code 
+# Create functional code (create function and call them into views.py file)  
 
 # Set link in master.html  
 

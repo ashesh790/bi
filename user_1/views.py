@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
-from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, delete_property_image_from_database, get_all_property_data, property_bound_data, update_property_data_record, update_property_image
+from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, delete_property_image_from_database, get_all_property_data, property_bound_data, search_property_type, update_property_data_record, update_property_image
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user 
 from user_1.models import User_register, p_detail 
 from django.core.serializers import serialize 
@@ -170,7 +170,7 @@ def test_html_page(request):
 ################################################## userside functions ################################
 
 def dashboard(request): 
-    data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))
+    data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id'])) 
     return render(request, 'admin/admin2/dashboard.html', {'data':data}) 
 
 def crud_property(request): 
@@ -210,9 +210,12 @@ def print_property_type(request):
         if i.property_data["property_type"] in property_c: 
             property_c[i.property_data["property_type"]]+=1
         else:
-            property_c[i.property_data["property_type"]]=1
-        # property_c[i.property_data["property_type"]] = i.property_data["property_type"]  
+            property_c[i.property_data["property_type"]]=1 
     return render(request, 'theme/property-type.html', {"property_c":property_c}) 
 
 def property_list(request): 
-    return render(request, 'theme/property-list.html')
+    return render(request, 'theme/property-list.html') 
+
+def property_category_wise(request, property_type): 
+    data = search_property_type(request, property_type) 
+    return render(request, 'theme/property-category-wise.html', {'data':data}) 
