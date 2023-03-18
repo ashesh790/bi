@@ -37,8 +37,8 @@
     $(document).ready(function () {
         $(".auth_btn").click(function (e) {
             e.preventDefault();
-            var name = $("#name").val();
-            var email = $("#psw").val();
+            var name = $("#name").val().toLowerCase();
+            var email = $("#psw").val().toLowerCase();
             data = { "name": name, "email": email }
             $.ajax(
                 {

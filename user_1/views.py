@@ -24,11 +24,12 @@ from django.core.files.storage import FileSystemStorage
 # Login function 
 def sign_up(request): 
     if request.method =="POST": 
-        user_name=request.POST['user_name'] 
+        user_name=request.POST['user_name']
         user_email=request.POST['user_email'] 
         user_mobile=request.POST['user_number'] 
         user_psw=request.POST['user_psw'] 
-
+        user_name.lower()
+        user_email.lower()
         if User_register.objects.filter(user_name=user_name): 
             print("Existing User!") 
             return redirect("login") 
