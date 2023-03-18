@@ -24,11 +24,12 @@ from django.core.files.storage import FileSystemStorage
 # Login function 
 def sign_up(request): 
     if request.method =="POST": 
-        user_name=request.POST['user_name'] 
+        user_name=request.POST['user_name']
         user_email=request.POST['user_email'] 
         user_mobile=request.POST['user_number'] 
         user_psw=request.POST['user_psw'] 
-
+        user_name.lower()
+        user_email.lower()
         if User_register.objects.filter(user_name=user_name): 
             print("Existing User!") 
             return redirect("login") 
@@ -179,8 +180,9 @@ def crud_property(request):
 # Render home page 
 
 def home(request):
-    property_category=property_bound_data() 
-    return render(request, 'theme/index.html', {'property_category':property_category}) 
+    property_category=property_bound_data 
+    property_data = p_detail.objects.all() 
+    return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data})  
 def home1(request): 
     # try:
     other_data=p_detail.objects.all()
@@ -219,3 +221,8 @@ def property_list(request):
 def property_category_wise(request, property_type): 
     data = search_property_type(request, property_type) 
     return render(request, 'theme/property-category-wise.html', {'data':data}) 
+
+def property_sell_option_wise(request): 
+    sell_option = request.POST['property_type'] 
+    data = search_property_type(request, sell_option)  
+    return HttpResponse(json.dumps({"data":data})) 

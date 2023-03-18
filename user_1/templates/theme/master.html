@@ -61,12 +61,16 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
-                    <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
-                    <a href="{% url 'property_type' %}" class="nav-item nav-link">Property Type</a>
-                    <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
-                    <a href="{% url 'property_agent' %}" class="nav-item nav-link">Property Agent</a>
-                    <a href="{% url 'property_list' %}" class="nav-item nav-link">Property List</a>
-                    <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
+                    <a href="{% url 'home' %}" class="nav-item nav-link {% block home %}{% endblock %}">Home</a>
+                    <a href="{% url 'property_type' %}"
+                        class="nav-item nav-link {% block property_type %}{% endblock %}">Property Type</a>
+                    <a href="{% url 'about' %}" class="nav-item nav-link {% block about %}{% endblock %}">About</a>
+                    <a href="{% url 'property_agent' %}"
+                        class="nav-item nav-link {% block property_agent %}{% endblock %}">Property Agent</a>
+                    <a href="{% url 'property_list' %}"
+                        class="nav-item nav-link {% block property_list %}{% endblock %}">Property List</a>
+                    <a href="{% url 'contact' %}"
+                        class="nav-item nav-link {% block contact %}{% endblock %}">Contact</a>
                 </div>
                 {% if 'user_name' in request.session %}
                 Welcome {{request.session.user_name}} :&nbsp;
@@ -172,7 +176,6 @@
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
-
     <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'theme/lib/wow/wow.min.js' %}"></script>

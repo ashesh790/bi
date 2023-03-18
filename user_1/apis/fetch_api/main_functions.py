@@ -110,8 +110,16 @@ def property_bound_data():
     return property_c
 
 def search_property_type(request, p_type): 
+    prop_data={} 
     property_category_type = p_type 
     print(property_category_type)
-    data = p_detail.objects.filter(property_data__property_type=property_category_type) 
-    data=data[0].property_data 
-    return data  
+    if (property_category_type == "Sale" or property_category_type == "Rent"): 
+        data = p_detail.objects.filter(property_data__selling_option=property_category_type) 
+        for i in data:
+            prop_data[i.id]=i.property_data
+        data=prop_data  
+        return data  
+    else:
+        data = p_detail.objects.filter(property_data__property_type=property_category_type) 
+        data=data[0].property_data 
+        return data
