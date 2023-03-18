@@ -179,8 +179,9 @@ def crud_property(request):
 # Render home page 
 
 def home(request):
-    property_category=property_bound_data() 
-    return render(request, 'theme/index.html', {'property_category':property_category}) 
+    property_category=property_bound_data 
+    property_data = p_detail.objects.all() 
+    return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data})  
 def home1(request): 
     # try:
     other_data=p_detail.objects.all()
