@@ -63,22 +63,7 @@
     ],
     "deal_option": {
         "rent": "Rent",
-        "sale": "Sale",
-        "lease": "Lease",
-        "rental": "Rental",
-        "salelease": "Salelease",
-        "saleorlease": "Sale or lease",
-        "saleandlease": "Sale and lease",
-        "saleorrent": "Sale or rent",
-        "saleandrent": "Sale and rent",
-        "leaseorsale": "Lease or sale",
-        "leaseandsale": "Lease and sale",
-        "leaseorrent": "Lease or rent",
-        "leaseandrent": "Lease and rent",
-        "rentorsale": "Rent or sale",
-        "rentandsale": "Rent and sale",
-        "rentorlease": "Rent or lease",
-        "rentandlease": "Rent and lease"
+        "sale": "Sale"
     },
     "construction_status": {
         "underconstruction": "Under construction",

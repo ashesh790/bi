@@ -1,6 +1,7 @@
 {% extends 'theme/master.html' %}
 {% load static %}
 {% block main_content %}
+
 <!-- Search Start -->
 <div class="row text-center p-2">
     <marquee direction="left" behavior="scroll" scrollamount="3">
@@ -55,13 +56,15 @@
         </div>
         <div class="row g-4">
             {% for property,p_count in property_category.items %}
-            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                <a class="cat-item d-block bg-light text-center rounded p-3" href="">
+            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s" id="prop_type_ui">
+                <a class="cat-item d-block bg-light text-center rounded p-3" href="property_category_wise/{{property}}">
                     <div class="rounded p-4">
                         <div class="icon mb-3">
                             <img class="img-fluid" src="{% static 'theme/img/icon-apartment.png' %}" alt="Icon">
                         </div>
-                        <h6>{{property}}</h6>
+                        <span class="prop_text">
+                            <h6 class="{{property}}">{{property}}</h6>
+                        </span>
                         <span>
                             {% if p_count > 1%}
                             {{p_count}} Properties
@@ -797,4 +800,10 @@
     </div>
 </div>
 <!-- Testimonial End -->
+
+<!-- javaScript code -->
+
+<script>
+
+</script>
 {% endblock %}

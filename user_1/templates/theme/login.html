@@ -1,51 +1,51 @@
 {% extends 'theme/master.html' %}
 {% load static %}
 {% block main_content %}
-    <div class="row g-3 mt-5 p-5" style="margin-left:auto;margin-right:auto; width:50%;"> 
-        {% csrf_token %}
-        <div class="col-md-12">
-            <div class="col-md-12 m-3">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="name" placeholder="Your Name">
-                    <label for="name">Your Email</label>
-                </div>
+<div class="row g-3 mt-5 p-5" style="margin-left:auto;margin-right:auto; width:50%;">
+    {% csrf_token %}
+    <div class="col-md-12">
+        <div class="col-md-12 m-3">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="name" placeholder="Your Name">
+                <label for="name">User Name</label>
             </div>
-            <div class="col-md-12 m-3">
-                <div class="form-floating">
-                    <input type="password" class="form-control" id="psw" placeholder="Your Password">
-                    <label for="email">Your Password</label>
-                </div>
-            </div>
-            
-            <div class="col-12 m-3">
-                <button class="btn btn-primary w-100 py-3 auth_btn">Login</button> 
-            </div> 
-            <div class="mt-2 m-3">
-                <span>New User ?</span>
-                <span><a href="signup">Register Here!</a></span>
-            </div> 
-            <div class="mt-2 m-3">
-                <span>Start with : </span>
-                <span><a href="login">Google</a></span>
-                <span><a href="login">Facebook</a></span>
-                <span><a href="login">Whatsapp</a></span>
-                </div>
         </div>
-    </div> 
-    <!-- Javsscript code with jquery -->
-    <script>
-        $(document).ready(function(){
-            $(".auth_btn").click(function(e){
-                e.preventDefault();
-                var name=$("#name").val(); 
-                var email=$("#psw").val(); 
-                data={"name":name,"email":email}
-                $.ajax(
+        <div class="col-md-12 m-3">
+            <div class="form-floating">
+                <input type="password" class="form-control" id="psw" placeholder="Your Password">
+                <label for="email">Your Password</label>
+            </div>
+        </div>
+
+        <div class="col-12 m-3">
+            <button class="btn btn-primary w-100 py-3 auth_btn">Login</button>
+        </div>
+        <div class="mt-2 m-3">
+            <span>New User ?</span>
+            <span><a href="signup">Register Here!</a></span>
+        </div>
+        <div class="mt-2 m-3">
+            <span>Start with : </span>
+            <span><a href="login">Google</a></span>
+            <span><a href="login">Facebook</a></span>
+            <span><a href="login">Whatsapp</a></span>
+        </div>
+    </div>
+</div>
+<!-- Javsscript code with jquery -->
+<script>
+    $(document).ready(function () {
+        $(".auth_btn").click(function (e) {
+            e.preventDefault();
+            var name = $("#name").val();
+            var email = $("#psw").val();
+            data = { "name": name, "email": email }
+            $.ajax(
                 {
                     type: "POST",
                     url: "/login",
                     data: {
-                        data: data, 
+                        data: data,
                         csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
                     },
                     success: function (response) {
@@ -56,6 +56,6 @@
                     }
                 });
         });
-            });
-    </script>
+    });
+</script>
 {% endblock %}
