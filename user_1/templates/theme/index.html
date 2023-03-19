@@ -357,13 +357,13 @@
 
     $("#sell, #rent, #all").click(function () {
         $("#filtered").empty();
-        var property_type = $(this).val();
+        var sale_type = $(this).val();
         $.ajax({
             url: "{% url 'property_sell_option_wise' %}",
             type: "POST",
             data: {
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-                'property_type': property_type,
+                'selling_option': sale_type,
             },
             success: function (response) {
                 //alert("Hello, world!"); 

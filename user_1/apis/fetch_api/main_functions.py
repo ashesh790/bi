@@ -109,11 +109,11 @@ def property_bound_data():
         # property_c[i.property_data["property_type"]] = i.property_data["property_type"]  
     return property_c
 
-def search_property_type(request, sale_type, property_type = None): 
+def search_property_type(request, sale_type = None, property_type = None): 
     prop_data={} 
     sale_type = sale_type 
     print(sale_type) 
-    if (sale_type is not None): 
+    if (sale_type is not None and property_type is not None): 
         if (sale_type == "all"): 
             property_type = property_type
             data = p_detail.objects.filter(property_data__property_type=property_type)
@@ -137,5 +137,5 @@ def search_property_type(request, sale_type, property_type = None):
         return data
     else:
         data = p_detail.objects.filter(property_data__property_type=property_type) 
-        data=data[0].property_data 
-        return data
+        # data=data[0].property_data 
+        return data 
