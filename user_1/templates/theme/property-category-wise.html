@@ -50,11 +50,7 @@
         <div class="row g-0 gx-5 align-items-end">
             <div class="col-lg-6">
                 <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
-                    {% if data|length > 1 %}
-                    <h1 class="mb-3">{{data.property_type}}s</h1>
-                    {% else %}
-                    <h1 class="mb-3">{{data.property_type}}</h1>
-                    {% endif %}
+                    <h1 class="mb-3" id="property_type">{{data.property_type}}</h1>
                     <p>Here you can filter with for sell or rent.</p>
                 </div>
             </div>
@@ -155,17 +151,20 @@
 
     $("#sell, #rent, #all").click(function () {
         $("#filtered").empty();
-        var property_type = $(this).val();
+        var selling_option = $(this).val();
+        var property_type = $("#property_type").text();
         $.ajax({
             url: "{% url 'property_sell_option_wise' %}",
             type: "POST",
             data: {
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-                'property_type': property_type,
+                'selling_option': selling_option,
+                'property_type': property_type
             },
             success: function (response) {
                 //alert("Hello, world!"); 
                 var response_array = [response]
+                debugger
                 data = JSON.parse(response)
                 data = data['data']
                 for (let [key, value] of Object.entries(data)) {
@@ -211,6 +210,7 @@
                                 </div>`
                     );
                 }
+
             },
             error: function (response) {
                 alert("Error Occured");

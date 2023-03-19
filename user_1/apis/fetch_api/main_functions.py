@@ -109,23 +109,33 @@ def property_bound_data():
         # property_c[i.property_data["property_type"]] = i.property_data["property_type"]  
     return property_c
 
-def search_property_type(request, p_type): 
+def search_property_type(request, sale_type, property_type = None): 
     prop_data={} 
-    property_category_type = p_type 
-    print(property_category_type)
-    if (property_category_type == "Sale" or property_category_type == "Rent"): 
-        data = p_detail.objects.filter(property_data__selling_option=property_category_type) 
+    sale_type = sale_type 
+    print(sale_type) 
+    if (sale_type is not None): 
+        if (sale_type == "all"): 
+            property_type = property_type
+            data = p_detail.objects.filter(property_data__property_type=property_type)
+        else: 
+            data = p_detail.objects.filter(property_data__property_type=property_type).filter(property_data__selling_option=sale_type)
+        for i in data:
+            prop_data[i.id]=i.property_data
+        data=prop_data  
+        return data
+    if (sale_type == "Sale" or sale_type == "Rent"): 
+        data = p_detail.objects.filter(property_data__selling_option=sale_type) 
         for i in data:
             prop_data[i.id]=i.property_data
         data=prop_data  
         return data  
-    elif(property_category_type == "all"): 
+    elif(sale_type == "all"): 
         data = p_detail.objects.all() 
         for i in data:
             prop_data[i.id]=i.property_data
         data=prop_data  
         return data
     else:
-        data = p_detail.objects.filter(property_data__property_type=property_category_type) 
+        data = p_detail.objects.filter(property_data__property_type=property_type) 
         data=data[0].property_data 
         return data
