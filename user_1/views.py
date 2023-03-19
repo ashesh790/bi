@@ -222,12 +222,17 @@ def property_category_wise(request, property_type):
     sale_type = None  
     data = search_property_type(request, sale_type, property_type) 
     # search_property_type(request, sale_type, property_type = None) 
-    return render(request, 'theme/property-category-wise.html', {'data':data}) 
+    return render(request, 'theme/property-category-wise.html', {'data':data, 'property_type':property_type}) 
 
 def property_sell_option_wise(request): 
-    sale_type = request.POST['selling_option'] 
-    property_type = request.POST['property_type'] 
-    data = search_property_type(request, sale_type, property_type) 
+    sale_type = request.POST['selling_option']
+    try:
+        property_type = request.POST['property_type'] 
+    except: 
+        data = search_property_type(request, sale_type, property_type = None)
+        property_type = None 
+    if (property_type is not None): 
+        data = search_property_type(request, sale_type, property_type) 
     # if (len(data) != 0): 
     #     return HttpResponse(json.dumps({"empty_message":f"There is no any property like '{property_type}' with 'For {sale_type}' "}))    
     return HttpResponse(json.dumps({"data":data})) 
