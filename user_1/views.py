@@ -236,3 +236,8 @@ def property_sell_option_wise(request):
     # if (len(data) != 0): 
     #     return HttpResponse(json.dumps({"empty_message":f"There is no any property like '{property_type}' with 'For {sale_type}' "}))    
     return HttpResponse(json.dumps({"data":data})) 
+
+def show_full_property_detail(request, property_id): 
+    data = p_detail.objects.get(id=property_id)
+    data = data.property_data 
+    return render(request, 'theme/property-detail-page.html', {'data':data, 'property_id':property_id})

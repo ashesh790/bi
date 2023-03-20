@@ -40,4 +40,5 @@ urlpatterns = [
     path("property_list", views.property_list, name="property_list"), 
     path("property_category_wise/<str:property_type>/", views.property_category_wise, name="property_category_wise"), 
     path("property_sell_option_wise", views.property_sell_option_wise, name="property_sell_option_wise"), 
+    path("property_details/<int:property_id>/", views.show_full_property_detail, name="property_details")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
