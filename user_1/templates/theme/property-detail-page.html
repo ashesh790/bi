@@ -1,0 +1,296 @@
+{% extends 'theme/master.html' %}
+{% load static %}
+{% block main_content %}
+
+<div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+    <div class="container">
+        <div class="row g-2">
+            <div class="col-md-10">
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control border-0 py-3" placeholder="Search Keyword">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select border-0 py-3">
+                            <option selected>Property Type</option>
+                            <option value="1">Property Type 1</option>
+                            <option value="2">Property Type 2</option>
+                            <option value="3">Property Type 3</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select border-0 py-3">
+                            <option selected>Location</option>
+                            <option value="1">Location 1</option>
+                            <option value="2">Location 2</option>
+                            <option value="3">Location 3</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-dark border-0 w-100 py-3">Search</button>
+            </div>
+            <div class="col-md-12">
+                <button class="btn btn-dark border-0 w-100 py-3">Add Properties | Click Here!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Search End -->
+<!-- Property List Start -->
+<div class="container-xxl">
+    <div class="">
+        <div class="row" style="word-wrap:break-word;">
+            <div class="col-md-6">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        {% for data in data.property_image %}
+                        {% if data|first %}
+                        <div class="carousel-item active">
+                            <img class="d-block w-100" src="{{data}}" alt="First slide">
+                        </div>
+                        {% else %}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{data}}" alt="Second slide">
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row" style="text-align:center">
+                            <div class="card card-body">
+                                <div class="row">
+                                    <div class="col-sm-4 p-1">
+                                        <span>Property type</span><br>
+                                        <b>{{data.property_type}}</b>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span>Property age</span><br>
+                                        <b>{{data.property_age}} - Year</b>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span>Selling option</span><br>
+                                        <b>For - {{data.selling_option}}</b>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-4 p-1">
+                                        <span>Floor</span><br>
+                                        <b>{{data.floor}} - Floor</b>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span>B.H.K.</span><br>
+                                        <b>{{data.bhk}} - B.H.K.
+                                        </b>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span>Bathrooms</span><br>
+                                        <b>{{data.bathroom}} - Bathroom</b>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-4 p-1">
+                                        <span>Balcony</span><br>
+                                        <b>{{data.balcony}} - Balcony</b>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span>Furnish type</span><br>
+                                        <b>{{data.furnish_type}}
+                                        </b>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span>Geography area</span><br>
+                                        <b>{{data.geography_area}} Sqft.</b>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-4 p-1">
+                                        <span>Parking type</span><br>
+                                        <b>{{data.parking_type}}</b>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {% if data.selling_option == "Rent" %}
+                                        <span>Property rent price</span><br>
+                                        <b>{{data.property_rent_price}}/Month</b>
+                                        {% else %}
+                                        <span>Property Value</span><br>
+                                        <b>{{data.property_value}}
+                                        </b>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span>Property available date</span><br>
+                                        <b>{{data.from_avail_property_date}}</b>
+                                    </div>
+                                    <hr>
+                                    <div class="col-sm-12">
+                                        <span>Property address</span><br>
+                                        <b>{{data.property_address}}</b>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <button class="btn btn-primary w-100">Contact Saller</button>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button class="btn btn-primary w-100">Save</button>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button class="btn btn-primary w-100">Share</button>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button class="btn btn-primary w-100">Show Similar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-sm-6">
+                            <button class="mt-2 btn btn-primary m-2 w-100" style="height:100px;">Button</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button class="mt-2 btn btn-primary m-2 w-100" style="height:100px;">Button</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button class="mt-2 btn btn-primary m-2 w-100" style="height:100px;">Button</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button class="mt-2 btn btn-primary m-2 w-100" style="height:100px;">Button</button>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <!-- <div class="row" style="text-align:center;">
+                <div class="col-sm-12 mt-2">
+                    <button class="col-md-2 btn btn-primary">Button</button>
+                    <button class="col-md-2 btn btn-primary">Button</button>
+                    <button class="col-md-3 btn btn-primary">Button</button>
+                    <button class="col-md-2 btn btn-primary">Button</button>
+                    <button class="col-md-2 btn btn-primary">Button</button>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Property List End -->
+
+<!-- About Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                <div class="about-img position-relative overflow-hidden p-5 pe-0">
+                    <img class="img-fluid w-100" src="{% static 'theme/img/about.jpg' %}">
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                <h1 class="mb-4">#1 Place To Find The Perfect Property</h1>
+                <p class="mb-4">Here You can find home and many more!</p>
+                <p><i class="fa fa-check text-primary me-3"></i>Find</p>
+                <p><i class="fa fa-check text-primary me-3"></i>Sell</p>
+                <p><i class="fa fa-check text-primary me-3"></i>Rent</p>
+                <a class="btn btn-primary py-3 px-5 mt-3" href="">Read More</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About End -->
+{% csrf_token %}
+
+<!-- javaScript code -->
+
+<script>
+
+    $("#sell, #rent, #all").click(function () {
+        $("#filtered").empty();
+        var selling_option = $(this).val();
+        var property_type = $("#property_type").text();
+        $.ajax({
+            url: "{% url 'property_sell_option_wise' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                'selling_option': selling_option,
+                'property_type': property_type
+            },
+            success: function (response) {
+                //alert("Hello, world!"); 
+                var response_array = [response]
+                data = JSON.parse(response)
+                data = data['data']
+                for (let [key, value] of Object.entries(data)) {
+                    if (value.selling_option == "Rent") {
+                        property_value = value.property_rent_price + "/Month"
+                    }
+                    else {
+                        property_value = value.property_value
+                    }
+                    var prop_design = ""
+                    console.log(key, value.property_type);
+                    $("#filtered").append(
+                        `<div class="col-lg-4 col-md-6 wow fadeInUp filtered_data" data-wow-delay="0.1s">
+                                <div class="property-item rounded overflow-hidden">
+                                    <div class="position-relative overflow-hidden">
+                                        <a href=""><img class="img-fluid" src="`+ value.property_image.at(-1) + `"
+                                                alt=""></a>
+                                        <div
+                                            class="selling_option bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                            For `+ value.selling_option + `</div>
+                                        <div
+                                            class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                            `+ value.property_type + `</div>
+                                    </div>
+                                    <div class="p-4 pb-0">
+                                        <h5 class="text-primary mb-3">`+ property_value + `</h5>
+                                        <a class="d-block h5 mb-2" href="">`+ value.property_type + `</a>
+                                        <p><i
+                                                class="fa fa-map-marker-alt text-primary me-2"></i>`+ value.property_address + `
+                                        </p> 
+                                    </div>
+                                    <div class="d-flex border-top">
+                                        <small class="flex-fill text-center border-end py-2"><i
+                                                class="fa fa-ruler-combined text-primary me-2"></i>`+ value.geography_area + `
+                                            Sqft</small>
+                                        <small class="flex-fill text-center border-end py-2"><i
+                                                class="fa fa-bed text-primary me-2"></i>`+ value.construction_status + `</small>
+                                        <small class="flex-fill text-center py-2"><i
+                                                class="fa fa-bath text-primary me-2"></i>`+ value.property_age + `
+                                            Year old</small>
+                                    </div>
+                                </div>
+                                </div>`
+                    );
+                }
+
+            },
+            error: function (response) {
+                alert("Error Occured");
+            }
+        });
+
+    }); 
+</script>
+{% endblock %}
