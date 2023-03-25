@@ -211,7 +211,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-primary" id="submit_btn">Submit</button>
+                <button type="button" class="btn btn-outline-primary" onclick="submit_dtl();"
+                    id="submit_btn">Submit</button>
             </div>
         </div>
     </div>
@@ -231,7 +232,7 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp filtered_data" data-wow-delay="0.1s">
                     <div class="property-item rounded overflow-hidden">
                         <div class="position-relative overflow-hidden">
-                            <a href="property_details/{{property.id}}"><img class="img-fluid"
+                            <a href="/property_details/{{property.id}}"><img class="img-fluid"
                                     src="{{property.property_data.property_image|last}}" alt=""></a>
                             <div
                                 class="selling_option bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
@@ -350,6 +351,7 @@
             });
         }
         else if (p_dtl_btn_val == "direct_contact") {
+            $("#submit_btn").show();
             p_dtl_btn_val = p_dtl_btn_val.replace(/_/g, ' ');
             p_dtl_btn_val = p_dtl_btn_val.toUpperCase();
             $("#exampleModalLabel").text(p_dtl_btn_val);
@@ -381,6 +383,38 @@
                     </div>
                     `)
         }
+    }
+    function submit_dtl() {
+        var property_id = '{{ property_id }}';
+        var sender_name = $(".modal-body input:eq(0)").val();
+        var sender_mobile = $(".modal-body input:eq(1)").val();
+        var sender_email = $(".modal-body input:eq(2)").val();
+        var description = $(".modal-body textarea").val();
+
+        $.ajax({
+            url: "{% url 'inquiry_from_local_user' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                'property_id': property_id,
+                'sender_name': sender_name,
+                'sender_mobile': sender_mobile,
+                'sender_email': sender_email,
+                'description': description
+            },
+            success: function (response) {
+                console.log(response);
+                $(".modal-body").empty();
+                $(".modal-body").append(`
+                    <div class="col-12 mt-2"> 
+                        <h3>Your inquiry is sent!</h3>
+                    </div>
+                    `)
+            },
+            error: function (response) {
+                console.log("Error Occured");
+            },
+        });
     }
     $("#sell, #rent, #all").click(function () {
         $("#filtered").empty();

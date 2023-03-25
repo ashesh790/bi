@@ -51,13 +51,17 @@ def sign_up(request):
     else: 
         return render(request, "theme/signup.html")
 
-# sign up
+ 
+# sign up 
 def login(request): 
     if request.POST: 
-        login_user(request)  
-        return render(request, 'theme/index.html')
-    return render(request, "theme/login.html") 
-     
+        login_status = login_user(request) 
+        if login_status is not False:   
+            return render(request, 'theme/index.html') 
+        else: 
+            return redirect('Invalid Credentials') 
+    else: 
+        return render(request, "theme/login.html")
 # logout 
 def logout(request): 
     if request: 
@@ -267,4 +271,12 @@ def show_required_model(request):
         pass 
     elif(sale_type == "direct_contact"): 
         pass 
-    return HttpResponse(json.dumps({"sale_type":sale_type}))
+    return HttpResponse(json.dumps({"sale_type":sale_type})) 
+
+def inquiry_from_local_user(request): 
+    property_id = request.POST['property_id'] 
+    sender_name = request.POST['sender_name'] 
+    sender_mobile = request.POST['sender_mobile'] 
+    sender_email = request.POST['sender_email'] 
+    description = request.POST['description'] 
+    pass 
