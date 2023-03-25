@@ -241,4 +241,30 @@ def show_full_property_detail(request, property_id):
     property_data = p_detail.objects.all()
     data = p_detail.objects.get(id=property_id)
     data = data.property_data 
-    return render(request, 'theme/property-detail-page.html', {'data':data, 'property_id':property_id, 'property_data':property_data})
+    return render(request, 'theme/property-detail-page.html', {'data':data, 'property_id':property_id, 'property_data':property_data}) 
+
+def show_required_model(request): 
+    sale_type = request.POST['p_dtl_btn_val'] 
+    property_id = request.POST['property_id'] 
+    if (sale_type == "saller_detail"): 
+        data = p_detail.objects.get(id=property_id) 
+        user_id = data.seller_id.pk 
+        user_data = User_register.objects.get(pk=user_id) 
+        user_email = user_data.user_email 
+        user_name = user_data.user_name 
+        user_mobile = user_data.user_mobile 
+        user_gender = user_data.user_gender 
+        saller_data = {
+            "Saller email":user_email,
+            "Saller name":user_name,
+            "Saller mobile":user_mobile, 
+            "Saller gender":user_gender
+        }
+        return HttpResponse(json.dumps({"saller_data":saller_data})) 
+    elif(sale_type == "save_post"): 
+        pass 
+    elif(sale_type == "share_post"):
+        pass 
+    elif(sale_type == "direct_contact"): 
+        pass 
+    return HttpResponse(json.dumps({"sale_type":sale_type}))
