@@ -275,18 +275,32 @@
     background: var(--dark);
     border-color: var(--primary);
 }
-/* #############################-----CSS by Ashesh-----########################### */  
-.prop-box{
-    height:350px;
-    background-color: #ffffff; 
-    margin: 5px; 
-    overflow: auto; 
-    border-radius: 5px; 
+
+/* #############################-----CSS by Ashesh-----########################### */
+.prop-box {
+    height: 350px;
+    background-color: #ffffff;
+    margin: 5px;
+    overflow: auto;
+    border-radius: 5px;
     position: relative;
 }
-.trash{
-    position: absolute; left: 15px; bottom:0px;color:var(--primary);
+
+.trash {
+    position: absolute;
+    left: 15px;
+    bottom: 0px;
+    color: var(--primary);
 }
-.edit{
-    position: absolute; right: 0; bottom:0px; color:var(--primary); 
+
+.edit {
+    position: absolute;
+    right: 0;
+    bottom: 0px;
+    color: var(--primary);
+}
+
+.form-select,
+.form-control {
+    border: 1px solid rgb(192, 190, 190);
 }
