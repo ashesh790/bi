@@ -175,8 +175,11 @@ def test_html_page(request):
 ################################################## userside functions ################################
 
 def dashboard(request): 
-    data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id'])) 
-    return render(request, 'admin/admin2/dashboard.html', {'data':data}) 
+    user_id= User_register.objects.get(user_id=request.session._session['user_id']) 
+    # count for user inquiries 
+    user_inq_len = len(user_id.user_other_data['inquiry_dtl'])
+    data=p_detail.objects.filter(seller_id=user_id) 
+    return render(request, 'admin/admin2/dashboard.html', {'data':data, 'user_inq_len':user_inq_len})  
 
 def crud_property(request): 
     data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))  
@@ -282,7 +285,6 @@ def property_post_modal_management(request):
             "sender_email":sender_email,
             "description":description
         }
-        inquiry_dtl = {property_id:inquiry_dtl}
         # inquiry_dtl = json.dumps(inquiry_dtl) 
         data = p_detail.objects.get(id=property_id) 
         user_id = data.seller_id.pk
@@ -299,7 +301,10 @@ def property_post_modal_management(request):
         save_data.save()
     return HttpResponse(json.dumps({"sale_type":sale_type}))  
 
-
+def inquiries_from_user(request): 
+    user_data = User_register.objects.get(user_id=request.session._session['user_id']) 
+    user_data = user_data.user_other_data 
+    return HttpResponse(json.dumps({"user_data":user_data}))
 
 
 
@@ -317,4 +322,4 @@ def property_post_modal_management(request):
 
 # Test functions  
 def test_function(request):
-    return render(request, 'admin/admin2/index.html')
+    return render(request, 'admin/admin2/index.html')  

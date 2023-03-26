@@ -15,7 +15,7 @@
 	<link rel="stylesheet" href="{% static 'admin/admin_n/css/style.css' %}">
 	<link href="{% static 'admin/admin_n/css/style-copy.css' %}" rel="stylesheet">
 	<!-- endinject -->
-	<link rel="shortcut icon" href="{% static 'admin/admin_n/images/favicon.png' %}" />
+	<link href="{% static 'theme/img/favicon.ico' %}" rel="icon">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
 </head>
@@ -39,8 +39,8 @@
 									<span class="count bg-success">2</span>
 								</a>
 								<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-									aria-labelledby="notificationDropdown">
-									<p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+									id="modal_for_nmm" aria-labelledby="notificationDropdown">
+									<p class="mb-0 font-weight-normal float-left dropdown-header">Inquires</p>
 									<a class="dropdown-item preview-item">
 										<div class="preview-thumbnail">
 											<div class="preview-icon bg-success">
@@ -133,8 +133,19 @@
 								</div>
 							</li>
 							<li class="nav-item dropdown">
-								<a href="#" class="nav-link count-indicator "><i
-										class="mdi mdi-message-reply-text"></i></a>
+								<a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center"
+									id="inquiries_from_user" href="#" data-bs-toggle="dropdown">
+									<i class="mdi mdi-message-reply-text"></i>
+									<span class="count bg-success">{{user_inq_len}}</span>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list-inquire"
+									id="modal_for_nmm" aria-labelledby="notificationDropdown">
+									<p class="mb-0 font-weight-normal float-left dropdown-header">Inquires</p>
+								</div>
+							</li>
+							<li class="nav-item dropdown">
+								<a href="#" class="nav-link count-indicator "><i class="mdi mdi-message-reply-text"
+										id="inquiries_from_user"></i></a>
 							</li>
 							<li class="nav-item nav-search d-none d-lg-block ms-3">
 								<div class="input-group">
@@ -315,5 +326,38 @@
 	<script src="{% static 'admin/admin_n/js/dashboard.js' %}"></script>
 	<!-- End custom js for this page-->
 </body>
+<script>
+	$("#inquiries_from_user").click(function () {
+		$.ajax({
+			url: "{% url 'inquiries_from_user' %}",
+			type: "GET",
+			success: function (data) {
+				$(".preview-list-inquire").empty();
+				data = JSON.parse(data);
+				//data = data['user_data'];
+				console.log(typeof data.user_data.inquiry_dtl);
+				for (i = 0; i < data.user_data.inquiry_dtl.length; i++) {
+					obj_id = data.user_data.inquiry_dtl[i];
+					let description = data.user_data.inquiry_dtl[i].description;
+					let property_id = data.user_data.inquiry_dtl[i].property_id;
+					let sender_email = data.user_data.inquiry_dtl[i].sender_email;
+					let sender_mobile = data.user_data.inquiry_dtl[i].sender_mobile;
+					let sender_name = data.user_data.inquiry_dtl[i].sender_name;
+					console.log(description, property_id, sender_email, sender_mobile, sender_name);
+					$(".preview-list-inquire").append(`
+					<a class="dropdown-item preview-item user_inquiry_div">
+						<div class="preview-item-content user_inq">
+							<h6 class="preview-subject font-weight-normal user_inq_heading">`+ sender_name + `</h6>
+							<p class="font-weight-light small-text mb-0 text-muted user_inq_para">
+								`+ sender_email + `
+							</p>
+						</div> 
+					</a>
+					`);
+				}
+			}
+		});
+	}); 
+</script>
 
 </html>
