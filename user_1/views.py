@@ -247,7 +247,7 @@ def show_full_property_detail(request, property_id):
     data = data.property_data 
     return render(request, 'theme/property-detail-page.html', {'data':data, 'property_id':property_id, 'property_data':property_data}) 
 
-def show_required_model(request): 
+def property_post_modal_management(request): 
     sale_type = request.POST['p_dtl_btn_val'] 
     property_id = request.POST['property_id'] 
     if (sale_type == "saller_detail"): 
@@ -269,14 +269,32 @@ def show_required_model(request):
         pass 
     elif(sale_type == "share_post"):
         pass 
-    elif(sale_type == "direct_contact"): 
-        pass 
-    return HttpResponse(json.dumps({"sale_type":sale_type})) 
-
-def inquiry_from_local_user(request): 
-    property_id = request.POST['property_id'] 
-    sender_name = request.POST['sender_name'] 
-    sender_mobile = request.POST['sender_mobile'] 
-    sender_email = request.POST['sender_email'] 
-    description = request.POST['description'] 
-    pass 
+    elif(sale_type == "submit_btn_dc"): 
+        property_id = request.POST['property_id'] 
+        sender_name = request.POST['sender_name'] 
+        sender_mobile = request.POST['sender_mobile'] 
+        sender_email = request.POST['sender_email'] 
+        description = request.POST['description'] 
+        inquiry_dtl={
+            "property_id":property_id,
+            "sender_name":sender_name,
+            "sender_mobile":sender_mobile,
+            "sender_email":sender_email,
+            "description":description
+        }
+        inquiry_dtl = {property_id:inquiry_dtl}
+        # inquiry_dtl = json.dumps(inquiry_dtl) 
+        data = p_detail.objects.get(id=property_id) 
+        user_id = data.seller_id.pk
+        save_data = User_register.objects.get(pk=user_id) 
+        user_data = save_data.user_other_data 
+        if (user_data is not None or len(user_data) !=0): 
+            # user_data = json.loads(user_data) 
+            user_data['inquiry_dtl'].append(inquiry_dtl) 
+            save_data.user_other_data = user_data 
+        else: 
+            user_data = {"inquiry_dtl":[inquiry_dtl]}
+            # user_data = json.dumps(user_data) 
+            save_data.user_other_data = user_data
+        save_data.save()
+    return HttpResponse(json.dumps({"sale_type":sale_type}))  

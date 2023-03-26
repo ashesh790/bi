@@ -1,3 +1,8 @@
+# All importants commands for manage django application. 
+After change in database: 
+(1) python manage.py makemigrations <app_name>
+(2) python manage.py migrate --run-syncdb 
+
 # bi 
 ########################################### Bug List #########################################  
 # Onchange is not more fesiable when input type is text or number 

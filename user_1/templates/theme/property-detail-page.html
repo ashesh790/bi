@@ -211,8 +211,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-primary" onclick="submit_dtl();"
-                    id="submit_btn">Submit</button>
+                <button type="button" class="btn btn-outline-primary" onclick="submit_dtl(this);"
+                    id="submit_btn_dc">Submit</button>
             </div>
         </div>
     </div>
@@ -314,7 +314,7 @@
             // alert(property_id); 
             console.log(p_dtl_btn_val);
             $.ajax({
-                url: "{% url 'show_required_model' %}",
+                url: "{% url 'property_post_modal_management' %}",
                 type: "POST",
                 data: {
                     csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
@@ -384,7 +384,8 @@
                     `)
         }
     }
-    function submit_dtl() {
+    function submit_dtl(p_dtl_btn_val) {
+        var p_dtl_btn_val = $(p_dtl_btn_val).attr("id");
         var property_id = '{{ property_id }}';
         var sender_name = $(".modal-body input:eq(0)").val();
         var sender_mobile = $(".modal-body input:eq(1)").val();
@@ -392,7 +393,7 @@
         var description = $(".modal-body textarea").val();
 
         $.ajax({
-            url: "{% url 'inquiry_from_local_user' %}",
+            url: "{% url 'property_post_modal_management' %}",
             type: "POST",
             data: {
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
@@ -400,7 +401,8 @@
                 'sender_name': sender_name,
                 'sender_mobile': sender_mobile,
                 'sender_email': sender_email,
-                'description': description
+                'description': description,
+                'p_dtl_btn_val': p_dtl_btn_val
             },
             success: function (response) {
                 console.log(response);
@@ -410,6 +412,7 @@
                         <h3>Your inquiry is sent!</h3>
                     </div>
                     `)
+                location.reload();
             },
             error: function (response) {
                 console.log("Error Occured");
