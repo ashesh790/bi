@@ -3,206 +3,317 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>DASHMIN - Bootstrap Admin Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-
-    <!-- Favicon -->
-    <link href="{% static 'theme/img/favicon.ico' %}" rel="icon">
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="{% static 'admin/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
-    <link href="{% static 'admin/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{% static 'admin/css/bootstrap.min.css' %}" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="{% static 'admin/css/style.css' %}" rel="stylesheet">
-
-    <!-- import jquery-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>audrr.com</title>
+	<!-- base:css -->
+	<link rel="stylesheet" href="{% static 'admin/admin_n/vendors/mdi/css/materialdesignicons.min.css' %}">
+	<link rel="stylesheet" href="{% static 'admin/admin_n/vendors/base/vendor.bundle.base.css' %}">
+	<!-- endinject -->
+	<!-- inject:css -->
+	<link rel="stylesheet" href="{% static 'admin/admin_n/css/style.css' %}">
+	<link href="{% static 'admin/admin_n/css/style-copy.css' %}" rel="stylesheet">
+	<!-- endinject -->
+	<link rel="shortcut icon" href="{% static 'admin/admin_n/images/favicon.png' %}" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
 </head>
 
 <body>
-    <div class="container-xxl position-relative bg-white d-flex p-0">
-        <!-- Spinner Start -->
-        <!-- <div id="spinner"
-            class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div> -->
-        <!-- Spinner End -->
-
-
-        <!-- Sidebar Start -->
-        <div class="sidebar pe-4 pb-3">
-            <nav class="navbar bg-light navbar-light">
-                <a href="{% url 'dashboard' %}" class="navbar-brand mx-4 mb-3">
-                    <h4 class="text-primary">audrr.com
-                    </h4>
-                </a>
-
-                <div class="navbar-nav w-100">
-                    <a href="{% url 'dashboard' %}" class="nav-item nav-link dropdown-item active"><i
-                            class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                </div>
-                <div class="navbar-nav w-100 mt-2">
-                    <a href="{% url 'add_property_details' %}" class="nav-item nav-link dropdown-item active"><i
-                            class="fa fa-home" aria-hidden="true"></i>Add new property</a>
-                </div>
-                <div class="navbar-nav w-100 mt-2">
-                    <a href="{% url 'add_property_details' %}" class="nav-item nav-link dropdown-item active"><i
-                            class="fa fa-home" aria-hidden="true"></i>Enquiry</a>
-                </div>
-            </nav>
-        </div>
-        <!-- Sidebar End -->
-
-        <!-- Content Start -->
-        <div class="content">
-            <!-- Navbar Start -->
-            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
-                    <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
-                </a>
-                <a href="#" class="sidebar-toggler flex-shrink-0">
-                    <i class="fa fa-bars"></i>
-                </a>
-                <form class="d-none d-md-flex ms-4">
-                    <input class="form-control border-0" type="search" placeholder="Search">
-                </form>
-                <div class="navbar-nav align-items-center ms-auto">
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-envelope me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Message</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="{% static 'admin/img/user.jpg' %}" alt=""
-                                        style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="{% static 'admin/img/user.jpg' %}" alt=""
-                                        style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="{% static 'admin/img/user.jpg' %}" alt=""
-                                        style="width: 40px; height: 40px;">
-                                    <div class="ms-2">
-                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all message</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fa fa-bell me-lg-2"></i>
-                            <span class="d-none d-lg-inline-flex">Notificatin</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Profile updated</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">New user added</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item">
-                                <h6 class="fw-normal mb-0">Password changed</h6>
-                                <small>15 minutes ago</small>
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all notifications</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <span class="d-none d-lg-inline-flex">Welcome {{request.session.user_name}}</span>
-                        </a>
-                    </div>
-                </div>
-            </nav>
-            <!-- Navbar End -->
-
-
-            <!-- Blank Start -->
-            {% block admin_main_content %}
-            This is main page content.
-            {% endblock %}
-            <!-- Blank End -->
-
-
-            <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-light rounded-top p-4">
-                    <div class="row">
-                        <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
-                        </div>
-                        <div class="col-12 col-sm-6 text-center text-sm-end">
-                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Footer End -->
-        </div>
-        <!-- Content End -->
-
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'admin/lib/chart/chart.min.js' %}"></script>
-    <script src="{% static 'admin/lib/easing/easing.min.js' %}"></script>
-    <script src="{% static 'admin/lib/waypoints/waypoints.min.js' %}"></script>
-    <script src="{% static 'admin/lib/owlcarousel/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'admin/lib/tempusdominus/js/moment.min.js' %}"></script>
-    <script src="{% static 'admin/lib/tempusdominus/js/moment-timezone.min.js' %}"></script>
-    <script src="{% static 'admin/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>
-    <!-- Template Javascript -->
-    <script src="{% static 'admin/js/main.js' %}"></script>
+	<div class="container-scroller">
+		<!-- partial:partials/_horizontal-navbar.html -->
+		<div class="horizontal-menu">
+			<nav class="navbar top-navbar col-lg-12 col-12 p-0">
+				<div class="container-fluid">
+					<div class="navbar-menu-wrapper d-flex align-items-center justify-content-between">
+						<ul class="navbar-nav navbar-nav-left">
+							<li class="nav-item ms-0 me-5 d-lg-flex d-none">
+								<a href="#" class="nav-link horizontal-nav-left-menu"><i
+										class="mdi mdi-format-list-bulleted"></i></a>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center"
+									id="notificationDropdown" href="#" data-bs-toggle="dropdown">
+									<i class="mdi mdi-bell mx-0"></i>
+									<span class="count bg-success">2</span>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+									aria-labelledby="notificationDropdown">
+									<p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+									<a class="dropdown-item preview-item">
+										<div class="preview-thumbnail">
+											<div class="preview-icon bg-success">
+												<i class="mdi mdi-information mx-0"></i>
+											</div>
+										</div>
+										<div class="preview-item-content">
+											<h6 class="preview-subject font-weight-normal">Application Error</h6>
+											<p class="font-weight-light small-text mb-0 text-muted">
+												Just now
+											</p>
+										</div>
+									</a>
+									<a class="dropdown-item preview-item">
+										<div class="preview-thumbnail">
+											<div class="preview-icon bg-warning">
+												<i class="mdi mdi-settings mx-0"></i>
+											</div>
+										</div>
+										<div class="preview-item-content">
+											<h6 class="preview-subject font-weight-normal">Settings</h6>
+											<p class="font-weight-light small-text mb-0 text-muted">
+												Private message
+											</p>
+										</div>
+									</a>
+									<a class="dropdown-item preview-item">
+										<div class="preview-thumbnail">
+											<div class="preview-icon bg-info">
+												<i class="mdi mdi-account-box mx-0"></i>
+											</div>
+										</div>
+										<div class="preview-item-content">
+											<h6 class="preview-subject font-weight-normal">New user registration</h6>
+											<p class="font-weight-light small-text mb-0 text-muted">
+												2 days ago
+											</p>
+										</div>
+									</a>
+								</div>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center"
+									id="messageDropdown" href="#" data-bs-toggle="dropdown">
+									<i class="mdi mdi-email mx-0"></i>
+									<span class="count bg-primary">4</span>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+									aria-labelledby="messageDropdown">
+									<p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
+									<a class="dropdown-item preview-item">
+										<div class="preview-thumbnail">
+											<img src="{% static 'admin/admin_n/images/faces/face4.jpg' %}" alt="image"
+												class="profile-pic">
+										</div>
+										<div class="preview-item-content flex-grow">
+											<h6 class="preview-subject ellipsis font-weight-normal">David Grey
+											</h6>
+											<p class="font-weight-light small-text text-muted mb-0">
+												The meeting is cancelled
+											</p>
+										</div>
+									</a>
+									<a class="dropdown-item preview-item">
+										<div class="preview-thumbnail">
+											<img src="{% static 'admin/admin_n/images/faces/face2.jpg' %}" alt="image"
+												class="profile-pic">
+										</div>
+										<div class="preview-item-content flex-grow">
+											<h6 class="preview-subject ellipsis font-weight-normal">Tim Cook
+											</h6>
+											<p class="font-weight-light small-text text-muted mb-0">
+												New product launch
+											</p>
+										</div>
+									</a>
+									<a class="dropdown-item preview-item">
+										<div class="preview-thumbnail">
+											<img src="{% static 'admin/admin_n/images/faces/face3.jpg' %}" alt="image"
+												class="profile-pic">
+										</div>
+										<div class="preview-item-content flex-grow">
+											<h6 class="preview-subject ellipsis font-weight-normal"> Johnson
+											</h6>
+											<p class="font-weight-light small-text text-muted mb-0">
+												Upcoming board meeting
+											</p>
+										</div>
+									</a>
+								</div>
+							</li>
+							<li class="nav-item dropdown">
+								<a href="#" class="nav-link count-indicator "><i
+										class="mdi mdi-message-reply-text"></i></a>
+							</li>
+							<li class="nav-item nav-search d-none d-lg-block ms-3">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text" id="search">
+											<i class="mdi mdi-magnify"></i>
+										</span>
+									</div>
+									<input type="text" class="form-control" placeholder="search" aria-label="search"
+										aria-describedby="search">
+								</div>
+							</li>
+						</ul>
+						<div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+							<a class="navbar-brand brand-logo" href="index.html">audrr.com</a>
+							<a class="navbar-brand brand-logo-mini" href="index.html">audrr.com</a>
+						</div>
+						<ul class="navbar-nav navbar-nav-right">
+							<li class="nav-item dropdown  d-lg-flex d-none">
+								<button type="button" class="btn btn-inverse-primary btn-sm">Product </button>
+							</li>
+							<li class="nav-item dropdown d-lg-flex d-none">
+								<a class="dropdown-toggle show-dropdown-arrow btn btn-inverse-primary btn-sm"
+									id="nreportDropdown" href="#" data-bs-toggle="dropdown">
+									Reports
+								</a>
+								<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+									aria-labelledby="nreportDropdown">
+									<p class="mb-0 font-weight-medium float-left dropdown-header">Reports</p>
+									<a class="dropdown-item">
+										<i class="mdi mdi-file-pdf text-primary"></i>
+										Pdf
+									</a>
+									<a class="dropdown-item">
+										<i class="mdi mdi-file-excel text-primary"></i>
+										Exel
+									</a>
+								</div>
+							</li>
+							<li class="nav-item dropdown d-lg-flex d-none">
+								<button type="button" class="btn btn-inverse-primary btn-sm">Settings</button>
+							</li>
+							<li class="nav-item nav-profile dropdown">
+								<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+									id="profileDropdown">
+									<span class="nav-profile-name">{{request.session.user_name}}</span>
+									<span class="online-status"></span>
+									<img src="{% static 'admin/admin_n/images/faces/face28.png' %}" alt="profile" />
+								</a>
+								<div class="dropdown-menu dropdown-menu-right navbar-dropdown"
+									aria-labelledby="profileDropdown">
+									<a class="dropdown-item">
+										<i class="mdi mdi-settings text-primary"></i>
+										Settings
+									</a>
+									<a class="dropdown-item">
+										<i class="mdi mdi-logout text-primary"></i>
+										Logout
+									</a>
+								</div>
+							</li>
+						</ul>
+						<button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+							data-toggle="horizontal-menu-toggle">
+							<span class="mdi mdi-menu"></span>
+						</button>
+					</div>
+				</div>
+			</nav>
+			<nav class="bottom-navbar">
+				<div class="container">
+					<ul class="nav page-navigation">
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'dashboard' %}">
+								<i class="mdi mdi-file-document-box menu-icon"></i>
+								<span class="menu-title">Dashboard</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'add_property_details' %}" class="nav-link">
+								<i class="mdi mdi-cube-outline menu-icon"></i>
+								<span class="menu-title">Add More Property!</span>
+								<i class="menu-arrow"></i>
+							</a>
+							<!-- <div class="submenu">
+								<ul>
+									<li class="nav-item"><a class="nav-link"
+											href="pages/ui-features/buttons.html">Buttons</a></li>
+									<li class="nav-item"><a class="nav-link"
+											href="pages/ui-features/typography.html">Typography</a></li>
+								</ul>
+							</div> -->
+						</li>
+						<li class="nav-item">
+							<a href="pages/forms/basic_elements.html" class="nav-link">
+								<i class="mdi mdi-chart-areaspline menu-icon"></i>
+								<span class="menu-title">Property table</span>
+								<i class="menu-arrow"></i>
+							</a>
+						</li>
+						<!-- <li class="nav-item">
+							<a href="pages/charts/chartjs.html" class="nav-link">
+								<i class="mdi mdi-finance menu-icon"></i>
+								<span class="menu-title">Charts</span>
+								<i class="menu-arrow"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="pages/tables/basic-table.html" class="nav-link">
+								<i class="mdi mdi-grid menu-icon"></i>
+								<span class="menu-title">Tables</span>
+								<i class="menu-arrow"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="pages/icons/mdi.html" class="nav-link">
+								<i class="mdi mdi-emoticon menu-icon"></i>
+								<span class="menu-title">Icons</span>
+								<i class="menu-arrow"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<i class="mdi mdi-codepen menu-icon"></i>
+								<span class="menu-title">Sample Pages</span>
+								<i class="menu-arrow"></i>
+							</a>
+							<div class="submenu">
+								<ul class="submenu-item">
+									<li class="nav-item"><a class="nav-link" href="pages/samples/login.html">Login</a>
+									</li>
+									<li class="nav-item"><a class="nav-link" href="pages/samples/login-2.html">Login
+											2</a></li>
+									<li class="nav-item"><a class="nav-link"
+											href="pages/samples/register.html">Register</a></li>
+									<li class="nav-item"><a class="nav-link"
+											href="pages/samples/register-2.html">Register 2</a></li>
+									<li class="nav-item"><a class="nav-link"
+											href="pages/samples/lock-screen.html">Lockscreen</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="nav-item">
+							<a href="docs/documentation.html" class="nav-link">
+								<i class="mdi mdi-file-document-box-outline menu-icon"></i>
+								<span class="menu-title">Documentation</span></a>
+						</li> -->
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<!-- partial -->
+		<!-- Blank Start -->
+		{% block admin_main_content %}
+		This is main page content.
+		{% endblock %}
+		<!-- Blank End -->
+		<!-- page-body-wrapper ends -->
+	</div>
+	<!-- container-scroller -->
+	<!-- base:js -->
+	<script src="{% static 'admin/admin_n/vendors/base/vendor.bundle.base.js' %}"></script>
+	<!-- endinject -->
+	<!-- Plugin js for this page-->
+	<!-- End plugin js for this page-->
+	<!-- inject:js -->
+	<script src="{% static 'admin/admin_n/js/template.js' %}"></script>
+	<!-- endinject -->
+	<!-- plugin js for this page -->
+	<!-- End plugin js for this page -->
+	<script src="{% static 'admin/admin_n/vendors/chart.js/Chart.min.js' %}"></script>
+	<script src="{% static 'admin/admin_n/vendors/progressbar.js/progressbar.min.js' %}"></script>
+	<script src="{% static 'admin/admin_n/vendors/chartjs-plugin-datalabels/chartjs-plugin-datalabels.js' %}"></script>
+	<script src="{% static 'admin/admin_n/vendors/justgage/raphael-2.1.4.min.js' %}"></script>
+	<script src="{% static 'admin/admin_n/vendors/justgage/justgage.js' %}"></script>
+	<script src="{% static 'admin/admin_n/js/jquery.cookie.js' %}" type="text/javascript"></script>
+	<!-- Custom js for this page-->
+	<script src="{% static 'admin/admin_n/js/dashboard.js' %}"></script>
+	<!-- End custom js for this page-->
 </body>
 
 </html>

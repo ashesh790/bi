@@ -298,3 +298,23 @@ def property_post_modal_management(request):
             save_data.user_other_data = user_data
         save_data.save()
     return HttpResponse(json.dumps({"sale_type":sale_type}))  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Test functions  
+def test_function(request):
+    return render(request, 'admin/admin2/index.html')
