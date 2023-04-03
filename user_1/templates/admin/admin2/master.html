@@ -17,6 +17,44 @@
 	<!-- endinject -->
 	<link href="{% static 'theme/img/favicon.ico' %}" rel="icon">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<style>
+		.user_inquiry_div:active {
+			background-color: #f5f5f5;
+		}
+
+		.chat_card {
+			background-color: gray;
+			color: #f5f5f5;
+		}
+
+		.ch_mdl {
+			margin-top: 100px;
+			width: 50%;
+			background-color: rgb(255, 255, 255);
+			display: none;
+			box-shadow: 0px 0px 10px 10px rgb(201, 197, 197);
+			z-index: 1000;
+			position: absolute;
+			margin-left: auto;
+			margin-right: auto;
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 50%;
+			border-radius: 5px !important;
+			padding: 2%;
+		}
+
+		.chat_list_card {
+			overflow-y: auto;
+		}
+	</style>
+	<script>
+		$(".bac").on('click', function () {
+			console.log("clicked");
+		});
+	</script>
 
 </head>
 
@@ -165,7 +203,7 @@
 						</div>
 						<ul class="navbar-nav navbar-nav-right">
 							<li class="nav-item dropdown  d-lg-flex d-none">
-								<button type="button" class="btn btn-inverse-primary btn-sm">Product </button>
+								<button type="button" class="btn btn-primary" id="chat_modal">Chat</button>
 							</li>
 							<li class="nav-item dropdown d-lg-flex d-none">
 								<a class="dropdown-toggle show-dropdown-arrow btn btn-inverse-primary btn-sm"
@@ -297,6 +335,34 @@
 				</div>
 			</nav>
 		</div>
+		<div class="ch_mdl">
+			<div class="text-center">
+				<h3>Chat App</h3>
+			</div>
+			<hr class="success">
+			<div class="row">
+				<div class="col-md-4 chat_list_card card"></div>
+				<div class="col-md-6">Start a chat</div>
+			</div>
+		</div>
+		<!-- Chat Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Reply to customer</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						...
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- partial -->
 		<!-- Blank Start -->
 		{% block admin_main_content %}
@@ -327,35 +393,39 @@
 	<!-- End custom js for this page-->
 </body>
 <script>
-	$("#inquiries_from_user").click(function () {
-		$.ajax({
-			url: "{% url 'inquiries_from_user' %}",
-			type: "GET",
-			success: function (data) {
-				$(".preview-list-inquire").empty();
-				data = JSON.parse(data);
-				//data = data['user_data'];
-				console.log(typeof data.user_data.inquiry_dtl);
-				for (i = 0; i < data.user_data.inquiry_dtl.length; i++) {
-					obj_id = data.user_data.inquiry_dtl[i];
-					let description = data.user_data.inquiry_dtl[i].description;
-					let property_id = data.user_data.inquiry_dtl[i].property_id;
-					let sender_email = data.user_data.inquiry_dtl[i].sender_email;
-					let sender_mobile = data.user_data.inquiry_dtl[i].sender_mobile;
-					let sender_name = data.user_data.inquiry_dtl[i].sender_name;
-					console.log(description, property_id, sender_email, sender_mobile, sender_name);
-					$(".preview-list-inquire").append(`
-					<a class="dropdown-item preview-item user_inquiry_div">
-						<div class="preview-item-content user_inq">
+	$(document).ready(function () {
+		$("#chat_modal").on('click', function () {
+			$(".ch_mdl").toggle(200);
+			$.ajax({
+				url: "{% url 'inquiries_from_user' %}",
+				type: "GET",
+				success: function (data) {
+					$(".chat_list_card").empty();
+					data = JSON.parse(data);
+					//data = data['user_data'];
+					console.log(typeof data.user_data.inquiry_dtl);
+					for (i = 0; i < data.user_data.inquiry_dtl.length; i++) {
+						obj_id = data.user_data.inquiry_dtl[i];
+						let description = data.user_data.inquiry_dtl[i].description;
+						let property_id = data.user_data.inquiry_dtl[i].property_id;
+						let sender_email = data.user_data.inquiry_dtl[i].sender_email;
+						let sender_mobile = data.user_data.inquiry_dtl[i].sender_mobile;
+						let sender_name = data.user_data.inquiry_dtl[i].sender_name;
+						console.log(description, property_id, sender_email, sender_mobile, sender_name);
+						$(".chat_list_card").append(` 
+						<div class="dropdown-item preview-item user_inquiry_div"> 
+							<div class="preview-item-content user_inq">
 							<h6 class="preview-subject font-weight-normal user_inq_heading">`+ sender_name + `</h6>
 							<p class="font-weight-light small-text mb-0 text-muted user_inq_para">
 								`+ sender_email + `
 							</p>
+							</div>
 						</div> 
-					</a>
+						<hr> 
 					`);
+					}
 				}
-			}
+			});
 		});
 	}); 
 </script>

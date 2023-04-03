@@ -19,7 +19,8 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from user_1 import views 
-urlpatterns = [
+urlpatterns = [ 
+    path("", views.home, name="test_html_page"), 
     path('home', views.home, name="home"), 
     path('signup',views.sign_up, name="signup"),  
     path('login',views.login, name="login"),  
@@ -29,7 +30,6 @@ urlpatterns = [
     path('delete_property_record/<int:property_id>/', views.delete_property, name="delete-property-record"), 
     path('update_property_record/<int:property_id>/delete_property_image/<str:image_name>/', views.delete_property_image, name="delete_property_record"), 
     path('update_property_record/<int:property_id>/',views.update_property, name="update-property"), 
-    path("", views.test_html_page, name="test_html_page"), 
     path("crud_property", views.crud_property, name="crud_property"), 
     path("images/<int:property_id>/", views.manage_image_upload, name="manage_image_upload"), 
     path("dashboard", views.dashboard, name="dashboard"), 
