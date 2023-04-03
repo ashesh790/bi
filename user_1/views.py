@@ -171,6 +171,12 @@ def property_status(request):
 def test_html_page(request): 
     return render(request, 'test.html') 
 
+def prop_table(request): 
+    user_id= User_register.objects.get(user_id=request.session._session['user_id']) 
+    # count for user inquiries 
+    user_inq_len = len(user_id.user_other_data['inquiry_dtl'])
+    data=p_detail.objects.filter(seller_id=user_id)
+    return render(request, 'admin/admin2/prop_table.html', {'data':data}) 
 
 ################################################## userside functions ################################
 

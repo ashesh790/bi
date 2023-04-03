@@ -43,5 +43,6 @@ urlpatterns = [
     path("property_details/<int:property_id>/", views.show_full_property_detail, name="property_details"), 
     path("show_required_model", views.property_post_modal_management, name="property_post_modal_management"), 
     path("test_function", views.test_function, name="test_function"), 
-    path("inquiries_from_user", views.inquiries_from_user, name="inquiries_from_user"),
+    path("inquiries_from_user", views.inquiries_from_user, name="inquiries_from_user"), 
+    path("prop_table", views.prop_table, name="prop_table"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
