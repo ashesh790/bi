@@ -3,20 +3,10 @@
 {% block admin_main_content %}
 
 <div class="container-fluid pt-4 px-4">
-    <h3>Dashboard</h3>
-
     <div class="row bg-light rounded mx-0 p-2">
         {% for i in data %}
         <div class="col-md-4 bg-light parent-props-box">
             <div class="prop-box text-center p-2">
-                <a href="delete_property_record/{{i.id}}">
-                    <i class="fas fa-trash-alt me-lg-2 h4 trash" data-bs-toggle="tooltip" data-bs-placement="right"
-                        title="Delete"></i>
-                </a>
-                <a href="update_property_record/{{i.id}}">
-                    <i class="fas fa-pen me-lg-2 h4 edit" data-bs-toggle="tooltip" data-bs-placement="right"
-                        title="Edit"></i>
-                </a>
                 <span>
                     <b class="text-dark">{{i.property_data.property_type}}</b>
                 </span>
@@ -61,12 +51,20 @@
                         {% elif i.property_data.selling_option == "rent" %}
                         <label>Rent Price: </label>
                         <b class="text-dark">{{i.property_data.property_rent_price}}</b>
-                        {% else % }
+                        {% else %}
                         <label>Sell Price: </label>
                         <b class="text-dark">{{i.property_data.property_value}}</b> <br>
                         <label>Rent Price: </label>
                         <b class="text-dark">{{i.property_data.property_rent_price}}</b>
                         {% endif %}
+                        <a href="delete_property_record/{{i.id}}">
+                            <i class="mdi mdi-delete h2 trash" data-toggle="tooltip" data-placement="top"
+                                title="Delete"></i>
+                        </a>
+                        <a href="update_property_record/{{i.id}}">
+                            <i class="mdi mdi-tooltip-edit h2 edit" data-bs-toggle="tooltip" data-bs-placement="right"
+                                title="Edit"></i>
+                        </a>
                     </span>
                 </div>
             </div>

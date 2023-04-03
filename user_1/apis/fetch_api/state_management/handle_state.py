@@ -37,13 +37,14 @@ def login_user(request):
         if request.method=="POST": 
             user_name=request.POST['data[name]'] 
             user_psw=request.POST['data[email]']
-            request.session['user_name']=user_name 
             login=User_register.objects.filter(user_name=user_name) 
-            user_id=login[0].user_id 
-            request.session['user_id']=user_id 
-            if login: 
-                return redirect('home') 
+            if len(login) > 0:
+                request.session['user_name']=user_name 
+                user_id=login[0].user_id 
+                request.session['user_id']=user_id  
+                return True 
             else: 
-                return redirect('signup')
+                return False 
     except Exception as ex: 
-        print(f"Solve this: {ex}")
+        print(f"Solve this: {ex}") 
+        return False
