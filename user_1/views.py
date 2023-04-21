@@ -1,6 +1,5 @@
 import json
-import os
-import uuid
+import requests
 from django.conf import settings
 from django.core.files.storage import default_storage
 from urllib import request
@@ -10,6 +9,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
+from user_1.apis.fetch_api.country_api import fetch_country, property_type_list
 from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, delete_property_image_from_database, get_all_property_data, property_bound_data, search_property_type, update_property_data_record, update_property_image
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user 
 from user_1.models import User_register, p_detail 
@@ -174,25 +174,27 @@ def test_html_page(request):
 def prop_table(request): 
     user_id= User_register.objects.get(user_id=request.session._session['user_id']) 
     # count for user inquiries 
-    user_inq_len = len(user_id.user_other_data['inquiry_dtl'])
+    # user_inq_len = len(user_id.user_other_data['inquiry_dtl']) 
     data=p_detail.objects.filter(seller_id=user_id)
     return render(request, 'admin/admin2/prop_table.html', {'data':data}) 
 
 ################################################## userside functions ################################
 
 def dashboard(request): 
+    country_list = fetch_country(request) 
     user_id= User_register.objects.get(user_id=request.session._session['user_id']) 
     # count for user inquiries 
-    user_inq_len = len(user_id.user_other_data['inquiry_dtl'])
+    # user_inq_len = len(user_id.user_other_data['inquiry_dtl']) 
     data=p_detail.objects.filter(seller_id=user_id) 
-    return render(request, 'admin/admin2/dashboard.html', {'data':data, 'user_inq_len':user_inq_len})  
+    return render(request, 'admin/admin2/dashboard.html', {'data':data, #'user_inq_len':user_inq_len
+                                                           })  
 
 def crud_property(request): 
     data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))  
     return render(request, 'record.html', {'data':data}) 
 # Render home page 
 
-def home(request):
+def home(request): 
     property_category=property_bound_data 
     property_data = p_detail.objects.all() 
     return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data})  
