@@ -25,11 +25,12 @@
     <div class="container">
         <div class="scroller" style="overflow: auto; display:flex;">
             {% csrf_token %}
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;">All
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;"
+                value="all">All
                 Type</button>
-            {% for i in boundry_data.data.property_type %}
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn"
-                style="margin:10px;">{{i}}</button>
+            {% for i in boundry_data.property_type %}
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;"
+                value="{{i}}">{{i}}</button>
             {% endfor %}
         </div>
     </div>
@@ -37,34 +38,235 @@
 <div class="row m-2">
     <div class="col-md-3">
         <h3>Filter By: </h3>
-        <h4>
-            <div class="border text-center" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false"
-                aria-controls="collapseExample1" style="cursor: pointer;">
-                <b>Location</b>
+        <div id="advance_filter_container">
+            <!-- filter using location -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#location_fltr"
+                    aria-expanded="false" aria-controls="location_fltr" style="cursor: pointer;">
+                    <b>Location</b>
+                </div>
+            </h5>
+            <div class="collapse show" id="location_fltr">
+                <div class="card card-body">
+                    <select class="form-control">
+                        <option value="">Select Country</option>
+                        {% for i in boundry_data.country %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <select class="form-control mt-2">
+                        <option>Select State</option>
+                    </select>
+                    <select class="form-control mt-2">
+                        <option>Select City</option>
+                    </select>
+                </div>
             </div>
-        </h4>
-        <div class="collapse" id="collapseExample1">
-            <div class="card card-body">
-                <select class="form-control">
-                    <option value="">Select Country</option>
-                    {% for i in boundry_data.data.location %}
-                    <option value="{{i}}">{{i}}</option>
-                    {% endfor %}
-                    <option>Select State</option>
-                    <option>Select City</option>
-                </select>
-                <select class="form-control mt-2">
-                    <option>Select State</option>
-                </select>
-                <select class="form-control mt-2">
-                    <option>Select City</option>
-                </select>
+
+            <!-- filter using construction status -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#construction_fltr"
+                    aria-expanded="false" aria-controls="construction_fltr" style="cursor: pointer;">
+                    <b>Construction status</b>
+                </div>
+            </h5>
+            <div class="collapse" id="construction_fltr">
+                <div class="card card-body">
+                    <select class="form-control mt-2" id="construction_fltr_val">
+                        <option>Construction status</option>
+                        {% for i in boundry_data.construction_status %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- filter using bathroom count -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#bathroom_fltr"
+                    aria-expanded="false" aria-controls="bathroom_fltr" style="cursor: pointer;">
+                    <b>Bathrooms</b>
+                </div>
+            </h5>
+            <div class="collapse" id="bathroom_fltr">
+                <div class="card card-body">
+                    <select class="form-control mt-2" id="bathroom_fltr_val">
+                        <option>Bathrooms</option>
+                        {% for i in boundry_data.bathroom_details %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- filter using balcony count -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#balcony_fltr"
+                    aria-expanded="false" aria-controls="balcony_fltr" style="cursor: pointer;">
+                    <b>Balcony</b>
+                </div>
+            </h5>
+            <div class="collapse" id="balcony_fltr">
+                <div class="card card-body">
+                    <select class="form-control mt-2" id="balcony_fltr_val">
+                        <option>Balcony</option>
+                        {% for i in boundry_data.balcony_details %}
+                        <option>{{i}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- filter using balcony count -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#bhk_fltr" aria-expanded="false"
+                    aria-controls="bhk_fltr" style="cursor: pointer;">
+                    <b>BHK</b>
+                </div>
+            </h5>
+            <div class="collapse" id="bhk_fltr">
+                <div class="card card-body">
+                    <select class="form-control mt-2" id="balcony_fltr_val">
+                        <option>BHK</option>
+                        {% for i in boundry_data.bhk_details %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- filter using furnish type -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#furnish_fltr"
+                    aria-expanded="false" aria-controls="furnish_fltr" style="cursor: pointer;">
+                    <b>Furnish type</b>
+                </div>
+            </h5>
+            <div class="collapse" id="furnish_fltr">
+                <div class="card card-body" id="furnish_fltr_val">
+                    <select class="form-control mt-2">
+                        <option>Furnish type</option>
+                        {% for i in boundry_data.furnish_type %}
+                        <option>{{i}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- filter using geography area -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#geography_fltr"
+                    aria-expanded="false" aria-controls="geography_fltr" style="cursor: pointer;">
+                    <b>Geography area</b>
+                </div>
+            </h5>
+            <div class="collapse" id="geography_fltr">
+                <div class="card card-body">
+                    <input type="number" class="form-control" placeholder="2000Sq.ft" id="geography_fltr_val">
+                </div>
+            </div>
+
+            <!-- filter using price area -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#price_fltr" aria-expanded="false"
+                    aria-controls="price_fltr" style="cursor: pointer;">
+                    <b>Price between</b>
+                </div>
+            </h5>
+            <div class="collapse" id="price_fltr">
+                <div class="card card-body" id="price_fltr_val">
+                    <label>To: </label><input type="number" placeholder="100" class="form-control" id="start_price_val">
+                    <label>From: </label> <input type="number" placeholder="1000" class="form-control"
+                        id="end_price_val">
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-7">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi maxime obcaecati, sint natus, quia in quas
-        tenetur quae, doloremque ducimus est porro temporibus? Sunt, non id cupiditate illum rem natus.
+    <div class="col-md-9">
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane fade show p-0 active">
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="property-item rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <a href=""><img class="img-fluid" src="static/img.jpg" alt=""></a>
+                                <div
+                                    class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                    For Sell</div>
+                                <div
+                                    class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                    Appartment</div>
+                            </div>
+                            <div class="p-4 pb-0">
+                                <h5 class="text-primary mb-3">$12,345</h5>
+                                <a class="d-block h5 mb-2" href="">Golden Urban House For Sell</a>
+                                <p><i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street, New York, USA</p>
+                            </div>
+                            <div class="d-flex border-top">
+                                <small class="flex-fill text-center border-end py-2"><i
+                                        class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</small>
+                                <small class="flex-fill text-center border-end py-2"><i
+                                        class="fa fa-bed text-primary me-2"></i>3 Bed</small>
+                                <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>2
+                                    Bath</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="property-item rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <a href=""><img class="img-fluid" src="static/img.jpg" alt=""></a>
+                                <div
+                                    class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                    For Sell</div>
+                                <div
+                                    class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                    Appartment</div>
+                            </div>
+                            <div class="p-4 pb-0">
+                                <h5 class="text-primary mb-3">$12,345</h5>
+                                <a class="d-block h5 mb-2" href="">Golden Urban House For Sell</a>
+                                <p><i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street, New York, USA</p>
+                            </div>
+                            <div class="d-flex border-top">
+                                <small class="flex-fill text-center border-end py-2"><i
+                                        class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</small>
+                                <small class="flex-fill text-center border-end py-2"><i
+                                        class="fa fa-bed text-primary me-2"></i>3 Bed</small>
+                                <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>2
+                                    Bath</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="property-item rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <a href=""><img class="img-fluid" src="static/img.jpg" alt=""></a>
+                                <div
+                                    class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                    For Sell</div>
+                                <div
+                                    class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                    Appartment</div>
+                            </div>
+                            <div class="p-4 pb-0">
+                                <h5 class="text-primary mb-3">$12,345</h5>
+                                <a class="d-block h5 mb-2" href="">Golden Urban House For Sell</a>
+                                <p><i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street, New York, USA</p>
+                            </div>
+                            <div class="d-flex border-top">
+                                <small class="flex-fill text-center border-end py-2"><i
+                                        class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</small>
+                                <small class="flex-fill text-center border-end py-2"><i
+                                        class="fa fa-bed text-primary me-2"></i>3 Bed</small>
+                                <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>2
+                                    Bath</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!-- Search End -->
