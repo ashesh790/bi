@@ -151,7 +151,10 @@ def update_property(request, property_id=0):
             data.property_data['parking_type'] = request.POST['data[parking_type]']  
             data.property_data['property_value'] = request.POST['data[property_value]']  
             data.property_data['property_rent_price'] = request.POST['data[property_rent_price]']  
-            data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]']  
+            data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]'] 
+            data.property_data['country'] = request.POST['data[property_country]'] 
+            data.property_data['state'] = request.POST['data[property_state]']
+            data.property_data['city'] = request.POST['data[property_city]'] 
             data.property_data['property_address'] = request.POST['data[property_address]'] 
             data.save()  
             return render(request, 'admin/admin2/update_property.html', {'data':data, "id":property_id})
