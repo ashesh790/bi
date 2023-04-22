@@ -1,0 +1,90 @@
+{% extends 'theme/master.html' %}
+{% load static %}
+{% block main_content %}
+<style>
+    .p_type_btn {
+        border-radius: 20px;
+        border: 1px solid white;
+        padding: 10px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .p_type_btn:hover {
+        background-color: white;
+        color: black !important;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+        /* Safari and Chrome */
+    }
+</style>
+<!-- Search Start -->
+<div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+    <div class="container">
+        <div class="scroller" style="overflow: auto; display:flex;">
+            {% csrf_token %}
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;">All
+                Type</button>
+            {% for i in boundry_data.data.property_type %}
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn"
+                style="margin:10px;">{{i}}</button>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="row m-2">
+    <div class="col-md-3">
+        <h3>Filter By: </h3>
+        <h4>
+            <div class="border text-center" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false"
+                aria-controls="collapseExample1" style="cursor: pointer;">
+                <b>Location</b>
+            </div>
+        </h4>
+        <div class="collapse" id="collapseExample1">
+            <div class="card card-body">
+                <select class="form-control">
+                    <option value="">Select Country</option>
+                    {% for i in boundry_data.data.location %}
+                    <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+                    <option>Select State</option>
+                    <option>Select City</option>
+                </select>
+                <select class="form-control mt-2">
+                    <option>Select State</option>
+                </select>
+                <select class="form-control mt-2">
+                    <option>Select City</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi maxime obcaecati, sint natus, quia in quas
+        tenetur quae, doloremque ducimus est porro temporibus? Sunt, non id cupiditate illum rem natus.
+    </div>
+</div>
+<!-- Search End -->
+<script>
+    $(document).ready(function (e) {
+        $('.p_type_btn').click(function (e) {
+            e.preventDefault();
+            var property = $(this).text();
+            $.ajax({
+                url: "{% url 'filtered_property_as_per_query' %}",
+                type: "POST",
+                data: {
+                    csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                    'property': property,
+                },
+                success: function (property_data) {
+                    console.log(property_data);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
