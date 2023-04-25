@@ -40,29 +40,30 @@
         <h3>Filter By: </h3>
         <div id="advance_filter_container">
             <!-- filter using location -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#location_fltr"
-                    aria-expanded="false" aria-controls="location_fltr" style="cursor: pointer;">
-                    <b>Location</b>
-                </div>
-            </h5>
-            <div class="collapse show" id="location_fltr">
-                <div class="card card-body">
-                    <select class="form-control">
-                        <option value="">Select Country</option>
-                        {% for i in boundry_data.country %}
-                        <option value="{{i}}">{{i}}</option>
-                        {% endfor %}
-                    </select>
-                    <select class="form-control mt-2">
-                        <option>Select State</option>
-                    </select>
-                    <select class="form-control mt-2">
-                        <option>Select City</option>
-                    </select>
+            <div class="filter_value" id="location_based">
+                <h5>
+                    <div class="border text-left p-2" data-toggle="collapse" data-target="#location_fltr"
+                        aria-expanded="false" aria-controls="location_fltr" style="cursor: pointer;">
+                        <b>Location</b>
+                    </div>
+                </h5>
+                <div class="collapse show" id="location_fltr">
+                    <div class="card card-body">
+                        <select class="form-control" id="country_based">
+                            <option value="">Select Country</option>
+                            {% for i in country %}
+                            <option value="{{i.iso2}}">{{i.name}}</option>
+                            {% endfor %}
+                        </select>
+                        <select class="form-control mt-2" id="state_based">
+                            <option>Select State</option>
+                        </select>
+                        <select class="form-control mt-2">
+                            <option>Select City</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-
             <!-- filter using construction status -->
             <h5>
                 <div class="border text-left p-2" data-toggle="collapse" data-target="#construction_fltr"
@@ -275,6 +276,7 @@
         $('.p_type_btn').click(function (e) {
             e.preventDefault();
             var property = $(this).text();
+            var data_target = $(property).text();
             $.ajax({
                 url: "{% url 'filtered_property_as_per_query' %}",
                 type: "POST",
@@ -284,6 +286,29 @@
                 },
                 success: function (property_data) {
                     console.log(property_data);
+                }
+            });
+        });
+
+        // advance filter configuration 
+        $('#country_based').change(function (e) {
+            //alert("Clikced!"); 
+            e.preventDefault();
+            var country_name = $(this).val();
+            //alert(country_name); 
+            //var data_target = $(property).text();
+            $.ajax({
+                url: "{% url 'state_list' %}",
+                type: "GET",
+                data: {
+                    'country_name': country_name,
+                },
+                success: function (property_data) {
+                    property_data = JSON.parse(property_data)
+                    for (let [key, value] of Object.entries(property_data)) {
+                        console.log(`${key}: ${value}`);
+                        $('#state_based').append(`<option value="${value.iso2}">${value.name}</option>`);
+                    }
                 }
             });
         });
