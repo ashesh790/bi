@@ -1,0 +1,359 @@
+{% extends 'theme/master.html' %}
+{% load static %}
+{% block main_content %}
+<style>
+    .p_type_btn {
+        border-radius: 20px;
+        border: 1px solid white;
+        padding: 10px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .p_type_btn:hover {
+        background-color: white;
+        color: black !important;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+        /* Safari and Chrome */
+    }
+</style>
+<!-- Search Start -->
+<div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+    <div class="container">
+        <div class="scroller" style="overflow: auto; display:flex;">
+            {% csrf_token %}
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;"
+                value="all">All
+                Type</button>
+            {% for i in boundry_data.property_type %}
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;"
+                value="{{i}}">{{i}}</button>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="row m-2">
+    <div class="col-md-3">
+        <h3>Filter By: </h3>
+        <div id="advance_filter_container">
+            <!-- filter using location -->
+            <div class="filter_value" id="location_based">
+                <h5>
+                    <div class="border text-left p-2" data-toggle="collapse" data-target="#location_fltr"
+                        aria-expanded="false" aria-controls="location_fltr" style="cursor: pointer;">
+                        <b>Location</b>
+                    </div>
+                </h5>
+                <div class="collapse show" id="location_fltr">
+                    <div class="card card-body">
+                        <select class="form-control selectpicker search_field" id="country_based"
+                            onchange="search_property_based_on_input_field_values();">
+                            <option value="">Select Country</option>
+                            {% for i in country %}
+                            <option value="{{i.iso2}}">{{i.name}}</option>
+                            {% endfor %}
+                        </select>
+                        <select class="form-control mt-2 search_field" id="state_based">
+                            <option value="" selected>Select state</option>
+                        </select>
+                        <select class="form-control mt-2 search_field" id="city_based">
+                            <option value="" selected> Select City</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- filter using construction status -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#construction_fltr"
+                    aria-expanded="false" aria-controls="construction_fltr" style="cursor: pointer;">
+                    <b>Construction status</b>
+                </div>
+            </h5>
+            <div class="collapse" id="construction_fltr">
+                <div class="card card-body">
+                    <select class="form-control mt-2 search_field" id="construction_status">
+                        <option>Construction status</option>
+                        {% for i in boundry_data.construction_status %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- filter using bathroom count -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#bathroom_fltr"
+                    aria-expanded="false" aria-controls="bathroom_fltr" style="cursor: pointer;">
+                    <b>Bathrooms</b>
+                </div>
+            </h5>
+            <div class="collapse" id="bathroom_fltr">
+                <div class="card card-body">
+                    <select class="form-control mt-2 search_field" id="bathroom_val">
+                        <option>Bathrooms</option>
+                        {% for i in boundry_data.bathroom_details %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- filter using balcony count -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#balcony_fltr"
+                    aria-expanded="false" aria-controls="balcony_fltr" style="cursor: pointer;">
+                    <b>Balcony</b>
+                </div>
+            </h5>
+            <div class="collapse" id="balcony_fltr">
+                <div class="card card-body">
+                    <select class="form-control mt-2 search_field" id="balcony_val">
+                        <option>Balcony</option>
+                        {% for i in boundry_data.balcony_details %}
+                        <option>{{i}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- filter using balcony count -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#bhk_fltr" aria-expanded="false"
+                    aria-controls="bhk_fltr" style="cursor: pointer;">
+                    <b>BHK</b>
+                </div>
+            </h5>
+            <div class="collapse" id="bhk_fltr">
+                <div class="card card-body">
+                    <select class="form-control mt-2 search_field" id="balcony_val">
+                        <option>BHK</option>
+                        {% for i in boundry_data.bhk_details %}
+                        <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- filter using furnish type -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#furnish_fltr"
+                    aria-expanded="false" aria-controls="furnish_fltr" style="cursor: pointer;">
+                    <b>Furnish type</b>
+                </div>
+            </h5>
+            <div class="collapse" id="furnish_fltr">
+                <div class="card card-body" id="furnish_fltr_val">
+                    <select class="form-control mt-2 search_field" id="furnish_type">
+                        <option>Furnish type</option>
+                        {% for i in boundry_data.furnish_type %}
+                        <option>{{i}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- filter using geography area -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#geography_fltr"
+                    aria-expanded="false" aria-controls="geography_fltr" style="cursor: pointer;">
+                    <b>Geography area</b>
+                </div>
+            </h5>
+            <div class="collapse" id="geography_fltr">
+                <div class="card card-body">
+                    <input type="number" class="form-control search_field" placeholder="2000Sq.ft" id="geography_val">
+                </div>
+            </div>
+
+            <!-- filter using price area -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#price_fltr" aria-expanded="false"
+                    aria-controls="price_fltr" style="cursor: pointer;">
+                    <b>Price between</b>
+                </div>
+            </h5>
+            <div class="collapse" id="price_fltr">
+                <div class="card card-body" id="price_fltr_val">
+                    <label>To: </label><input type="number" placeholder="100" class="form-control search_field"
+                        id="start_price_val">
+                    <label>From: </label> <input type="number" placeholder="1000" class="form-control search_field"
+                        id="end_price_val">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane fade show p-0 active">
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="property-item rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <a href=""><img class="img-fluid" src="static/img.jpg" alt=""></a>
+                                <div
+                                    class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                    For Sell</div>
+                                <div
+                                    class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                    Appartment</div>
+                            </div>
+                            <div class="p-4 pb-0">
+                                <h5 class="text-primary mb-3">$12,345</h5>
+                                <a class="d-block h5 mb-2" href="">Golden Urban House For Sell</a>
+                                <p><i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street, New York, USA</p>
+                            </div>
+                            <div class="d-flex border-top">
+                                <small class="flex-fill text-center border-end py-2"><i
+                                        class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</small>
+                                <small class="flex-fill text-center border-end py-2"><i
+                                        class="fa fa-bed text-primary me-2"></i>3 Bed</small>
+                                <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>2
+                                    Bath</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="property-item rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <a href=""><img class="img-fluid" src="static/img.jpg" alt=""></a>
+                                <div
+                                    class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                    For Sell</div>
+                                <div
+                                    class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                    Appartment</div>
+                            </div>
+                            <div class="p-4 pb-0">
+                                <h5 class="text-primary mb-3">$12,345</h5>
+                                <a class="d-block h5 mb-2" href="">Golden Urban House For Sell</a>
+                                <p><i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street, New York, USA</p>
+                            </div>
+                            <div class="d-flex border-top">
+                                <small class="flex-fill text-center border-end py-2"><i
+                                        class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</small>
+                                <small class="flex-fill text-center border-end py-2"><i
+                                        class="fa fa-bed text-primary me-2"></i>3 Bed</small>
+                                <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>2
+                                    Bath</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="property-item rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <a href=""><img class="img-fluid" src="static/img.jpg" alt=""></a>
+                                <div
+                                    class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                    For Sell</div>
+                                <div
+                                    class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                    Appartment</div>
+                            </div>
+                            <div class="p-4 pb-0">
+                                <h5 class="text-primary mb-3">$12,345</h5>
+                                <a class="d-block h5 mb-2" href="">Golden Urban House For Sell</a>
+                                <p><i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street, New York, USA</p>
+                            </div>
+                            <div class="d-flex border-top">
+                                <small class="flex-fill text-center border-end py-2"><i
+                                        class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</small>
+                                <small class="flex-fill text-center border-end py-2"><i
+                                        class="fa fa-bed text-primary me-2"></i>3 Bed</small>
+                                <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>2
+                                    Bath</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Search End -->
+<script>
+    function search_property_based_on_input_field_values() {
+        var country_based = $('#country_based').val() || "";
+        var state_based = $('#state_based').val() || "";
+        var city_based = $('#city_based').val() || "";
+        var construction_status = $('#construction_status').val() || "";
+        var bathroom_val = $('#bathroom_val').val() || "";
+        var balcony_val = $('#balcony_val').val() || "";
+        var furnish_type = $('#furnish_type').val() || "";
+        var geography_val = $('#geography_val').val() || "";
+
+        var search_object = new Object();
+        if (country_based != "") { search_object.country_based = country_based };
+        if (state_based != "") { search_object.state_based = state_based };
+        if (city_based != "") { search_object.city_based = city_based };
+        if (construction_status != "") { search_object.construction_status = construction_status };
+        if (bathroom_val != "") { search_object.bathroom_val = bathroom_val };
+        if (balcony_val != "") { search_object.balcony_val = balcony_val };
+        if (furnish_type != "") { search_object.furnish_type = furnish_type };
+        if (geography_val != "") { search_object.geography_val = geography_val };
+    }
+    $(document).ready(function (e) {
+        $('.p_type_btn').click(function (e) {
+            e.preventDefault();
+            var property = $(this).text();
+            var data_target = $(property).text();
+            $.ajax({
+                url: "{% url 'filtered_property_as_per_query' %}",
+                type: "POST",
+                data: {
+                    csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                    'property': property,
+                },
+                success: function (property_data) {
+                    console.log(property_data);
+                }
+            });
+        });
+
+        // advance filter configuration 
+        $('#country_based').change(function (e) {
+            //alert("Clikced!"); 
+            e.preventDefault();
+            var country_name = $(this).val();
+            //alert(country_name); 
+            //var data_target = $(property).text();
+            $.ajax({
+                url: "{% url 'state_list' %}",
+                type: "GET",
+                data: {
+                    'country_name': country_name,
+                },
+                success: function (property_data) {
+                    property_data = JSON.parse(property_data)
+                    for (let [key, value] of Object.entries(property_data)) {
+                        $('#state_based').append(`<option value="${value.iso2}">${value.name}</option>`);
+                    }
+                }
+            });
+        });
+
+        $('#state_based').change(function (e) {
+            //alert("Clikced!"); 
+            e.preventDefault();
+            var country_name = $("#country_based").val();
+            var state_name = $(this).val();
+            $.ajax({
+                url: "{% url 'city_list' %}",
+                type: "GET",
+                data: {
+                    'state_name': state_name,
+                    'country_name': country_name,
+                },
+                success: function (property_data) {
+                    property_data = JSON.parse(property_data)
+                    for (let [key, value] of Object.entries(property_data)) {
+                        $('#city_based').append(`<option value="${value.name}">${value.name}</option>`);
+                    }
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,6 +1,5 @@
 import json
-import os
-import uuid
+import requests
 from django.conf import settings
 from django.core.files.storage import default_storage
 from urllib import request
@@ -10,17 +9,22 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
+from user_1.apis.fetch_api.advance_filter_functions import advance_filter_boundary, filtered_property_as_per_query
+from user_1.apis.fetch_api.country_api import fetch_country, property_type_list, country_list, state_list, city_list
 from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, delete_property_image_from_database, get_all_property_data, property_bound_data, search_property_type, update_property_data_record, update_property_image
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user 
 from user_1.models import User_register, p_detail 
 from django.core.serializers import serialize 
 import shutil 
 from django.core.files.storage import FileSystemStorage
-
 # from user_1.forms import MyForm
 
 # Note: Create login and signup in single html page 
 
+def advance_filter(request): 
+    boundry_data = advance_filter_boundary(request) 
+    boundry_data = json.loads(boundry_data.content) 
+    return render(request, "advance_filter/filter.html", {"boundry_data":boundry_data['data'], "country":boundry_data['country']}) 
 # Login function 
 def sign_up(request): 
     if request.method =="POST": 
@@ -146,7 +150,10 @@ def update_property(request, property_id=0):
             data.property_data['parking_type'] = request.POST['data[parking_type]']  
             data.property_data['property_value'] = request.POST['data[property_value]']  
             data.property_data['property_rent_price'] = request.POST['data[property_rent_price]']  
-            data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]']  
+            data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]'] 
+            data.property_data['country'] = request.POST['data[property_country]'] 
+            data.property_data['state'] = request.POST['data[property_state]']
+            data.property_data['city'] = request.POST['data[property_city]'] 
             data.property_data['property_address'] = request.POST['data[property_address]'] 
             data.save()  
             return render(request, 'admin/admin2/update_property.html', {'data':data, "id":property_id})
@@ -174,25 +181,27 @@ def test_html_page(request):
 def prop_table(request): 
     user_id= User_register.objects.get(user_id=request.session._session['user_id']) 
     # count for user inquiries 
-    user_inq_len = len(user_id.user_other_data['inquiry_dtl'])
+    # user_inq_len = len(user_id.user_other_data['inquiry_dtl']) 
     data=p_detail.objects.filter(seller_id=user_id)
     return render(request, 'admin/admin2/prop_table.html', {'data':data}) 
 
 ################################################## userside functions ################################
 
 def dashboard(request): 
+    country_list = fetch_country(request) 
     user_id= User_register.objects.get(user_id=request.session._session['user_id']) 
     # count for user inquiries 
-    user_inq_len = len(user_id.user_other_data['inquiry_dtl'])
+    # user_inq_len = len(user_id.user_other_data['inquiry_dtl']) 
     data=p_detail.objects.filter(seller_id=user_id) 
-    return render(request, 'admin/admin2/dashboard.html', {'data':data, 'user_inq_len':user_inq_len})  
+    return render(request, 'admin/admin2/dashboard.html', {'data':data, #'user_inq_len':user_inq_len
+                                                           })  
 
 def crud_property(request): 
     data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))  
     return render(request, 'record.html', {'data':data}) 
 # Render home page 
 
-def home(request):
+def home(request): 
     property_category=property_bound_data 
     property_data = p_detail.objects.all() 
     return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data})  

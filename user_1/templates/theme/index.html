@@ -17,19 +17,13 @@
                         <input type="text" class="form-control border-0 py-3" placeholder="Search Keyword">
                     </div>
                     <div class="col-md-4">
-                        <select class="form-select border-0 py-3">
+                        <select class="form-select border-0 py-3 property_type">
                             <option selected>Property Type</option>
-                            <option value="1">Property Type 1</option>
-                            <option value="2">Property Type 2</option>
-                            <option value="3">Property Type 3</option>
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <select class="form-select border-0 py-3">
+                        <select class="form-select border-0 py-3 country_option">
                             <option selected>Location</option>
-                            <option value="1">Location 1</option>
-                            <option value="2">Location 2</option>
-                            <option value="3">Location 3</option>
                         </select>
                     </div>
                 </div>
@@ -358,7 +352,36 @@
 <!-- javaScript code -->
 
 <script>
+    $(document).ready(function () {
 
+        // fetch property type 
+        $.ajax({
+            url: "/property_type_list",
+            type: "GET"
+        }).done(function (response) {
+            var property_type_list = [response];
+            var property_type = property_type_list[0].property_type_list;
+            for (var i in property_type) {
+                console.log(property_type[i])
+                $(".property_type").append("<option value=" + property_type[i] + ">" + property_type[i] + "</option>");
+            }
+        });
+
+        // fetch country 
+        $.ajax({
+            url: "/fetch_country",
+            type: "GET"
+        }).done(function (response) {
+            var response_array = [response]
+            var country_list = response_array[0].country_list
+            for (var i in country_list) {
+                console.log(country_list[i])
+                $(".country_option").append("<option value=" + country_list[i] + ">" + country_list[i] + "</option>");
+            }
+        });
+    });
+
+    // filter data on selling option based 
     $("#sell, #rent, #all").click(function () {
         $("#filtered").empty();
         var sale_type = $(this).val();

@@ -34,6 +34,9 @@ def add_property_details_in_database(request):
         property_data['property_value']=request.POST['property_value'] 
         property_data['property_rent_price']=request.POST['property_rent_price'] 
         property_data['from_avail_property_date']=request.POST['from_avail_property_date'] 
+        property_data['country']=request.POST['country'] 
+        property_data['state']=request.POST['state']
+        property_data['city']=request.POST['city']
         property_data['property_address']=request.POST['property_address'] 
         property_data['property_image']= property_image_save
         property_data['property_video']= {}  
