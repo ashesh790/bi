@@ -1,4 +1,5 @@
 import json
+from django.db.models import Q
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from user_1.apis.fetch_api.country_api import country_list, fetch_country
@@ -62,3 +63,13 @@ def filtered_property_as_per_query(request):
     for i in property_data: 
         property_data_dict[i.id] = i.property_data  
     return JsonResponse(property_data_dict) 
+
+
+# def search_properties(input_dict):
+#     query = Q()
+#     for field, value in input_dict.items():
+#         if value:
+#             query &= Q(**{field: value})
+    
+#     search_results = Property.objects.filter(query)
+#     return search_results

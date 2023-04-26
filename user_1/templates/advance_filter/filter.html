@@ -49,17 +49,18 @@
                 </h5>
                 <div class="collapse show" id="location_fltr">
                     <div class="card card-body">
-                        <select class="form-control" id="country_based">
+                        <select class="form-control selectpicker search_field" id="country_based"
+                            onchange="search_property_based_on_input_field_values();">
                             <option value="">Select Country</option>
                             {% for i in country %}
                             <option value="{{i.iso2}}">{{i.name}}</option>
                             {% endfor %}
                         </select>
-                        <select class="form-control mt-2" id="state_based">
-                            <option>Select State</option>
+                        <select class="form-control mt-2 search_field" id="state_based">
+                            <option value="" selected>Select state</option>
                         </select>
-                        <select class="form-control mt-2" id="city_based">
-                            <option>Select City</option>
+                        <select class="form-control mt-2 search_field" id="city_based">
+                            <option value="" selected> Select City</option>
                         </select>
                     </div>
                 </div>
@@ -73,7 +74,7 @@
             </h5>
             <div class="collapse" id="construction_fltr">
                 <div class="card card-body">
-                    <select class="form-control mt-2" id="construction_fltr_val">
+                    <select class="form-control mt-2 search_field" id="construction_status">
                         <option>Construction status</option>
                         {% for i in boundry_data.construction_status %}
                         <option value="{{i}}">{{i}}</option>
@@ -91,7 +92,7 @@
             </h5>
             <div class="collapse" id="bathroom_fltr">
                 <div class="card card-body">
-                    <select class="form-control mt-2" id="bathroom_fltr_val">
+                    <select class="form-control mt-2 search_field" id="bathroom_val">
                         <option>Bathrooms</option>
                         {% for i in boundry_data.bathroom_details %}
                         <option value="{{i}}">{{i}}</option>
@@ -109,7 +110,7 @@
             </h5>
             <div class="collapse" id="balcony_fltr">
                 <div class="card card-body">
-                    <select class="form-control mt-2" id="balcony_fltr_val">
+                    <select class="form-control mt-2 search_field" id="balcony_val">
                         <option>Balcony</option>
                         {% for i in boundry_data.balcony_details %}
                         <option>{{i}}</option>
@@ -127,7 +128,7 @@
             </h5>
             <div class="collapse" id="bhk_fltr">
                 <div class="card card-body">
-                    <select class="form-control mt-2" id="balcony_fltr_val">
+                    <select class="form-control mt-2 search_field" id="balcony_val">
                         <option>BHK</option>
                         {% for i in boundry_data.bhk_details %}
                         <option value="{{i}}">{{i}}</option>
@@ -145,7 +146,7 @@
             </h5>
             <div class="collapse" id="furnish_fltr">
                 <div class="card card-body" id="furnish_fltr_val">
-                    <select class="form-control mt-2">
+                    <select class="form-control mt-2 search_field" id="furnish_type">
                         <option>Furnish type</option>
                         {% for i in boundry_data.furnish_type %}
                         <option>{{i}}</option>
@@ -163,7 +164,7 @@
             </h5>
             <div class="collapse" id="geography_fltr">
                 <div class="card card-body">
-                    <input type="number" class="form-control" placeholder="2000Sq.ft" id="geography_fltr_val">
+                    <input type="number" class="form-control search_field" placeholder="2000Sq.ft" id="geography_val">
                 </div>
             </div>
 
@@ -176,8 +177,9 @@
             </h5>
             <div class="collapse" id="price_fltr">
                 <div class="card card-body" id="price_fltr_val">
-                    <label>To: </label><input type="number" placeholder="100" class="form-control" id="start_price_val">
-                    <label>From: </label> <input type="number" placeholder="1000" class="form-control"
+                    <label>To: </label><input type="number" placeholder="100" class="form-control search_field"
+                        id="start_price_val">
+                    <label>From: </label> <input type="number" placeholder="1000" class="form-control search_field"
                         id="end_price_val">
                 </div>
             </div>
@@ -272,6 +274,26 @@
 </div>
 <!-- Search End -->
 <script>
+    function search_property_based_on_input_field_values() {
+        var country_based = $('#country_based').val() || "";
+        var state_based = $('#state_based').val() || "";
+        var city_based = $('#city_based').val() || "";
+        var construction_status = $('#construction_status').val() || "";
+        var bathroom_val = $('#bathroom_val').val() || "";
+        var balcony_val = $('#balcony_val').val() || "";
+        var furnish_type = $('#furnish_type').val() || "";
+        var geography_val = $('#geography_val').val() || "";
+
+        var search_object = new Object();
+        if (country_based != "") { search_object.country_based = country_based };
+        if (state_based != "") { search_object.state_based = state_based };
+        if (city_based != "") { search_object.city_based = city_based };
+        if (construction_status != "") { search_object.construction_status = construction_status };
+        if (bathroom_val != "") { search_object.bathroom_val = bathroom_val };
+        if (balcony_val != "") { search_object.balcony_val = balcony_val };
+        if (furnish_type != "") { search_object.furnish_type = furnish_type };
+        if (geography_val != "") { search_object.geography_val = geography_val };
+    }
     $(document).ready(function (e) {
         $('.p_type_btn').click(function (e) {
             e.preventDefault();
