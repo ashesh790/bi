@@ -59,7 +59,9 @@ def state_list(request):
         # Something went wrong
         print(f"Server Busy") 
 
-def city_list(request, country, state):
+def city_list(request): 
+    country = request.GET['country_name']
+    state = request.GET['state_name']
     url = f"https://api.countrystatecity.in/v1/countries/{country}/states/{state}/cities" 
     headers = {
     'X-CSCAPI-KEY': API_KEY
@@ -70,3 +72,4 @@ def city_list(request, country, state):
     else:
         # Something went wrong
         print(f"Server Busy") 
+        return None

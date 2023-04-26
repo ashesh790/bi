@@ -52,5 +52,5 @@ urlpatterns = [
     path("filtered_property_as_per_query", views.filtered_property_as_per_query, name="filtered_property_as_per_query"), 
     path("country_list", views.country_list, name="country_list"), 
     path("state_list", views.state_list, name="state_list"),
-    path("city_list/<str:country>/<str:state>/cities/", views.city_list, name="city_list"),
+    path("city_list", views.city_list, name="city_list"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
