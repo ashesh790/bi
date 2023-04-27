@@ -1,8 +1,9 @@
 import json
+import pandas as pd 
 from django.db.models import Q
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
-from user_1.apis.fetch_api.country_api import country_list, fetch_country
+from user_1.apis.fetch_api.country_api import country_list
 
 from user_1.models import p_detail 
 def advance_filter_boundary(request): 
@@ -65,11 +66,13 @@ def filtered_property_as_per_query(request):
     return JsonResponse(property_data_dict) 
 
 
-# def search_properties(input_dict):
-#     query = Q()
-#     for field, value in input_dict.items():
-#         if value:
-#             query &= Q(**{field: value})
+def search_properties(request): 
+    property_details = request.POST['search_object'] 
+    property_details = json.loads(property_details) 
+    query = Q()
+    for field, value in property_details.items():
+        if value:
+            query &= Q(**{"property_data__"+field: value})
     
-#     search_results = Property.objects.filter(query)
-#     return search_results
+    search_results = p_detail.objects.filter(query)
+    return search_results

@@ -9,8 +9,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
-from user_1.apis.fetch_api.advance_filter_functions import advance_filter_boundary, filtered_property_as_per_query
-from user_1.apis.fetch_api.country_api import fetch_country, property_type_list, country_list, state_list, city_list
+from user_1.apis.fetch_api.advance_filter_functions import advance_filter_boundary, filtered_property_as_per_query, search_properties
+from user_1.apis.fetch_api.country_api import property_type_list, country_list, state_list, city_list
 from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, delete_property_image_from_database, get_all_property_data, property_bound_data, search_property_type, update_property_data_record, update_property_image
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user 
 from user_1.models import User_register, p_detail 
@@ -79,10 +79,12 @@ def add_property_details(request):
     try:
         if request.method =='POST' and len(request.POST) is not None: 
             property_details=add_property_details_in_database(request) 
+        country_name_list = country_list(request) 
+        country_name_list = json.loads(country_name_list) 
         data = settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json"  
         with open(data) as f:
             data = json.load(f)  
-        data = data  
+        data = data 
         return render(request, 'admin/admin2/add_property.html', {
             "property_type":data["property_type"], 
             "deal_option":data["deal_option"],
@@ -91,7 +93,8 @@ def add_property_details(request):
             "bhk_details":data["bhk_details"], 
             "bathroom_details":data["bathroom_details"],
             "balcony_details":data["balcony_details"], 
-            "parking_details":data["parking_details"],
+            "parking_details":data["parking_details"], 
+            "country_name_list": country_name_list
             })  
     except Exception as ex: 
         print(f"Solve this: {ex}") 
@@ -188,7 +191,6 @@ def prop_table(request):
 ################################################## userside functions ################################
 
 def dashboard(request): 
-    country_list = fetch_country(request) 
     user_id= User_register.objects.get(user_id=request.session._session['user_id']) 
     # count for user inquiries 
     # user_inq_len = len(user_id.user_other_data['inquiry_dtl']) 
