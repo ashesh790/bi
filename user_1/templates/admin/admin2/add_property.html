@@ -128,20 +128,23 @@
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
                     <label for="property_address" class="form-label">Country</label>
-                    <select class="form-select" name="country">
-                        <option value="country">parking_details</option>
+                    <select class="form-select" name="country" id="country_based">
+                        <option value="country">Select country</option>
+                        {% for i in country_name_list %}
+                        <option value="{{i.iso2}}">{{i.name}}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
                     <label for="property_address" class="form-label">State</label>
-                    <select class="form-select" name="state">
-                        <option value="state">parking_details</option>
+                    <select class="form-select" name="state" id="state_based">
+                        <option value="state">Select state</option>
                     </select>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
                     <label for="property_address" class="form-label">City</label>
-                    <select class="form-select" name="city">
-                        <option value="city">parking_details</option>
+                    <select class="form-select" name="city" id="city_based">
+                        <option value="city">Select city</option>
                     </select>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
@@ -164,4 +167,54 @@
             </div>
     </div>
 </div>
+
+<!-- javaScript code -->
+<script>
+    // advance filter configuration 
+    $('#country_based').change(function (e) {
+        //alert("Clikced!"); 
+        e.preventDefault();
+        var country_name = $(this).val();
+        //alert(country_name); 
+        //var data_target = $(property).text();
+        $.ajax({
+            url: "{% url 'state_list' %}",
+            type: "GET",
+            data: {
+                'country_name': country_name,
+            },
+            success: function (property_data) {
+                $("#state_based").empty();
+                $('#state_based').append(`<option value="">Select state</option>`);
+                property_data = JSON.parse(property_data)
+                for (let [key, value] of Object.entries(property_data)) {
+                    $('#state_based').append(`<option value="${value.iso2, value.name}">${value.name}</option>`);
+                }
+            }
+        });
+    });
+
+    $('#state_based').change(function (e) {
+        //alert("Clikced!"); 
+        e.preventDefault();
+        var country_name = $("#country_based").val();
+        var state_name = $(this).val();
+        $.ajax({
+            url: "{% url 'city_list' %}",
+            type: "GET",
+            data: {
+                'state_name': state_name,
+                'country_name': country_name,
+            },
+            success: function (property_data) {
+                $("#city_based").empty();
+                $('#city_based').append(`<option value="">Select City</option>`);
+                property_data = JSON.parse(property_data)
+                for (let [key, value] of Object.entries(property_data)) {
+                    $('#city_based').append(`<option value="${value.name}">${value.name}</option>`);
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}

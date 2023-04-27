@@ -5,24 +5,6 @@ import requests
 
 API_KEY = "aW5ORzN6VkpJdVZrZFZSUFdlYUxxRFNpdkxVMU5kaEdzYmI5cE9hNQ==" 
 
-def fetch_country(request): 
-    # country API 
-    url = "https://api.first.org/data/v1/countries" 
-    country_list= [] 
-    response = requests.get(url)
-    if response.status_code == 200:
-        # Success!
-        data = response.json()
-        countrys = data['data'] 
-        for country in countrys: 
-            country_list.append(data['data'][country]['country']) 
-        data = {"country_list":country_list} 
-        return data 
-    else:
-        # Something went wrong
-        print(f"Error: {response.status_code}")
-
-
 def property_type_list(request): 
     data = settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json" 
     with open(data) as f: 

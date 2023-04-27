@@ -367,18 +367,6 @@
             }
         });
 
-        // fetch country 
-        $.ajax({
-            url: "/fetch_country",
-            type: "GET"
-        }).done(function (response) {
-            var response_array = [response]
-            var country_list = response_array[0].country_list
-            for (var i in country_list) {
-                console.log(country_list[i])
-                $(".country_option").append("<option value=" + country_list[i] + ">" + country_list[i] + "</option>");
-            }
-        });
     });
 
     // filter data on selling option based 

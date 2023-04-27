@@ -56,10 +56,12 @@
                             <option value="{{i.iso2}}">{{i.name}}</option>
                             {% endfor %}
                         </select>
-                        <select class="form-control mt-2 search_field" id="state_based">
+                        <select class="form-control mt-2 search_field" id="state_based"
+                            onchange="search_property_based_on_input_field_values();">
                             <option value="" selected>Select state</option>
                         </select>
-                        <select class="form-control mt-2 search_field" id="city_based">
+                        <select class="form-control mt-2 search_field" id="city_based"
+                            onchange="search_property_based_on_input_field_values();">
                             <option value="" selected> Select City</option>
                         </select>
                     </div>
@@ -128,7 +130,7 @@
             </h5>
             <div class="collapse" id="bhk_fltr">
                 <div class="card card-body">
-                    <select class="form-control mt-2 search_field" id="balcony_val">
+                    <select class="form-control mt-2 search_field" id="bhk_val">
                         <option>BHK</option>
                         {% for i in boundry_data.bhk_details %}
                         <option value="{{i}}">{{i}}</option>
@@ -275,24 +277,38 @@
 <!-- Search End -->
 <script>
     function search_property_based_on_input_field_values() {
-        var country_based = $('#country_based').val() || "";
-        var state_based = $('#state_based').val() || "";
-        var city_based = $('#city_based').val() || "";
+        var country = $('#country_based').val() || "";
+        var state = $('#state_based').val() || "";
+        var city = $('#city_based').val() || "";
         var construction_status = $('#construction_status').val() || "";
-        var bathroom_val = $('#bathroom_val').val() || "";
-        var balcony_val = $('#balcony_val').val() || "";
+        var bathroom = $('#bathroom_val').val() || "";
+        var balcony = $('#balcony_val').val() || "";
+        var bhk = $("#bhk_val").val() || "";
         var furnish_type = $('#furnish_type').val() || "";
-        var geography_val = $('#geography_val').val() || "";
+        var geography_area = $('#geography_val').val() || "";
 
         var search_object = new Object();
-        if (country_based != "") { search_object.country_based = country_based };
-        if (state_based != "") { search_object.state_based = state_based };
-        if (city_based != "") { search_object.city_based = city_based };
+        if (country != "") { search_object.country = country };
+        if (state != "") { search_object.state = state };
+        if (city != "") { search_object.city = city };
         if (construction_status != "") { search_object.construction_status = construction_status };
-        if (bathroom_val != "") { search_object.bathroom_val = bathroom_val };
-        if (balcony_val != "") { search_object.balcony_val = balcony_val };
+        if (bathroom != "") { search_object.bathroom = bathroom };
+        if (balcony != "") { search_object.balcony = balcony };
+        if (bhk != "") { search_object.bhk = bhk };
         if (furnish_type != "") { search_object.furnish_type = furnish_type };
-        if (geography_val != "") { search_object.geography_val = geography_val };
+        if (geography_area != "") { search_object.geography_area = geography_area };
+
+        $.ajax({
+            url: "{% url 'search_properties' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                "search_object": JSON.stringify(search_object),
+            },
+            success: function (property_data) {
+                console.log(property_data);
+            }
+        });
     }
     $(document).ready(function (e) {
         $('.p_type_btn').click(function (e) {
@@ -326,6 +342,8 @@
                     'country_name': country_name,
                 },
                 success: function (property_data) {
+                    $("#state_based").empty();
+                    $('#state_based').append(`<option value="">Select state</option>`);
                     property_data = JSON.parse(property_data)
                     for (let [key, value] of Object.entries(property_data)) {
                         $('#state_based').append(`<option value="${value.iso2}">${value.name}</option>`);
@@ -347,6 +365,8 @@
                     'country_name': country_name,
                 },
                 success: function (property_data) {
+                    $("#city_based").empty();
+                    $('#city_based').append(`<option value="">Select City</option>`);
                     property_data = JSON.parse(property_data)
                     for (let [key, value] of Object.entries(property_data)) {
                         $('#city_based').append(`<option value="${value.name}">${value.name}</option>`);
