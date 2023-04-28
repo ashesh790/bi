@@ -77,7 +77,7 @@
             <div class="collapse" id="construction_fltr">
                 <div class="card card-body">
                     <select class="form-control mt-2 search_field" id="construction_status">
-                        <option>Construction status</option>
+                        <option value="">Construction status</option>
                         {% for i in boundry_data.construction_status %}
                         <option value="{{i}}">{{i}}</option>
                         {% endfor %}
@@ -95,7 +95,7 @@
             <div class="collapse" id="bathroom_fltr">
                 <div class="card card-body">
                     <select class="form-control mt-2 search_field" id="bathroom_val">
-                        <option>Bathrooms</option>
+                        <option value="">Bathrooms</option>
                         {% for i in boundry_data.bathroom_details %}
                         <option value="{{i}}">{{i}}</option>
                         {% endfor %}
@@ -113,7 +113,7 @@
             <div class="collapse" id="balcony_fltr">
                 <div class="card card-body">
                     <select class="form-control mt-2 search_field" id="balcony_val">
-                        <option>Balcony</option>
+                        <option value="">Balcony</option>
                         {% for i in boundry_data.balcony_details %}
                         <option>{{i}}</option>
                         {% endfor %}
@@ -131,7 +131,7 @@
             <div class="collapse" id="bhk_fltr">
                 <div class="card card-body">
                     <select class="form-control mt-2 search_field" id="bhk_val">
-                        <option>BHK</option>
+                        <option value="">BHK</option>
                         {% for i in boundry_data.bhk_details %}
                         <option value="{{i}}">{{i}}</option>
                         {% endfor %}
@@ -149,7 +149,7 @@
             <div class="collapse" id="furnish_fltr">
                 <div class="card card-body" id="furnish_fltr_val">
                     <select class="form-control mt-2 search_field" id="furnish_type">
-                        <option>Furnish type</option>
+                        <option value="">Furnish type</option>
                         {% for i in boundry_data.furnish_type %}
                         <option>{{i}}</option>
                         {% endfor %}
