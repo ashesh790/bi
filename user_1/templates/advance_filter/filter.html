@@ -49,21 +49,35 @@
                 </h5>
                 <div class="collapse show" id="location_fltr">
                     <div class="card card-body">
-                        <select class="form-control selectpicker search_field" id="country_based"
-                            onchange="search_property_based_on_input_field_values();">
-                            <option value="">Select Country</option>
-                            {% for i in country %}
-                            <option value="{{i.iso2}}">{{i.name}}</option>
-                            {% endfor %}
-                        </select>
-                        <select class="form-control mt-2 search_field" id="state_based"
-                            onchange="search_property_based_on_input_field_values();">
-                            <option value="" selected>Select state</option>
-                        </select>
-                        <select class="form-control mt-2 search_field" id="city_based"
-                            onchange="search_property_based_on_input_field_values();">
-                            <option value="" selected> Select City</option>
-                        </select>
+                        <div class="d-flex">
+                            <div id="country_based__trash">
+                                <select class="form-control selectpicker search_field" id="country_based"
+                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                    <option value="">Select Country</option>
+                                    {% for i in country %}
+                                    <option value="{{i.iso2}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div id="state_based__trash">
+                                <select class="form-control mt-2 search_field" id="state_based"
+                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                    <option hidden>Select stateSelect stateSelect state</option>
+                                    <option value="" selected>Select state</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div id="city_based__trash">
+                                <select class="form-control mt-2 search_field" id="city_based"
+                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                    <option hidden>Select CitySelect CitySelect CitySelect City</option>
+                                    <option value="" selected> Select City</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -190,85 +204,39 @@
     <div class="col-md-9">
         <div class="tab-content">
             <div id="tab-1" class="tab-pane fade show p-0 active">
-                <div class="row g-4">
+                <div class="row g-4 property_counter">
+                    {% for i in property_data %}
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="property-item rounded overflow-hidden">
                             <div class="position-relative overflow-hidden">
                                 <a href=""><img class="img-fluid" src="static/img.jpg" alt=""></a>
                                 <div
                                     class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
-                                    For Sell</div>
+                                    For {{i.property_data.selling_option}}</div>
                                 <div
                                     class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
-                                    Appartment</div>
+                                    {{i.property_data.property_type}}</div>
                             </div>
                             <div class="p-4 pb-0">
-                                <h5 class="text-primary mb-3">$12,345</h5>
-                                <a class="d-block h5 mb-2" href="">Golden Urban House For Sell</a>
-                                <p><i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street, New York, USA</p>
+                                <h5 class="text-primary mb-3">{{i.property_data.property_rent_price}}/Month</h5>
+                                <a class="d-block h5 mb-2" href="">{{i.property_data.property_type}}, For
+                                    {{i.property_data.selling_option}}</a>
+                                <p><i
+                                        class="fa fa-map-marker-alt text-primary me-2"></i>{{i.property_data.property_address}}
+                                </p>
                             </div>
                             <div class="d-flex border-top">
                                 <small class="flex-fill text-center border-end py-2"><i
-                                        class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</small>
+                                        class="fa fa-ruler-combined text-primary me-2"></i>{{i.property_data.geography_area}}</small>
                                 <small class="flex-fill text-center border-end py-2"><i
-                                        class="fa fa-bed text-primary me-2"></i>3 Bed</small>
-                                <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>2
-                                    Bath</small>
+                                        class="fa fa-bed text-primary me-2"></i>{{i.property_data.construction_status}}</small>
+                                <small class="flex-fill text-center py-2"><i
+                                        class="fa fa-bath text-primary me-2"></i>{{i.property_data.property_age}} Year
+                                    old</small>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="property-item rounded overflow-hidden">
-                            <div class="position-relative overflow-hidden">
-                                <a href=""><img class="img-fluid" src="static/img.jpg" alt=""></a>
-                                <div
-                                    class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
-                                    For Sell</div>
-                                <div
-                                    class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
-                                    Appartment</div>
-                            </div>
-                            <div class="p-4 pb-0">
-                                <h5 class="text-primary mb-3">$12,345</h5>
-                                <a class="d-block h5 mb-2" href="">Golden Urban House For Sell</a>
-                                <p><i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street, New York, USA</p>
-                            </div>
-                            <div class="d-flex border-top">
-                                <small class="flex-fill text-center border-end py-2"><i
-                                        class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</small>
-                                <small class="flex-fill text-center border-end py-2"><i
-                                        class="fa fa-bed text-primary me-2"></i>3 Bed</small>
-                                <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>2
-                                    Bath</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="property-item rounded overflow-hidden">
-                            <div class="position-relative overflow-hidden">
-                                <a href=""><img class="img-fluid" src="static/img.jpg" alt=""></a>
-                                <div
-                                    class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
-                                    For Sell</div>
-                                <div
-                                    class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
-                                    Appartment</div>
-                            </div>
-                            <div class="p-4 pb-0">
-                                <h5 class="text-primary mb-3">$12,345</h5>
-                                <a class="d-block h5 mb-2" href="">Golden Urban House For Sell</a>
-                                <p><i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street, New York, USA</p>
-                            </div>
-                            <div class="d-flex border-top">
-                                <small class="flex-fill text-center border-end py-2"><i
-                                        class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</small>
-                                <small class="flex-fill text-center border-end py-2"><i
-                                        class="fa fa-bed text-primary me-2"></i>3 Bed</small>
-                                <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>2
-                                    Bath</small>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -276,6 +244,18 @@
 </div>
 <!-- Search End -->
 <script>
+    function search_field_applied(field) {
+        var field_id = $(field).attr("id");
+        if (`${field_id}_trash_icon`) {
+            $(`#${field_id}_trash_icon`).remove();
+        }
+        console.log(field_id);
+        $(`#${field_id}__trash`).after(`
+        <span class="mx-2 my-2" id="${field_id}_trash_icon">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+        </span>
+        `);
+    }
     function search_property_based_on_input_field_values() {
         var country = $('#country_based').val() || "";
         var state = $('#state_based').val() || "";
@@ -307,26 +287,47 @@
             },
             success: function (property_data) {
                 console.log(property_data);
+                property_data = property_data['property_data']
+                if (property_data) {
+                    for (var [key, val] of Object.entries(property_data)) {
+                        $(".property_counter").empty();
+                        $(".property_counter").append(` 
+                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="property-item rounded overflow-hidden">
+                                <div class="position-relative overflow-hidden">
+                                    <a href=""><img class="img-fluid" src="static/img.jpg" alt=""></a>
+                                    <div
+                                        class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                        For ${val.selling_option}</div>
+                                    <div
+                                        class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                        ${val.property_type}</div>
+                                </div>
+                                <div class="p-4 pb-0">
+                                    <h5 class="text-primary mb-3">${val.property_rent_price}/Month</h5>
+                                    <a class="d-block h5 mb-2" href="">${val.property_type}, For ${val.selling_option}</a>
+                                    <p><i class="fa fa-map-marker-alt text-primary me-2"></i>${val.property_address}</p>
+                                </div>
+                                <div class="d-flex border-top">
+                                    <small class="flex-fill text-center border-end py-2"><i
+                                            class="fa fa-ruler-combined text-primary me-2"></i>${val.geography_area}</small>
+                                    <small class="flex-fill text-center border-end py-2"><i
+                                            class="fa fa-bed text-primary me-2"></i>${val.construction_status}</small>
+                                    <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>${val.property_age} Year old</small>
+                                </div>
+                            </div>
+                        </div>
+                        `)
+                    }
+                }
+                else {
+                    $(".property_counter").empty();
+                    $(".property_counter").append("<h1>Result not found</h1>")
+                }
             }
         });
     }
     $(document).ready(function (e) {
-        $('.p_type_btn').click(function (e) {
-            e.preventDefault();
-            var property = $(this).text();
-            var data_target = $(property).text();
-            $.ajax({
-                url: "{% url 'filtered_property_as_per_query' %}",
-                type: "POST",
-                data: {
-                    csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-                    'property': property,
-                },
-                success: function (property_data) {
-                    console.log(property_data);
-                }
-            });
-        });
 
         // advance filter configuration 
         $('#country_based').change(function (e) {
@@ -344,6 +345,7 @@
                 success: function (property_data) {
                     $("#state_based").empty();
                     $('#state_based').append(`<option value="">Select state</option>`);
+                    $('#state_based').append(`<option hidden>Select stateSelect stateSelect state</option>`);
                     property_data = JSON.parse(property_data)
                     for (let [key, value] of Object.entries(property_data)) {
                         $('#state_based').append(`<option value="${value.iso2}">${value.name}</option>`);
@@ -367,6 +369,7 @@
                 success: function (property_data) {
                     $("#city_based").empty();
                     $('#city_based').append(`<option value="">Select City</option>`);
+                    $('#city_based').append(`<option hidden>Select stateSelect stateSelect state</option>`);
                     property_data = JSON.parse(property_data)
                     for (let [key, value] of Object.entries(property_data)) {
                         $('#city_based').append(`<option value="${value.name}">${value.name}</option>`);

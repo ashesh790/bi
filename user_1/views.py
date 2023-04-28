@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
-from user_1.apis.fetch_api.advance_filter_functions import advance_filter_boundary, filtered_property_as_per_query, search_properties
+from user_1.apis.fetch_api.advance_filter_functions import advance_filter_boundary, search_properties
 from user_1.apis.fetch_api.country_api import property_type_list, country_list, state_list, city_list
 from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, delete_property_image_from_database, get_all_property_data, property_bound_data, search_property_type, update_property_data_record, update_property_image
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user 
@@ -22,9 +22,10 @@ from django.core.files.storage import FileSystemStorage
 # Note: Create login and signup in single html page 
 
 def advance_filter(request): 
+    property_data = p_detail.objects.all() 
     boundry_data = advance_filter_boundary(request) 
     boundry_data = json.loads(boundry_data.content) 
-    return render(request, "advance_filter/filter.html", {"boundry_data":boundry_data['data'], "country":boundry_data['country']}) 
+    return render(request, "advance_filter/filter.html", {"boundry_data":boundry_data['data'], "country":boundry_data['country'], "property_data":property_data}) 
 # Login function 
 def sign_up(request): 
     if request.method =="POST": 
