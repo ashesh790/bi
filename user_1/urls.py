@@ -48,7 +48,6 @@ urlpatterns = [
     path("property_type_list", views.property_type_list, name="property_type_list"), 
     path("advance_filter", views.advance_filter, name="advance_filter"), 
     path("advance_filter_boundary", views.advance_filter_boundary, name="advance_filter_boundary"), 
-    path("filtered_property_as_per_query", views.filtered_property_as_per_query, name="filtered_property_as_per_query"), 
     path("country_list", views.country_list, name="country_list"), 
     path("state_list", views.state_list, name="state_list"),
     path("city_list", views.city_list, name="city_list"), 
