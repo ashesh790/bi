@@ -102,7 +102,7 @@ def add_property_details(request):
     return render(request, 'admin/admin2/add_property.html') 
 
 
-def show_property_detail(request,property_id):
+def show_property_detail(request,property_id): 
     try: 
         property_id=property_id  
         data=get_all_property_data(property_id=property_id)   
@@ -207,15 +207,9 @@ def crud_property(request):
 def home(request): 
     property_category=property_bound_data 
     property_data = p_detail.objects.all() 
-    return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data})  
-def home1(request): 
-    # try:
-    other_data=p_detail.objects.all()
-    list_object=[]
-    for i in other_data: 
-        list_object.append(i) 
-    # list_object=json.dumps(str(list_object[0].property_data).replace('_', ' '))
-    return render(request, 'index.html', {'data':list_object})  
+    boundry_data = advance_filter_boundary(request) 
+    boundry_data = json.loads(boundry_data.content) 
+    return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data, "boundry_data":boundry_data['data'], "country":boundry_data['country']})    
 
 def about_us(request): 
     return render(request, 'theme/about.html') 
@@ -238,7 +232,7 @@ def print_property_type(request):
             property_c[i.property_data["property_type"]]+=1
         else:
             property_c[i.property_data["property_type"]]=1 
-    return render(request, 'theme/property-type.html', {"property_c":property_c}) 
+    return render(request, 'theme/new_listed_property.html', {"property_c":property_c}) 
 
 def property_list(request): 
     return render(request, 'theme/property-list.html') 

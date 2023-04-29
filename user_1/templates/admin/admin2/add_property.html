@@ -188,7 +188,7 @@
                 $('#state_based').append(`<option value="">Select state</option>`);
                 property_data = JSON.parse(property_data)
                 for (let [key, value] of Object.entries(property_data)) {
-                    $('#state_based').append(`<option value="${value.iso2, value.name}">${value.name}</option>`);
+                    $('#state_based').append(`<option value="${value.iso2}">${value.name}</option>`);
                 }
             }
         });
