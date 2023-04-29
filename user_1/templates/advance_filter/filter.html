@@ -90,12 +90,17 @@
             </h5>
             <div class="collapse" id="construction_fltr">
                 <div class="card card-body">
-                    <select class="form-control mt-2 search_field" id="construction_status">
-                        <option value="">Construction status</option>
-                        {% for i in boundry_data.construction_status %}
-                        <option value="{{i}}">{{i}}</option>
-                        {% endfor %}
-                    </select>
+                    <div class="d-flex">
+                        <div id="construction_status__trash">
+                            <select class="form-control mt-2 search_field" id="construction_status"
+                                onchange="search_field_applied(this);">
+                                <option value="">Construction status</option>
+                                {% for i in boundry_data.construction_status %}
+                                <option value="{{i}}">{{i}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -108,12 +113,15 @@
             </h5>
             <div class="collapse" id="bathroom_fltr">
                 <div class="card card-body">
-                    <select class="form-control mt-2 search_field" id="bathroom_val">
-                        <option value="">Bathrooms</option>
-                        {% for i in boundry_data.bathroom_details %}
-                        <option value="{{i}}">{{i}}</option>
-                        {% endfor %}
-                    </select>
+                    <div id="bathroom_val__trash">
+                        <select class="form-control mt-2 search_field" id="bathroom_val"
+                            onchange="search_field_applied(this);">
+                            <option value="">Bathrooms</option>
+                            {% for i in boundry_data.bathroom_details %}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -126,12 +134,15 @@
             </h5>
             <div class="collapse" id="balcony_fltr">
                 <div class="card card-body">
-                    <select class="form-control mt-2 search_field" id="balcony_val">
-                        <option value="">Balcony</option>
-                        {% for i in boundry_data.balcony_details %}
-                        <option>{{i}}</option>
-                        {% endfor %}
-                    </select>
+                    <div id="balcony_val__trash">
+                        <select class="form-control mt-2 search_field" id="balcony_val"
+                            onchange="search_field_applied(this);">
+                            <option value="">Balcony</option>
+                            {% for i in boundry_data.balcony_details %}
+                            <option>{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -144,12 +155,14 @@
             </h5>
             <div class="collapse" id="bhk_fltr">
                 <div class="card card-body">
-                    <select class="form-control mt-2 search_field" id="bhk_val">
-                        <option value="">BHK</option>
-                        {% for i in boundry_data.bhk_details %}
-                        <option value="{{i}}">{{i}}</option>
-                        {% endfor %}
-                    </select>
+                    <div id="bhk_val__trash">
+                        <select class="form-control mt-2 search_field" id="bhk_val">
+                            <option value="">BHK</option>
+                            {% for i in boundry_data.bhk_details %}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -162,12 +175,14 @@
             </h5>
             <div class="collapse" id="furnish_fltr">
                 <div class="card card-body" id="furnish_fltr_val">
-                    <select class="form-control mt-2 search_field" id="furnish_type">
-                        <option value="">Furnish type</option>
-                        {% for i in boundry_data.furnish_type %}
-                        <option>{{i}}</option>
-                        {% endfor %}
-                    </select>
+                    <div id="furnish_type__trash">
+                        <select class="form-control mt-2 search_field" id="furnish_type">
+                            <option value="">Furnish type</option>
+                            {% for i in boundry_data.furnish_type %}
+                            <option>{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -180,7 +195,10 @@
             </h5>
             <div class="collapse" id="geography_fltr">
                 <div class="card card-body">
-                    <input type="number" class="form-control search_field" placeholder="2000Sq.ft" id="geography_val">
+                    <div id="geography_val__trash">
+                        <input type="number" class="form-control search_field" placeholder="2000Sq.ft"
+                            id="geography_val" onchange="search_field_applied(this);">
+                    </div>
                 </div>
             </div>
 
@@ -193,10 +211,14 @@
             </h5>
             <div class="collapse" id="price_fltr">
                 <div class="card card-body" id="price_fltr_val">
-                    <label>To: </label><input type="number" placeholder="100" class="form-control search_field"
-                        id="start_price_val">
-                    <label>From: </label> <input type="number" placeholder="1000" class="form-control search_field"
-                        id="end_price_val">
+                    <label>To: </label>
+                    <div id="start_price_val__trash">
+                        <input type="number" placeholder="100" class="form-control search_field" id="start_price_val">
+                    </div>
+                    <label>From: </label>
+                    <div id="end_price_val__trash">
+                        <input type="number" placeholder="1000" class="form-control search_field" id="end_price_val">
+                    </div>
                 </div>
             </div>
         </div>
@@ -232,7 +254,8 @@
                                 <small class="flex-fill text-center border-end py-2"><i
                                         class="fa fa-bed text-primary me-2"></i>{{i.property_data.construction_status}}</small>
                                 <small class="flex-fill text-center py-2"><i
-                                        class="fa fa-bath text-primary me-2"></i>{{i.property_data.property_age}} Year
+                                        class="fa fa-bath text-primary me-2"></i>{{i.property_data.property_age}}
+                                    Year
                                     old</small>
                             </div>
                         </div>
@@ -303,10 +326,18 @@
         }
         console.log(field_id);
         $(`#${field_id}__trash`).after(`
-        <span class="mx-2 my-2" id="${field_id}_trash_icon">
+        <span class="mx-2 my-2" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
             <i class="fa fa-trash" aria-hidden="true"></i>
         </span>
         `);
+    }
+    function remove_filter_value(search_field) {
+        var field_name = $(search_field).attr("id");
+        real_field_name = field_name.replace("_trash_icon", "");
+        $(`#${real_field_name}`).val("");
+        search_property_based_on_input_field_values();
+        //debugger
+        $(`#${field_name}`).remove();
     }
     function search_property_based_on_input_field_values() {
         var country = $('#country_based').val() || "";
@@ -329,7 +360,6 @@
         if (bhk != "") { search_object.bhk = bhk };
         if (furnish_type != "") { search_object.furnish_type = furnish_type };
         if (geography_area != "") { search_object.geography_area = geography_area };
-
         $.ajax({
             url: "{% url 'search_properties' %}",
             type: "POST",
