@@ -268,6 +268,7 @@
 </div>
 <!-- Search End -->
 <script>
+
     // search by property type 
     function property_type_core(property_type) {
         var property_type = $(property_type).val();
@@ -319,6 +320,7 @@
         })
     }
 
+    // Search field is applied and trash button for this field is added 
     function search_field_applied(field) {
         var field_id = $(field).attr("id");
         if (`${field_id}_trash_icon`) {
@@ -331,6 +333,8 @@
         </span>
         `);
     }
+
+    // remove specific filter 
     function remove_filter_value(search_field) {
         var field_name = $(search_field).attr("id");
         real_field_name = field_name.replace("_trash_icon", "");
@@ -339,6 +343,8 @@
         //debugger
         $(`#${field_name}`).remove();
     }
+
+    // search property as per field which is selected in advance filter 
     function search_property_based_on_input_field_values() {
         var country = $('#country_based').val() || "";
         var state = $('#state_based').val() || "";
@@ -409,9 +415,10 @@
             }
         });
     }
+
     $(document).ready(function (e) {
 
-        // advance filter configuration 
+        // advance filter configuration by country 
         $('#country_based').change(function (e) {
             //alert("Clikced!"); 
             e.preventDefault();
@@ -436,6 +443,7 @@
             });
         });
 
+        // advance filter configuration by state 
         $('#state_based').change(function (e) {
             //alert("Clikced!"); 
             e.preventDefault();
