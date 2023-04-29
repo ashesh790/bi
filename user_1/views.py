@@ -1,6 +1,5 @@
 import json
-import os
-import uuid
+import requests
 from django.conf import settings
 from django.core.files.storage import default_storage
 from urllib import request
@@ -10,17 +9,23 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
+from user_1.apis.fetch_api.advance_filter_functions import advance_filter_boundary, search_properties
+from user_1.apis.fetch_api.country_api import property_type_list, country_list, state_list, city_list
 from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, delete_property_image_from_database, get_all_property_data, property_bound_data, search_property_type, update_property_data_record, update_property_image
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user 
 from user_1.models import User_register, p_detail 
 from django.core.serializers import serialize 
 import shutil 
 from django.core.files.storage import FileSystemStorage
-
 # from user_1.forms import MyForm
 
 # Note: Create login and signup in single html page 
 
+def advance_filter(request): 
+    property_data = p_detail.objects.all() 
+    boundry_data = advance_filter_boundary(request) 
+    boundry_data = json.loads(boundry_data.content) 
+    return render(request, "advance_filter/filter.html", {"boundry_data":boundry_data['data'], "country":boundry_data['country'], "property_data":property_data}) 
 # Login function 
 def sign_up(request): 
     if request.method =="POST": 
@@ -51,13 +56,17 @@ def sign_up(request):
     else: 
         return render(request, "theme/signup.html")
 
-# sign up
+ 
+# sign up 
 def login(request): 
     if request.POST: 
-        login_user(request)  
-        return render(request, 'theme/index.html')
-    return render(request, "theme/login.html") 
-     
+        login_status = login_user(request) 
+        if login_status is not False:   
+            return render(request, 'theme/index.html') 
+        else: 
+            return redirect('Invalid Credentials') 
+    else: 
+        return render(request, "theme/login.html")
 # logout 
 def logout(request): 
     if request: 
@@ -71,10 +80,12 @@ def add_property_details(request):
     try:
         if request.method =='POST' and len(request.POST) is not None: 
             property_details=add_property_details_in_database(request) 
+        country_name_list = country_list(request) 
+        country_name_list = json.loads(country_name_list) 
         data = settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json"  
         with open(data) as f:
             data = json.load(f)  
-        data = data  
+        data = data 
         return render(request, 'admin/admin2/add_property.html', {
             "property_type":data["property_type"], 
             "deal_option":data["deal_option"],
@@ -83,7 +94,8 @@ def add_property_details(request):
             "bhk_details":data["bhk_details"], 
             "bathroom_details":data["bathroom_details"],
             "balcony_details":data["balcony_details"], 
-            "parking_details":data["parking_details"],
+            "parking_details":data["parking_details"], 
+            "country_name_list": country_name_list
             })  
     except Exception as ex: 
         print(f"Solve this: {ex}") 
@@ -142,7 +154,10 @@ def update_property(request, property_id=0):
             data.property_data['parking_type'] = request.POST['data[parking_type]']  
             data.property_data['property_value'] = request.POST['data[property_value]']  
             data.property_data['property_rent_price'] = request.POST['data[property_rent_price]']  
-            data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]']  
+            data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]'] 
+            data.property_data['country'] = request.POST['data[property_country]'] 
+            data.property_data['state'] = request.POST['data[property_state]']
+            data.property_data['city'] = request.POST['data[property_city]'] 
             data.property_data['property_address'] = request.POST['data[property_address]'] 
             data.save()  
             return render(request, 'admin/admin2/update_property.html', {'data':data, "id":property_id})
@@ -167,19 +182,29 @@ def property_status(request):
 def test_html_page(request): 
     return render(request, 'test.html') 
 
+def prop_table(request): 
+    user_id= User_register.objects.get(user_id=request.session._session['user_id']) 
+    # count for user inquiries 
+    # user_inq_len = len(user_id.user_other_data['inquiry_dtl']) 
+    data=p_detail.objects.filter(seller_id=user_id)
+    return render(request, 'admin/admin2/prop_table.html', {'data':data}) 
 
 ################################################## userside functions ################################
 
 def dashboard(request): 
-    data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id'])) 
-    return render(request, 'admin/admin2/dashboard.html', {'data':data}) 
+    user_id= User_register.objects.get(user_id=request.session._session['user_id']) 
+    # count for user inquiries 
+    # user_inq_len = len(user_id.user_other_data['inquiry_dtl']) 
+    data=p_detail.objects.filter(seller_id=user_id) 
+    return render(request, 'admin/admin2/dashboard.html', {'data':data, #'user_inq_len':user_inq_len
+                                                           })  
 
 def crud_property(request): 
     data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))  
     return render(request, 'record.html', {'data':data}) 
 # Render home page 
 
-def home(request):
+def home(request): 
     property_category=property_bound_data 
     property_data = p_detail.objects.all() 
     return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data})  
@@ -241,4 +266,78 @@ def show_full_property_detail(request, property_id):
     property_data = p_detail.objects.all()
     data = p_detail.objects.get(id=property_id)
     data = data.property_data 
-    return render(request, 'theme/property-detail-page.html', {'data':data, 'property_id':property_id, 'property_data':property_data})
+    return render(request, 'theme/property-detail-page.html', {'data':data, 'property_id':property_id, 'property_data':property_data}) 
+
+def property_post_modal_management(request): 
+    sale_type = request.POST['p_dtl_btn_val'] 
+    property_id = request.POST['property_id'] 
+    if (sale_type == "saller_detail"): 
+        data = p_detail.objects.get(id=property_id) 
+        user_id = data.seller_id.pk 
+        user_data = User_register.objects.get(pk=user_id) 
+        user_email = user_data.user_email 
+        user_name = user_data.user_name 
+        user_mobile = user_data.user_mobile 
+        user_gender = user_data.user_gender 
+        saller_data = {
+            "Saller email":user_email,
+            "Saller name":user_name,
+            "Saller mobile":user_mobile, 
+            "Saller gender":user_gender
+        }
+        return HttpResponse(json.dumps({"saller_data":saller_data})) 
+    elif(sale_type == "save_post"): 
+        pass 
+    elif(sale_type == "share_post"):
+        pass 
+    elif(sale_type == "submit_btn_dc"): 
+        property_id = request.POST['property_id'] 
+        sender_name = request.POST['sender_name'] 
+        sender_mobile = request.POST['sender_mobile'] 
+        sender_email = request.POST['sender_email'] 
+        description = request.POST['description'] 
+        inquiry_dtl={
+            "property_id":property_id,
+            "sender_name":sender_name,
+            "sender_mobile":sender_mobile,
+            "sender_email":sender_email,
+            "description":description
+        }
+        # inquiry_dtl = json.dumps(inquiry_dtl) 
+        data = p_detail.objects.get(id=property_id) 
+        user_id = data.seller_id.pk
+        save_data = User_register.objects.get(pk=user_id) 
+        user_data = save_data.user_other_data 
+        if (user_data is not None or len(user_data) !=0): 
+            # user_data = json.loads(user_data) 
+            user_data['inquiry_dtl'].append(inquiry_dtl) 
+            save_data.user_other_data = user_data 
+        else: 
+            user_data = {"inquiry_dtl":[inquiry_dtl]}
+            # user_data = json.dumps(user_data) 
+            save_data.user_other_data = user_data
+        save_data.save()
+    return HttpResponse(json.dumps({"sale_type":sale_type}))  
+
+def inquiries_from_user(request): 
+    user_data = User_register.objects.get(user_id=request.session._session['user_id']) 
+    user_data = user_data.user_other_data 
+    return HttpResponse(json.dumps({"user_data":user_data}))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Test functions  
+def test_function(request):
+    return render(request, 'admin/admin2/index.html')  

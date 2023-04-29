@@ -4,7 +4,6 @@
 
 <div class="container-fluid pt-4 px-4">
     <div class="d-flex">
-        <h3>Update property details -&nbsp;</h3>
         <a href="{% url 'dashboard' %}" class="btn btn-primary h-75 mb-3">Back</a>
     </div>
     <div class="row bg-light rounded mx-0 p-2">
@@ -214,6 +213,25 @@
                 </div>
                 <div class="col-md-4 col-sm-12">
                     <div class="p-3 border bg-light">
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text" name="country" class="form-control prop_val" id="country"
+                            value="{{data.country}}">
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="p-3 border bg-light">
+                        <label for="state" class="form-label">State</label>
+                        <input type="text" name="state" class="form-control prop_val" id="state" value="{{data.state}}">
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="p-3 border bg-light">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" name="city" class="form-control prop_val" id="city" value="{{data.city}}">
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="p-3 border bg-light">
                         <label for="property_address" class="form-label">Property Address</label>
                         <textarea type="textarea" name="property_address" class="form-control property_address prop_val"
                             id="property_address" style="height: 38px;">{{data.property_address}}</textarea>
@@ -262,6 +280,10 @@
             var property_value = $("#property_value").val();
             var property_rent_price = $("#property_rent_price").val();
             var from_avail_property_date = $("#from_avail_property_date").val();
+            var property_country = $("#country").val();
+            debugger
+            var property_state = $("#state").val();
+            var property_city = $("#city").val();
             var property_address = $("#property_address").val();
             var furnish_type = $("#furnish_type").val();
             var parking_type = $("#parking_type").val();
@@ -282,7 +304,10 @@
                 "property_value": property_value,
                 "property_rent_price": property_rent_price,
                 "from_avail_property_date": from_avail_property_date,
-                "property_address": property_address
+                "property_address": property_address,
+                "property_country": property_country,
+                "property_state": property_state,
+                "property_city": property_city
             }
             console.log(data);
             var id = $("#id").val();
