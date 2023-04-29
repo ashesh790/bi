@@ -121,7 +121,7 @@ def search_property_type(request, sale_type = None, property_type = None):
     prop_data={} 
     sale_type = sale_type 
     print(sale_type) 
-    if property_type is None: 
+    if property_type is None and sale_type is None: 
         if (request.POST['data']): 
             property_type_core = request.POST["data"] 
             if property_type_core != "all":
