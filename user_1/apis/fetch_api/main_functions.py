@@ -16,7 +16,8 @@ def add_property_details_in_database(request):
         fss = FileSystemStorage()
         for i in media_data: 
             file = fss.save(i.name, i)
-            file_url = fss.url(file)
+            file_url = str(fss.url(file)) 
+            file_url = file_url.replace("%20", ' ')
             property_image_save.append(file_url)
 
         seller_id=request.POST['user_id'] 
