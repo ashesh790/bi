@@ -102,7 +102,7 @@ def add_property_details(request):
     return render(request, 'admin/admin2/add_property.html') 
 
 
-def show_property_detail(request,property_id):
+def show_property_detail(request,property_id): 
     try: 
         property_id=property_id  
         data=get_all_property_data(property_id=property_id)   

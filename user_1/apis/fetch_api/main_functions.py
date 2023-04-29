@@ -1,7 +1,8 @@
 import json
 import os
 from urllib import request
-from django.conf import settings 
+from django.conf import settings
+from django.http import HttpResponse, JsonResponse 
 
 from staying_source.settings import MEDIA_ROOT, MEDIA_URL
 from user_1.models import User_register, p_detail
@@ -64,11 +65,14 @@ def update_property_image(request, property_id):
         property_data.property_data['property_image'] = property_data.property_data['property_image'] + property_image_save  
         property_data.save() 
         return True
-def get_all_property_data(property_id=None): 
+    
+def get_all_property_data(property_id=None, property_type=None): 
     if property_id == None: 
         my_data=p_detail.objects.values()
         json_data=my_data[0]
         data=json.dumps(json_data, indent=4, sort_keys=True, default=str)  
+    elif property_type != None: 
+        data = p_detail.objects.filter(property_data__property_type=property_type)
     elif property_id is not None: 
         data=p_detail.objects.get(pk=property_id) 
     return data 
@@ -116,6 +120,19 @@ def search_property_type(request, sale_type = None, property_type = None):
     prop_data={} 
     sale_type = sale_type 
     print(sale_type) 
+    if property_type is None: 
+        if (request.POST['data']): 
+            property_type_core = request.POST["data"] 
+            if property_type_core != "all":
+                property_type_core_data = p_detail.objects.filter(property_data__property_type=property_type_core) 
+                for  i in property_type_core_data: 
+                    prop_data[i.id] = i.property_data
+            else: 
+                property_type_core_data = p_detail.objects.all()  
+                for  i in property_type_core_data: 
+                    prop_data[i.id] = i.property_data 
+            return JsonResponse(prop_data)  
+
     if (sale_type is not None and property_type is not None): 
         if (sale_type == "all"): 
             property_type = property_type
