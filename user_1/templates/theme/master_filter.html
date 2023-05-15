@@ -15,9 +15,11 @@
         color: black !important;
     }
 
-    ::-webkit-scrollbar {
-        display: none;
-        /* Safari and Chrome */
+    @media (max-width: 768px) {
+        ::-webkit-scrollbar {
+            display: none;
+            /* Safari and Chrome */
+        }
     }
 </style>
 <!-- Search Start -->
@@ -114,6 +116,7 @@
                     <div class="d-flex">
                         <div id="construction_status__trash">
                             <select class="form-control mt-2 search_field" id="construction_status"
+                                onchange="search_property_based_on_input_field_values();search_field_applied(this);"
                                 onchange="search_field_applied(this);">
                                 <option value="">Construction status</option>
                                 {% for i in boundry_data.construction_status %}
