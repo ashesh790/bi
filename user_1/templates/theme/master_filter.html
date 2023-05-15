@@ -35,87 +35,227 @@
         </div>
     </div>
 </div>
-<div class="row">
-
-</div>
-<div class="row">
-    <div class="col-md-3">
-        <div class="m-2 text-center">
-            <div class="col-md-12">
-                <button class="btn btn-outline-primary active d-none" data-bs-toggle="pill" value="all" id="all"
-                    onclick="search_property_based_on_input_field_values(this);">All</button>
+<div class="row mx-2">
+    <div class="col-lg-6"></div>
+    <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+        <ul class="nav nav-pills d-inline-flex justify-content-end mb-3">
+            <li class="nav-item me-2 d-none">
+                <button class="btn btn-outline-primary active" data-bs-toggle="pill" value="all" id="all"
+                    onclick="search_property_based_on_input_field_values(this);">All</a>
+            </li>
+            <li class="nav-item me-2">
                 <button class="btn btn-outline-primary" data-bs-toggle="pill" value="Sale" id="sell"
                     onclick="search_property_based_on_input_field_values(this);">For
                     Sale</button>
+            </li>
+            <li class="nav-item me-0">
                 <button class="btn btn-outline-primary" data-bs-toggle="pill" value="Rent" id="rent"
                     onclick="search_property_based_on_input_field_values(this);">For
                     Rent</button>
-            </div>
-            <div class="col-md-12">
-                <div id="country_based__trash">
-                    <select class="form-control selectpicker search_field" id="country_based"
-                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                        <option value="">Select Country</option>
-                        {% for i in country %}
-                        <option value="{{i.iso2}}">{{i.name}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div id="state_based__trash">
-                    <select class="form-control mt-2 search_field" id="state_based"
-                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                        <option hidden>Select stateSelect stateSelect state</option>
-                        <option value="" selected>Select state</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div id="city_based__trash">
-                    <select class="form-control mt-2 search_field" id="city_based"
-                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                        <option hidden>Select CitySelect CitySelect CitySelect City</option>
-                        <option value="" selected> Select City</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-12">
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row m-2">
+    <div class="col-md-3">
+        <h3>Filter properties by: </h3>
+        <div id="advance_filter_container">
+            <!-- filter using location -->
+            <div class="filter_value" id="location_based">
                 <h5>
-                    <div class="border text-left p-2" data-toggle="collapse" data-target="#construction_fltr"
-                        aria-expanded="false" aria-controls="construction_fltr" style="cursor: pointer;">
-                        <b>Construction status</b>
+                    <div class="border text-left p-2" data-toggle="collapse" data-target="#location_fltr"
+                        aria-expanded="false" aria-controls="location_fltr" style="cursor: pointer;">
+                        <b>Location</b>
                     </div>
                 </h5>
-                <div class="collapse" id="construction_fltr">
+                <div class="collapse show" id="location_fltr">
                     <div class="card card-body">
                         <div class="d-flex">
-                            <div id="construction_status__trash">
-                                <select class="form-control mt-2 search_field" id="construction_status"
-                                    onchange="search_field_applied(this);">
-                                    <option value="">Construction status</option>
-                                    {% for i in boundry_data.construction_status %}
-                                    <option value="{{i}}">{{i}}</option>
+                            <div id="country_based__trash">
+                                <select class="form-control selectpicker search_field" id="country_based"
+                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                    <option value="">Select Country</option>
+                                    {% for i in country %}
+                                    <option value="{{i.iso2}}">{{i.name}}</option>
                                     {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div id="state_based__trash">
+                                <select class="form-control mt-2 search_field" id="state_based"
+                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                    <option hidden>Select stateSelect stateSelect state</option>
+                                    <option value="" selected>Select state</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div id="city_based__trash">
+                                <select class="form-control mt-2 search_field" id="city_based"
+                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                    <option hidden>Select CitySelect CitySelect CitySelect City</option>
+                                    <option value="" selected> Select City</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- filter using construction status -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#construction_fltr"
+                    aria-expanded="false" aria-controls="construction_fltr" style="cursor: pointer;">
+                    <b>Construction status</b>
+                </div>
+            </h5>
+            <div class="collapse" id="construction_fltr">
+                <div class="card card-body">
+                    <div class="d-flex">
+                        <div id="construction_status__trash">
+                            <select class="form-control mt-2 search_field" id="construction_status"
+                                onchange="search_field_applied(this);">
+                                <option value="">Construction status</option>
+                                {% for i in boundry_data.construction_status %}
+                                <option value="{{i}}">{{i}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- filter using bathroom count -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#bathroom_fltr"
+                    aria-expanded="false" aria-controls="bathroom_fltr" style="cursor: pointer;">
+                    <b>Bathrooms</b>
+                </div>
+            </h5>
+            <div class="collapse" id="bathroom_fltr">
+                <div class="card card-body">
+                    <div id="bathroom_val__trash">
+                        <select class="form-control mt-2 search_field" id="bathroom_val"
+                            onchange="search_field_applied(this);">
+                            <option value="">Bathrooms</option>
+                            {% for i in boundry_data.bathroom_details %}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- filter using balcony count -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#balcony_fltr"
+                    aria-expanded="false" aria-controls="balcony_fltr" style="cursor: pointer;">
+                    <b>Balcony</b>
+                </div>
+            </h5>
+            <div class="collapse" id="balcony_fltr">
+                <div class="card card-body">
+                    <div id="balcony_val__trash">
+                        <select class="form-control mt-2 search_field" id="balcony_val"
+                            onchange="search_field_applied(this);">
+                            <option value="">Balcony</option>
+                            {% for i in boundry_data.balcony_details %}
+                            <option>{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- filter using balcony count -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#bhk_fltr" aria-expanded="false"
+                    aria-controls="bhk_fltr" style="cursor: pointer;">
+                    <b>BHK</b>
+                </div>
+            </h5>
+            <div class="collapse" id="bhk_fltr">
+                <div class="card card-body">
+                    <div id="bhk_val__trash">
+                        <select class="form-control mt-2 search_field" id="bhk_val">
+                            <option value="">BHK</option>
+                            {% for i in boundry_data.bhk_details %}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- filter using furnish type -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#furnish_fltr"
+                    aria-expanded="false" aria-controls="furnish_fltr" style="cursor: pointer;">
+                    <b>Furnish type</b>
+                </div>
+            </h5>
+            <div class="collapse" id="furnish_fltr">
+                <div class="card card-body" id="furnish_fltr_val">
+                    <div id="furnish_type__trash">
+                        <select class="form-control mt-2 search_field" id="furnish_type">
+                            <option value="">Furnish type</option>
+                            {% for i in boundry_data.furnish_type %}
+                            <option>{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- filter using geography area -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#geography_fltr"
+                    aria-expanded="false" aria-controls="geography_fltr" style="cursor: pointer;">
+                    <b>Geography area</b>
+                </div>
+            </h5>
+            <div class="collapse" id="geography_fltr">
+                <div class="card card-body">
+                    <div id="geography_val__trash">
+                        <input type="number" class="form-control search_field" placeholder="2000Sq.ft"
+                            id="geography_val" onchange="search_field_applied(this);">
+                    </div>
+                </div>
+            </div>
+
+            <!-- filter using price area -->
+            <h5>
+                <div class="border text-left p-2" data-toggle="collapse" data-target="#price_fltr" aria-expanded="false"
+                    aria-controls="price_fltr" style="cursor: pointer;">
+                    <b>Price between</b>
+                </div>
+            </h5>
+            <div class="collapse" id="price_fltr">
+                <div class="card card-body" id="price_fltr_val">
+                    <label>To: </label>
+                    <div id="start_price_val__trash">
+                        <input type="number" placeholder="100" class="form-control search_field" id="start_price_val">
+                    </div>
+                    <label>From: </label>
+                    <div id="end_price_val__trash">
+                        <input type="number" placeholder="1000" class="form-control search_field" id="end_price_val">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane fade show p-0 active">
+                <div class="row g-4 property_counter">
+                    {% block property %}
+
+                    {% endblock %}
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<div class="col-md-9">
-    <div class="m-2">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure laboriosam earum voluptatibus mollitia!
-        Soluta
-        sit error voluptates veniam voluptatum dicta similique, odio, a molestiae vel at cumque explicabo, velit
-        blanditiis!
-    </div>
-</div>
-</div>
-
 <!-- Search End -->
 <script>
 
