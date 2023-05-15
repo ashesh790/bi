@@ -1,0 +1,339 @@
+{% extends 'theme/master.html' %}
+{% load static %}
+{% block main_content %}
+<style>
+    .p_type_btn {
+        border-radius: 20px;
+        border: 1px solid white;
+        padding: 10px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .p_type_btn:hover {
+        background-color: white;
+        color: black !important;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+        /* Safari and Chrome */
+    }
+</style>
+<!-- Search Start -->
+<div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" style="padding: 0px;">
+    <div class="container">
+        <div class="scroller" style="overflow: auto; display:flex;">
+            {% csrf_token %}
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn"
+                onclick="property_type_core(this);" style="margin:10px;" value="all">All
+                Type</button>
+            {% for i in boundry_data.property_type %}
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn"
+                onclick="property_type_core(this);" style="margin:10px;" value="{{i}}">{{i}}</button>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="row">
+
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <div class="m-2 text-center">
+            <div class="col-md-12">
+                <button class="btn btn-outline-primary active d-none" data-bs-toggle="pill" value="all" id="all"
+                    onclick="search_property_based_on_input_field_values(this);">All</button>
+                <button class="btn btn-outline-primary" data-bs-toggle="pill" value="Sale" id="sell"
+                    onclick="search_property_based_on_input_field_values(this);">For
+                    Sale</button>
+                <button class="btn btn-outline-primary" data-bs-toggle="pill" value="Rent" id="rent"
+                    onclick="search_property_based_on_input_field_values(this);">For
+                    Rent</button>
+            </div>
+            <div class="col-md-12">
+                <div id="country_based__trash">
+                    <select class="form-control selectpicker search_field" id="country_based"
+                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                        <option value="">Select Country</option>
+                        {% for i in country %}
+                        <option value="{{i.iso2}}">{{i.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div id="state_based__trash">
+                    <select class="form-control mt-2 search_field" id="state_based"
+                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                        <option hidden>Select stateSelect stateSelect state</option>
+                        <option value="" selected>Select state</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div id="city_based__trash">
+                    <select class="form-control mt-2 search_field" id="city_based"
+                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                        <option hidden>Select CitySelect CitySelect CitySelect City</option>
+                        <option value="" selected> Select City</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <h5>
+                    <div class="border text-left p-2" data-toggle="collapse" data-target="#construction_fltr"
+                        aria-expanded="false" aria-controls="construction_fltr" style="cursor: pointer;">
+                        <b>Construction status</b>
+                    </div>
+                </h5>
+                <div class="collapse" id="construction_fltr">
+                    <div class="card card-body">
+                        <div class="d-flex">
+                            <div id="construction_status__trash">
+                                <select class="form-control mt-2 search_field" id="construction_status"
+                                    onchange="search_field_applied(this);">
+                                    <option value="">Construction status</option>
+                                    {% for i in boundry_data.construction_status %}
+                                    <option value="{{i}}">{{i}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-9">
+    <div class="m-2">
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iure laboriosam earum voluptatibus mollitia!
+        Soluta
+        sit error voluptates veniam voluptatum dicta similique, odio, a molestiae vel at cumque explicabo, velit
+        blanditiis!
+    </div>
+</div>
+</div>
+
+<!-- Search End -->
+<script>
+
+    // search by property type 
+    function property_type_core(property_type) {
+        var property_type = $(property_type).val();
+        $.ajax({
+            url: "{% url 'search_property_type' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                "data": property_type
+            },
+            success: function (data) {
+                if (Object.keys(data).length != 0) {
+                    $(".property_counter").empty();
+                    for (var [key, val] of Object.entries(data)) {
+                        $(".property_counter").append(` 
+                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="property-item rounded overflow-hidden">
+                                <div class="position-relative overflow-hidden">
+                                    <a href=""><img class="img-fluid" src="${val.property_image[0]}" alt=""></a>
+                                    <div
+                                        class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                        For ${val.selling_option}</div>
+                                    <div
+                                        class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                        ${val.property_type}</div>
+                                </div>
+                                <div class="p-4 pb-0">
+                                    <h5 class="text-primary mb-3">${val.property_rent_price}/Month</h5>
+                                    <a class="d-block h5 mb-2" href="">${val.property_type}, For ${val.selling_option}</a>
+                                    <p><i class="fa fa-map-marker-alt text-primary me-2"></i>${val.property_address}</p>
+                                </div>
+                                <div class="d-flex border-top">
+                                    <small class="flex-fill text-center border-end py-2"><i
+                                            class="fa fa-ruler-combined text-primary me-2"></i>${val.geography_area}</small>
+                                    <small class="flex-fill text-center border-end py-2"><i
+                                            class="fa fa-bed text-primary me-2"></i>${val.construction_status}</small>
+                                    <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>${val.property_age} Year old</small>
+                                </div>
+                            </div>
+                        </div>
+                        `)
+                    }
+                }
+                else {
+                    $(".property_counter").empty();
+                    $(".property_counter").append("<h1>Result not found</h1>")
+                }
+            }
+        })
+    }
+
+    // Search field is applied and trash button for this field is added 
+    function search_field_applied(field) {
+        var field_id = $(field).attr("id");
+        if (`${field_id}_trash_icon`) {
+            $(`#${field_id}_trash_icon`).remove();
+        }
+        $(`#${field_id}__trash`).after(`
+        <span class="mx-2 my-2" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
+            <i class="fa fa-trash" aria-hidden="true"></i>
+        </span>
+        `);
+    }
+
+    // remove specific filter 
+    function remove_filter_value(search_field) {
+        var field_name = $(search_field).attr("id");
+        real_field_name = field_name.replace("_trash_icon", "");
+        $(`#${real_field_name}`).val("");
+        search_property_based_on_input_field_values();
+        //debugger
+        $(`#${field_name}`).remove();
+    }
+
+    // search property as per field which is selected in advance filter 
+    function search_property_based_on_input_field_values(selling_type = null) {
+        var selling_option_val = "";
+        if (selling_type != null) {
+            selling_option_val = $(selling_type).val();
+        }
+        else {
+            if ($("#sell").hasClass("active")) {
+                selling_option_val = "Sell";
+            }
+            else if ($("#rent").hasClass("active")) {
+                selling_option_val = "Rent";
+            }
+        }
+        var country = $('#country_based').val() || "";
+        var state = $('#state_based').val() || "";
+        var city = $('#city_based').val() || "";
+        var construction_status = $('#construction_status').val() || "";
+        var bathroom = $('#bathroom_val').val() || "";
+        var balcony = $('#balcony_val').val() || "";
+        var bhk = $("#bhk_val").val() || "";
+        var furnish_type = $('#furnish_type').val() || "";
+        var geography_area = $('#geography_val').val() || "";
+
+        var search_object = new Object();
+        if (country != "") { search_object.country = country };
+        if (state != "") { search_object.state = state };
+        if (city != "") { search_object.city = city };
+        if (construction_status != "") { search_object.construction_status = construction_status };
+        if (bathroom != "") { search_object.bathroom = bathroom };
+        if (balcony != "") { search_object.balcony = balcony };
+        if (bhk != "") { search_object.bhk = bhk };
+        if (furnish_type != "") { search_object.furnish_type = furnish_type };
+        if (geography_area != "") { search_object.geography_area = geography_area };
+        if (selling_option_val != "") { search_object.selling_option = selling_option_val };
+
+        $.ajax({
+            url: "{% url 'search_properties' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                "search_object": JSON.stringify(search_object),
+            },
+            success: function (property_data) {
+                var i = 0;
+                property_id = property_data["id"];
+                property_data = property_data['property_data'];
+                console.log(property_data);
+                if (property_data) {
+                    $(".property_counter").empty();
+                    for (var [key, val] of Object.entries(property_data)) {
+                        console.log(property_id[i]);
+                        $(".property_counter").append(` 
+                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="property-item rounded overflow-hidden">
+                                <div class="position-relative overflow-hidden">
+                                    <a href="/property_details/${property_id[i]}"><img class="img-fluid" src="${val.property_image[0]}" alt=""></a>
+                                    <div
+                                        class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                        For ${val.selling_option}</div>
+                                    <div
+                                        class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                        ${val.property_type}</div>
+                                </div>
+                                <div class="p-4 pb-0">
+                                    <h5 class="text-primary mb-3">${val.property_rent_price}/Month</h5>
+                                    <a class="d-block h5 mb-2" href="">${val.property_type}, For ${val.selling_option}</a>
+                                    <p><i class="fa fa-map-marker-alt text-primary me-2"></i>${val.property_address}</p>
+                                </div>
+                                <div class="d-flex border-top">
+                                    <small class="flex-fill text-center border-end py-2"><i
+                                            class="fa fa-ruler-combined text-primary me-2"></i>${val.geography_area}</small>
+                                    <small class="flex-fill text-center border-end py-2"><i
+                                            class="fa fa-bed text-primary me-2"></i>${val.construction_status}</small>
+                                    <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>${val.property_age} Year old</small>
+                                </div>
+                            </div>
+                        </div>
+                        `);
+                        i++;
+                    }
+                }
+                else {
+                    $(".property_counter").empty();
+                    $(".property_counter").append("<h1>Result not found</h1>")
+                }
+            }
+        });
+    }
+
+    $(document).ready(function (e) {
+
+        // advance filter configuration by country 
+        $('#country_based').change(function (e) {
+            //alert("Clikced!"); 
+            e.preventDefault();
+            var country_name = $(this).val();
+            //alert(country_name); 
+            //var data_target = $(property).text();
+            $.ajax({
+                url: "{% url 'state_list' %}",
+                type: "GET",
+                data: {
+                    'country_name': country_name,
+                },
+                success: function (property_data) {
+                    $("#state_based").empty();
+                    $('#state_based').append(`<option value="">Select state</option>`);
+                    $('#state_based').append(`<option hidden>Select stateSelect stateSelect state</option>`);
+                    property_data = JSON.parse(property_data)
+                    for (let [key, value] of Object.entries(property_data)) {
+                        $('#state_based').append(`<option value="${value.iso2}">${value.name}</option>`);
+                    }
+                }
+            });
+        });
+
+        // advance filter configuration by state 
+        $('#state_based').change(function (e) {
+            //alert("Clikced!"); 
+            e.preventDefault();
+            var country_name = $("#country_based").val();
+            var state_name = $(this).val();
+            $.ajax({
+                url: "{% url 'city_list' %}",
+                type: "GET",
+                data: {
+                    'state_name': state_name,
+                    'country_name': country_name,
+                },
+                success: function (property_data) {
+                    $("#city_based").empty();
+                    $('#city_based').append(`<option value="">Select City</option>`);
+                    $('#city_based').append(`<option hidden>Select stateSelect stateSelect state</option>`);
+                    property_data = JSON.parse(property_data)
+                    for (let [key, value] of Object.entries(property_data)) {
+                        $('#city_based').append(`<option value="${value.name}">${value.name}</option>`);
+                    }
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

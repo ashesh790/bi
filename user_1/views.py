@@ -318,20 +318,8 @@ def inquiries_from_user(request):
     user_data = user_data.user_other_data 
     return HttpResponse(json.dumps({"user_data":user_data}))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Test functions  
 def test_function(request):
-    return render(request, 'admin/admin2/index.html')  
+    boundry_data = advance_filter_boundary(request) 
+    boundry_data = json.loads(boundry_data.content)
+    return render(request, 'theme/master_filter.html', {"boundry_data":boundry_data['data']})   
