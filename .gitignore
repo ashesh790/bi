@@ -12,3 +12,4 @@ user_1/apis/fetch_api/state_management/__pycache__
 user_1/migrations 
 media/
 .venv
+.myvenv
