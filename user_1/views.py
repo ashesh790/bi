@@ -160,14 +160,14 @@ def update_property(request, property_id=0):
             data.property_data['city'] = request.POST['data[property_city]'] 
             data.property_data['property_address'] = request.POST['data[property_address]'] 
             data.save()  
-            return render(request, 'admin/admin2/update_property.html', {'data':data, "id":property_id})
+            return render(request, 'theme/update_property.html', {'data':data, "id":property_id})
         property_id=property_id
         data=p_detail.objects.get(id=property_id) 
         property_data=data.property_data
-        return render(request, 'admin/admin2/update_property.html', {'data':property_data, "id":property_id})
+        return render(request, 'theme/update_property.html', {'data':property_data, "id":property_id})
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-    return render(request, 'admin/admin2/update_property.html', {'data':property_data, "id":property_id})  
+    return render(request, 'theme/update_property.html', {'data':property_data, "id":property_id})  
 
 def manage_image_upload(request,property_id): 
     update_property_image(request, property_id) 
