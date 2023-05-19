@@ -86,7 +86,7 @@ def add_property_details(request):
         with open(data) as f:
             data = json.load(f)  
         data = data 
-        return render(request, 'admin/admin2/add_property.html', {
+        return render(request, 'theme/add_property.html', {
             "property_type":data["property_type"], 
             "deal_option":data["deal_option"],
             "construction_status":data["construction_status"], 
@@ -95,11 +95,11 @@ def add_property_details(request):
             "bathroom_details":data["bathroom_details"],
             "balcony_details":data["balcony_details"], 
             "parking_details":data["parking_details"], 
-            "country_name_list": country_name_list
-            })  
+            "country_name_list": country_name_list, 
+            "add_property_details": "add_property_page"})  
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-    return render(request, 'admin/admin2/add_property.html') 
+    return render(request, 'theme/add_property.html', {"add_property_details": "add_property_page"}) 
 
 
 def show_property_detail(request,property_id): 
@@ -119,10 +119,10 @@ def delete_property(request, property_id):
     try: 
         property_id=property_id  
         delete_all_property_data(property_id)  
-        return render(request,'admin/admin2/add_property.html') 
+        return render(request,'theme/add_property.html') 
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-    return render(request,'admin/admin2/add_property.html')
+    return render(request,'theme/add_property.html')
 
 def update_property(request, property_id=0): 
     # postData = request.get_json()
@@ -187,7 +187,7 @@ def prop_table(request):
     # count for user inquiries 
     # user_inq_len = len(user_id.user_other_data['inquiry_dtl']) 
     data=p_detail.objects.filter(seller_id=user_id)
-    return render(request, 'admin/admin2/prop_table.html', {'data':data}) 
+    return render(request, 'theme/prop_table.html', {'data':data, "property_table": "property_table"})  
 
 ################################################## userside functions ################################
 
@@ -196,8 +196,7 @@ def dashboard(request):
     # count for user inquiries 
     # user_inq_len = len(user_id.user_other_data['inquiry_dtl']) 
     data=p_detail.objects.filter(seller_id=user_id) 
-    return render(request, 'admin/admin2/dashboard.html', {'data':data, #'user_inq_len':user_inq_len
-                                                           })  
+    return render(request, 'theme/dashboard.html', {'data':data, "dashboard_page" : "dashboard_page"})  
 
 def crud_property(request): 
     data=p_detail.objects.filter(seller_id=User_register.objects.get(user_id=request.session._session['user_id']))  
