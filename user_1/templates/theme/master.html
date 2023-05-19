@@ -62,7 +62,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
-                    <a href="{% url 'home' %}" class="nav-item nav-link {% block home %}{% endblock %}">Home</a>
+                    <a href="{% url 'home' %}" class="nav-item nav-link {% block home %}{% endblock %}">Home</a> 
+                    <a href="{% url 'add_property_details' %}" class="nav-item nav-link {% block add_property_details %}{% endblock %}">Add new property</a>
                     <a href="{% url 'property_type' %}"
                         class="nav-item nav-link {% block property_type %}{% endblock %}">New listed property</a>
                     <a href="{% url 'property_agent' %}"
