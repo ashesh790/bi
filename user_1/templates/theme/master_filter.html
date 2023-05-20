@@ -65,7 +65,7 @@
     </div>
 </div>
 <div class="row m-2">
-    <div class="col-md-3">
+    <div class="col-md-3" id="search_filter">
         <h3>Filter properties by: </h3>
         <div id="advance_filter_container">
             <!-- filter using location -->
@@ -267,24 +267,26 @@
 </div>
 <!-- Search End -->
 <script>
+    var property_type_val = "";
     function active_class(selector) {
+        $('.fa-trash').click(); 
         $('.active_btn').removeClass('active_btn');
         $(selector).addClass("active_btn");
     }
     // search by property type 
     function property_type_core(property_type) {
-        var property_type = $(property_type).val();
+        property_type_val = $(property_type).val();
         $.ajax({
             url: "{% url 'search_property_type' %}",
             type: "POST",
             data: {
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-                "data": property_type
+                "data": property_type_val
             },
             success: function (data) {
                 if (Object.keys(data.prop_data).length != 0) {
                     $(".property_counter").empty();
-                    console.log(data.prop_data_type);
+                    // console.log(data.prop_data);
                     $.each(data.prop_data, function (key, val) {
                         $(".property_counter").append(` 
                         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -349,6 +351,7 @@
     // search property as per field which is selected in advance filter 
     function search_property_based_on_input_field_values(selling_type = null) {
         var selling_option_val = "";
+        console.log(property_type_val);
         if (selling_type != null) {
             selling_option_val = $(selling_type).val();
         }
@@ -360,6 +363,7 @@
                 selling_option_val = "Rent";
             }
         }
+        var property_type = property_type_val;
         var country = $('#country_based').val() || "";
         var state = $('#state_based').val() || "";
         var city = $('#city_based').val() || "";
@@ -371,6 +375,7 @@
         var geography_area = $('#geography_val').val() || "";
 
         var search_object = new Object();
+        if (property_type != "") { search_object.property_type = property_type };
         if (country != "") { search_object.country = country };
         if (state != "") { search_object.state = state };
         if (city != "") { search_object.city = city };
@@ -393,11 +398,11 @@
                 var i = 0;
                 property_id = property_data["id"];
                 property_data = property_data['property_data'];
-                console.log(property_data);
+                // console.log(property_data);
                 if (property_data) {
                     $(".property_counter").empty();
                     for (var [key, val] of Object.entries(property_data)) {
-                        console.log(property_id[i]);
+                        // console.log(property_id[i]);
                         $(".property_counter").append(` 
                         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden">
@@ -488,5 +493,6 @@
             });
         });
     });
+
 </script>
 {% endblock %}
