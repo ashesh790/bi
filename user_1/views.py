@@ -22,61 +22,81 @@ from django.core.files.storage import FileSystemStorage
 # Note: Create login and signup in single html page 
 
 def advance_filter(request): 
-    property_data = p_detail.objects.all() 
-    boundry_data = advance_filter_boundary(request) 
-    boundry_data = json.loads(boundry_data.content) 
-    return render(request, "advance_filter/filter.html", {"boundry_data":boundry_data['data'], "country":boundry_data['country'], "property_data":property_data}) 
+    try:
+        property_data = p_detail.objects.all() 
+        boundry_data = advance_filter_boundary(request) 
+        boundry_data = json.loads(boundry_data.content) 
+        return render(request, "advance_filter/filter.html", {"boundry_data":boundry_data['data'], "country":boundry_data['country'], "property_data":property_data}) 
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html")
+    
+
 # Login function 
 def sign_up(request): 
-    if request.method =="POST": 
-        user_name=request.POST['user_name']
-        user_email=request.POST['user_email'] 
-        user_mobile=request.POST['user_number'] 
-        user_psw=request.POST['user_psw'] 
-        user_name.lower()
-        user_email.lower()
-        if User_register.objects.filter(user_name=user_name): 
-            print("Existing User!") 
-            return redirect("login") 
-        if User_register.objects.filter(user_email=user_email).exists():
-            print("Email is already exist!") 
-            return redirect("login") 
-        if len(user_name)>20: 
-            print("USer must be under 20 character") 
-            return redirect("login") 
-        if not user_name.isalnum(): 
-            print("User name must be alphanumeric") 
-            return redirect("login") 
-        
-        new_user=User_register.objects.create(user_name=user_name, user_email=user_email, user_mobile=user_mobile,user_psw=user_psw) 
-        if new_user: 
-            return redirect('login') 
+    try: 
+        if request.method =="POST": 
+            user_name=request.POST['user_name']
+            user_email=request.POST['user_email'] 
+            user_mobile=request.POST['user_number'] 
+            user_psw=request.POST['user_psw'] 
+            user_name.lower()
+            user_email.lower()
+            if User_register.objects.filter(user_name=user_name): 
+                print("Existing User!") 
+                return redirect("login") 
+            if User_register.objects.filter(user_email=user_email).exists():
+                print("Email is already exist!") 
+                return redirect("login") 
+            if len(user_name)>20: 
+                print("USer must be under 20 character") 
+                return redirect("login") 
+            if not user_name.isalnum(): 
+                print("User name must be alphanumeric") 
+                return redirect("login") 
+            
+            new_user=User_register.objects.create(user_name=user_name, user_email=user_email, user_mobile=user_mobile,user_psw=user_psw) 
+            if new_user: 
+                return redirect('login') 
+            else: 
+                return False 
         else: 
-            return False 
-    else: 
-        return render(request, "theme/signup.html")
+            return render(request, "theme/signup.html")
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html")
 
  
 # sign up 
 def login(request): 
-    if request.POST: 
-        LOGIN_ERR = ''
-        login_status = login_user(request) 
-        if login_status is not False:   
-            return render(request, 'theme/index.html') 
+    try:
+        if request.POST: 
+            LOGIN_ERR = ''
+            login_status = login_user(request) 
+            if login_status is not False:   
+                return render(request, 'theme/index.html') 
+            else: 
+                LOGIN_ERR = "Invalid Credentials"
+                return JsonResponse({"err": LOGIN_ERR}) 
         else: 
-            LOGIN_ERR = "Invalid Credentials"
-            return JsonResponse({"err": LOGIN_ERR}) 
-    else: 
-        return render(request, "theme/login.html")
+            return render(request, "theme/login.html")
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html")
+    
+    
 # logout 
 def logout(request): 
-    if request: 
-        try: 
-            del request.session['user_name'] 
-        except: 
-            print("Logout") 
-    return render(request, 'theme/login.html') 
+    try:
+        if request: 
+            try: 
+                del request.session['user_name'] 
+            except: 
+                print("Logout") 
+        return render(request, 'theme/login.html')
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html") 
  
 def add_property_details(request):    
     try:
@@ -113,8 +133,9 @@ def show_property_detail(request,property_id):
             "data":data, 
         }
         return HttpResponse(template.render(context, request)) 
-    except Exception as ex: 
-        print(f"Solve this: {ex}") 
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html") 
 
 
 def delete_property(request, property_id): 
@@ -206,121 +227,176 @@ def crud_property(request):
 # Render home page 
 
 def home(request): 
-    property_category=property_bound_data 
-    property_data = p_detail.objects.all() 
-    boundry_data = advance_filter_boundary(request) 
-    boundry_data = json.loads(boundry_data.content) 
-    return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data, "boundry_data":boundry_data['data'], "country":boundry_data['country']})    
+    try:
+        property_category=property_bound_data 
+        property_data = p_detail.objects.all() 
+        boundry_data = advance_filter_boundary(request) 
+        boundry_data = json.loads(boundry_data.content) 
+        return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data, "boundry_data":boundry_data['data'], "country":boundry_data['country']})
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html")
+
 
 def about_us(request): 
-    return render(request, 'theme/about.html') 
+    try:
+        return render(request, 'theme/about.html') 
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html")
 
 def contact(request): 
-    return render(request, 'theme/contact.html')
+    try: 
+        return render(request, 'theme/contact.html') 
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html")
+    
 
 def property_agent(request): 
-    return render(request, 'theme/property-agent.html')
+    try:  
+        return render(request, 'theme/property-agent.html')
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html")
+    
 
 def print_property_type(request): 
-    data = settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json"  
-    with open(data) as f:
-        data = json.load(f)  
-    property_data = data['property_type'] 
-    property_count = p_detail.objects.all() 
-    property_c={} 
-    for i in property_count: 
-        if i.property_data["property_type"] in property_c: 
-            property_c[i.property_data["property_type"]]+=1
-        else:
-            property_c[i.property_data["property_type"]]=1 
-    return render(request, 'theme/new_listed_property.html', {"property_c":property_c}) 
+    try:
+        data = settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json"  
+        with open(data) as f:
+            data = json.load(f)  
+        property_data = data['property_type'] 
+        property_count = p_detail.objects.all() 
+        property_c={} 
+        for i in property_count: 
+            if i.property_data["property_type"] in property_c: 
+                property_c[i.property_data["property_type"]]+=1
+            else:
+                property_c[i.property_data["property_type"]]=1 
+        return render(request, 'theme/new_listed_property.html', {"property_c":property_c})
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html") 
 
 def property_list(request): 
-    return render(request, 'theme/property-list.html') 
+    try:
+        return render(request, 'theme/property-list.html')
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html") 
+    
 
-def property_category_wise(request, property_type):
-    sale_type = None  
-    data = search_property_type(request, sale_type, property_type) 
-    # search_property_type(request, sale_type, property_type = None) 
-    return render(request, 'theme/property-category-wise.html', {'data':data, 'property_type':property_type}) 
+def property_category_wise(request, property_type): 
+    try: 
+        sale_type = None  
+        data = search_property_type(request, sale_type, property_type) 
+        # search_property_type(request, sale_type, property_type = None) 
+        return render(request, 'theme/property-category-wise.html', {'data':data, 'property_type':property_type}) 
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html")
+    
 
 def property_sell_option_wise(request): 
-    sale_type = request.POST['selling_option']
-    try:
-        property_type = request.POST['property_type'] 
-    except: 
-        data = search_property_type(request, sale_type, property_type = None)
-        property_type = None 
-    if (property_type is not None): 
-        data = search_property_type(request, sale_type, property_type) 
-    # if (len(data) != 0): 
-    #     return HttpResponse(json.dumps({"empty_message":f"There is no any property like '{property_type}' with 'For {sale_type}' "}))    
-    return HttpResponse(json.dumps({"data":data})) 
+    try: 
+        sale_type = request.POST['selling_option']
+        try:
+            property_type = request.POST['property_type'] 
+        except: 
+            data = search_property_type(request, sale_type, property_type = None)
+            property_type = None 
+        if (property_type is not None): 
+            data = search_property_type(request, sale_type, property_type) 
+        # if (len(data) != 0): 
+        #     return HttpResponse(json.dumps({"empty_message":f"There is no any property like '{property_type}' with 'For {sale_type}' "}))    
+        return HttpResponse(json.dumps({"data":data})) 
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html")
+    
 
 def show_full_property_detail(request, property_id): 
-    property_data = p_detail.objects.all()
-    data = p_detail.objects.get(id=property_id)
-    data = data.property_data 
-    return render(request, 'theme/property-detail-page.html', {'data':data, 'property_id':property_id, 'property_data':property_data}) 
+    try:
+        property_data = p_detail.objects.all()
+        data = p_detail.objects.get(id=property_id)
+        data = data.property_data 
+        return render(request, 'theme/property-detail-page.html', {'data':data, 'property_id':property_id, 'property_data':property_data}) 
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html")
+    
 
 def property_post_modal_management(request): 
-    sale_type = request.POST['p_dtl_btn_val'] 
-    property_id = request.POST['property_id'] 
-    if (sale_type == "saller_detail"): 
-        data = p_detail.objects.get(id=property_id) 
-        user_id = data.seller_id.pk 
-        user_data = User_register.objects.get(pk=user_id) 
-        user_email = user_data.user_email 
-        user_name = user_data.user_name 
-        user_mobile = user_data.user_mobile 
-        user_gender = user_data.user_gender 
-        saller_data = {
-            "Saller email":user_email,
-            "Saller name":user_name,
-            "Saller mobile":user_mobile, 
-            "Saller gender":user_gender
-        }
-        return HttpResponse(json.dumps({"saller_data":saller_data})) 
-    elif(sale_type == "save_post"): 
-        pass 
-    elif(sale_type == "share_post"):
-        pass 
-    elif(sale_type == "submit_btn_dc"): 
+    try:
+        sale_type = request.POST['p_dtl_btn_val'] 
         property_id = request.POST['property_id'] 
-        sender_name = request.POST['sender_name'] 
-        sender_mobile = request.POST['sender_mobile'] 
-        sender_email = request.POST['sender_email'] 
-        description = request.POST['description'] 
-        inquiry_dtl={
-            "property_id":property_id,
-            "sender_name":sender_name,
-            "sender_mobile":sender_mobile,
-            "sender_email":sender_email,
-            "description":description
-        }
-        # inquiry_dtl = json.dumps(inquiry_dtl) 
-        data = p_detail.objects.get(id=property_id) 
-        user_id = data.seller_id.pk
-        save_data = User_register.objects.get(pk=user_id) 
-        user_data = save_data.user_other_data 
-        if (user_data is not None or len(user_data) !=0): 
-            # user_data = json.loads(user_data) 
-            user_data['inquiry_dtl'].append(inquiry_dtl) 
-            save_data.user_other_data = user_data 
-        else: 
-            user_data = {"inquiry_dtl":[inquiry_dtl]}
-            # user_data = json.dumps(user_data) 
-            save_data.user_other_data = user_data
-        save_data.save()
-    return HttpResponse(json.dumps({"sale_type":sale_type}))  
+        if (sale_type == "saller_detail"): 
+            data = p_detail.objects.get(id=property_id) 
+            user_id = data.seller_id.pk 
+            user_data = User_register.objects.get(pk=user_id) 
+            user_email = user_data.user_email 
+            user_name = user_data.user_name 
+            user_mobile = user_data.user_mobile 
+            user_gender = user_data.user_gender 
+            saller_data = {
+                "Saller email":user_email,
+                "Saller name":user_name,
+                "Saller mobile":user_mobile, 
+                "Saller gender":user_gender
+            }
+            return HttpResponse(json.dumps({"saller_data":saller_data})) 
+        elif(sale_type == "save_post"): 
+            pass 
+        elif(sale_type == "share_post"):
+            pass 
+        elif(sale_type == "submit_btn_dc"): 
+            property_id = request.POST['property_id'] 
+            sender_name = request.POST['sender_name'] 
+            sender_mobile = request.POST['sender_mobile'] 
+            sender_email = request.POST['sender_email'] 
+            description = request.POST['description'] 
+            inquiry_dtl={
+                "property_id":property_id,
+                "sender_name":sender_name,
+                "sender_mobile":sender_mobile,
+                "sender_email":sender_email,
+                "description":description
+            }
+            # inquiry_dtl = json.dumps(inquiry_dtl) 
+            data = p_detail.objects.get(id=property_id) 
+            user_id = data.seller_id.pk
+            save_data = User_register.objects.get(pk=user_id) 
+            user_data = save_data.user_other_data 
+            if (user_data is not None or len(user_data) !=0): 
+                # user_data = json.loads(user_data) 
+                user_data['inquiry_dtl'].append(inquiry_dtl) 
+                save_data.user_other_data = user_data 
+            else: 
+                user_data = {"inquiry_dtl":[inquiry_dtl]}
+                # user_data = json.dumps(user_data) 
+                save_data.user_other_data = user_data
+            save_data.save()
+        return HttpResponse(json.dumps({"sale_type":sale_type}))  
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html")
 
 def inquiries_from_user(request): 
-    user_data = User_register.objects.get(user_id=request.session._session['user_id']) 
-    user_data = user_data.user_other_data 
-    return HttpResponse(json.dumps({"user_data":user_data}))
+    try: 
+        user_data = User_register.objects.get(user_id=request.session._session['user_id']) 
+        user_data = user_data.user_other_data 
+        return HttpResponse(json.dumps({"user_data":user_data}))
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html")
 
 # Test functions  
-def test_function(request):
-    boundry_data = advance_filter_boundary(request) 
-    boundry_data = json.loads(boundry_data.content)
-    return render(request, 'theme/master_filter.html', {"boundry_data":boundry_data['data']})   
+def test_function(request): 
+    try:
+        boundry_data = advance_filter_boundary(request) 
+        boundry_data = json.loads(boundry_data.content)
+        return render(request, 'theme/master_filter.html', {"boundry_data":boundry_data['data']}) 
+    except Exception as err: 
+        print(err)
+        return render(request, "theme/404.html")
