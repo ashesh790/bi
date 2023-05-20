@@ -125,15 +125,17 @@ def search_property_type(request, sale_type = None, property_type = None):
     if property_type is None and sale_type is None: 
         if (request.POST['data']): 
             property_type_core = request.POST["data"] 
+            prop_data_type= property_type_core
             if property_type_core != "all":
                 property_type_core_data = p_detail.objects.filter(property_data__property_type=property_type_core) 
                 for  i in property_type_core_data: 
                     prop_data[i.id] = i.property_data
             else: 
+                property_filter = "all" 
                 property_type_core_data = p_detail.objects.all()  
                 for  i in property_type_core_data: 
                     prop_data[i.id] = i.property_data 
-            return JsonResponse(prop_data)  
+            return JsonResponse({"prop_data":prop_data, "prop_data_type": prop_data_type}) 
 
     if (sale_type is not None and property_type is not None): 
         if (sale_type == "all"): 
