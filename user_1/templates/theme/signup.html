@@ -25,11 +25,12 @@
             </div>
             <div class="col-md-12 m-3">
                 <div class="form-floating">
-                    <input type="password" class="form-control" name="user_psw" id="email" placeholder="Your Email">
+                    <input type="password" class="form-control" name="user_psw" id="password" placeholder="Your Email">
                     <label for="email">Your Password</label>
                 </div>
             </div>
             <div class="col-12 m-3">
+                <span id="error-message" class="text-danger"></span> 
                 <input href="signup" class="btn btn-primary w-100 py-3" value="Register" type="submit">
             </div> 
             <div class="mt-2 m-3">
@@ -39,4 +40,70 @@
             </form>
         </div>
     </div> 
+
+    <script>
+        $(document).ready(function() {
+        $('form').submit(function(event) { 
+            event.preventDefault(); // Prevent the form from submitting
+
+            var name = $('#name').val();
+            var number = $('#number').val();
+            var email = $('#email').val();
+            var password = $('#password').val();
+
+            // Perform your validation checks here
+            var error = '';
+
+            if (name.trim() === '') {
+            error = 'Please enter your name.'; 
+            // Display the error message, if any
+            $('#error-message').text(error);
+            return false; 
+            }
+
+            if (number.trim() === '') {
+            error = 'Please enter your contact number.';
+            // Display the error message, if any
+            $('#error-message').text(error);
+            return false; 
+            }
+
+            if (email.trim() === '') {
+            error = 'Please enter your email.';
+            // Display the error message, if any
+            $('#error-message').text(error);
+            return false; 
+            } else if (!validateEmail(email)) {
+            error = 'Please enter a valid email address.';
+            // Display the error message, if any
+            $('#error-message').text(error);
+            return false; 
+            }
+
+            if (password.trim() === '') {
+            error = 'Please enter your password.'; 
+            // Display the error message, if any
+            $('#error-message').text(error);
+            return false; 
+            } else if (password.length < 8) {
+            error = 'Password must be at least 8 characters long.'; 
+            // Display the error message, if any
+            $('#error-message').text(error);
+            return false; 
+            }
+
+            if (error === '') {
+            // If there are no errors, submit the form
+            this.submit();
+            }
+        });
+        });
+
+        // Email validation function
+        function validateEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+        }
+
+    </script>
 {% endblock %}

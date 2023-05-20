@@ -60,11 +60,13 @@ def sign_up(request):
 # sign up 
 def login(request): 
     if request.POST: 
+        LOGIN_ERR = ''
         login_status = login_user(request) 
         if login_status is not False:   
             return render(request, 'theme/index.html') 
         else: 
-            return redirect('Invalid Credentials') 
+            LOGIN_ERR = "Invalid Credentials"
+            return JsonResponse({"err": LOGIN_ERR}) 
     else: 
         return render(request, "theme/login.html")
 # logout 

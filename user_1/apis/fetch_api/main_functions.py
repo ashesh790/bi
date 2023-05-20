@@ -61,7 +61,8 @@ def update_property_image(request, property_id):
         fss = FileSystemStorage()
         for i in data: 
             file = fss.save(i.name, i)
-            file_url = fss.url(file)
+            file_url = fss.url(file) 
+            file_url = file_url.replace("%20", " ") 
             property_image_save.append(file_url)  
         property_data.property_data['property_image'] = property_data.property_data['property_image'] + property_image_save  
         property_data.save() 
