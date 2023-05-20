@@ -92,12 +92,15 @@
                         data: data,
                         csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
                     },
-                    success: function (response) { 
+                    success: function (response) {
+                        debugger  
                         if (response.err != ''){
+                            if (response.err != undefined){
                             $("#login_err").removeClass("d-none"); 
                             $("#login_err").text(response.err);  
                             return false; 
-                        } 
+                            } 
+                        }
                         window.location.href = "/home";
                     },
                     error: function (xhr, status, error) { 
