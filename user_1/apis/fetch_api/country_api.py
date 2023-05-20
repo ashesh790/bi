@@ -2,6 +2,8 @@ import json
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 import requests 
+import geocoder
+
 
 API_KEY = "aW5ORzN6VkpJdVZrZFZSUFdlYUxxRFNpdkxVMU5kaEdzYmI5cE9hNQ==" 
 
@@ -55,3 +57,21 @@ def city_list(request):
         # Something went wrong
         print(f"Server Busy") 
         return None
+    
+
+def get_location(ip_address):
+    g = geocoder.ip(ip_address)
+    if g.ok:
+        return g.city, g.country
+    else:
+        return None
+
+# Example usage
+ip_address = '1.38.68.48'  # Replace with the IP address you want to geocode
+location = get_location(ip_address)
+if location:
+    city, country = location
+    print(f"City: {city}")
+    print(f"Country: {country}")
+else:
+    print("Location not found.")
