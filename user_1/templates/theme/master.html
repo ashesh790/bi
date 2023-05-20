@@ -55,14 +55,16 @@
                 <!-- <div class="icon p-2 me-2">
                         <img class="img-fluid" src="{% static 'theme/img/icon-deal.png' %}" alt="Icon" style="width: 30px; height: 30px;">
                     </div> -->
-                <h1 class="m-0 text-primary">audrr.com</h1>
+                <!-- <h1 class="m-0 text-primary">audrr.com</h1> --> 
+                <h4 class="m-0 text-primary">Staying Source</h4>
             </a>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
-                    <a href="{% url 'home' %}" class="nav-item nav-link {% block home %}{% endblock %}">Home</a>
+                    <a href="{% url 'home' %}" class="nav-item nav-link {% block home %}{% endblock %}">Home</a> 
+                    <a href="{% url 'add_property_details' %}" class="nav-item nav-link {% block add_property_details %}{% endblock %}">Add new property</a>
                     <a href="{% url 'property_type' %}"
                         class="nav-item nav-link {% block property_type %}{% endblock %}">New listed property</a>
                     <a href="{% url 'property_agent' %}"
