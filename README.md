@@ -21,3 +21,4 @@ After change in database:
 
 When select/click property type do reset all filters 
 Set property on home page by location 
+Validation for login and signup 
