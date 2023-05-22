@@ -44,8 +44,49 @@
     </div>
 </div>
 <div class="row mx-2">
-    <div class="col-lg-6"></div>
-    <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+    <div class="col-lg-9">
+        <div id="location_fltr">
+            <div class="row">
+                <div style="width:11%;">
+                    <h5>Location:</h5>
+                </div>
+                <div class="col-md-3">
+                    <div class="d-flex">
+                        <div id="country_based__trash">
+                            <select class="form-control search_field" id="country_based" style="width:200px;"
+                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                <option value="">Select Country</option>
+                                {% for i in country %}
+                                <option value="{{i.iso2}}">{{i.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="d-flex">
+                        <div id="state_based__trash">
+                            <select class="form-control search_field" id="state_based" style="width:200px;"
+                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                <option value="" selected>Select state</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="d-flex">
+                        <div id="city_based__trash">
+                            <select class="form-control search_field" id="city_based" style="width:200px;"
+                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                <option value="" selected> Select City</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
         <ul class="nav nav-pills d-inline-flex justify-content-end mb-3">
             <li class="nav-item me-2 d-none">
                 <button class="btn btn-outline-primary active" data-bs-toggle="pill" value="all" id="all"
@@ -66,50 +107,8 @@
 </div>
 <div class="row m-2">
     <div class="col-md-3" id="search_filter">
-        <h3>Filter properties by: </h3>
+        <h5>Filter properties by: </h5>
         <div id="advance_filter_container">
-            <!-- filter using location -->
-            <div class="filter_value" id="location_based">
-                <h5>
-                    <div class="border text-left p-2" data-toggle="collapse" data-target="#location_fltr"
-                        aria-expanded="false" aria-controls="location_fltr" style="cursor: pointer;">
-                        <b>Location</b>
-                    </div>
-                </h5>
-                <div class="collapse show" id="location_fltr">
-                    <div class="card card-body">
-                        <div class="d-flex">
-                            <div id="country_based__trash">
-                                <select class="form-control selectpicker search_field" id="country_based"
-                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                    <option value="">Select Country</option>
-                                    {% for i in country %}
-                                    <option value="{{i.iso2}}">{{i.name}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                            <div id="state_based__trash">
-                                <select class="form-control mt-2 search_field" id="state_based"
-                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                    <option hidden>Select stateSelect stateSelect state</option>
-                                    <option value="" selected>Select state</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                            <div id="city_based__trash">
-                                <select class="form-control mt-2 search_field" id="city_based"
-                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                    <option hidden>Select CitySelect CitySelect CitySelect City</option>
-                                    <option value="" selected> Select City</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <!-- filter using construction status -->
             <h5>
                 <div class="border text-left p-2" data-toggle="collapse" data-target="#construction_fltr"
@@ -269,7 +268,7 @@
 <script>
     var property_type_val = "all";
     function active_class(selector) {
-        $('.fa-trash').click(); 
+        $('.fa-trash').click();
         $('.active_btn').removeClass('active_btn');
         $(selector).addClass("active_btn");
     }
@@ -459,7 +458,6 @@
                 success: function (property_data) {
                     $("#state_based").empty();
                     $('#state_based').append(`<option value="">Select state</option>`);
-                    $('#state_based').append(`<option hidden>Select stateSelect stateSelect state</option>`);
                     property_data = JSON.parse(property_data)
                     for (let [key, value] of Object.entries(property_data)) {
                         $('#state_based').append(`<option value="${value.iso2}">${value.name}</option>`);
@@ -484,7 +482,6 @@
                 success: function (property_data) {
                     $("#city_based").empty();
                     $('#city_based').append(`<option value="">Select City</option>`);
-                    $('#city_based').append(`<option hidden>Select stateSelect stateSelect state</option>`);
                     property_data = JSON.parse(property_data)
                     for (let [key, value] of Object.entries(property_data)) {
                         $('#city_based').append(`<option value="${value.name}">${value.name}</option>`);
