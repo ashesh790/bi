@@ -66,11 +66,11 @@
         "sale": "Sale"
     },
     "construction_status": {
-        "underconstruction": "Under construction",
-        "completed": "Completed",
-        "preconstruction": "Pre construction",
-        "offplan": "Offplan",
-        "new": "New"
+        "Under construction": "Under construction",
+        "Completed": "Completed",
+        "Pre construction": "Pre construction",
+        "Offplan": "Offplan",
+        "New": "New"
     },
     "bhk_details": {
         "1": "1",
