@@ -19,3 +19,6 @@ After change in database:
 
 (1) UFD_1 : https://www.canva.com/design/DAFbpAtnjaI/4NfoDhN4ADemJwjouI4x2A/edit?utm_content=DAFbpAtnjaI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton 
 
+When select/click property type do reset all filters - done 
+Set property on home page by location 
+Validation for login and signup - done 

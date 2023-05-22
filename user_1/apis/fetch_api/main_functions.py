@@ -61,7 +61,8 @@ def update_property_image(request, property_id):
         fss = FileSystemStorage()
         for i in data: 
             file = fss.save(i.name, i)
-            file_url = fss.url(file)
+            file_url = fss.url(file) 
+            file_url = file_url.replace("%20", " ") 
             property_image_save.append(file_url)  
         property_data.property_data['property_image'] = property_data.property_data['property_image'] + property_image_save  
         property_data.save() 
@@ -129,10 +130,11 @@ def search_property_type(request, sale_type = None, property_type = None):
                 for  i in property_type_core_data: 
                     prop_data[i.id] = i.property_data
             else: 
+                property_filter = "all" 
                 property_type_core_data = p_detail.objects.all()  
                 for  i in property_type_core_data: 
                     prop_data[i.id] = i.property_data 
-            return JsonResponse(prop_data)  
+            return JsonResponse({"prop_data":prop_data, "prop_data_type": property_type_core}) 
 
     if (sale_type is not None and property_type is not None): 
         if (sale_type == "all"): 

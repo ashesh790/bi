@@ -15,6 +15,11 @@
         color: black !important;
     }
 
+    .active_btn {
+        background-color: aliceblue;
+        color: #0099ff !important;
+    }
+
     @media (max-width: 768px) {
         ::-webkit-scrollbar {
             display: none;
@@ -28,11 +33,12 @@
         <div class="scroller" style="overflow: auto; display:flex;">
             {% csrf_token %}
             <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn"
-                onclick="property_type_core(this);" style="margin:10px;" value="all">All
+                onclick="property_type_core(this);active_class(this);" style="margin:10px;" value="all">All
                 Type</button>
             {% for i in boundry_data.property_type %}
             <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn"
-                onclick="property_type_core(this);" style="margin:10px;" value="{{i}}">{{i}}</button>
+                onclick="property_type_core(this);active_class(this);" style="margin:10px;" id="{{i}}"
+                value="{{i}}">{{i}}</button>
             {% endfor %}
         </div>
     </div>
@@ -59,7 +65,7 @@
     </div>
 </div>
 <div class="row m-2">
-    <div class="col-md-3">
+    <div class="col-md-3" id="search_filter">
         <h3>Filter properties by: </h3>
         <div id="advance_filter_container">
             <!-- filter using location -->
@@ -261,26 +267,32 @@
 </div>
 <!-- Search End -->
 <script>
-
+    var property_type_val = "all";
+    function active_class(selector) {
+        $('.fa-trash').click(); 
+        $('.active_btn').removeClass('active_btn');
+        $(selector).addClass("active_btn");
+    }
     // search by property type 
     function property_type_core(property_type) {
-        var property_type = $(property_type).val();
+        property_type_val = $(property_type).val();
         $.ajax({
             url: "{% url 'search_property_type' %}",
             type: "POST",
             data: {
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-                "data": property_type
+                "data": property_type_val
             },
             success: function (data) {
-                if (Object.keys(data).length != 0) {
+                if (Object.keys(data.prop_data).length != 0) {
                     $(".property_counter").empty();
-                    for (var [key, val] of Object.entries(data)) {
+                    // console.log(data.prop_data);
+                    $.each(data.prop_data, function (key, val) {
                         $(".property_counter").append(` 
                         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden">
                                 <div class="position-relative overflow-hidden">
-                                    <a href=""><img class="img-fluid" src="${val.property_image[0]}" alt=""></a>
+                                    <a href="/property_details/${key}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
                                     <div
                                         class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
                                         For ${val.selling_option}</div>
@@ -303,7 +315,7 @@
                             </div>
                         </div>
                         `)
-                    }
+                    });
                 }
                 else {
                     $(".property_counter").empty();
@@ -332,13 +344,14 @@
         real_field_name = field_name.replace("_trash_icon", "");
         $(`#${real_field_name}`).val("");
         search_property_based_on_input_field_values();
-        //debugger
+        //
         $(`#${field_name}`).remove();
     }
 
     // search property as per field which is selected in advance filter 
     function search_property_based_on_input_field_values(selling_type = null) {
         var selling_option_val = "";
+        console.log(property_type_val);
         if (selling_type != null) {
             selling_option_val = $(selling_type).val();
         }
@@ -350,6 +363,7 @@
                 selling_option_val = "Rent";
             }
         }
+        var property_type = property_type_val;
         var country = $('#country_based').val() || "";
         var state = $('#state_based').val() || "";
         var city = $('#city_based').val() || "";
@@ -361,6 +375,7 @@
         var geography_area = $('#geography_val').val() || "";
 
         var search_object = new Object();
+        if (property_type != "") { search_object.property_type = property_type };
         if (country != "") { search_object.country = country };
         if (state != "") { search_object.state = state };
         if (city != "") { search_object.city = city };
@@ -383,16 +398,16 @@
                 var i = 0;
                 property_id = property_data["id"];
                 property_data = property_data['property_data'];
-                console.log(property_data);
+                // console.log(property_data);
                 if (property_data) {
                     $(".property_counter").empty();
                     for (var [key, val] of Object.entries(property_data)) {
-                        console.log(property_id[i]);
+                        // console.log(property_id[i]);
                         $(".property_counter").append(` 
                         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden">
                                 <div class="position-relative overflow-hidden">
-                                    <a href="/property_details/${property_id[i]}"><img class="img-fluid" src="${val.property_image[0]}" alt=""></a>
+                                    <a href="/property_details/${property_id[i]}"><img class="img-fluid" src="${val.property_image[0]}" style="width:100%; height: 190px;" alt=""></a>
                                     <div
                                         class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
                                         For ${val.selling_option}</div>
@@ -478,5 +493,6 @@
             });
         });
     });
+
 </script>
 {% endblock %}
