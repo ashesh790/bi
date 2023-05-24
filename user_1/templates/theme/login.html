@@ -14,17 +14,17 @@
         <div class="col-md-12 m-3">
             <div class="form-floating">
                 <input type="password" class="form-control" id="psw" placeholder="Your Password">
-                <label for="email">Your Password</label> 
+                <label for="email">Your Password</label>
                 <span id="password_error" class="text-danger"></span>
             </div>
         </div>
 
-        <div class="col-12 m-3"> 
+        <div class="col-12 m-3">
             <div class="alert alert-danger d-none" role="alert" id="login_err">
                 <button type="button" class="close btn" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                  </button>
-            </div> 
+                </button>
+            </div>
             <button class="btn btn-primary w-100 py-3 auth_btn">Login</button>
         </div>
         <div class="mt-2 m-3">
@@ -40,27 +40,27 @@
     </div>
 </div>
 <!-- Javsscript code with jquery -->
-<script> 
+<script>
     // validatio for form 
 
     $(document).ready(function () {
-        $(".auth_btn").click(function (e) { 
-            var username = $("#name").val(); 
-            var error = ''; 
+        $(".auth_btn").click(function (e) {
+            var username = $("#name").val();
+            var error = '';
             if (username === '') {
-            error = 'Username is required.';
-            $('#username_error').text(error);
+                error = 'Username is required.';
+                $('#username_error').text(error);
             } else if (username.length < 3) {
-            error = 'Username must be at least 3 characters long.';
-            $('#username_error').text(error);
+                error = 'Username must be at least 3 characters long.';
+                $('#username_error').text(error);
             } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-            error = 'Username can only contain letters, numbers, and underscores.';
-            $('#username_error').text(error); 
-            } 
+                error = 'Username can only contain letters, numbers, and underscores.';
+                $('#username_error').text(error);
+            }
 
             if (error !== '') {
                 return false; // Prevent form submission
-            } 
+            }
             var password = $('#psw').val();
             var pass_error = '';
 
@@ -71,7 +71,7 @@
             } else if (!/[A-Z]/.test(password)) {
                 pass_error = 'Password must contain at least one uppercase letter.';
             } else if (!/[a-z]/.test(password)) {
-            pass_error = 'Password must contain at least one lowercase letter.';
+                pass_error = 'Password must contain at least one lowercase letter.';
             } else if (!/[0-9]/.test(password)) {
                 pass_error = 'Password must contain at least one digit.';
             }
@@ -79,7 +79,7 @@
             $('#password_error').text(pass_error);
 
             if (pass_error !== '') {
-            return false; // Prevent form submission
+                return false; // Prevent form submission
             }
             var name = $("#name").val();
             var email = $("#psw").val();
@@ -93,19 +93,18 @@
                         csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
                     },
                     success: function (response) {
-                        debugger  
-                        if (response.err != ''){
-                            if (response.err != undefined){
-                            $("#login_err").removeClass("d-none"); 
-                            $("#login_err").text(response.err);  
-                            return false; 
-                            } 
+                        if (response.err != '') {
+                            if (response.err != undefined) {
+                                $("#login_err").removeClass("d-none");
+                                $("#login_err").text(response.err);
+                                return false;
+                            }
                         }
                         window.location.href = "/home";
                     },
-                    error: function (xhr, status, error) { 
-                        $("#login_err").removeClass("d-none"); 
-                        $(".login_err").text("Something went wrong!");  
+                    error: function (xhr, status, error) {
+                        $("#login_err").removeClass("d-none");
+                        $(".login_err").text("Something went wrong!");
                     }
                 });
         });
