@@ -206,7 +206,7 @@ def crud_property(request):
 # Render home page 
 
 def home(request): 
-    property_category=property_bound_data 
+    property_category=property_bound_data()
     property_data = p_detail.objects.all() 
     boundry_data = advance_filter_boundary(request) 
     boundry_data = json.loads(boundry_data.content) 

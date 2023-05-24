@@ -26,6 +26,15 @@
             /* Safari and Chrome */
         }
     }
+
+    .search_field {
+        border-left: 2px solid #0099ff !important;
+        border-bottom: 2px solid #0099ff !important;
+    }
+
+    #construction_status_trash_icon>i {
+        margin-top: 0.8rem;
+    }
 </style>
 <!-- Search Start -->
 <div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" style="padding: 0px;">
@@ -110,37 +119,24 @@
         <h5>Filter properties by: </h5>
         <div id="advance_filter_container">
             <!-- filter using construction status -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#construction_fltr"
-                    aria-expanded="false" aria-controls="construction_fltr" style="cursor: pointer;">
-                    <b>Construction status</b>
-                </div>
-            </h5>
-            <div class="collapse" id="construction_fltr">
-                <div class="card card-body">
-                    <div class="d-flex">
-                        <div id="construction_status__trash">
-                            <select class="form-control mt-2 search_field" id="construction_status" style="width:200px;"
-                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                <option value="">Construction status</option>
-                                {% for i in boundry_data.construction_status %}
-                                <option value="{{i}}">{{i}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
+            <div id="construction_fltr">
+                <div class="d-flex">
+                    <div id="construction_status__trash">
+                        <select class="form-control mt-2 search_field" id="construction_status" style="width:200px;"
+                            onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                            <option value="">Construction status</option>
+                            {% for i in boundry_data.construction_status %}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
             </div>
 
             <!-- filter using bathroom count -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#bathroom_fltr"
-                    aria-expanded="false" aria-controls="bathroom_fltr" style="cursor: pointer;">
-                    <b>Bathrooms</b>
-                </div>
-            </h5>
-            <div class="collapse" id="bathroom_fltr">
-                <div class="card card-body">
+            <div id="bathroom_fltr">
+                <div class="d-flex">
+
                     <div id="bathroom_val__trash">
                         <select class="form-control mt-2 search_field" id="bathroom_val" style="width:200px;"
                             onchange="search_property_based_on_input_field_values();search_field_applied(this);">
@@ -152,16 +148,9 @@
                     </div>
                 </div>
             </div>
-
             <!-- filter using balcony count -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#balcony_fltr"
-                    aria-expanded="false" aria-controls="balcony_fltr" style="cursor: pointer;">
-                    <b>Balcony</b>
-                </div>
-            </h5>
-            <div class="collapse" id="balcony_fltr">
-                <div class="card card-body">
+            <div id="balcony_fltr">
+                <div class="d-flex">
                     <div id="balcony_val__trash">
                         <select class="form-control mt-2 search_field" id="balcony_val" style="width:200px;"
                             onchange="search_property_based_on_input_field_values();search_field_applied(this);">
@@ -173,16 +162,9 @@
                     </div>
                 </div>
             </div>
-
             <!-- filter using balcony count -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#bhk_fltr" aria-expanded="false"
-                    aria-controls="bhk_fltr" style="cursor: pointer;">
-                    <b>BHK</b>
-                </div>
-            </h5>
-            <div class="collapse" id="bhk_fltr">
-                <div class="card card-body">
+            <div id="bhk_fltr">
+                <div class="d-flex">
                     <div id="bhk_val__trash">
                         <select class="form-control mt-2 search_field" id="bhk_val" style="width:200px;"
                             onchange="search_property_based_on_input_field_values();search_field_applied(this);">
@@ -196,36 +178,28 @@
             </div>
 
             <!-- filter using furnish type -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#furnish_fltr"
-                    aria-expanded="false" aria-controls="furnish_fltr" style="cursor: pointer;">
-                    <b>Furnish type</b>
-                </div>
-            </h5>
-            <div class="collapse" id="furnish_fltr">
-                <div class="card card-body" id="furnish_fltr_val">
-                    <div id="furnish_type__trash">
-                        <select class="form-control mt-2 search_field" id="furnish_type" style="width:200px;"
-                            onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                            <option value="">Furnish type</option>
-                            {% for i in boundry_data.furnish_type %}
-                            <option>{{i}}</option>
-                            {% endfor %}
-                        </select>
+            <div id="furnish_fltr">
+                <div id="furnish_fltr_val">
+                    <div class="d-flex">
+                        <div id="furnish_type__trash">
+                            <select class="form-control mt-2 search_field" id="furnish_type" style="width:200px;"
+                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                <option value="">Furnish type</option>
+                                {% for i in boundry_data.furnish_type %}
+                                <option>{{i}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- filter using geography area -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#geography_fltr"
-                    aria-expanded="false" aria-controls="geography_fltr" style="cursor: pointer;">
-                    <b>Geography area</b>
-                </div>
-            </h5>
-            <div class="collapse" id="geography_fltr">
-                <div class="card card-body">
-                    <div id="geography_val__trash">
+            <b>Geography area</b>
+            <div id="geography_fltr">
+                <div class="d-flex">
+
+                    <div id="geography_val__trash" style="width:200px;">
                         <input type="number" class="form-control search_field" placeholder="2000Sq.ft"
                             id="geography_val" onchange="search_field_applied(this);">
                     </div>
@@ -233,14 +207,9 @@
             </div>
 
             <!-- filter using price area -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#price_fltr" aria-expanded="false"
-                    aria-controls="price_fltr" style="cursor: pointer;">
-                    <b>Price between</b>
-                </div>
-            </h5>
-            <div class="collapse" id="price_fltr">
-                <div class="card card-body" id="price_fltr_val">
+            <b>Price between</b>
+            <div id="price_fltr" style="width:200px;">
+                <div id="price_fltr_val">
                     <label>To: </label>
                     <div id="start_price_val__trash">
                         <input type="number" placeholder="100" class="form-control search_field" id="start_price_val">
