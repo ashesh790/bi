@@ -40,6 +40,7 @@ def add_property_details_in_database(request):
         property_data['state']=request.POST['state']
         property_data['city']=request.POST['city']
         property_data['property_address']=request.POST['property_address'] 
+        property_data['property_description']=request.POST['property_description']
         property_data['property_image']= property_image_save
         property_data['property_video']= {}  
         # fetching last property detail from databases  

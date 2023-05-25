@@ -11,12 +11,12 @@
         "Villa",
         "Other"
     ],
-    "property_status": {
-        "sold": "sold",
-        "leased": "leased",
-        "rented": "rented",
-        "leasedout": "leasedout"
-    },
+    "property_status": [
+        "Sold",
+        "Leased",
+        "Rented",
+        "Leasedout"
+    ],
     "property_features": [
         "airconditioning",
         "",
@@ -62,8 +62,8 @@
         "workshop"
     ],
     "deal_option": {
-        "rent": "Rent",
-        "sale": "Sale"
+        "Rent": "Rent",
+        "Sale": "Sale"
     },
     "construction_status": {
         "Under construction": "Under construction",
@@ -139,13 +139,13 @@
         "20": "20"
     },
     "furnish_type": {
-        "furnished": "Fully Furnished",
-        "unfurnished": "Unfurnished",
-        "semifurnished": "Semi furnished"
+        "Fully Furnished": "Fully Furnished",
+        "Unfurnished": "Unfurnished",
+        "Semi furnished": "Semi furnished"
     },
     "parking_details": {
-        "covered": "Covered",
-        "open": "Open",
-        "both": "Covered and Open"
+        "Covered": "Covered",
+        "Open": "Open",
+        "Covered and Open": "Covered and Open"
     }
 }

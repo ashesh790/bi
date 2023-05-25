@@ -129,6 +129,10 @@ def delete_property(request, property_id):
 def update_property(request, property_id=0): 
     # postData = request.get_json()
     try: 
+        bondry_data = settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json" 
+        with open(bondry_data) as f:
+            bondry_data = json.load(f)  
+        bondry_data = bondry_data
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
         if request.method == 'POST': 
             media_data=request.FILES.getlist('images')
@@ -161,12 +165,22 @@ def update_property(request, property_id=0):
             data.property_data['state'] = request.POST['data[property_state]']
             data.property_data['city'] = request.POST['data[property_city]'] 
             data.property_data['property_address'] = request.POST['data[property_address]'] 
+            data.property_data['property_description'] = request.POST['data[property_description]']
             data.save()  
             return render(request, 'theme/update_property.html', {'data':data, "id":property_id})
         property_id=property_id
         data=p_detail.objects.get(id=property_id) 
         property_data=data.property_data
-        return render(request, 'theme/update_property.html', {'data':property_data, "id":property_id})
+        
+        return render(request, 'theme/update_property.html', {'data':property_data, "id":property_id, 
+            "property_type":bondry_data["property_type"], 
+            "deal_option":bondry_data["deal_option"],
+            "construction_status":bondry_data["construction_status"], 
+            "furnish_type":bondry_data["furnish_type"], 
+            "bhk_details":bondry_data["bhk_details"], 
+            "bathroom_details":bondry_data["bathroom_details"],
+            "balcony_details":bondry_data["balcony_details"], 
+            "parking_details":bondry_data["parking_details"], })
     except Exception as ex: 
         print(f"Solve this: {ex}") 
     return render(request, 'theme/update_property.html', {'data':property_data, "id":property_id})  

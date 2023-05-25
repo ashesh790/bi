@@ -1,13 +1,13 @@
 {% extends 'theme/master.html' %}
 {% block add_property_details %}active{% endblock %}
-{% block main_content %} 
+{% block main_content %}
 <style>
     .p_type_btn {
         border-radius: 20px;
         border: 1px solid white;
         padding: 10px;
         font-size: 15px;
-        font-weight: 600; 
+        font-weight: 600;
         background-color: skyblue;
         color: black !important;
     }
@@ -17,10 +17,11 @@
         color: black !important;
     }
 
-    .active_btn{
+    .active_btn {
         background-color: aliceblue;
         color: #0099ff !important;
     }
+
     @media (max-width: 768px) {
         ::-webkit-scrollbar {
             display: none;
@@ -30,9 +31,11 @@
 </style>
 <div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" style="padding: 0px;">
     <div class="container">
-        <div class="scroller" style="overflow: auto; display:flex;"> 
-            <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white" style="margin:10px;" value="all"><a href="{% url 'add_property_details' %}">Add new property</a></button>
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page" style="margin:10px;" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
+        <div class="scroller" style="overflow: auto; display:flex;">
+            <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white" style="margin:10px;"
+                value="all"><a href="{% url 'add_property_details' %}">Add new property</a></button>
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page"
+                style="margin:10px;" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
             <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;">
                 <a href="{% url 'prop_table' %}">Property list</a></button>
         </div>
@@ -55,14 +58,9 @@
                             <option value="{{data.property_type}}">&#x2713; :
                                 {{data.property_type}}
                             </option>
-                            <option value="Home">Home</option>
-                            <option value="Shop">Shop</option>
-                            <option value="Flat">Flat</option>
-                            <option value="Villa">Villa</option>
-                            <option value="Agriculture land">Agriculture land</option>
-                            <option value="Complex">Complex</option>
-                            <option value="PG(Paying Guest)">PG(Paying Guest)</option>
-                            <option value="Hostel">Hostel</option>
+                            {% for type in property_type%}
+                            <option value="{{type}}">{{type}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -83,9 +81,9 @@
                             class="selling_option prop_val">
                             <option value="{{data.selling_option}}">&#x2713; :
                                 {{data.selling_option|title}}</option>
-                            <option value="Sale">Sale</option>
-                            <option value="Rent">Rent</option>
-                            <option value="Sale / Rent">Sell / Rent</option>
+                            {% for deal_op in deal_option%}
+                            <option value="{{deal_op}}">{{deal_op}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -96,8 +94,9 @@
                         <select class="form-select prop_val" name="construction_status" id="construction_status">
                             <option class="form-option" value="{{data.construction_status}}">&#x2713; :
                                 {{data.construction_status|title}}</option>
-                            <option class="form-option" value="Ready To Move">Ready To Move</option>
-                            <option class="form-option" value="Under Construction">Under Construction</option>
+                            {% for status in construction_status%}
+                            <option value="{{status}}">{{status}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -116,21 +115,9 @@
                         <select class="form-select prop_val" name="bhk" id="bhk">
                             <option value="{{data.bhk}}" selected>&#x2713; : {{data.bhk}} BHK
                             </option>
-                            <option value="1">1 BHK</option>
-                            <option value="2">2 BHK</option>
-                            <option value="3">3 BHK</option>
-                            <option value="4">4 BHK</option>
-                            <option value="5">5 BHK</option>
-                            <option value="6">6 BHK</option>
-                            <option value="7">7 BHK</option>
-                            <option value="8">8 BHK</option>
-                            <option value="9">9 BHK</option>
-                            <option value="10">10 BHK</option>
-                            <option value="11">11 BHK</option>
-                            <option value="12">12 BHK</option>
-                            <option value="13">13 BHK</option>
-                            <option value="14">14 BHK</option>
-                            <option value="15">15 BHK</option>
+                            {% for bh in bhk_details %}
+                            <option value="{{bh}}">{{bh}} BHK</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -143,21 +130,9 @@
                                 {{data.bathroom}}
                                 Bathroom
                             </option>
-                            <option value="1">1 Bathroom</option>
-                            <option value="2">2 Bathroom</option>
-                            <option value="3">3 Bathroom</option>
-                            <option value="4">4 Bathroom</option>
-                            <option value="5">5 Bathroom</option>
-                            <option value="6">6 Bathroom</option>
-                            <option value="7">7 Bathroom</option>
-                            <option value="8">8 Bathroom</option>
-                            <option value="9">9 Bathroom</option>
-                            <option value="10">10 Bathroom</option>
-                            <option value="11">11 Bathroom</option>
-                            <option value="12">12 Bathroom</option>
-                            <option value="13">13 Bathroom</option>
-                            <option value="14">14 Bathroom</option>
-                            <option value="15">15 Bathroom</option>
+                            {% for bath in bathroom_details %}
+                            <option value="{{bath}}">{{bath}} Bathroom</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -169,21 +144,9 @@
                             <option value="{{data.balcony}}" selected>&#x2713; : {{data.balcony}}
                                 Balcony
                             </option>
-                            <option value="1">1 Balcony</option>
-                            <option value="2">2 Balcony</option>
-                            <option value="3">3 Balcony</option>
-                            <option value="4">4 Balcony</option>
-                            <option value="5">5 Balcony</option>
-                            <option value="6">6 Balcony</option>
-                            <option value="7">7 Balcony</option>
-                            <option value="8">8 Balcony</option>
-                            <option value="9">9 Balcony</option>
-                            <option value="10">10 Balcony</option>
-                            <option value="11">11 Balcony</option>
-                            <option value="12">12 Balcony</option>
-                            <option value="13">13 Balcony</option>
-                            <option value="14">14 Balcony</option>
-                            <option value="15">15 Balcony</option>
+                            {% for bal in balcony_details %}
+                            <option value="{{bal}}">{{bal}} Balcony</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -196,9 +159,9 @@
                             <option value="{{data.furnish_type}}" selected>&#x2713; :
                                 {{data.furnish_type|title}}
                             </option>
-                            <option value="Fully Furnished">Fully Furnished</option>
-                            <option value="Semi Furnished">Semi Furnished</option>
-                            <option value="No Furnished">No Furnished</option>
+                            {% for fur_type in furnish_type %}
+                            <option value="{{fur_type}}">{{fur_type|title}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -218,9 +181,9 @@
                             <option value="{{data.parking_type}}" selected>&#x2713; :
                                 {{data.parking_type|title}}
                             </option>
-                            <option value="Covered">Covered</option>
-                            <option value="Open">Open</option>
-                            <option value="Both, Covered and Open">Both, Covered and Open</option>
+                            {% for park_detail in parking_details %}
+                            <option value="{{park_detail}}">{{park_detail|title}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -265,6 +228,13 @@
                     <div class="p-3 border bg-light">
                         <label for="city" class="form-label">City</label>
                         <input type="text" name="city" class="form-control prop_val" id="city" value="{{data.city}}">
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 mb-3">
+                    <div class="p-3 border bg-light">
+                        <label for="property_address" class="form-label">Other Description</label>
+                        <textarea type="textarea" name="property_description" class="form-control property_description"
+                            id="property_description">{{instace_data.property_description}}</textarea>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12">
@@ -318,7 +288,7 @@
             var property_rent_price = $("#property_rent_price").val();
             var from_avail_property_date = $("#from_avail_property_date").val();
             var property_country = $("#country").val();
-            
+
             var property_state = $("#state").val();
             var property_city = $("#city").val();
             var property_address = $("#property_address").val();
@@ -369,11 +339,11 @@
         $(".property_address").keyup(function () {
             $("#notes").removeAttr('hidden');
         });
-    }); 
-    var page_name = "dashboard_page"; 
-     
-    if (page_name == "dashboard_page"){
-        $(".dashboard_page").addClass("active_btn"); 
+    });
+    var page_name = "dashboard_page";
+
+    if (page_name == "dashboard_page") {
+        $(".dashboard_page").addClass("active_btn");
     }
 </script>
 {% endblock %}

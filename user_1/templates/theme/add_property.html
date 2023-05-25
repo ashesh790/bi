@@ -1,13 +1,13 @@
 {% extends 'theme/master.html' %}
 {% block add_property_details %}active{% endblock %}
-{% block main_content %} 
+{% block main_content %}
 <style>
     .p_type_btn {
         border-radius: 20px;
         border: 1px solid white;
         padding: 10px;
         font-size: 15px;
-        font-weight: 600; 
+        font-weight: 600;
         background-color: skyblue;
         color: black !important;
     }
@@ -16,29 +16,34 @@
         background-color: white;
         color: black !important;
     }
-    .active_btn{
+
+    .active_btn {
         background-color: aliceblue;
         color: #0099ff !important;
     }
+
     @media (max-width: 768px) {
         ::-webkit-scrollbar {
             display: none;
             /* Safari and Chrome */
         }
     }
-</style> 
+</style>
 <div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" style="padding: 0px;">
     <div class="container">
-        <div class="scroller" style="overflow: auto; display:flex;"> 
-            <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white add_property_page" style="margin:10px;" value="all"><a href="{% url 'add_property_details' %}">Add new property</a></button>
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
+        <div class="scroller" style="overflow: auto; display:flex;">
+            <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white add_property_page"
+                style="margin:10px;" value="all"><a href="{% url 'add_property_details' %}">Add new
+                    property</a></button>
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;"
+                value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
             <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;">
                 <a href="{% url 'prop_table' %}">Property list</a></button>
         </div>
     </div>
 </div>
-<div class="container-fluid pt-4 px-4"> 
-    <div class="row bg-light rounded mx-0 p-2"> 
+<div class="container-fluid pt-4 px-4">
+    <div class="row bg-light rounded mx-0 p-2">
         <form method="post" action="add_property_details" enctype="multipart/form-data">
             {% csrf_token %}
             {% if instace_data %}
@@ -184,6 +189,11 @@
                     </select>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
+                    <label for="property_address" class="form-label">Other Description</label>
+                    <textarea type="textarea" name="property_description" class="form-control property_description"
+                        id="property_description">{{instace_data.property_description}}</textarea>
+                </div>
+                <div class="col-md-6 col-sm-12 mb-3">
                     <label for="property_address" class="form-label">Property Address</label>
                     <textarea type="textarea" name="property_address" class="form-control property_address"
                         id="property_address">{{instace_data.property_address}}</textarea>
@@ -205,11 +215,11 @@
 </div>
 
 <!-- javaScript code -->
-<script> 
-    var page_name = "{{add_property_details}}"; 
-     
-    if (page_name == "add_property_page"){
-        $(".add_property_page").addClass("active_btn"); 
+<script>
+    var page_name = "{{add_property_details}}";
+
+    if (page_name == "add_property_page") {
+        $(".add_property_page").addClass("active_btn");
     }
     // advance filter configuration 
     $('#country_based').change(function (e) {
