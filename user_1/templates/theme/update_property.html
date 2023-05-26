@@ -230,18 +230,19 @@
                         <input type="text" name="city" class="form-control prop_val" id="city" value="{{data.city}}">
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-12 mb-3">
+                <hr>
+                <div class="col-md-4 col-sm-12">
                     <div class="p-3 border bg-light">
                         <label for="property_address" class="form-label">Other Description</label>
                         <textarea type="textarea" name="property_description" class="form-control property_description"
-                            id="property_description">{{instace_data.property_description}}</textarea>
+                            rows="8" id="property_description">{{instace_data.property_description}}</textarea>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12">
                     <div class="p-3 border bg-light">
                         <label for="property_address" class="form-label">Property Address</label>
                         <textarea type="textarea" name="property_address" class="form-control property_address prop_val"
-                            id="property_address" style="height: 38px;">{{data.property_address}}</textarea>
+                            rows="8" id="property_address">{{data.property_address}}</textarea>
                     </div>
                 </div>
             </div>
@@ -259,7 +260,7 @@
         <div class="col-md-4 col-sm-12">
             <div class="p-3 border bg-light">
                 <label for="property_address" class="form-label">Add more property images/videos</label>
-                <form class="form" method="post" action="/images/{{id}}/" enctype="multipart/form-data">
+                <form class="form" method="POST" action="/manage_image_upload/{{id}}/" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
                         <input type="file" class="form-control" name="images" class="col-md-9" multiple>
@@ -292,6 +293,7 @@
             var property_state = $("#state").val();
             var property_city = $("#city").val();
             var property_address = $("#property_address").val();
+            var property_description = $("#property_description").val();
             var furnish_type = $("#furnish_type").val();
             var parking_type = $("#parking_type").val();
 
@@ -312,6 +314,7 @@
                 "property_rent_price": property_rent_price,
                 "from_avail_property_date": from_avail_property_date,
                 "property_address": property_address,
+                "property_description": property_description,
                 "property_country": property_country,
                 "property_state": property_state,
                 "property_city": property_city

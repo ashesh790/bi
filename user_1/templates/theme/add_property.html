@@ -199,7 +199,7 @@
                         id="property_address">{{instace_data.property_address}}</textarea>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
-                    <form method="post" action="/images/{{id}}/" enctype="multipart/form-data">
+                    <form method="post" action="/manage_image_upload/{{id}}/" enctype="multipart/form-data">
                         {% csrf_token %}
                         <label for="images" class="form-label">Upload property image or video</label>
                         <input type="file" class="form-control" name="images" multiple>

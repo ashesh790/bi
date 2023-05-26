@@ -236,6 +236,14 @@
 </div>
 <!-- Search End -->
 <script>
+    // focus and click to secondry nav bar 
+    var elements = document.getElementsByClassName('p_type_btn');
+    var requiredElement = elements[0];
+    $(requiredElement).click();
+    setTimeout(function () {
+        $(requiredElement).focus();
+    }, 500);
+
     var property_type_val = "all";
     function active_class(selector) {
         $('.fa-times-circle').click();
