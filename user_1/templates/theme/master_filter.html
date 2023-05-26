@@ -97,7 +97,7 @@
     </div>
     <div class="col-lg-3 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
         <ul class="nav nav-pills d-inline-flex justify-content-end mb-3">
-            <li class="nav-item me-2 d-none">
+            <li class="nav-item me-2">
                 <button class="btn btn-outline-primary active" data-bs-toggle="pill" value="all" id="all"
                     onclick="search_property_based_on_input_field_values(this);">All</a>
             </li>
@@ -239,9 +239,9 @@
     // focus and click to secondry nav bar 
     var elements = document.getElementsByClassName('p_type_btn');
     var requiredElement = elements[0];
-    $(requiredElement).click();
+
     setTimeout(function () {
-        $(requiredElement).focus();
+        $(requiredElement).click();
     }, 500);
 
     var property_type_val = "all";
@@ -338,6 +338,9 @@
             }
             else if ($("#rent").hasClass("active")) {
                 selling_option_val = "Rent";
+            }
+            else {
+                selling_option_val = "All";
             }
         }
         var property_type = property_type_val;

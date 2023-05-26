@@ -22,25 +22,32 @@ def add_property_details_in_database(request):
 
         seller_id=request.POST['user_id'] 
         property_data={} 
-        property_data['property_type']=request.POST['property_type'] 
-        property_data['property_age']=request.POST['property_age'] 
-        property_data['selling_option']=request.POST['selling_option'] 
-        property_data['construction_status']=request.POST['construction_status'] 
-        property_data['floor']=request.POST['floor']
-        property_data['bhk']=request.POST['bhk']  
-        property_data['bathroom']=request.POST['bathroom'] 
-        property_data['balcony']=request.POST['balcony'] 
-        property_data['furnish_type']=request.POST['furnish_type'] 
-        property_data['geography_area']=request.POST['geography_area'] 
-        property_data['parking_type']=request.POST['parking_type'] 
-        property_data['property_value']=request.POST['property_value'] 
-        property_data['property_rent_price']=request.POST['property_rent_price'] 
-        property_data['from_avail_property_date']=request.POST['from_avail_property_date'] 
-        property_data['country']=request.POST['country'] 
-        property_data['state']=request.POST['state']
-        property_data['city']=request.POST['city']
-        property_data['property_address']=request.POST['property_address'] 
-        property_data['property_description']=request.POST['property_description']
+        property_values = dict(request.POST)
+        property_values = list(property_values.keys()) 
+        property_values.remove("csrfmiddlewaretoken")
+        property_values.remove("user_id")
+        property_values.remove("images")
+        for i in property_values: 
+            property_data[i] = request.POST[i]
+        # property_data['property_type']=request.POST['property_type'] or ""
+        # property_data['property_age']=request.POST['property_age'] or ""
+        # property_data['selling_option']=request.POST['selling_option'] or ""
+        # property_data['construction_status']=request.POST['construction_status'] or ""
+        # property_data['floor']=request.POST['floor'] or ""
+        # property_data['bhk']=request.POST['bhk'] or ""
+        # property_data['bathroom']=request.POST['bathroom'] or ""
+        # property_data['balcony']=request.POST['balcony'] or ""
+        # property_data['furnish_type']=request.POST['furnish_type'] or ""
+        # property_data['geography_area']=request.POST['geography_area'] or ""
+        # property_data['parking_type']=request.POST['parking_type'] or ""
+        # property_data['property_value']=request.POST['property_value'] or ""
+        # property_data['property_rent_price']=request.POST['property_rent_price'] or ""
+        # property_data['from_avail_property_date']=request.POST['from_avail_property_date'] or ""
+        # property_data['country']=request.POST['country'] or ""
+        # property_data['state']=request.POST['state'] or ""
+        # property_data['city']=request.POST['city'] or ""
+        # property_data['property_address']=request.POST['property_address'] or ""
+        # property_data['property_description']=request.POST['property_description'] or ""
         property_data['property_image']= property_image_save
         property_data['property_video']= {}  
         # fetching last property detail from databases  

@@ -21,6 +21,9 @@ def search_properties(request):
     property_details = json.loads(property_details) 
     if (property_details['property_type'] == "all"):
         property_details.pop("property_type")
+    
+    if(property_details['selling_option'] == "all"): 
+        property_details.pop("selling_option")
     query = Q()
     for field, value in property_details.items():
         if value:
