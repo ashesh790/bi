@@ -3,43 +3,29 @@
 {% block main_content %}
 
 <!-- Property List Start -->
-<div class="container-xxl">
+<div class="container-xxl mt-5">
     <div class="">
         <div class="row" style="word-wrap:break-word;">
-            <div class="col-md-6">
-                <div id="carouselExampleControlsNoTouching{{i.id}}" class="carousel slide" data-bs-touch="false">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <a href="property_details/{{i.id}}"><img class="img-fluid d-block w-100" style="width:100%;"
-                                    src="{{data.property_image|first}}" alt=""></a>
-                        </div>
+            <div class="col-md-6 p-5 pt-0 pb-0">
+                <div class="div">
+                    <div class="carousel-item active">
                         {% if data.property_image %}
-                        {% for data in data.property_image|slice:"1:" %}
-                        <div class="carousel-item">
-                            <a href="property_details/{{i.id}}"><img class="img-fluid d-block w-100" style="width:100%;"
-                                    src="{{data}}" alt=""></a>
+                        <a href="#"><img class="img-fluid d-block w-100 main_image" style="width:100%; height:400px;"
+                                src="{{data.property_image|first}}" alt=""></a>
+                        <div class="row m-1" id="image_gallary">
+                            {% for i in data.property_image %}
+                            <span class="p-1 pt-3" style="width:60px;">
+                                <img class="img-fluid" src="{{i}}" alt="" style="border:1px solid #0099ff;height:50px;">
+                            </span>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                         {% else %}
                         <b>Image is not available</b>
                         {% endif %}
                     </div>
-                    <b>
-                        <button class="carousel-control-prev" type="button"
-                            data-bs-target="#carouselExampleControlsNoTouching{{i.id}}" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                    </b>
-                    <b>
-                        <button class="carousel-control-next" type="button"
-                            data-bs-target="#carouselExampleControlsNoTouching{{i.id}}" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </b>
                 </div>
             </div>
+
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-12">
@@ -202,7 +188,7 @@
                                 data-bs-touch="false">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <a href="property_details/{{property.id}}"><img class="img-fluid d-block w-100"
+                                        <a href="/property_details/{{property.id}}"><img class="img-fluid d-block w-100"
                                                 style="width:100%; height: 190px;"
                                                 src="{{property.property_data.property_image|first}}" alt=""></a>
                                     </div>
@@ -486,6 +472,15 @@
             }
         });
 
+    });
+    $("#image_gallary").click(function () {
+        $("img").click(function () {
+            var tag_name = $(this).prop("tagName");
+            if (tag_name == "IMG") {
+                var img_src = $(this).attr("src");
+                $(".main_image").attr("src", img_src);
+            }
+        });
     }); 
 </script>
 {% endblock %}
