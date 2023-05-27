@@ -16,9 +16,42 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="property-item rounded overflow-hidden">
                         <div class="position-relative overflow-hidden">
-                            <a href="property_details/{{i.id}}"><img class="img-fluid"
-                                    style="width:100%; height: 190px;" src="{{i.property_data.property_image|first}}"
-                                    alt=""></a>
+                            <div id="carouselExampleControlsNoTouching{{i.id}}" class="carousel slide"
+                                data-bs-touch="false">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <a href="property_details/{{i.id}}"><img class="img-fluid d-block w-100"
+                                                style="width:100%; height: 190px;"
+                                                src="{{i.property_data.property_image|first}}" alt=""></a>
+                                    </div>
+                                    {% if i.property_data.property_image %}
+                                    {% for j in i.property_data.property_image|slice:"1:"%}
+                                    <div class="carousel-item">
+                                        <a href="property_details/{{i.id}}"><img class="img-fluid d-block w-100"
+                                                style="width:100%; height: 190px;" src="{{j}}" alt=""></a>
+                                    </div>
+                                    {% endfor %}
+                                    {% else %}
+                                    <b>Image is not available</b>
+                                    {% endif %}
+                                </div>
+                                <b>
+                                    <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#carouselExampleControlsNoTouching{{i.id}}"
+                                        data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                </b>
+                                <b>
+                                    <button class="carousel-control-next" type="button"
+                                        data-bs-target="#carouselExampleControlsNoTouching{{i.id}}"
+                                        data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </b>
+                            </div>
                             <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
                                 For {{i.property_data.selling_option}}</div>
                             <div
