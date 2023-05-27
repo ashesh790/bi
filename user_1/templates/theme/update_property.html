@@ -334,7 +334,7 @@
                 "property_state": property_state,
                 "property_city": property_city
             }
-            console.log(data);
+            //console.log(data);
             var id = $("#id").val();
             e.preventDefault();
             $.ajax(
@@ -347,10 +347,10 @@
                         csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val()
                     },
                     success: function (response) {
-                        console.log("response");
+                        //console.log("response");
                     },
                     error: function (xhr, status, error) {
-                        console.log("error");
+                        //console.log("error");
                     }
                 });
         });

@@ -181,8 +181,8 @@
             <div class="row g-4" id="filtered">
                 {% for property in property_data %}
                 <!-- {{property.id}} -->
-                <div class="col-lg-4 col-md-6 wow fadeInUp filtered_data" data-wow-delay="0.1s">
-                    <div class="property-item rounded overflow-hidden">
+                <div class="col-lg-3 col-md-6 wow fadeInUp filtered_data" data-wow-delay="0.1s">
+                    <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
                         <div class="position-relative overflow-hidden">
                             <div id="carouselExampleControlsNoTouching{{property.id}}" class="carousel slide"
                                 data-bs-touch="false">
@@ -227,33 +227,31 @@
                                 class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                 {{property.property_data.property_type}}</div>
                         </div>
-                        <div class="p-4 pb-0">
-                            <h5 class="text-primary mb-3">
-                                {% if property.property_data.selling_option == "Rent" %}
+                        <div class="p-2 pb-0">
+                            <a href="property_details/{{property.id}}">
+                                <span class="text-primary mb-3">
+                                    {% if property.property_data.selling_option == "Rent" %}
 
-                                {{property.property_data.property_rent_price}}/Month
+                                    {{property.property_data.property_rent_price}}/Month
 
-                                {% else %}
+                                    {% else %}
 
-                                {{property.property_data.property_value}}
+                                    {{property.property_data.property_value}}
 
-                                {% endif %}
+                                    {% endif %}
 
-                            </h5>
-                            <a class="d-block h5 mb-2" href="">{{property.property_data.property_type}}</a>
-                            <p><i
-                                    class="fa fa-map-marker-alt text-primary me-2"></i>{{property.property_data.property_address}}
-                            </p>
-                        </div>
-                        <div class="d-flex border-top">
-                            <small class="flex-fill text-center border-end py-2"><i
-                                    class="fa fa-ruler-combined text-primary me-2"></i>{{property.property_data.geography_area}}
-                                Sqft</small>
-                            <small class="flex-fill text-center border-end py-2"><i
-                                    class="fa fa-bed text-primary me-2"></i>{{property.property_data.construction_status}}</small>
-                            <small class="flex-fill text-center py-2"><i
-                                    class="fa fa-bath text-primary me-2"></i>{{property.property_data.property_age}}
-                                Year old</small>
+                                </span>
+                            </a>
+                            <a class="d-block mb-2 text-dark"
+                                href="property_details/{{property.id}}">{{property.property_data.property_type}} For
+                                {{property.property_data.selling_option}}
+                            </a>
+                            <a href="property_details/{{property.id}}">
+                                <i class="fa fa-map-marker-alt text-primary me-2"></i>
+                                <span class="property_address">
+                                    {{property.property_data.property_address|truncatechars:20}}
+                                </span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -298,7 +296,7 @@
         if (p_dtl_btn_val === "saller_detail") {
             var property_id = '{{ property_id }}';
             // alert(property_id); 
-            console.log(p_dtl_btn_val);
+            //console.log(p_dtl_btn_val);
             $.ajax({
                 url: "{% url 'property_post_modal_management' %}",
                 type: "POST",
@@ -316,11 +314,11 @@
                     $("#submit_btn").hide();
                     var response_array = [response]
                     saller_data = JSON.parse(response)
-                    console.log(typeof saller_data);
+                    //console.log(typeof saller_data);
                     saller_data = saller_data['saller_data']
                     for (let [key, value] of Object.entries(saller_data)) {
                         key = key.replace(/_/g, ' ');
-                        console.log(typeof value);
+                        //console.log(typeof value);
                         $(".modal-body").append(`
                     <div class="col-6 mt-2">
                         <lable type="text" class="form-lable"><b>${key}</b></lable>
@@ -332,7 +330,7 @@
                     }
                 },
                 error: function (response) {
-                    console.log("Error Occured");
+                    //console.log("Error Occured");
                 },
             });
         }
@@ -391,7 +389,7 @@
                 'p_dtl_btn_val': p_dtl_btn_val
             },
             success: function (response) {
-                console.log(response);
+                //console.log(response);
                 $(".modal-body").empty();
                 $(".modal-body").append(`
                     <div class="col-12 mt-2"> 
@@ -401,7 +399,7 @@
                 location.reload();
             },
             error: function (response) {
-                console.log("Error Occured");
+                //console.log("Error Occured");
             },
         });
     }
@@ -430,10 +428,10 @@
                         property_value = value.property_value
                     }
                     var prop_design = ""
-                    console.log(key, value.property_type);
+                    //console.log(key, value.property_type);
                     $("#filtered").append(
                         `<div class="col-lg-4 col-md-6 wow fadeInUp filtered_data" data-wow-delay="0.1s">
-                                <div class="property-item rounded overflow-hidden">
+                                <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
                                     <div class="position-relative overflow-hidden">
                                         <a href=""><img class="img-fluid" src="`+ value.property_image.at(-1) + `"
                                                 alt=""></a>

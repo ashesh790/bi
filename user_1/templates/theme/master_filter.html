@@ -236,6 +236,7 @@
 </div>
 <!-- Search End -->
 <script>
+    var maxLength = 20;
     // focus and click to secondry nav bar 
     var elements = document.getElementsByClassName('p_type_btn');
     var requiredElement = elements[0];
@@ -266,28 +267,41 @@
                     // console.log(data.prop_data);
                     $.each(data.prop_data, function (key, val) {
                         $(".property_counter").append(` 
-                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="property-item rounded overflow-hidden">
-                                <div class="position-relative overflow-hidden">
-                                    <a href="/property_details/${key}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
+                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
+                                <div class="position-relative overflow-hidden"> 
+                                    <div id="carouselExampleControls${key}" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner">
+                                            
+                                          <div class="carousel-item active">
+                                            <a href="/property_details/${key}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
+                                          </div>
+                                          ${val.property_image.slice(1).map(path => `<div class="carousel-item">
+                                            <a href="/property_details/${key}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
+                                          </div>`)} 
+                                          
+                                        </div>
+                                        <a class="carousel-control-prev" href="#carouselExampleControls${key}" role="button" data-slide="prev">
+                                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carouselExampleControls${key}" role="button" data-slide="next">
+                                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                      </div>
                                     <div
-                                        class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
-                                        For ${val.selling_option}</div>
-                                    <div
-                                        class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                        class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                         ${val.property_type}</div>
                                 </div>
-                                <div class="p-4 pb-0">
-                                    <h5 class="text-primary mb-3">${val.property_rent_price}/Month</h5>
-                                    <a class="d-block h5 mb-2" href="">${val.property_type}, For ${val.selling_option}</a>
-                                    <p><i class="fa fa-map-marker-alt text-primary me-2"></i>${val.property_address}</p>
-                                </div>
-                                <div class="d-flex border-top">
-                                    <small class="flex-fill text-center border-end py-2"><i
-                                            class="fa fa-ruler-combined text-primary me-2"></i>${val.geography_area}</small>
-                                    <small class="flex-fill text-center border-end py-2"><i
-                                            class="fa fa-bed text-primary me-2"></i>${val.construction_status}</small>
-                                    <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>${val.property_age} Year old</small>
+                                <div class="p-2 pb-0">
+                                    <a href="/property_details/${key}" class="text-dark d-block">
+                                    <b class="text-primary mb-3">${val.property_rent_price}/Month</b>
+                                    </a>
+                                    <a class="d-block mb-2 text-dark" href="/property_details/${key}">${val.property_type}, For ${val.selling_option}</a>
+                                    <a href="/property_details/${key}">
+                                        <span><i class="fa fa-map-marker-alt text-primary me-2"></i><span class="text-primary">${val.property_address.slice(0, maxLength) + '...'}</span></span> 
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -328,7 +342,7 @@
     // search property as per field which is selected in advance filter 
     function search_property_based_on_input_field_values(selling_type = null) {
         var selling_option_val = "";
-        console.log(property_type_val);
+        //console.log(property_type_val);
         if (selling_type != null) {
             selling_option_val = $(selling_type).val();
         }
@@ -378,34 +392,46 @@
                 var i = 0;
                 property_id = property_data["id"];
                 property_data = property_data['property_data'];
-                // console.log(property_data);
+                //console.log(property_id);
                 if (property_data) {
                     $(".property_counter").empty();
                     for (var [key, val] of Object.entries(property_data)) {
-                        // console.log(property_id[i]);
+                        //console.log(property_id[i]); 
                         $(".property_counter").append(` 
-                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="property-item rounded overflow-hidden">
-                                <div class="position-relative overflow-hidden">
-                                    <a href="/property_details/${property_id[i]}"><img class="img-fluid" src="${val.property_image[0]}" style="width:100%; height: 190px;" alt=""></a>
+                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
+                                <div class="position-relative overflow-hidden"> 
+                                    <div id="carouselExampleControls${property_id[i]}" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner">
+                                          <div class="carousel-item active">
+                                            <a href="/property_details/${property_id[i]}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
+                                          </div>
+                                          ${val.property_image.slice(1).map(path => `
+                                            <div class="carousel-item">
+                                                <a href="/property_details/${property_id[i]}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
+                                            </div>`)} 
+                                        </div>
+                                        <a class="carousel-control-prev" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="prev">
+                                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="next">
+                                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                      </div>
                                     <div
-                                        class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
-                                        For ${val.selling_option}</div>
-                                    <div
-                                        class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                        class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                         ${val.property_type}</div>
                                 </div>
-                                <div class="p-4 pb-0">
-                                    <h5 class="text-primary mb-3">${val.property_rent_price}/Month</h5>
-                                    <a class="d-block h5 mb-2" href="">${val.property_type}, For ${val.selling_option}</a>
-                                    <p><i class="fa fa-map-marker-alt text-primary me-2"></i>${val.property_address}</p>
-                                </div>
-                                <div class="d-flex border-top">
-                                    <small class="flex-fill text-center border-end py-2"><i
-                                            class="fa fa-ruler-combined text-primary me-2"></i>${val.geography_area}</small>
-                                    <small class="flex-fill text-center border-end py-2"><i
-                                            class="fa fa-bed text-primary me-2"></i>${val.construction_status}</small>
-                                    <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>${val.property_age} Year old</small>
+                                <div class="p-2 pb-0">
+                                    <a href="/property_details/${property_id[i]}" class="text-dark d-block">
+                                    <b class="text-primary mb-3">${val.property_rent_price}/Month</b>
+                                    </a>
+                                    <a class="d-block mb-2 text-dark" href="/property_details/${property_id[i]}">${val.property_type}, For ${val.selling_option}</a>
+                                    <a href="/property_details/${property_id[i]}">
+                                        <span><i class="fa fa-map-marker-alt text-primary me-2"></i><span class="text-primary">${val.property_address.slice(0, maxLength) + '...'}</span></span> 
+                                    </a>
                                 </div>
                             </div>
                         </div>

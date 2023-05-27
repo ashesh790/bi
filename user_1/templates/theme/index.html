@@ -13,8 +13,8 @@
         <div id="tab-1" class="tab-pane fade show p-0 active">
             <div class="row g-4 property_counter" style="overflow:auto;">
                 {% for i in property_data %}
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="property-item rounded overflow-hidden">
+                <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
                         <div class="position-relative overflow-hidden">
                             <div id="carouselExampleControlsNoTouching{{i.id}}" class="carousel slide"
                                 data-bs-touch="false">
@@ -52,29 +52,39 @@
                                     </button>
                                 </b>
                             </div>
-                            <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
-                                For {{i.property_data.selling_option}}</div>
+                            <!-- <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                For {{i.property_data.selling_option}}</div> -->
                             <div
-                                class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                 {{i.property_data.property_type}}</div>
                         </div>
-                        <div class="p-4 pb-0">
-                            <h5 class="text-primary mb-3">{{i.property_data.property_rent_price}}/Month</h5>
-                            <a class="d-block h5 mb-2" href="">{{i.property_data.property_type}}, For
-                                {{i.property_data.selling_option}}</a>
-                            <p><i
-                                    class="fa fa-map-marker-alt text-primary me-2"></i>{{i.property_data.property_address}}
-                            </p>
-                        </div>
-                        <div class="d-flex border-top">
-                            <small class="flex-fill text-center border-end py-2"><i
-                                    class="fa fa-ruler-combined text-primary me-2"></i>{{i.property_data.geography_area}}</small>
-                            <small class="flex-fill text-center border-end py-2"><i
-                                    class="fa fa-bed text-primary me-2"></i>{{i.property_data.construction_status}}</small>
-                            <small class="flex-fill text-center py-2"><i
-                                    class="fa fa-bath text-primary me-2"></i>{{i.property_data.property_age}}
-                                Year
-                                old</small>
+                        <div class="p-2 pb-0">
+                            <a class="d-block mb-2" href="property_details/{{i.id}}" style="background-color:white;"><b
+                                    class="text-primary mb-3">{{i.property_data.property_rent_price}}/Month
+                                </b>
+                                <br>
+                                <span class="text-dark">
+                                    {{i.property_data.property_type}},
+                                    For
+                                    {{i.property_data.selling_option}}
+                                </span>
+                                <br>
+                                <a href="property_details/{{i.id}}">
+                                    <i class="fa fa-map-marker-alt text-primary me-2">
+                                    </i>
+                                    <span class="property_address">
+                                        {{i.property_data.property_address|truncatechars:20}}
+                                    </span>
+                                </a>
+                            </a>
+                            <br>
+                            <!-- <div style="align-items: end;">
+                                <u>
+                                    <a href="property_details/{{i.id}}">
+                                        <span>More Details...</span>
+                                    </a>
+                                </u>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -84,4 +94,7 @@
     </div>
 </div>
 <!-- Search End -->
+<script>
+    var address = $(".property_address").text();
+</script>
 {% endblock %}

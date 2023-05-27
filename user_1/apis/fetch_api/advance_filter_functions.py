@@ -19,10 +19,10 @@ def advance_filter_boundary(request):
 def search_properties(request): 
     property_details = request.POST['search_object'] 
     property_details = json.loads(property_details) 
-    if (property_details['property_type'] == "all"):
+    if (property_details['property_type'] == "all" or property_details['property_type'] == "All"):
         property_details.pop("property_type")
     
-    if(property_details['selling_option'] == "all"): 
+    if(property_details['selling_option'] == "all" or property_details['selling_option'] == "All"): 
         property_details.pop("selling_option")
     query = Q()
     for field, value in property_details.items():

@@ -1,6 +1,7 @@
 {
     "property_type": [
         "Apartment",
+        "PG",
         "House",
         "Townhouse",
         "Land",
