@@ -337,12 +337,12 @@
                                         <div class="d-flex">
                                             <div id="price_fltr_val">
                                                 <div class="" style="width:50%;">
-                                                    <label>To: </label>
+                                                    <label class="text-dark">To: </label>
                                                     <div id="start_price_val__trash">
                                                         <input type="number" placeholder="100" class="search_field"
                                                             id="start_price_val">
                                                     </div>
-                                                    <label>From: </label>
+                                                    <label class="text-dark">From: </label>
                                                     <div id="end_price_val__trash">
                                                         <input type="number" placeholder="1000" class="search_field"
                                                             id="end_price_val">
@@ -453,7 +453,7 @@
             $(`#${field_id}_trash_icon`).remove();
         }
         $(`#${field_id}__trash`).after(`
-        <span class="mx-2 my-1" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
+        <span class="mx-2" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
             <i class="fa fa-times-circle" aria-hidden="true"></i>
         </span>
         `);
