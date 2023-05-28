@@ -30,6 +30,22 @@
     .search_field {
         border-left: 2px solid #0099ff !important;
         border-bottom: 2px solid #0099ff !important;
+        border-top: 0;
+        border-right: 0;
+    }
+
+
+
+    select {
+        border: 0px;
+        border-radius: 5px;
+        outline: 0px;
+    }
+
+    input {
+        border: 0px;
+        border-radius: 5px;
+        outline: 0px;
     }
 
     #construction_status_trash_icon>i {
@@ -55,14 +71,14 @@
 <div class="row mx-2">
     <div class="col-lg-9">
         <div id="location_fltr">
-            <div class="row">
+            <div class="row" style="align-items:center;">
                 <div style="width:11%;">
                     <h5>Location:</h5>
                 </div>
                 <div class="col-md-3">
                     <div class="d-flex">
                         <div id="country_based__trash">
-                            <select class="form-control search_field" id="country_based" style="width:200px;"
+                            <select class="search_field" id="country_based" style="width:200px;"
                                 onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="">Select Country</option>
                                 {% for i in country %}
@@ -75,7 +91,7 @@
                 <div class="col-md-3">
                     <div class="d-flex">
                         <div id="state_based__trash">
-                            <select class="form-control search_field" id="state_based" style="width:200px;"
+                            <select class="search_field" id="state_based" style="width:200px;"
                                 onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="" selected>Select state</option>
                             </select>
@@ -85,7 +101,7 @@
                 <div class="col-md-3">
                     <div class="d-flex">
                         <div id="city_based__trash">
-                            <select class="form-control search_field" id="city_based" style="width:200px;"
+                            <select class="search_field" id="city_based" style="width:200px;"
                                 onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="" selected> Select City</option>
                             </select>
@@ -115,14 +131,14 @@
     </div>
 </div>
 <div class="row m-2">
-    <div class="col-md-3" id="search_filter" style="width:240px;">
+    <div class="col-md-2" id="search_filter">
         <h5>Filter properties by: </h5>
         <div id="advance_filter_container">
             <!-- filter using construction status -->
             <div id="construction_fltr">
                 <div class="d-flex">
                     <div id="construction_status__trash">
-                        <select class="form-control mt-2 search_field" id="construction_status" style="width:200px;"
+                        <select class="mt-2 search_field" id="construction_status" style="width:190px;"
                             onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                             <option value="">Construction status</option>
                             {% for i in boundry_data.construction_status %}
@@ -138,7 +154,7 @@
                 <div class="d-flex">
 
                     <div id="bathroom_val__trash">
-                        <select class="form-control mt-2 search_field" id="bathroom_val" style="width:200px;"
+                        <select class="mt-2 search_field" id="bathroom_val" style="width:190px;"
                             onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                             <option value="">Bathrooms</option>
                             {% for i in boundry_data.bathroom_details %}
@@ -152,7 +168,7 @@
             <div id="balcony_fltr">
                 <div class="d-flex">
                     <div id="balcony_val__trash">
-                        <select class="form-control mt-2 search_field" id="balcony_val" style="width:200px;"
+                        <select class="mt-2 search_field" id="balcony_val" style="width:190px;"
                             onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                             <option value="">Balcony</option>
                             {% for i in boundry_data.balcony_details %}
@@ -166,7 +182,7 @@
             <div id="bhk_fltr">
                 <div class="d-flex">
                     <div id="bhk_val__trash">
-                        <select class="form-control mt-2 search_field" id="bhk_val" style="width:200px;"
+                        <select class="mt-2 search_field" id="bhk_val" style="width:190px;"
                             onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                             <option value="">BHK</option>
                             {% for i in boundry_data.bhk_details %}
@@ -182,7 +198,7 @@
                 <div id="furnish_fltr_val">
                     <div class="d-flex">
                         <div id="furnish_type__trash">
-                            <select class="form-control mt-2 search_field" id="furnish_type" style="width:200px;"
+                            <select class="mt-2 search_field" id="furnish_type" style="width:190px;"
                                 onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="">Furnish type</option>
                                 {% for i in boundry_data.furnish_type %}
@@ -195,34 +211,37 @@
             </div>
 
             <!-- filter using geography area -->
+            <hr>
             <b>Geography area</b>
             <div id="geography_fltr">
                 <div class="d-flex">
-
-                    <div id="geography_val__trash" style="width:200px;">
-                        <input type="number" class="form-control search_field" placeholder="2000Sq.ft"
-                            id="geography_val" onchange="search_field_applied(this);">
+                    <div id="geography_val__trash" style="width:190px;">
+                        <input type="number" class="search_field" placeholder="2000Sq.ft" id="geography_val"
+                            style="width:200px;" onchange="search_field_applied(this);">
                     </div>
                 </div>
             </div>
 
             <!-- filter using price area -->
+            <hr>
             <b>Price between</b>
-            <div id="price_fltr" style="width:200px;">
+            <div id="price_fltr" style="width:190px;">
                 <div id="price_fltr_val">
                     <label>To: </label>
                     <div id="start_price_val__trash">
-                        <input type="number" placeholder="100" class="form-control search_field" id="start_price_val">
+                        <input type="number" placeholder="100" class="search_field" id="start_price_val"
+                            style="width:190px;">
                     </div>
                     <label>From: </label>
                     <div id="end_price_val__trash">
-                        <input type="number" placeholder="1000" class="form-control search_field" id="end_price_val">
+                        <input type="number" placeholder="1000" class="search_field" id="end_price_val"
+                            style="width: 190px;">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-10">
         <div class="tab-content">
             <div id="tab-1" class="tab-pane fade show p-0 active">
                 <div class="row g-4 property_counter">
@@ -323,7 +342,7 @@
             $(`#${field_id}_trash_icon`).remove();
         }
         $(`#${field_id}__trash`).after(`
-        <span class="mx-2 my-2" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
+        <span class="mx-2 my-1" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
             <i class="fa fa-times-circle" aria-hidden="true"></i>
         </span>
         `);

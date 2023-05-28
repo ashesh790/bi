@@ -54,9 +54,9 @@
                             </div>
                             <!-- <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
                                 For {{i.property_data.selling_option}}</div> -->
-                            <div
+                            <!-- <div
                                 class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
-                                {{i.property_data.property_type}}</div>
+                                {{i.property_data.property_type}}</div> -->
                         </div>
                         <div class="p-2 pb-0">
                             <a class="d-block mb-2" href="property_details/{{i.id}}" style="background-color:white;"><b
@@ -64,9 +64,9 @@
                                 </b>
                                 <br>
                                 <span class="text-dark">
-                                    {{i.property_data.property_type}},
+                                    <span class="text-primary"><b>{{i.property_data.property_type}}</b></span>,
                                     For
-                                    {{i.property_data.selling_option}}
+                                    <span class="text-primary"><b></b>{{i.property_data.selling_option}}</b></span>
                                 </span>
                                 <br>
                                 <a href="property_details/{{i.id}}">
