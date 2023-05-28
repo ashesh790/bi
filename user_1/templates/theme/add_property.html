@@ -92,7 +92,8 @@
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3 floor_div">
                     <label class="form-label">Floor</label>
-                    <input type="number" name="floor" class="form-control" min="1" value="{{instace_data.floor}}">
+                    <input type="number" name="floor" class="form-control" min="1" id="floor"
+                        value="{{instace_data.floor}}">
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3 bhk_div">
                     <label class="form-label">BHK Detail</label>
@@ -271,6 +272,7 @@
             $(".property_age_div").hide();
             $("#property_age").val("");
             $(".floor_div").hide();
+            $("#floor").val("");
             $(".bathroom_div").hide();
             $("#bathroom").val("");
             $(".construction_status_div").hide();
