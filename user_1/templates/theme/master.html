@@ -96,6 +96,26 @@
         [contenteditable].form-control:focus {
             box-shadow: inset 0 -5px 0 #0099ff !important;
         }
+
+        .modal {
+            position: fixed;
+            top: -120px;
+            right: 20px;
+            left: auto;
+            z-index: 1060;
+            display: none;
+            width: 20%;
+            height: 100%;
+            overflow: hidden;
+            outline: 0;
+        }
+
+        .btn_profile {
+            border-left: 2px solid #0099ff !important;
+            border-top: 0;
+            border-right: 0;
+            margin-top: 5px;
+        }
     </style>
 </head>
 
@@ -129,8 +149,8 @@
                     <a href="{% url 'home' %}" class="nav-item nav-link {% block home %}{% endblock %}">Home</a>
                     <a href="{% url 'add_property_details' %}"
                         class="nav-item nav-link {% block add_property_details %}{% endblock %}">Add new property</a>
-                    <a href="{% url 'property_type' %}"
-                        class="nav-item nav-link {% block property_type %}{% endblock %}">New listed property</a>
+                    <a href="{% url 'dashboard' %}"
+                        class="nav-item nav-link {% block manage_property %}{% endblock %}">Manage property</a>
                     <a href="{% url 'property_agent' %}"
                         class="nav-item nav-link {% block property_agent %}{% endblock %}">Property Agent</a>
                     <a href="{% url 'contact' %}"
@@ -139,8 +159,8 @@
                 </div>
                 {% if 'user_name' in request.session %}
                 Welcome {{request.session.user_name}} :&nbsp;
-                <a href="{% url 'logout' %}" class="btn btn-primary px-3 d-none d-lg-flex" id="logout_btn"
-                    style="border-radius: 20px;"><i class="fa fa-user" aria-hidden="true"></i></a>
+                <a data-toggle="modal" data-target="#glassAnimals" class="btn btn-primary px-3 d-none d-lg-flex"
+                    id="logout_btn" style="border-radius: 20px;"><i class="fa fa-user" aria-hidden="true"></i></a>
                 {% else%}
                 <a href="login" class="btn btn-primary px-3 d-none d-lg-flex" id="login_btn"
                     style="border-radius: 20px; height: 30px; align-items:center;">Login</a>
@@ -148,6 +168,28 @@
             </div>
         </nav>
         <!-- Navbar End -->
+        <!-- Modal for user profile -->
+        <div class="modal fade" id="glassAnimals" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Manage your self</h5>
+                        <button type="button" class="close btn btn-outline-primary" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <button class="btn w-100 btn_profile">Settings</button>
+                        <button class="btn w-100 btn_profile">Saved Property</button>
+                        <button class="btn w-100 btn_profile">Manage Property</button>
+                        <hr>
+                        <button class="btn w-100 btn_profile">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% block main_content %}
 
         {% endblock %}

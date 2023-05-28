@@ -58,8 +58,9 @@
                                 class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                 {{i.property_data.property_type}}</div> -->
                         </div>
-                        <div class="p-2 pb-0">
-                            <a class="d-block mb-2" href="property_details/{{i.id}}" style="background-color:white;"><b
+                        <div class="p-2 pb-0" style="position: relative;">
+                            <a class="d-block mb-2" href="property_details/{{i.id}}"
+                                style="background-color:white;display: block;"><b
                                     class="text-primary mb-3">{{i.property_data.property_rent_price}}/Month
                                 </b>
                                 <br>
@@ -76,6 +77,9 @@
                                         {{i.property_data.property_address|truncatechars:20}}
                                     </span>
                                 </a>
+                                <span style="position: absolute; bottom:0; right:10px;">
+                                    <h5><i class="fa fa-bookmark" aria-hidden="true"></i></h5>
+                                </span>
                             </a>
                             <br>
                             <!-- <div style="align-items: end;">
@@ -95,15 +99,8 @@
 </div>
 <!-- Search End -->
 <script>
-    var address = $(".property_address").text();
-    $("#carousel-slider").slick({
-        arrows: false,
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 1500,
-        mobileFirst: true
-    });
+    setInterval(function () {
+        $(".carousel-control-next").click();
+    }, 5000);
 </script>
 {% endblock %}

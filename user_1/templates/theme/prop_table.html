@@ -1,5 +1,5 @@
 {% extends 'theme/master.html' %}
-{% block add_property_details %}active{% endblock %}
+{% block manage_property %}active{% endblock %}
 {% block main_content %}
 <style>
     .p_type_btn {
@@ -32,9 +32,9 @@
 <div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" style="padding: 0px;">
     <div class="container">
         <div class="scroller" style="overflow: auto; display:flex;">
-            <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white add_property_page"
+            <!-- <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white add_property_page"
                 style="margin:10px;" value="all"><a href="{% url 'add_property_details' %}">Add new
-                    property</a></button>
+                    property</a></button> -->
             <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page"
                 style="margin:10px;" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
             <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn property_table"

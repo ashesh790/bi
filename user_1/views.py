@@ -101,7 +101,17 @@ def add_property_details(request):
             "add_property_details": "add_property_page"})  
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-    return render(request, 'theme/add_property.html', {"add_property_details": "add_property_page"}) 
+    return render(request, 'theme/add_property.html', {
+            "property_type":data["property_type"], 
+            "deal_option":data["deal_option"],
+            "construction_status":data["construction_status"], 
+            "furnish_type":data["furnish_type"], 
+            "bhk_details":data["bhk_details"], 
+            "bathroom_details":data["bathroom_details"],
+            "balcony_details":data["balcony_details"], 
+            "parking_details":data["parking_details"], 
+            "country_name_list": country_name_list, 
+            "add_property_details": "add_property_page"}) 
 
 
 def show_property_detail(request,property_id): 
@@ -119,12 +129,38 @@ def show_property_detail(request,property_id):
 
 def delete_property(request, property_id): 
     try: 
+        country_name_list = country_list(request) 
+        country_name_list = json.loads(country_name_list) 
+        data = settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json"  
+        with open(data) as f:
+            data = json.load(f)  
+        data = data 
         property_id=property_id  
         delete_all_property_data(property_id)  
-        return render(request,'theme/add_property.html') 
+        return render(request, 'theme/add_property.html', {
+            "property_type":data["property_type"], 
+            "deal_option":data["deal_option"],
+            "construction_status":data["construction_status"], 
+            "furnish_type":data["furnish_type"], 
+            "bhk_details":data["bhk_details"], 
+            "bathroom_details":data["bathroom_details"],
+            "balcony_details":data["balcony_details"], 
+            "parking_details":data["parking_details"], 
+            "country_name_list": country_name_list, 
+            "add_property_details": "add_property_page"}) 
     except Exception as ex: 
         print(f"Solve this: {ex}") 
-    return render(request,'theme/add_property.html')
+    return render(request, 'theme/add_property.html', {
+            "property_type":data["property_type"], 
+            "deal_option":data["deal_option"],
+            "construction_status":data["construction_status"], 
+            "furnish_type":data["furnish_type"], 
+            "bhk_details":data["bhk_details"], 
+            "bathroom_details":data["bathroom_details"],
+            "balcony_details":data["balcony_details"], 
+            "parking_details":data["parking_details"], 
+            "country_name_list": country_name_list, 
+            "add_property_details": "add_property_page"})
 
 def update_property(request, property_id=0): 
     # postData = request.get_json()

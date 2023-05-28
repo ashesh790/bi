@@ -24,9 +24,12 @@ def add_property_details_in_database(request):
         property_data={} 
         property_values = dict(request.POST)
         property_values = list(property_values.keys()) 
-        property_values.remove("csrfmiddlewaretoken")
-        property_values.remove("user_id")
-        property_values.remove("images")
+        if "csrfmiddlewaretoken" in property_values:
+            property_values.remove("csrfmiddlewaretoken")
+        if "user_id" in property_values:
+            property_values.remove("user_id")
+        if "images" in property_values:
+            property_values.remove("images")
         for i in property_values: 
             property_data[i] = request.POST[i]
         # property_data['property_type']=request.POST['property_type'] or ""
