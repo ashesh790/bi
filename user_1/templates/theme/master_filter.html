@@ -51,6 +51,19 @@
     #construction_status_trash_icon>i {
         margin-top: 0.8rem;
     }
+
+    .search_modal {
+        position: fixed;
+        top: 100px;
+        right: 0;
+        left: auto;
+        z-index: 1060;
+        display: none;
+        width: 50%;
+        height: 100%;
+        overflow: hidden;
+        outline: 0;
+    }
 </style>
 <!-- Search Start -->
 <div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" style="padding: 0px;">
@@ -69,13 +82,13 @@
     </div>
 </div>
 <div class="row mx-2">
-    <div class="col-lg-9">
+    <div class="col-lg-8">
         <div id="location_fltr">
             <div class="row" style="align-items:center;">
                 <div style="width:11%;">
                     <h5>Location:</h5>
                 </div>
-                <div class="col-md-3">
+                <div class="" style="width:auto;">
                     <div class="d-flex">
                         <div id="country_based__trash">
                             <select class="search_field" id="country_based" style="width:200px;"
@@ -88,7 +101,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="" style="width:auto;">
                     <div class="d-flex">
                         <div id="state_based__trash">
                             <select class="search_field" id="state_based" style="width:200px;"
@@ -98,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="" style="width:auto;">
                     <div class="d-flex">
                         <div id="city_based__trash">
                             <select class="search_field" id="city_based" style="width:200px;"
@@ -111,8 +124,13 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+    <div class="col-lg-4 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
         <ul class="nav nav-pills d-inline-flex justify-content-end mb-3">
+            <li class="nav-item me-2">
+                <button class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    Filter Property &nbsp;<i class="fa fa-filter" aria-hidden="true"></i>
+                </button>
+            </li>
             <li class="nav-item me-2">
                 <button class="btn btn-outline-primary active" data-bs-toggle="pill" value="all" id="all"
                     onclick="search_property_based_on_input_field_values(this);">All</a>
@@ -131,117 +149,7 @@
     </div>
 </div>
 <div class="row m-2">
-    <div class="col-md-2" id="search_filter">
-        <h5>Filter properties by: </h5>
-        <div id="advance_filter_container">
-            <!-- filter using construction status -->
-            <div id="construction_fltr">
-                <div class="d-flex">
-                    <div id="construction_status__trash">
-                        <select class="mt-2 search_field" id="construction_status" style="width:190px;"
-                            onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                            <option value="">Construction status</option>
-                            {% for i in boundry_data.construction_status %}
-                            <option value="{{i}}">{{i}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- filter using bathroom count -->
-            <div id="bathroom_fltr">
-                <div class="d-flex">
-
-                    <div id="bathroom_val__trash">
-                        <select class="mt-2 search_field" id="bathroom_val" style="width:190px;"
-                            onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                            <option value="">Bathrooms</option>
-                            {% for i in boundry_data.bathroom_details %}
-                            <option value="{{i}}">{{i}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <!-- filter using balcony count -->
-            <div id="balcony_fltr">
-                <div class="d-flex">
-                    <div id="balcony_val__trash">
-                        <select class="mt-2 search_field" id="balcony_val" style="width:190px;"
-                            onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                            <option value="">Balcony</option>
-                            {% for i in boundry_data.balcony_details %}
-                            <option>{{i}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <!-- filter using balcony count -->
-            <div id="bhk_fltr">
-                <div class="d-flex">
-                    <div id="bhk_val__trash">
-                        <select class="mt-2 search_field" id="bhk_val" style="width:190px;"
-                            onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                            <option value="">BHK</option>
-                            {% for i in boundry_data.bhk_details %}
-                            <option value="{{i}}">{{i}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- filter using furnish type -->
-            <div id="furnish_fltr">
-                <div id="furnish_fltr_val">
-                    <div class="d-flex">
-                        <div id="furnish_type__trash">
-                            <select class="mt-2 search_field" id="furnish_type" style="width:190px;"
-                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                <option value="">Furnish type</option>
-                                {% for i in boundry_data.furnish_type %}
-                                <option>{{i}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- filter using geography area -->
-            <hr>
-            <b>Geography area</b>
-            <div id="geography_fltr">
-                <div class="d-flex">
-                    <div id="geography_val__trash" style="width:190px;">
-                        <input type="number" class="search_field" placeholder="2000Sq.ft" id="geography_val"
-                            style="width:200px;" onchange="search_field_applied(this);">
-                    </div>
-                </div>
-            </div>
-
-            <!-- filter using price area -->
-            <hr>
-            <b>Price between</b>
-            <div id="price_fltr" style="width:190px;">
-                <div id="price_fltr_val">
-                    <label>To: </label>
-                    <div id="start_price_val__trash">
-                        <input type="number" placeholder="100" class="search_field" id="start_price_val"
-                            style="width:190px;">
-                    </div>
-                    <label>From: </label>
-                    <div id="end_price_val__trash">
-                        <input type="number" placeholder="1000" class="search_field" id="end_price_val"
-                            style="width: 190px;">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-10">
+    <div class="col-md-12">
         <div class="tab-content">
             <div id="tab-1" class="tab-pane fade show p-0 active">
                 <div class="row g-4 property_counter">
@@ -254,6 +162,209 @@
     </div>
 </div>
 <!-- Search End -->
+
+<!-- Bootstrap modal -->
+<div class="modal fade search_modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" style="height: 500px;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Filter properties by:</h5>
+                <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12" id="search_filter">
+                    <div id="advance_filter_container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>Construction status: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="construction_status__trash">
+                                                <select class="search_field" id="construction_status"
+                                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                    <option value="">Construction status</option>
+                                                    {% for i in boundry_data.construction_status %}
+                                                    <option value="{{i}}">{{i}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- filter using bathroom count -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>Bathrooms: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="bathroom_val__trash">
+
+                                                <div class="" style="width:50%;">
+                                                    <select class="mt-2 search_field" id="bathroom_val"
+                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                        <option value="">Bathrooms</option>
+                                                        {% for i in boundry_data.bathroom_details %}
+                                                        <option value="{{i}}">{{i}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- filter using balcony count -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>Balcony: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="balcony_val__trash">
+
+                                                <div class="" style="width:50%;">
+                                                    <select class="mt-2 search_field" id="balcony_val"
+                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                        <option value="">Balcony</option>
+                                                        {% for i in boundry_data.balcony_details %}
+                                                        <option>{{i}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- filter using balcony count -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>BHK: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="bhk_val__trash">
+                                                <div class="" style="width:50%;">
+                                                    <select class="mt-2 search_field" id="bhk_val"
+                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                        <option value="">BHK</option>
+                                                        {% for i in boundry_data.bhk_details %}
+                                                        <option value="{{i}}">{{i}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- filter using furnish type -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>Furnish type: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="furnish_type__trash">
+                                                <div class="" style="width:50%;">
+                                                    <select class="mt-2 search_field" id="furnish_type"
+                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                        <option value="">Furnish type</option>
+                                                        {% for i in boundry_data.furnish_type %}
+                                                        <option>{{i}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- filter using geography area -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>Geography area: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="geography_val__trash">
+                                                <div class="" style="width:50%;">
+                                                    <input type="number" class="search_field" placeholder="2000Sq.ft"
+                                                        id="geography_val" onchange="search_field_applied(this);">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- filter using price area -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>Price between: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="price_fltr_val">
+                                                <div class="" style="width:50%;">
+                                                    <label>To: </label>
+                                                    <div id="start_price_val__trash">
+                                                        <input type="number" placeholder="100" class="search_field"
+                                                            id="start_price_val">
+                                                    </div>
+                                                    <label>From: </label>
+                                                    <div id="end_price_val__trash">
+                                                        <input type="number" placeholder="1000" class="search_field"
+                                                            id="end_price_val">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Apply Filter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     var maxLength = 20;
     // focus and click to secondry nav bar 
