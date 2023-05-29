@@ -380,3 +380,16 @@ def test_function(request):
     boundry_data = advance_filter_boundary(request) 
     boundry_data = json.loads(boundry_data.content)
     return render(request, 'theme/master_filter.html', {"boundry_data":boundry_data['data']})   
+
+def bookmark_property_detail(request): 
+    property_id = request.POST["property_id"]
+    user_id = request.session['user_id'] 
+    user_data = User_register.objects.get(user_id = user_id) 
+    if user_data.user_other_data is not None:
+        user_data.user_other_data["saved_property"].append(property_id) 
+        user_data.user_other_data["saved_property"] = list(set(user_data.user_other_data["saved_property"]))
+        print(user_data.user_other_data["saved_property"]) 
+    else: 
+        user_data.user_other_data = {"saved_property":list(set(property_id))} 
+    user_data.save()
+    return HttpResponse("property_data") 

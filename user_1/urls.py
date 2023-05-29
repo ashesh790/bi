@@ -52,5 +52,6 @@ urlpatterns = [
     path("state_list", views.state_list, name="state_list"),
     path("city_list", views.city_list, name="city_list"), 
     path("search_properties", views.search_properties, name="search_properties"), 
-    path("search_property_type", views.search_property_type, name="search_property_type") 
+    path("search_property_type", views.search_property_type, name="search_property_type"), 
+    path("bookmark_property_detail", views.bookmark_property_detail, name="bookmark_property_detail")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
