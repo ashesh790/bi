@@ -431,10 +431,10 @@
                                         ${val.property_type}</div>
                                 </div>
                                 <div class="p-2 pb-0" style="position: relative;">  
-                                    <a href="/property_details/${key}" class="text-dark d-block" style="display: block;">
+                                    <a href="/property_details/${key}" class="text-dark d-block">
                                     <b class="text-primary mb-3">${val.property_rent_price}/Month</b>
-                                    </a>
-                                    <a class="d-block mb-2 text-dark" href="/property_details/${key}">${val.property_type}, For ${val.selling_option}</a>
+                                <span class="dot"></span>
+                                <span class="text-primary">${val.property_type}</span>&nbsp;<span class="dot"></span><span class="text-primary">&nbsp;${val.selling_option}</span></a>
                                     <a href="/property_details/${key}">
                                         <span><i class="fa fa-map-marker-alt text-primary me-2"></i><span class="text-primary">${val.property_address.slice(0, maxLength) + '...'}</span></span> 
                                         <span style="position: absolute; bottom:0; right:10px;">
