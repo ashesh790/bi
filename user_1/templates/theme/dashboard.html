@@ -44,65 +44,73 @@
 <div class="container-fluid pt-4 px-4">
     <div class="row bg-light rounded mx-0 p-2">
         {% for i in data %}
-        <div class="col-md-3 bg-light parent-props-box">
-            <div class="prop-box text-center p-2">
-                <span>
-                    <b class="text-dark">{{i.property_data.property_type}}</b>
-                </span>
-                <div style="height:230px;">
-                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                                class="active" aria-current="true" aria-label="Slide 1"></button>
-                        </div>
+        <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="property-item rounded overflow-hidden border">
+                <div class="position-relative overflow-hidden">
+                    <div id="carouselExampleControlsNoTouching{{i.id}}" class="carousel slide" data-interval="true"
+                        data-bs-touch="false">
                         <div class="carousel-inner">
-                            {% for i in i.property_data.property_image %}
-                            {% if i|first %}
                             <div class="carousel-item active">
-                                <img src="{{i}}" alt="" style="width:100%;height:230px;">
+                                <a href="property_details/{{i.id}}"><img class="img-fluid d-block w-100"
+                                        style="width:100%; height: 190px;"
+                                        src="{{i.property_data.property_image|first}}" alt=""></a>
                             </div>
-                            {% endif %}
+                            {% if i.property_data.property_image %}
+                            {% for j in i.property_data.property_image|slice:"1:"%}
+                            <div class="carousel-item">
+                                <a href="property_details/{{i.id}}"><img class="img-fluid d-block w-100"
+                                        style="width:100%; height: 190px;" src="{{j}}" alt=""></a>
+                            </div>
                             {% endfor %}
+                            {% else %}
+                            <b>Image is not available</b>
+                            {% endif %}
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                            data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                            data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
+                        <b>
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleControlsNoTouching{{i.id}}" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                        </b>
+                        <b>
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleControlsNoTouching{{i.id}}" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </b>
                     </div>
                 </div>
-                <div class="text-left">
-                    <span>
-                        <label>Property Type: </label>
-                        <b class="text-dark">{{i.property_data.property_type}}</b>
-                        <br>
-                        <label>For: </label>
-                        <b class="text-dark">{{i.property_data.selling_option}}</b>
-                        {% if i.property_data.selling_option == "sell" or "Sell"%}
-                        <br>
-                        <label>Sell Price: </label>
-                        <b class="text-dark">{{i.property_data.property_value}}</b>
-                        {% elif i.property_data.selling_option == "rent" %}
-                        <label>Rent Price: </label>
-                        <b class="text-dark">{{i.property_data.property_rent_price}}</b>
-                        {% else %}
-                        <label>Sell Price: </label>
-                        <b class="text-dark">{{i.property_data.property_value}}</b> <br>
-                        <label>Rent Price: </label>
-                        <b class="text-dark">{{i.property_data.property_rent_price}}</b>
-                        {% endif %}
-                        <a href="delete_property_record/{{i.id}}">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </a>
-                        <a href="update_property_record/{{i.id}}"> Update
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        </a>
-                    </span>
+                <div class="p-2 pb-0 text-center" style="position: relative;">
+                    <a class="d-block mb-2" href="property_details/{{i.id}}"
+                        style="background-color:white;display: block;"><b
+                            class="text-primary mb-3">{{i.property_data.property_rent_price}}/Month
+                        </b>
+                        <span>
+                            <i class="fa fa-circle text-small fa-2xs"></i>
+                        </span>
+                        <span>
+                            <span class="text-primary"><b>{{i.property_data.property_type}}</b></span>
+                            <span>
+                                <i class="fa fa-circle text-small fa-2xs"></i>
+                            </span>
+                            <span class="text-primary"><b></b>{{i.property_data.selling_option}}</b></span>
+                        </span>
+                    </a>
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <a href="delete_property_record/{{i.id}}">
+                                <button class="btn btn-outline-danger">Delete</button>
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="update_property_record/{{i.id}}">
+                                <button class="btn btn-success">Update</button>
+                            </a>
+                        </div>
+                    </div>
+                    <br>
                 </div>
             </div>
         </div>

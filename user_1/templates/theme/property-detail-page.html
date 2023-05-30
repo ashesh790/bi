@@ -1,16 +1,53 @@
 {% extends 'theme/master.html' %}
 {% load static %}
 {% block main_content %}
+<style>
+    h5 {
+        animation-name: example;
+        animation-duration: 2s;
+        animation-iteration-count: 100;
+        background-color: #0099ff;
+        height: 30px;
+        width: 30px;
+    }
 
+    @keyframes example {
+        0% {
+            border-radius: 40%;
+        }
+
+        25% {
+            border-radius: 50%;
+
+        }
+
+        50% {
+            border-radius: 100%;
+            box-shadow: 0px 0px 10px 0px #0099ff;
+            border: 1px solid white;
+
+        }
+
+        75% {
+            border-radius: 50%;
+
+        }
+
+        100% {
+            border-radius: 40%;
+        }
+
+    }
+</style>
 <!-- Property List Start -->
 <div class="container-xxl mt-5">
     <div class="">
         <div class="row" style="word-wrap:break-word;">
-            <div class="col-md-6 p-5 pt-0 pb-0">
+            <div class="col-md-7 p-5 pt-0 pb-0">
                 <div class="div">
-                    <div class="carousel-item active">
+                    <div class="carousel-item active pr-0">
                         {% if data.property_image %}
-                        <a href="#"><img class="img-fluid d-block w-100 main_image" style="width:100%; height:400px;"
+                        <a href="#"><img class="img-fluid d-block w-100 main_image" style="width:100%; height:430px;"
                                 src="{{data.property_image|first}}" alt=""></a>
                         <div class="row m-1" id="image_gallary">
                             {% for i in data.property_image %}
@@ -26,13 +63,13 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-5 p-3 pt-0 pb-0">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row" style="text-align:center">
                             <div class="card card-body">
                                 <div class="row">
-                                    <div class="col-sm-4 p-1">
+                                    <div class="col-sm-4">
                                         <span>Property type</span><br>
                                         <b>{{data.property_type}}</b>
                                     </div>
@@ -47,7 +84,7 @@
                                 </div>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-sm-4 p-1">
+                                    <div class="col-sm-4">
                                         <span>Floor</span><br>
                                         <b>{{data.floor}} - Floor</b>
                                     </div>
@@ -63,7 +100,7 @@
                                 </div>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-sm-4 p-1">
+                                    <div class="col-sm-4">
                                         <span>Balcony</span><br>
                                         <b>{{data.balcony}} - Balcony</b>
                                     </div>
@@ -79,7 +116,7 @@
                                 </div>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-sm-4 p-1">
+                                    <div class="col-sm-4">
                                         <span>Parking type</span><br>
                                         <b>{{data.parking_type}}</b>
                                     </div>
@@ -106,29 +143,34 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <button value="Saller detail" id="saller_detail"
-                                            class="btn btn-outline-primary w-100 p_dtl_btn" type="button"
-                                            data-toggle="modal" data-target="#exampleModal"
-                                            onclick="show_appr_modal(this);">Saller
-                                            Details</button>
+                                        <span id="{{i.id}}" onclick="bookmark_property(this);">
+                                            <h5><i class="fa fa-phone text-white mt-1" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
+                                        </span>
                                     </div>
                                     <div class="col-sm-3">
-                                        <button value="save_post" id="save_post"
-                                            class="btn btn-outline-primary w-100 p_dtl_btn"
-                                            onclick="show_appr_modal(this);">Save
-                                            Post</button>
+                                        <span id="{{i.id}}" onclick="bookmark_property(this);">
+                                            <h5><i class="fa fa-bookmark-o text-white mt-1" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
+                                        </span>
                                     </div>
                                     <div class="col-sm-3">
-                                        <button value="share_post" id="share_post"
-                                            class="btn btn-outline-primary w-100 p_dtl_btn"
-                                            onclick="show_appr_modal(this);">Share</button>
+                                        <span id="{{i.id}}" onclick="bookmark_property(this);">
+                                            <h5><i class="fa fa-share-alt text-white mt-1" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
+                                        </span>
                                     </div>
                                     <div class="col-sm-3">
-                                        <button value="Direct contact to saller" id="direct_contact" type="button"
+                                        <!-- <button value="Direct contact to saller" id="direct_contact" type="button"
                                             data-toggle="modal" data-target="#exampleModal"
                                             class="btn btn-outline-primary w-100 p_dtl_btn"
                                             onclick="show_appr_modal(this);">Direct
-                                            Contact</button>
+                                            Contact</button> -->
+                                        <span id="{{i.id}}" onclick="bookmark_property(this);">
+                                            <h5><i class="fa fa-comment fa-beat text-white mt-1"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    data-bs-title="Tooltip on top"></i></h5>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
