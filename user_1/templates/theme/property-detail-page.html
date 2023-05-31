@@ -32,69 +32,55 @@
                             <div class="card card-body">
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <span>Property type</span><br>
                                         <b>{{data.property_type}}</b>
                                     </div>
                                     <div class="col-sm-4">
-                                        <span>Property age</span><br>
-                                        <b>{{data.property_age}} - Year</b>
+                                        {{data.property_age}} - <b>Year Old</b>
                                     </div>
                                     <div class="col-sm-4">
-                                        <span>Selling option</span><br>
-                                        <b>For - {{data.selling_option}}</b>
+                                        <b>For </b>- {{data.selling_option}}
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <span>Floor</span><br>
-                                        <b>{{data.floor}} - Floor</b>
+                                        {{data.floor}} - <b>Floor</b>
                                     </div>
                                     <div class="col-sm-4">
-                                        <span>B.H.K.</span><br>
-                                        <b>{{data.bhk}} - B.H.K.
-                                        </b>
+                                        {{data.bhk}} - <b>B.H.K.</b>
                                     </div>
                                     <div class="col-sm-4">
-                                        <span>Bathrooms</span><br>
-                                        <b>{{data.bathroom}} - Bathroom</b>
+                                        {{data.bathroom}} - <b>Bathroom</b>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <span>Balcony</span><br>
-                                        <b>{{data.balcony}} - Balcony</b>
+                                        {{data.balcony}} - <b>Balcony</b>
                                     </div>
                                     <div class="col-sm-4">
-                                        <span>Furnish type</span><br>
                                         <b>{{data.furnish_type}}
                                         </b>
                                     </div>
                                     <div class="col-sm-4">
-                                        <span>Geography area</span><br>
                                         <b>{{data.geography_area}} Sqft.</b>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <span>Parking type</span><br>
                                         <b>{{data.parking_type}}</b>
                                     </div>
                                     <div class="col-sm-4">
                                         {% if data.selling_option == "Rent" %}
-                                        <span>Property rent price</span><br>
                                         <b>{{data.property_rent_price}}/Month</b>
                                         {% else %}
-                                        <span>Property Value</span><br>
                                         <b>{{data.property_value}}
                                         </b>
                                         {% endif %}
                                     </div>
                                     <div class="col-sm-4">
-                                        <span>Property available date</span><br>
-                                        <b>{{data.from_avail_property_date}}</b>
+                                        From <b>{{data.from_avail_property_date}}</b> Property will be avilable
                                     </div>
                                     <hr>
                                     <div class="col-sm-12">
@@ -106,23 +92,23 @@
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <span id="{{i.id}}" onclick="bookmark_property(this);">
-                                            <h5 class="icon_form_contact"><i class="fa fa-phone text-white mt-1"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Tooltip on top"></i></h5>
+                                            <h5 class="icon_form_contact" style="margin:auto;"><i
+                                                    class="fa fa-phone text-white mt-1" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
                                         </span>
                                     </div>
                                     <div class="col-sm-3">
                                         <span id="{{i.id}}" onclick="bookmark_property(this);">
-                                            <h5 class="icon_form_contact"><i class="fa fa-bookmark-o text-white mt-1"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Tooltip on top"></i></h5>
+                                            <h5 class="icon_form_contact" style="margin:auto;"><i
+                                                    class="fa fa-bookmark-o text-white mt-1" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
                                         </span>
                                     </div>
                                     <div class="col-sm-3">
                                         <span id="{{i.id}}" onclick="bookmark_property(this);">
-                                            <h5 class="icon_form_contact"><i class="fa fa-share-alt text-white mt-1"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Tooltip on top"></i></h5>
+                                            <h5 class="icon_form_contact" style="margin:auto;"><i
+                                                    class="fa fa-share-alt text-white mt-1" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
                                         </span>
                                     </div>
                                     <div class="col-sm-3">
@@ -132,7 +118,7 @@
                                             onclick="show_appr_modal(this);">Direct
                                             Contact</button> -->
                                         <span id="{{i.id}}" onclick="bookmark_property(this);">
-                                            <h5 class="icon_form_contact"><i
+                                            <h5 class="icon_form_contact" style="margin:auto;"><i
                                                     class="fa fa-comment fa-beat text-white mt-1"
                                                     data-bs-toggle="tooltip" data-bs-placement="top"
                                                     data-bs-title="Tooltip on top"></i></h5>
