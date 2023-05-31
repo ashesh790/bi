@@ -26,52 +26,46 @@
             </div>
 
             <div class="col-md-5 p-3 pt-0 pb-0">
-                <div class="row">
+                <div class="row" style="text-align:center; margin-right:auto;">
                     <div class="col-md-12">
                         <div class="row" style="text-align:center">
                             <div class="card card-body">
                                 <div class="row">
-                                    <div class="col-sm-4">
+                                    <div class="col-4">
                                         <b>{{data.property_type}}</b>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-4">
                                         {{data.property_age}} - <b>Year Old</b>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-4">
                                         <b>For </b>- {{data.selling_option}}
                                     </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-4">
+                                    <hr>
+                                    <div class="col-4">
                                         {{data.floor}} - <b>Floor</b>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-4">
                                         {{data.bhk}} - <b>B.H.K.</b>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-4">
                                         {{data.bathroom}} - <b>Bathroom</b>
                                     </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-4">
+                                    <hr>
+                                    <div class="col-4">
                                         {{data.balcony}} - <b>Balcony</b>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-4">
                                         <b>{{data.furnish_type}}
                                         </b>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-4">
                                         <b>{{data.geography_area}} Sqft.</b>
                                     </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-4">
+                                    <hr>
+                                    <div class="col-4">
                                         <b>{{data.parking_type}}</b>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-4">
                                         {% if data.selling_option == "Rent" %}
                                         <b>{{data.property_rent_price}}/Month</b>
                                         {% else %}
@@ -79,39 +73,40 @@
                                         </b>
                                         {% endif %}
                                     </div>
-                                    <div class="col-sm-4">
+                                    <hr>
+                                    <div class="col-12">
                                         From <b>{{data.from_avail_property_date}}</b> Property will be avilable
                                     </div>
                                     <hr>
                                     <div class="col-sm-12">
-                                        <span>Property address</span><br>
-                                        <b>{{data.property_address}}</b>
+                                        <span><b>Property address: </b></span>
+                                        {{data.property_address}}
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-sm-3">
+                                    <div class="col-3">
                                         <span id="{{i.id}}" onclick="bookmark_property(this);">
                                             <h5 class="icon_form_contact" style="margin:auto;"><i
                                                     class="fa fa-phone text-white mt-1" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
                                         </span>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-3">
                                         <span id="{{i.id}}" onclick="bookmark_property(this);">
                                             <h5 class="icon_form_contact" style="margin:auto;"><i
                                                     class="fa fa-bookmark-o text-white mt-1" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
                                         </span>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-3">
                                         <span id="{{i.id}}" onclick="bookmark_property(this);">
                                             <h5 class="icon_form_contact" style="margin:auto;"><i
                                                     class="fa fa-share-alt text-white mt-1" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
                                         </span>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-3">
                                         <!-- <button value="Direct contact to saller" id="direct_contact" type="button"
                                             data-toggle="modal" data-target="#exampleModal"
                                             class="btn btn-outline-primary w-100 p_dtl_btn"
