@@ -25,6 +25,13 @@
             display: none;
             /* Safari and Chrome */
         }
+
+        .p_type_btn {
+            border-radius: 20px;
+            border: 1px solid white;
+            font-size: 15px;
+            font-weight: 600;
+        }
     }
 
     .search_field {
@@ -133,9 +140,14 @@
     <div class="col-lg-4 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
         <ul class="nav nav-pills d-inline-flex justify-content-end mb-3">
             <li class="nav-item me-2">
-                <button class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                    Filter Property &nbsp;<i class="fa fa-filter" aria-hidden="true"></i>
-                </button>
+                <div class="d-flex">
+                    <span id="all_filter__trash">
+                        <button class="btn btn-outline-primary search_field" data-toggle="modal" id="all_filter"
+                            data-target="#exampleModalCenter" onclick="search_field_applied(this);">
+                            Filter Property &nbsp;<i class="fa fa-filter" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                </div>
             </li>
             <li class="nav-item me-2">
                 <button class="btn btn-outline-primary active" data-bs-toggle="pill" value="all" id="all"
@@ -461,11 +473,19 @@
         if (`${field_id}_trash_icon`) {
             $(`#${field_id}_trash_icon`).remove();
         }
-        $(`#${field_id}__trash`).after(`
-        <span class="mx-2" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
-            <i class="fa fa-times-circle" aria-hidden="true"></i>
-        </span>
+        if (field_id == "all_filter") {
+            $(`#${field_id}__trash`).after(`
+            <span class="mx-2" id="${field_id}_trash_icon" onclick="remove_filter_value(this);active_class(this)"> 
+                <i class="fa fa-times-circle" aria-hidden="true"></i>
+            </span>
         `);
+        } else {
+            $(`#${field_id}__trash`).after(`
+            <span class="mx-2" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
+                <i class="fa fa-times-circle" aria-hidden="true"></i>
+            </span>
+            `);
+        }
     }
 
     // remove specific filter 
