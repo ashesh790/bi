@@ -169,6 +169,18 @@
             border-radius: 50%;
             display: inline-block;
         }
+        #loading{
+            width: 3rem;
+            height: 3rem;
+        }
+        #logout_btn{
+            border-radius: 20px;
+        }
+        #login_btn_2{
+            border-radius: 20px;
+            height: 30px;
+            align-items:center;
+        }
     </style>
 </head>
 
@@ -178,7 +190,7 @@
         <!-- Spinner Start -->
         <div id="spinner"
             class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <div class="spinner-border text-primary" id="loading" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
@@ -213,10 +225,9 @@
                 {% if 'user_name' in request.session %}
                 Welcome {{request.session.user_name}} :&nbsp;
                 <a data-toggle="modal" data-target="#glassAnimals" class="btn btn-primary px-3 d-none d-lg-flex"
-                    id="logout_btn" style="border-radius: 20px;"><i class="fa fa-user" aria-hidden="true"></i></a>
+                    id="logout_btn"><i class="fa fa-user" aria-hidden="true"></i></a>
                 {% else%}
-                <a href="login" class="btn btn-primary px-3 d-none d-lg-flex" id="login_btn"
-                    style="border-radius: 20px; height: 30px; align-items:center;">Login</a>
+                <a href="login" class="btn btn-primary px-3 d-none d-lg-flex" id="login_btn_2">Login</a>
                 {% endif %}
             </div>
         </nav>
