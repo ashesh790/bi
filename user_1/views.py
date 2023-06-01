@@ -428,3 +428,9 @@ def bookmark_property_detail(request):
         return HttpResponse("property_data")
     except Exception as ex: 
         return render(request, "theme/404.html") 
+
+def google_map(request): 
+    try: 
+        return render(request, "theme/google_map.html") 
+    except Exception as ex: 
+        return render("theme/404.html")  
