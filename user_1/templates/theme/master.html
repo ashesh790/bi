@@ -169,17 +169,20 @@
             border-radius: 50%;
             display: inline-block;
         }
-        #loading{
+
+        #loading {
             width: 3rem;
             height: 3rem;
         }
-        #logout_btn{
+
+        #logout_btn {
             border-radius: 20px;
         }
-        #login_btn_2{
+
+        #login_btn_2 {
             border-radius: 20px;
             height: 30px;
-            align-items:center;
+            align-items: center;
         }
     </style>
 </head>
@@ -247,7 +250,7 @@
                     <div class="modal-body">
                         <button class="btn w-100 btn_profile">Settings</button>
                         <button class="btn w-100 btn_profile">Saved Property</button>
-                        <button class="btn w-100 btn_profile">Manage Property</button>
+                        <a href="{% url 'dashboard' %}" class="btn w-100 btn_profile">Manage Property</button></a>
                         <hr>
                         <a href="logout" class="btn w-100 btn_profile">Logout</a>
                     </div>
