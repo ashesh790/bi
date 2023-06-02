@@ -2,6 +2,13 @@
 {% block manage_property %}active{% endblock %}
 {% block main_content %}
 <style>
+    #main{
+        padding: 0px;
+    }
+    #scroller{
+        overflow: auto; 
+        display:flex;
+    }
     .p_type_btn {
         border-radius: 20px;
         border: 1px solid white;
@@ -16,7 +23,10 @@
         background-color: white;
         color: black !important;
     }
+    #dashboard_btn, #list_btn{
+        margin:10px;
 
+    }
     .active_btn {
         background-color: aliceblue;
         color: #0099ff !important;
@@ -29,16 +39,14 @@
         }
     }
 </style>
-<div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" style="padding: 0px;">
+<div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" id="main">
     <div class="container">
-        <div class="scroller" style="overflow: auto; display:flex;">
+        <div class="scroller" id="scroller">
             <!-- <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white add_property_page"
                 style="margin:10px;" value="all"><a href="{% url 'add_property_details' %}">Add new
                     property</a></button> -->
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page"
-                style="margin:10px;" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn property_table"
-                style="margin:10px;">
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page" id="dashboard_btn" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn property_table" id="list_btn">
                 <a href="{% url 'prop_table' %}">Property list</a></button>
         </div>
     </div>

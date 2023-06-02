@@ -225,9 +225,9 @@
                 {% if 'user_name' in request.session %}
                 Welcome {{request.session.user_name}} :&nbsp;
                 <a data-toggle="modal" data-target="#glassAnimals" class="btn btn-primary px-3 d-none d-lg-flex"
-                    id="logout_btn"><i class="fa fa-user" aria-hidden="true"></i></a>
+                    id="logout_btn" style="border-radius: 50%;"><i class="fa fa-user" aria-hidden="true"></i></a>
                 {% else%}
-                <a href="login" class="btn btn-primary px-3 d-none d-lg-flex" id="login_btn_2">Login</a>
+                <a href="login"  class="btn btn-primary px-3 d-none d-lg-flex" id="login_btn_2">Login</a>
                 {% endif %}
             </div>
         </nav>

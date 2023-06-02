@@ -7,28 +7,48 @@
     img {
         width: 100%;
     }
+    #prop_count_gallery{
+        overflow:auto;
+    }
+    #prop_item{
+        height:300px !important;
+    }
+    #property_details{
+        width:100%; 
+        height: 190px;
+    }
+    #Month_parent{
+        position: relative;
+    }
+    #/Month{
+        background-color:white;
+        display:block;
+    }
+    #tooltip_parent{
+        position: absolute;
+        bottom:0;
+        right:10px;
+    }
 </style>
 <div class="col-md-12">
     <div class="tab-content">
         <div id="tab-1" class="tab-pane fade show p-0 active">
-            <div class="row g-4 property_counter gallery" style="overflow:auto;">
+            <div class="row g-4 property_counter gallery" id="prop_count_gallery">
                 {% for i in property_data %}
                 <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
+                    <div class="property-item rounded overflow-hidden border" id="prop_item" >
                         <div class="position-relative overflow-hidden">
                             <div id="carouselExampleControlsNoTouching{{i.id}}" class="carousel slide"
                                 data-interval="true" data-bs-touch="false">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <a href="property_details/{{i.id}}"><img class="img-fluid d-block w-100"
-                                                style="width:100%; height: 190px;"
+                                        <a href="property_details/{{i.id}}"><img class="img-fluid d-block w-100" id="property_details"
                                                 src="{{i.property_data.property_image|first}}" alt=""></a>
                                     </div>
                                     {% if i.property_data.property_image %}
                                     {% for j in i.property_data.property_image|slice:"1:"%}
                                     <div class="carousel-item">
-                                        <a href="property_details/{{i.id}}"><img class="img-fluid d-block w-100"
-                                                style="width:100%; height: 190px;" src="{{j}}" alt=""></a>
+                                        <a href="property_details/{{i.id}}"><img class="img-fluid d-block w-100" id="property_details" src="{{j}}" alt=""></a>
                                     </div>
                                     {% endfor %}
                                     {% else %}
@@ -58,9 +78,8 @@
                                 class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                 {{i.property_data.property_type}}</div> -->
                         </div>
-                        <div class="p-2 pb-0" style="position: relative;">
-                            <a class="d-block mb-2" href="property_details/{{i.id}}"
-                                style="background-color:white;display: block;"><b
+                        <div class="p-2 pb-0"  id="Month_parent">
+                            <a class="d-block mb-2" href="property_details/{{i.id}}" id="/Month"><b
                                     class="text-primary mb-3">{{i.property_data.property_rent_price}}/Month
                                 </b>
                                 <span class="dot"></span>
@@ -76,7 +95,7 @@
                                         {{i.property_data.property_address|truncatechars:20}}...
                                     </span>
                                 </a>
-                                <span style="position: absolute; bottom:0; right:10px;" id="{{i.id}}"
+                                <span id="tooltip_parent" id="{{i.id}}"
                                     onclick="bookmark_property(this);">
                                     <h5><i class="fa fa-bookmark-o" data-bs-toggle="tooltip" data-bs-placement="top"
                                             data-bs-title="Tooltip on top"></i></h5>

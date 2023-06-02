@@ -2,10 +2,18 @@
 {% load static %}
 {% block property_agent %}active{% endblock %}
 {% block main_content %}
+<style>
+    #Prop_Agents_parent{
+        max-width: 600px;
+    }
+    #contect_div{
+        border: 1px dashed rgba(0, 185, 142, .3)
+    }
+</style>
 <!-- Team Start -->
 <div class="container-xxl py-5">
     <div class="container">
-        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" id="Prop_Agents_parent" data-wow-delay="0.1s">
             <h1 class="mb-3">Property Agents</h1>
             <p>Here, You can choose best property agent and take advice for property.</p>
         </div>
@@ -84,7 +92,7 @@
 <div class="container-xxl py-5">
     <div class="container">
         <div class="bg-light rounded p-3">
-            <div class="bg-white rounded p-4" style="border: 1px dashed rgba(0, 185, 142, .3)">
+            <div class="bg-white rounded p-4" id="contect_div" >
                 <div class="row g-5 align-items-center">
                     <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                         <img class="img-fluid rounded w-100" src="img/call-to-action.jpg" alt="">

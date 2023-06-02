@@ -1,7 +1,14 @@
 {% extends 'theme/master.html' %}
 {% load static %}
 {% block main_content %}
-    <div class="row g-3 mt-5 p-5" style="margin-left:auto;margin-right:auto; width:50%;"> 
+<style>
+    #main{
+        margin-left:auto;
+        margin-right:auto; 
+        width:50%;
+    }
+</style>
+    <div class="row g-3 mt-5 p-5" id="main" > 
         <div class="col-md-12"> 
             <form method="POST" action="/signup">
                 {% csrf_token %}
