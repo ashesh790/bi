@@ -26,8 +26,11 @@ def search_properties(request):
         property_details.pop("selling_option")
     query = Q()
     for field, value in property_details.items():
-        if value:
-            query &= Q(**{"property_data__"+field: value})
+        if field == "place_name":
+            query &= Q(**{"property_data__place_name__icontains": value})
+        else: 
+            if value:
+                query &= Q(**{"property_data__"+field: value})
     
     search_results = p_detail.objects.filter(query) 
     if search_results.exists():   
@@ -36,3 +39,20 @@ def search_properties(request):
         return JsonResponse(search_results)
     else:
         return HttpResponse("No data found")
+
+def search_properties_by_string(request): 
+    search_string = request.POST['search_string'] 
+    search_results = p_detail.objects.filter(Q(property_data__property_type__icontains=search_string) | 
+                                             Q(property_data__property_name__icontains=search_string) | 
+                                             Q(property_data__property_address__icontains=search_string) | 
+                                             Q(property_data__property_city__icontains=search_string) | 
+                                             Q(property_data__property_state__icontains=search_string) | 
+                                             Q(property_data__property_country__icontains=search_string) | 
+                                             Q(property_data__property_zip__icontains=search_string) | 
+                                             Q(property_data__property_description__icontains=search_string) | 
+                                             Q(property_data__property_price__icontains=search_string) | 
+                                             Q(property_data__property_area__icontains=search_string) | 
+                                             Q(property_data__property_bedrooms__icontains=search_string) | 
+                                             Q(property_data__property_bathrooms__icontains=search_string) | 
+                                             Q(property_data__property_garage__icontains=search_string),) 
+    return "pass" 

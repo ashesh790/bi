@@ -35,11 +35,6 @@
         bottom: 0;
         right: 10px;
     }
-
-    #place_name {
-        border: 1px solid #0099ff;
-        width: 300px;
-    }
 </style>
 <div class="col-md-12">
     <div class="tab-content">
@@ -133,7 +128,7 @@
     }, 15000);
 
     function bookmark_property(property_id) {
-        debugger
+
         var property_id = $(property_id).attr("id");
         $.ajax({
             url: "{% url 'bookmark_property_detail' %}",

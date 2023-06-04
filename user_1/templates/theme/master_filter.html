@@ -102,7 +102,8 @@
                     <h5>Search By Place:</h5>
                 </div>
                 <div style="width:200px;">
-                    <input type="text" id="place_name" placeholder="Enter Place Name">
+                    <input type="text" id="place_name" placeholder="Enter Place Name"
+                        onkeyup="search_property_based_on_input_field_values()">
                 </div>
             </div>
         </div>
@@ -495,6 +496,7 @@
                 selling_option_val = "All";
             }
         }
+
         var property_type = property_type_val;
         var country = $('#country_based').val() || "";
         var state = $('#state_based').val() || "";
@@ -505,8 +507,10 @@
         var bhk = $("#bhk_val").val() || "";
         var furnish_type = $('#furnish_type').val() || "";
         var geography_area = $('#geography_val').val() || "";
+        var place_name = $('#place_name').val() || "";
 
         var search_object = new Object();
+        if (place_name != "") { search_object.place_name = place_name };
         if (property_type != "") { search_object.property_type = property_type };
         if (country != "") { search_object.country = country };
         if (state != "") { search_object.state = state };
