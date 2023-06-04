@@ -65,15 +65,13 @@
         height: 230px;
     }
 </style>
-<div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" id="main">
+<div class="container-fluid bg-primary mb-4 wow fadeIn" id="property_deshboard" data-wow-delay="0.1s">
     <div class="container">
-        <div class="scroller" id="scroller">
-            <!-- <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white" style="margin:10px;"
-                value="all"><a href="{% url 'add_property_details' %}">Add new property</a></button> -->
+        <div class="scroller">
             <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page"
-                value="all"><a href="{% url 'dashboard' %}" id="prop_dashboard">Property dashboard</a></button>
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn">
-                <a href="{% url 'prop_table' %}" id="Prop_list">Property list</a></button>
+                style="margin:10px;" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" id="Property_list">
+                <a href="{% url 'prop_table' %}">Property list</a></button>
         </div>
     </div>
 </div>
