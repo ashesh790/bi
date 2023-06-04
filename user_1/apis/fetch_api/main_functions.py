@@ -3,7 +3,7 @@ import os
 from urllib import request
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse 
-
+from django.core.paginator import Paginator
 from staying_source.settings import MEDIA_ROOT, MEDIA_URL
 from user_1.models import User_register, p_detail
 from django.core.files.storage import FileSystemStorage
@@ -62,14 +62,19 @@ def update_property_image(request, property_id):
     
 def get_all_property_data(property_id=None, property_type=None): 
     if property_id == None: 
-        my_data=p_detail.objects.values()
-        json_data=my_data[0]
-        data=json.dumps(json_data, indent=4, sort_keys=True, default=str)  
+        data=p_detail.objects.values()
+        data=data[0]
+        data=json.dumps(data, indent=4, sort_keys=True, default=str)  
     elif property_type != None: 
         data = p_detail.objects.filter(property_data__property_type=property_type)
     elif property_id is not None: 
         data=p_detail.objects.get(pk=property_id) 
-    return data 
+
+    number_of_item = 5
+    paginator = Paginator(data, number_of_item) 
+    first_page = paginator.page(1).object_list 
+    page_range = paginator.page_range 
+    return data, first_page, page_range
 
 def delete_all_property_data(property_id): 
     # if request.method=='POST': 

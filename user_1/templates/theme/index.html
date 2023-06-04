@@ -114,6 +114,11 @@
                 </div>
                 {% endfor %}
             </div>
+            <div class="pagination">
+                {% for i in page_range %}
+                <a style="margin-left: 5px;" class="ajax-pag" href="{{i}}">{{i}}</a>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>

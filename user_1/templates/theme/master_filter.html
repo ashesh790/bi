@@ -98,42 +98,8 @@
     <div class="col-lg-8">
         <div id="location_fltr">
             <div class="row" style="align-items:center;">
-                <div style="width:11%;">
-                    <h5>Location:</h5>
-                </div>
-                <div class="" style="width:auto;">
-                    <div class="d-flex">
-                        <div id="country_based__trash">
-                            <select class="search_field" id="country_based" style="width:200px;"
-                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                <option value="">Select Country</option>
-                                {% for i in country %}
-                                <option value="{{i.iso2}}">{{i.name}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="" style="width:auto;">
-                    <div class="d-flex">
-                        <div id="state_based__trash">
-                            <select class="search_field" id="state_based" style="width:200px;"
-                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                <option value="" selected>Select state</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="" style="width:auto;">
-                    <div class="d-flex">
-                        <div id="city_based__trash">
-                            <select class="search_field" id="city_based" style="width:200px;"
-                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                <option value="" selected> Select City</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                <h5>Search Property By Location:</h5>
+                <input type="text" id="place_name" placeholder="Enter Place Name">
             </div>
         </div>
     </div>
@@ -389,6 +355,9 @@
     var elements = document.getElementsByClassName('p_type_btn');
     var requiredElement = elements[0];
 
+    var totalPagesLength = 5;
+    var pagescount = 0;
+
     setTimeout(function () {
         $(requiredElement).focus();
     }, 500);
@@ -404,17 +373,21 @@
         property_type_val = $(property_type).val();
         $.ajax({
             url: "{% url 'search_property_type' %}",
+            async: false,
+            cache: false,
             type: "POST",
             data: {
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
                 "data": property_type_val
             },
             success: function (data) {
-                if (Object.keys(data.prop_data).length != 0) {
-                    $(".property_counter").empty();
-                    // console.log(data.prop_data);
-                    $.each(data.prop_data, function (key, val) {
-                        $(".property_counter").append(` 
+                pagescount++;
+                if (pagescount < totalPagesLength) {
+                    if (Object.keys(data.prop_data).length != 0) {
+                        $(".property_counter").empty();
+                        // console.log(data.prop_data);
+                        $.each(data.prop_data, function (key, val) {
+                            $(".property_counter").append(` 
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
                                 <div class="position-relative overflow-hidden"> 
@@ -457,12 +430,14 @@
                             </div>
                         </div>
                         `)
-                    });
+                        });
+                    }
+                    else {
+                        $(".property_counter").empty();
+                        $(".property_counter").append("<h1>Result not found</h1>")
+                    }
                 }
-                else {
-                    $(".property_counter").empty();
-                    $(".property_counter").append("<h1>Result not found</h1>")
-                }
+
             }
         })
     }

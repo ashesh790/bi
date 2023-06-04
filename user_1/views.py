@@ -23,61 +23,75 @@ from django.core.files.storage import FileSystemStorage
 # Note: Create login and signup in single html page 
 
 def advance_filter(request): 
-    property_data = p_detail.objects.all() 
-    boundry_data = advance_filter_boundary(request) 
-    boundry_data = json.loads(boundry_data.content) 
-    return render(request, "advance_filter/filter.html", {"boundry_data":boundry_data['data'], "country":boundry_data['country'], "property_data":property_data}) 
+    try: 
+        property_data = p_detail.objects.all() 
+        boundry_data = advance_filter_boundary(request) 
+        boundry_data = json.loads(boundry_data.content) 
+        return render(request, "advance_filter/filter.html", {"boundry_data":boundry_data['data'], "country":boundry_data['country'], "property_data":property_data}) 
+    except Exception as ex: 
+        return render(request, "theme/404.html") 
+    
 # Login function 
 def sign_up(request): 
-    if request.method =="POST": 
-        user_name=request.POST['user_name']
-        user_email=request.POST['user_email'] 
-        user_mobile=request.POST['user_number'] 
-        user_psw=request.POST['user_psw'] 
-        user_name.lower()
-        user_email.lower()
-        if User_register.objects.filter(user_name=user_name): 
-            print("Existing User!") 
-            return redirect("login") 
-        if User_register.objects.filter(user_email=user_email).exists():
-            print("Email is already exist!") 
-            return redirect("login") 
-        if len(user_name)>20: 
-            print("USer must be under 20 character") 
-            return redirect("login") 
-        if not user_name.isalnum(): 
-            print("User name must be alphanumeric") 
-            return redirect("login") 
-        
-        new_user=User_register.objects.create(user_name=user_name, user_email=user_email, user_mobile=user_mobile,user_psw=user_psw) 
-        if new_user: 
-            return redirect('login') 
+    try: 
+        if request.method =="POST": 
+            user_name=request.POST['user_name']
+            user_email=request.POST['user_email'] 
+            user_mobile=request.POST['user_number'] 
+            user_psw=request.POST['user_psw'] 
+            user_name.lower()
+            user_email.lower()
+            if User_register.objects.filter(user_name=user_name): 
+                print("Existing User!") 
+                return redirect("login") 
+            if User_register.objects.filter(user_email=user_email).exists():
+                print("Email is already exist!") 
+                return redirect("login") 
+            if len(user_name)>20: 
+                print("USer must be under 20 character") 
+                return redirect("login") 
+            if not user_name.isalnum(): 
+                print("User name must be alphanumeric") 
+                return redirect("login") 
+            
+            new_user=User_register.objects.create(user_name=user_name, user_email=user_email, user_mobile=user_mobile,user_psw=user_psw) 
+            if new_user: 
+                return redirect('login') 
+            else: 
+                return False 
         else: 
-            return False 
-    else: 
-        return render(request, "theme/signup.html")
+            return render(request, "theme/signup.html")
+    except Exception as ex: 
+        return render(request, "theme/404.html")
 
  
 # sign up 
 def login(request): 
-    if request.POST: 
-        LOGIN_ERR = ''
-        login_status = login_user(request) 
-        if login_status is not False:   
-            return render(request, 'theme/index.html') 
+    try:
+        if request.POST: 
+            LOGIN_ERR = ''
+            login_status = login_user(request) 
+            if login_status is not False:   
+                return render(request, 'theme/index.html') 
+            else: 
+                LOGIN_ERR = "Invalid Credentials"
+                return JsonResponse({"err": LOGIN_ERR}) 
         else: 
-            LOGIN_ERR = "Invalid Credentials"
-            return JsonResponse({"err": LOGIN_ERR}) 
-    else: 
-        return render(request, "theme/login.html")
+            return render(request, "theme/login.html") 
+    except Exception as ex: 
+        return render(request, "theme/404.html") 
+    
 # logout 
 def logout(request): 
-    if request: 
-        try: 
-            del request.session['user_name'] 
-        except: 
-            print("Logout") 
-    return render(request, 'theme/login.html') 
+    try:
+        if request: 
+            try: 
+                del request.session['user_name'] 
+            except: 
+                print("Logout") 
+        return render(request, 'theme/login.html')
+    except Exception as ex: 
+        return render(request, "theme/404.html") 
  
 def add_property_details(request):    
     try:
@@ -101,31 +115,22 @@ def add_property_details(request):
             "country_name_list": country_name_list, 
             "add_property_details": "add_property_page"})  
     except Exception as ex: 
-        print(f"Solve this: {ex}") 
-    return render(request, 'theme/add_property.html', {
-            "property_type":data["property_type"], 
-            "deal_option":data["deal_option"],
-            "construction_status":data["construction_status"], 
-            "furnish_type":data["furnish_type"], 
-            "bhk_details":data["bhk_details"], 
-            "bathroom_details":data["bathroom_details"],
-            "balcony_details":data["balcony_details"], 
-            "parking_details":data["parking_details"], 
-            "country_name_list": country_name_list, 
-            "add_property_details": "add_property_page"}) 
+        return render(request, "theme/404.html")
 
 
 def show_property_detail(request,property_id): 
     try: 
         property_id=property_id  
-        data=get_all_property_data(property_id=property_id)   
+        data, first_page, page_range=get_all_property_data(property_id=property_id)   
         template=loader.get_template('show_property_detail.html')
         context={
-            "data":data, 
+            "data":data,
+            "first_page":first_page, 
+            "page_range":page_range
         }
         return HttpResponse(template.render(context, request)) 
     except Exception as ex: 
-        print(f"Solve this: {ex}") 
+        return render(request, "theme/404.html") 
 
 
 def delete_property(request, property_id): 
@@ -150,7 +155,7 @@ def delete_property(request, property_id):
             "country_name_list": country_name_list, 
             "add_property_details": "add_property_page"}) 
     except Exception as ex: 
-        print(f"Solve this: {ex}") 
+        (request, "theme/404.html")
     return render(request, 'theme/add_property.html', {
             "property_type":data["property_type"], 
             "deal_option":data["deal_option"],
