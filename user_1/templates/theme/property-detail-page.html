@@ -2,40 +2,48 @@
 {% load static %}
 {% block main_content %}
 <style>
-    #main{
-        word-wrap:break-word;
+    #main {
+        word-wrap: break-word;
     }
-    #prop_a{
-        width:100%;
-        height:430px;
+
+    #prop_a {
+        width: 100%;
+        height: 430px;
     }
-    #prop_img{
-        border:1px solid #0099ff;
-        height:50px;
+
+    #prop_img {
+        border: 1px solid #0099ff;
+        height: 50px;
     }
-    #prop_span{
-        width:60px;
+
+    #prop_span {
+        width: 60px;
     }
-    #prop_table_detail{
-        text-align:center; 
-        margin-right:auto;
+
+    #prop_table_detail {
+        text-align: center;
+        margin-right: auto;
     }
-    #prop_parent{
-        text-align:center;
+
+    #prop_parent {
+        text-align: center;
     }
-    #contect_icon{
-        margin:auto;
+
+    #contect_icon {
+        margin: auto;
     }
-    {% comment %} more similar property {% endcomment %}
-    #similar_prop_btn{
-        height:300px !important;
+
+    #similar_prop_btn {
+        height: 300px !important;
     }
-    #item_a{
-        width:100%; 
+
+    #item_a {
+        width: 100%;
         height: 190px;
     }
-    #filtered_append{
-        height:300px !important;
+
+    #filtered_append {
+        height: 300px !important;
     }
 </style>
 <!-- Property List Start -->
@@ -50,7 +58,7 @@
                                 src="{{data.property_image|first}}" alt=""></a>
                         <div class="row m-1" id="image_gallary">
                             {% for i in data.property_image %}
-                            <span class="p-1 pt-3" id="prop_span" >
+                            <span class="p-1 pt-3" id="prop_span">
                                 <img class="img-fluid" src="{{i}}" alt="" id="prop_img">
                             </span>
                             {% endfor %}
@@ -63,7 +71,7 @@
             </div>
 
             <div class="col-md-5 p-3 pt-0 pb-0">
-                <div class="row" id="prop_table_detail" >
+                <div class="row" id="prop_table_detail">
                     <div class="col-md-12">
                         <div class="row" id="prop_parent">
                             <div class="card card-body">
@@ -214,14 +222,15 @@
                                 data-bs-touch="false">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <a href="/property_details/{{property.id}}"><img class="img-fluid d-block w-100" id="item_a"
-                                                src="{{property.property_data.property_image|first}}" alt=""></a>
+                                        <a href="/property_details/{{property.id}}"><img class="img-fluid d-block w-100"
+                                                id="item_a" src="{{property.property_data.property_image|first}}"
+                                                alt=""></a>
                                     </div>
                                     {% if property.property_data.property_image %}
                                     {% for j in property.property_data.property_image|slice:"1:"%}
                                     <div class="carousel-item">
                                         <a href="property_details/{{property.id}}"><img class="img-fluid d-block w-100"
-                                            id="item_a" src="{{j}}" alt=""></a>
+                                                id="item_a" src="{{j}}" alt=""></a>
                                     </div>
                                     {% endfor %}
                                     {% else %}

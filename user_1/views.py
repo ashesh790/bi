@@ -1,5 +1,6 @@
 import json
 import requests
+import re
 from django.conf import settings
 from django.core.files.storage import default_storage
 from urllib import request
@@ -188,26 +189,10 @@ def update_property(request, property_id=0):
             property_values.remove("csrfmiddlewaretoken")
             property_values.remove("id") 
             for i in property_values: 
-                data.property_data[i] = request.POST[i]
-            # data.property_data['property_type'] = request.POST['data[property_type]']  
-            # data.property_data['property_age'] = request.POST['data[property_age]']  
-            # data.property_data['selling_option'] = request.POST['data[selling_option]']  
-            # data.property_data['construction_status'] = request.POST['data[construction_status]']  
-            # data.property_data['floor'] = request.POST['data[floor]']  
-            # data.property_data['bathroom'] = request.POST['data[bathroom]']  
-            # data.property_data['balcony'] = request.POST['data[balcony]']  
-            # data.property_data['bhk'] = request.POST['data[bhk]']  
-            # data.property_data['furnish_type'] = request.POST['data[furnish_type]']  
-            # data.property_data['geography_area'] = request.POST['data[geography_area]']  
-            # data.property_data['parking_type'] = request.POST['data[parking_type]']  
-            # data.property_data['property_value'] = request.POST['data[property_value]']  
-            # data.property_data['property_rent_price'] = request.POST['data[property_rent_price]']  
-            # data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]'] 
-            # data.property_data['country'] = request.POST['data[property_country]'] 
-            # data.property_data['state'] = request.POST['data[property_state]']
-            # data.property_data['city'] = request.POST['data[property_city]'] 
-            # data.property_data['property_address'] = request.POST['data[property_address]'] 
-            # data.property_data['property_description'] = request.POST['data[property_description]']
+                column_name = i 
+                column_name = i.replace("data[", "") 
+                column_name = column_name.replace("]", "") 
+                data.property_data[column_name] = request.POST[i]
             data.save()  
             return render(request, 'theme/update_property.html', {'data':data, "id":property_id})
         property_id=property_id

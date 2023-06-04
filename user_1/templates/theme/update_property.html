@@ -2,10 +2,11 @@
 {% block add_property_details %}active{% endblock %}
 {% block main_content %}
 <style>
-    #main{
+    #main {
         padding: 0px;
-        
+
     }
+
     .p_type_btn {
         border-radius: 20px;
         border: 1px solid white;
@@ -32,36 +33,45 @@
             /* Safari and Chrome */
         }
     }
-    #scroller{
-        overflow: auto; 
-        display:flex;
+
+    #scroller {
+        overflow: auto;
+        display: flex;
     }
-    #prop_dashboard, #Prop_list{
-        margin:10px;
+
+    #prop_dashboard,
+    #Prop_list {
+        margin: 10px;
     }
-    #prop_detail{
-        --bs-gutter-x:0;
+
+    #prop_detail {
+        --bs-gutter-x: 0;
     }
-    #div1{
-        display:flex; 
-        overflow:auto;
+
+    #div1 {
+        display: flex;
+        overflow: auto;
     }
-    #div2{
-        margin:10px;
+
+    #div2 {
+        margin: 10px;
     }
-    #div3{
-        width:20%;
+
+    #div3 {
+        width: 20%;
     }
-    #div3_img{
-        height:230px;
+
+    #div3_img {
+        height: 230px;
     }
 </style>
 <div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" id="main">
     <div class="container">
-        <div class="scroller" id="scroller" >
+        <div class="scroller" id="scroller">
             <!-- <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white" style="margin:10px;"
                 value="all"><a href="{% url 'add_property_details' %}">Add new property</a></button> -->
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page" value="all"><a href="{% url 'dashboard' %}" id="prop_dashboard">Property dashboard</a></button>
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page"
+                value="all"><a href="{% url 'dashboard' %}" id="prop_dashboard">Property dashboard</a></button>
             <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn">
                 <a href="{% url 'prop_table' %}" id="Prop_list">Property list</a></button>
         </div>
@@ -237,38 +247,26 @@
                             id="from_avail_property_date" value="{{data.from_avail_property_date}}">
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-12 country_div">
+                <div class="col-md-4 col-sm-12 place_name">
                     <div class="p-3 border bg-light">
-                        <label for="country" class="form-label">Country</label>
-                        <input type="text" name="country" class="form-control prop_val" id="country"
-                            value="{{data.country}}">
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-12 state_div">
-                    <div class="p-3 border bg-light">
-                        <label for="state" class="form-label">State</label>
-                        <input type="text" name="state" class="form-control prop_val" id="state" value="{{data.state}}">
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-12 city_div">
-                    <div class="p-3 border bg-light">
-                        <label for="city" class="form-label">City</label>
-                        <input type="text" name="city" class="form-control prop_val" id="city" value="{{data.city}}">
+                        <label for="place_name" class="form-label">City Name</label>
+                        <input type="text" name="place_name" class="form-control prop_val" id="place_name"
+                            value="{{data.place_name}}">
                     </div>
                 </div>
                 <hr>
-                <div class="col-md-4 col-sm-12 property_description">
-                    <div class="p-3 border bg-light">
-                        <label for="property_address" class="form-label">Other Description</label>
-                        <textarea type="textarea" name="property_description" class="form-control property_description"
-                            rows="8" id="property_description">{{instace_data.property_description}}</textarea>
-                    </div>
-                </div>
                 <div class="col-md-4 col-sm-12 property_address_div">
                     <div class="p-3 border bg-light">
                         <label for="property_address" class="form-label">Property Address</label>
                         <textarea type="textarea" name="property_address" class="form-control property_address prop_val"
                             rows="8" id="property_address">{{data.property_address}}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 property_description">
+                    <div class="p-3 border bg-light">
+                        <label for="property_address" class="form-label">Other Description</label>
+                        <textarea type="textarea" name="property_description" class="form-control property_description"
+                            rows="8" id="property_description">{{instace_data.property_description}}</textarea>
                     </div>
                 </div>
             </div>
@@ -349,6 +347,7 @@
 
             var property_state = $("#state").val() || "";
             var property_city = $("#city").val() || "";
+            var place_name = $("#place_name").val() || "";
             var property_address = $("#property_address").val() || "";
             var property_description = $("#property_description").val() || "";
             var furnish_type = $("#furnish_type").val() || "";
@@ -370,6 +369,7 @@
                 "property_value": property_value,
                 "property_rent_price": property_rent_price,
                 "from_avail_property_date": from_avail_property_date,
+                "place_name": place_name,
                 "property_address": property_address,
                 "property_description": property_description,
                 "property_country": property_country,

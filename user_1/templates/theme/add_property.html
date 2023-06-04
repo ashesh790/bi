@@ -29,19 +29,6 @@
         }
     }
 </style>
-<!-- <div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" style="padding: 0px;">
-    <div class="container">
-        <div class="scroller" style="overflow: auto; display:flex;">
-            <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white add_property_page"
-                style="margin:10px;" value="all"><a href="{% url 'add_property_details' %}">Add new
-                    property</a></button>
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;"
-                value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;">
-                <a href="{% url 'prop_table' %}">Property list</a></button>
-        </div>
-    </div>
-</div> -->
 <div class="container-fluid pt-4 px-4">
     <div class="row bg-light rounded mx-0 p-2">
         <form method="post" action="add_property_details" enctype="multipart/form-data">
@@ -165,31 +152,16 @@
                     <input type="date" name="from_avail_property_date" class="form-control"
                         id="from_avail_property_date" value="{{instace_data.from_avail_property_date}}">
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3 country_based_div">
-                    <label for="property_address" class="form-label">Country</label>
-                    <select class="form-select" name="country" id="country_based">
-                        <option value="country">Select country</option>
-                        {% for i in country_name_list %}
-                        <option value="{{i.iso2}}">{{i.name}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-6 col-sm-12 mb-3 state_based_div">
-                    <label for="property_address" class="form-label">State</label>
-                    <select class="form-select" name="state" id="state_based">
-                        <option value="state">Select state</option>
-                    </select>
-                </div>
-                <div class="col-md-6 col-sm-12 mb-3 city_based_div">
-                    <label for="property_address" class="form-label">City</label>
-                    <select class="form-select" name="city" id="city_based">
-                        <option value="city">Select city</option>
-                    </select>
-                </div>
+
                 <div class="col-md-6 col-sm-12 mb-3 property_description_div">
                     <label for="property_address" class="form-label">Other Description</label>
                     <textarea type="textarea" name="property_description" class="form-control property_description"
                         id="property_description">{{instace_data.property_description}}</textarea>
+                </div>
+                <div class="col-md-6 col-sm-12 mb-3 from_avail_property_date_div">
+                    <label for="address_sutosuggestion" class="form-label">Enter city name</label>
+                    <input type="text" placeholder="Enter City Name" class="form-control" id="place_name"
+                        name="place_name">
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3 property_address_div">
                     <label for="property_address" class="form-label">Property Address</label>

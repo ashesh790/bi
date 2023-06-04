@@ -227,10 +227,11 @@
                 </div>
                 {% if 'user_name' in request.session %}
                 Welcome {{request.session.user_name}} :&nbsp;
-                <a data-toggle="modal" data-target="#glassAnimals" class="btn btn-primary px-3 d-none d-lg-flex"
-                    id="logout_btn" style="border-radius: 50%;"><i class="fa fa-user" aria-hidden="true"></i></a>
+                <a data-toggle="modal" data-target="#glassAnimals"
+                    class="btn btn-outline-primary px-3 d-none d-lg-flex bg-primary" id="logout_btn"
+                    style="border-radius: 10%;"><i class="fa fa-user text-white" aria-hidden="true"></i></a>
                 {% else%}
-                <a href="login"  class="btn btn-primary px-3 d-none d-lg-flex" id="login_btn_2">Login</a>
+                <a href="login" class="btn btn-primary px-3 d-none d-lg-flex" id="login_btn_2">Login</a>
                 {% endif %}
             </div>
         </nav>
@@ -287,7 +288,9 @@
     <script src="{% static 'theme/lib/easing/easing.min.js' %}"></script>
     <script src="{% static 'theme/lib/waypoints/waypoints.min.js' %}"></script>
     <script src="{% static 'theme/lib/owlcarousel/owl.carousel.min.js' %}"></script>
-
+    <script defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCG2YHIuPJYMOJzS6wSw5eZ0dTYXnhZFLs&libraries=places">
+        </script>
     <!-- Template Javascript -->
     <script src="{% static 'theme/js/main.js' %}"></script>
 </body>

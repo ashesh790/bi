@@ -55,8 +55,9 @@
         background-color: white;
         display: block;
     }
-    #Property_dashboard{
-        margin:10px;
+
+    #Property_dashboard {
+        margin: 10px;
     }
 </style>
 <div class="container-fluid bg-primary mb-4 wow fadeIn" id="property_deshboard" data-wow-delay="0.1s">
@@ -66,7 +67,7 @@
                 value="all"><a href="{% url 'add_property_details' %}">Add new property</a></button> -->
             <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page"
                 style="margin:10px;" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" id="Property_list" >
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" id="Property_list">
                 <a href="{% url 'prop_table' %}">Property list</a></button>
         </div>
     </div>
@@ -111,9 +112,8 @@
                         </b>
                     </div>
                 </div>
-                <div class="p-2 pb-0 text-center" id="parent_Property" style="">
-                    <a class="d-block mb-2" href="property_details/{{i.id}}"
-                        style="" id="child_Property"><b
+                <div class="p-2 pb-0 text-center" id="parent_Property">
+                    <a class="d-block mb-2" href="property_details/{{i.id}}" id="child_Property"><b
                             class="text-primary mb-3">{{i.property_data.property_rent_price}}/Month
                         </b>
                         <span class="dot"></span>
