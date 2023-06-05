@@ -78,7 +78,14 @@ def get_all_property_data(property_id=None, property_type=None):
 
 def delete_all_property_data(property_id): 
     # if request.method=='POST': 
-    instance=p_detail.objects.filter(pk=property_id) 
+    instance=p_detail.objects.get(pk=property_id) 
+    property_image_data= instance.property_data['property_image'] 
+    for i in property_image_data: 
+        i = i.replace("/media/", "") 
+        if i in os.listdir(MEDIA_ROOT): 
+            os.remove("media/"+i) 
+        else: 
+            print("Not found")
     instance.delete() 
     return True 
 
@@ -159,3 +166,13 @@ def search_property_type(request, sale_type = None, property_type = None):
         data = p_detail.objects.filter(property_data__property_type=property_type) 
         # data=data[0].property_data 
         return data 
+
+def delete_all_images_from_media(property_id): 
+    property_data=p_detail.objects.get(id=property_id) 
+    property_image_data= property_data.property_data['property_image'] 
+    for i in property_image_data: 
+        if i in os.listdir(MEDIA_ROOT): 
+            os.remove("media/"+i) 
+        else: 
+            print("Not found") 
+    return True

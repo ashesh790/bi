@@ -27,12 +27,14 @@ def search_properties(request):
     query = Q()
     for field, value in property_details.items():
         if field == "place_name":
-            query &= Q(**{"property_data__place_name__icontains": value})
+            query &= Q(**{"property_data__place_name__icontains": value}) 
+        elif field == "property_type": 
+            query &= Q(**{"property_data__property_type__icontains": value})
         else: 
             if value:
                 query &= Q(**{"property_data__"+field: value})
     
-    search_results = p_detail.objects.filter(query) 
+    search_results = p_detail.objects.filter(query)
     if search_results.exists():   
         search_results = pd.DataFrame(search_results.values())
         search_results = search_results.to_dict()
