@@ -213,7 +213,12 @@
 </head>
 
 <body>
-
+    <div class="col-md-12 m-3 d-none">
+        <div class="form-floating">
+            <input type="text" class="form-control" id="latitude" value="" hidden>
+            <input type="text" class="form-control" id="longitude" value="" hidden>
+        </div>
+    </div>
     <div class="container-xxl bg-white p-0">
         <!-- Spinner Start -->
         <div id="spinner"
@@ -318,6 +323,29 @@
         </script>
     <!-- Template Javascript -->
     <script src="{% static 'theme/js/main.js' %}"></script>
+    <script>
+        setTimeout(function () {
+            var latitude = $("#latitude").val();
+            var longitude = $("#longitude").val();
+            data = { "latitude": latitude, "longitude": longitude }
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "save_location",
+                    data: {
+                        data: data,
+                        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                    },
+                    success: function (response) {
+                        console.log("Success")
+                    },
+                    error: function (xhr, status, error) {
+                        $("#login_err").removeClass("d-none");
+                        $(".login_err").text("Something went wrong!");
+                    }
+                });
+        }, 1000);
+    </script>
 </body>
 
 </html>

@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
 from user_1.apis.fetch_api.advance_filter_functions import advance_filter_boundary, search_properties
 from user_1.apis.fetch_api.country_api import property_type_list, country_list, state_list, city_list
-from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_images_from_media, delete_all_property_data, delete_property_image_from_database, get_all_property_data, property_bound_data, search_property_type, update_property_data_record, update_property_image
+from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_images_from_media, delete_all_property_data, delete_property_image_from_database, get_all_property_data, property_bound_data, save_location, search_property_type, update_property_data_record, update_property_image, save_location
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user 
 from user_1.models import User_register, p_detail 
 from django.core.serializers import serialize 

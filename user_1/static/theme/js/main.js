@@ -101,8 +101,8 @@ function showPosition(position) {
     console.log(position);
     var lat = position.coords.latitude;
     var lng = position.coords.longitude;
-    var latlng = new google.maps.LatLng(lat, lng);
-    var geocoder = geocoder = new google.maps.Geocoder();
     console.log(lat, lng);
+    $("#latitude").val(lat);
+    $("#longitude").val(lng);
 }
 getLocation(); 

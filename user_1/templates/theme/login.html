@@ -2,12 +2,11 @@
 {% load static %}
 {% block main_content %}
 <style>
-    #main{
-        margin-left:auto;
-        margin-right:auto; 
-        width:50%;
+    #main {
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
     }
-
 </style>
 <div class="row g-3 mt-5 p-5" id="main">
     {% csrf_token %}
@@ -26,7 +25,12 @@
                 <span id="password_error" class="text-danger"></span>
             </div>
         </div>
-
+        <div class="col-md-12 m-3">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="latitude" value="" hidden>
+                <input type="text" class="form-control" id="longitude" value="" hidden>
+            </div>
+        </div>
         <div class="col-12 m-3">
             <div class="alert alert-danger d-none" role="alert" id="login_err">
                 <button type="button" class="close btn" data-dismiss="alert" aria-label="Close">
@@ -91,11 +95,13 @@
             }
             var name = $("#name").val();
             var email = $("#psw").val();
-            data = { "name": name, "email": email }
+            var latitude = $("#latitude").val();
+            var longitude = $("#longitude").val();
+            data = { "name": name, "email": email, "latitude": latitude, "longitude": longitude }
             $.ajax(
                 {
                     type: "POST",
-                    url: "/login",
+                    url: "save_location",
                     data: {
                         data: data,
                         csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),

@@ -2,22 +2,22 @@
 {% load static %}
 {% block main_content %}
 <style>
-    #main{
-        margin-left:auto;
-        margin-right:auto; 
-        width:50%;
+    #main {
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
     }
 </style>
-    <div class="row g-3 mt-5 p-5" id="main" > 
-        <div class="col-md-12"> 
-            <form method="POST" action="/signup">
-                {% csrf_token %}
+<div class="row g-3 mt-5 p-5" id="main">
+    <div class="col-md-12">
+        <form method="POST" action="/signup">
+            {% csrf_token %}
             <div class="col-md-12 m-3">
                 <div class="form-floating">
                     <input type="text" class="form-control" name="user_name" id="name" placeholder="Your Name">
                     <label for="name" id="name_label">Your Name</label>
                 </div>
-            </div> 
+            </div>
             <div class="col-md-12 m-3">
                 <div class="form-floating">
                     <input type="text" class="form-control" name="user_number" id="number" placeholder="Your Name">
@@ -38,20 +38,19 @@
             </div>
             <div class="col-12 m-3">
                 <input href="signup" class="btn btn-primary w-100 py-3" value="Register" type="submit">
-            </div> 
+            </div>
             <div class="mt-2 m-3">
                 <span>Already Registered ?</span>
-                <span><a href="login">Login Here!</a></span> 
-            </div> 
-            </form>
-        </div>
-    </div> 
+                <span><a href="login">Login Here!</a></span>
+            </div>
+        </form>
+    </div>
+</div>
 
-    <script>
-        $(document).ready(function() {
-        $('form').submit(function(event) { 
+<script>
+    $(document).ready(function () {
+        $('form').submit(function (event) {
             event.preventDefault(); // Prevent the form from submitting
-
             var name = $('#name').val();
             var number = $('#number').val();
             var email = $('#email').val();
@@ -59,64 +58,64 @@
 
             // Perform your validation checks here
             var error = '';
-            var err_html = ''; 
+            var err_html = '';
 
             if (name.trim() === '') {
-            error = 'Please enter your name.'; 
-            // Display the error message, if any 
-            err_html = `<span id="error-message" class="text-danger">${error}</span>`;  
-            $("#name_label").after(err_html); 
-            return false; 
+                error = 'Please enter your name.';
+                // Display the error message, if any 
+                err_html = `<span id="error-message" class="text-danger">${error}</span>`;
+                $("#name_label").after(err_html);
+                return false;
             }
 
             if (number.trim() === '') {
-            error = 'Please enter your contact number.';
-            // Display the error message, if any 
-            err_html = `<span id="error-message" class="text-danger">${error}</span>`;
-            $('#number_label').after(error);
-            return false; 
+                error = 'Please enter your contact number.';
+                // Display the error message, if any 
+                err_html = `<span id="error-message" class="text-danger">${error}</span>`;
+                $('#number_label').after(error);
+                return false;
             }
 
             if (email.trim() === '') {
-            error = 'Please enter your email.';
-            // Display the error message, if any
-            err_html = `<span id="error-message" class="text-danger">${error}</span>`;
-            $('#email_label').after(error);
-            return false; 
+                error = 'Please enter your email.';
+                // Display the error message, if any
+                err_html = `<span id="error-message" class="text-danger">${error}</span>`;
+                $('#email_label').after(error);
+                return false;
             } else if (!validateEmail(email)) {
-            error = 'Please enter a valid email address.';
-            // Display the error message, if any 
-            err_html = `<span id="error-message" class="text-danger">${error}</span>`;
-            $('#email_label').after(error);
-            return false; 
+                error = 'Please enter a valid email address.';
+                // Display the error message, if any 
+                err_html = `<span id="error-message" class="text-danger">${error}</span>`;
+                $('#email_label').after(error);
+                return false;
             }
 
             if (password.trim() === '') {
-            error = 'Please enter your password.'; 
-            // Display the error message, if any 
-            err_html = `<span id="error-message" class="text-danger">${error}</span>`;
-            $('#password_label').after(error);
-            return false; 
+                error = 'Please enter your password.';
+                // Display the error message, if any 
+                err_html = `<span id="error-message" class="text-danger">${error}</span>`;
+                $('#password_label').after(error);
+                return false;
             } else if (password.length < 8) {
-            error = 'Password must be at least 8 characters long.'; 
-            // Display the error message, if any
-            err_html = `<span id="error-message" class="text-danger">${error}</span>`;
-            $('#password_label').after(error);
-            return false; 
+                error = 'Password must be at least 8 characters long.';
+                // Display the error message, if any
+                err_html = `<span id="error-message" class="text-danger">${error}</span>`;
+                $('#password_label').after(error);
+                return false;
             }
 
             if (error === '') {
-            // If there are no errors, submit the form
-            this.submit();
+                // If there are no errors, submit the form
+                this.submit();
             }
         });
-        });
+    });
 
-        // Email validation function
-        function validateEmail(email) {
+    // Email validation function
+    function validateEmail(email) {
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
-        }
+    }
 
-    </script>
+</script>
 {% endblock %}
