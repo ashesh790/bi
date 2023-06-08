@@ -375,24 +375,21 @@
     }
     // search by property type 
     function property_type_core(property_type) {
+        debugger
         property_type_val = $(property_type).val();
         $.ajax({
             url: "{% url 'search_property_type' %}",
-            async: false,
-            cache: false,
             type: "POST",
             data: {
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
                 "data": property_type_val
             },
             success: function (data) {
-                pagescount++;
-                if (pagescount < totalPagesLength) {
-                    if (Object.keys(data.prop_data).length != 0) {
-                        $(".property_counter").empty();
-                        // console.log(data.prop_data);
-                        $.each(data.prop_data, function (key, val) {
-                            $(".property_counter").append(` 
+                if (Object.keys(data.prop_data).length != 0) {
+                    $(".property_counter").empty();
+                    // console.log(data.prop_data);
+                    $.each(data.prop_data, function (key, val) {
+                        $(".property_counter").append(` 
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
                                 <div class="position-relative overflow-hidden"> 
@@ -435,15 +432,14 @@
                             </div>
                         </div>
                         `)
-                        });
-                    }
-                    else {
-                        $(".property_counter").empty();
-                        $(".property_counter").append("<h1>Result not found</h1>")
-                    }
+                    });
                 }
-
+                else {
+                    $(".property_counter").empty();
+                    $(".property_counter").append("<h1>Result not found</h1>")
+                }
             }
+
         })
     }
 
