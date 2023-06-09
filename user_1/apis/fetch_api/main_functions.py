@@ -5,8 +5,10 @@ from django.conf import settings
 from django.http import HttpResponse, JsonResponse 
 from django.core.paginator import Paginator
 from staying_source.settings import MEDIA_ROOT, MEDIA_URL
+from user_1.apis.fetch_api.advance_filter_functions import search_properties
 from user_1.models import User_register, p_detail
 from django.core.files.storage import FileSystemStorage
+from geopy.geocoders import Nominatim
 
 def add_property_details_in_database(request): 
     if request.method =='POST' or request.method == 'FILES': 
@@ -182,11 +184,36 @@ def save_location(request):
     latitude = request.POST['data[latitude]']
     longitude = request.POST['data[longitude]']
     location_number = {
-                "latitude":latitude, 
-                "longitude":longitude
-            }
+        "latitude":latitude,
+        "longitude":longitude
+    } 
+    request.session['location_number'] = location_number 
     login_user=User_register.objects.get(user_id=user_id) 
     request.session['user_id']=user_id  
     login_user.user_other_data['location_number'] = location_number 
     login_user.save() 
-    return HttpResponse("Location saved")
+    return HttpResponse("Location saved") 
+
+def show_property_location_wise(request): 
+    reload_location = True 
+    latitude = request.session['location_number']['latitude'] 
+    longitude = request.session['location_number']['longitude'] 
+    address_dict = get_location_name(latitude, longitude) 
+    property = search_properties(request, address_dict, reload_location) 
+    return property 
+    # data = p_detail.objects.all() 
+    # property_data = {} 
+    # for i in data: 
+    #     property_data[i.id] = i.property_data 
+    # return JsonResponse({"property_data":property_data, "latitude":latitude, "longitude":longitude}) 
+
+def get_location_name(latitude, longitude):
+    geolocator = Nominatim(user_agent="MyWebApp/1.0")
+    location = geolocator.reverse((latitude, longitude), exactly_one=True) 
+    address = location.address
+    address_dict = {} 
+    address_dict['city'] = location.raw['address'].get('city', '')
+    address_dict['country'] = location.raw['address'].get('country', '')
+    address_dict['state'] = location.raw['address'].get('state', '')
+    address_dict['postal_code'] = location.raw['address'].get('postcode', '')
+    return address_dict if location else None
