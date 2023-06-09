@@ -102,8 +102,7 @@
                     <h5>Search By Place:</h5>
                 </div>
                 <div style="width:200px;">
-                    <input type="text" id="place_name" placeholder="Enter Place Name"
-                        onkeyup="search_property_based_on_input_field_values()">
+                    <input type="text" id="place_name" placeholder="Enter Place Name" onkeyup="delay_search()">
                 </div>
             </div>
         </div>
@@ -375,7 +374,6 @@
     }
     // search by property type 
     function property_type_core(property_type) {
-        debugger
         property_type_val = $(property_type).val();
         $.ajax({
             url: "{% url 'search_property_type' %}",
@@ -401,8 +399,8 @@
                                           </div>
                                           ${val.property_image.slice(1).map(path => `<div class="carousel-item">
                                             <a href="/property_details/${key}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
-                                          </div>`)} 
-                                          
+                                          </div>`).join('')} 
+
                                         </div>
                                         <a class="carousel-control-prev" href="#carouselExampleControls${key}" role="button" data-slide="prev">
                                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -494,6 +492,7 @@
         }
 
         var property_type = property_type_val;
+        var place_name = $('#place_name').val() || "";
         var country = $('#country_based').val() || "";
         var state = $('#state_based').val() || "";
         var city = $('#city_based').val() || "";
@@ -503,7 +502,6 @@
         var bhk = $("#bhk_val").val() || "";
         var furnish_type = $('#furnish_type').val() || "";
         var geography_area = $('#geography_val').val() || "";
-        var place_name = $('#place_name').val() || "";
 
         var search_object = new Object();
         if (place_name != "") { search_object.place_name = place_name };
@@ -547,7 +545,7 @@
                                           ${val.property_image.slice(1).map(path => `
                                             <div class="carousel-item">
                                                 <a href="/property_details/${property_id[i]}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
-                                            </div>`)} 
+                                            </div>`).join('')} 
                                         </div>
                                         <a class="carousel-control-prev" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="prev">
                                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -639,5 +637,23 @@
         });
     });
 
+    function delay_search(search_delay_field = null) {
+        // set spinner 
+        $(".property_counter").empty();
+        $(".property_counter").append(`
+            <div class="col-lg-12 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
+                    <div class="position-relative overflow-hidden"> 
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+        setTimeout(function () {
+            search_property_based_on_input_field_values(search_delay_field)
+        }, 2000);
+    }
 </script>
 {% endblock %}

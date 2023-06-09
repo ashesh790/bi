@@ -10,7 +10,7 @@ class User_register(models.Model):
     user_mobile=models.CharField(max_length=20, null=True)
     user_gender=models.CharField(max_length=5)
     user_psw=models.CharField(max_length=10)
-    user_other_data=models.JSONField(null=True)
+    user_other_data=models.JSONField(default= dict)
     
 # Using right now 
 class p_detail(models.Model): 

@@ -16,14 +16,19 @@ def advance_filter_boundary(request):
         data = {"data":data, "country":country} 
         return JsonResponse(data) 
 
-def search_properties(request): 
-    property_details = request.POST['search_object'] 
-    property_details = json.loads(property_details) 
-    if (property_details['property_type'] == "all" or property_details['property_type'] == "All"):
-        property_details.pop("property_type")
-    
-    if(property_details['selling_option'] == "all" or property_details['selling_option'] == "All"): 
-        property_details.pop("selling_option")
+def search_properties(request, address_dict=None, reload_location= None): 
+    if reload_location is not None:
+        address_dict = {"place_name" :address_dict['city']} 
+        if address_dict is not None:
+            property_details = address_dict
+    else: 
+        property_details = request.POST['search_object']
+        property_details = json.loads(property_details) 
+        if (property_details['property_type'] == "all" or property_details['property_type'] == "All"):
+            property_details.pop("property_type")
+        
+        if(property_details['selling_option'] == "all" or property_details['selling_option'] == "All"): 
+            property_details.pop("selling_option")
     query = Q()
     for field, value in property_details.items():
         if field == "place_name":
@@ -35,12 +40,16 @@ def search_properties(request):
                 query &= Q(**{"property_data__"+field: value})
     
     search_results = p_detail.objects.filter(query)
-    if search_results.exists():   
-        search_results = pd.DataFrame(search_results.values())
-        search_results = search_results.to_dict()
-        return JsonResponse(search_results)
+    if reload_location is not None:
+        if search_results is not None:
+            return search_results 
     else:
-        return HttpResponse("No data found")
+        if search_results.exists():   
+            search_results = pd.DataFrame(search_results.values())
+            search_results = search_results.to_dict()
+            return JsonResponse(search_results)
+        else:
+            return HttpResponse("No data found")
 
 def search_properties_by_string(request): 
     search_string = request.POST['search_string'] 
