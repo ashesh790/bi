@@ -261,16 +261,12 @@ def home(request):
         if "location_number" in list(request.session.keys()):
             location_property = show_property_location_wise(request)
             if len(location_property) > 0 and location_property is not None:  
-                property_data = location_property 
-            else: 
-                property_data = p_detail.objects.all()    
-        else:
-            property_data = p_detail.objects.all() 
-             
+                property_data = location_property  
         return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data, "boundry_data":boundry_data['data'], "country":boundry_data['country']})    
     except Exception as ex: 
         print(ex)
-        return render(request, "theme/404.html")
+        return render(request, "theme/404.html") 
+    
 def about_us(request):  
     try: 
         return render(request, 'theme/about.html') 
