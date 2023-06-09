@@ -409,14 +409,15 @@ def bookmark_property_detail(request):
         user_id = request.session['user_id'] 
         user_data = User_register.objects.get(user_id = user_id) 
         if user_data.user_other_data is not None:
-            user_data.user_other_data["saved_property"].append(property_id) 
-            user_data.user_other_data["saved_property"] = list(set(user_data.user_other_data["saved_property"]))
-            print(user_data.user_other_data["saved_property"]) 
-        else: 
-            user_data.user_other_data = {"saved_property":list(set(property_id))} 
-        user_data.save()
-        return HttpResponse("property_data")
+            # user_data.user_other_data["saved_property"].append(property_id) 
+            if "saved_property" not in user_data.user_other_data.keys():
+                user_data.user_other_data["saved_property"] = [property_id]
+            else:
+                user_data.user_other_data["saved_property"].append(property_id)
+            user_data.save()
+            return HttpResponse("property_data")
     except Exception as ex: 
+        print("Solve this: " + ex) 
         return render(request, "theme/404.html") 
 
 def google_map(request): 

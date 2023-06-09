@@ -213,6 +213,7 @@
 </head>
 
 <body>
+    {% csrf_token %}
     <div class="col-md-12 m-3 d-none">
         <div class="form-floating">
             <input type="text" class="form-control" id="latitude" value="" hidden>
@@ -344,7 +345,7 @@
                         $(".login_err").text("Something went wrong!");
                     }
                 });
-        }, 1000);
+        }, 5000);
     </script>
 </body>
 
