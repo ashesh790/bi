@@ -13,9 +13,5 @@ user_1/migrations
 media/
 .venv
 .myvenv
-<<<<<<< HEAD
 bi 
 database 
-=======
-bi
->>>>>>> 521fd36d7f4475fbdb86cbc00f6fa9ae98869ace
