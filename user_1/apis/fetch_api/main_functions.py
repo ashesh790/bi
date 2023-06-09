@@ -3,7 +3,7 @@ import os
 from urllib import request
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse 
-
+from django.core.paginator import Paginator
 from staying_source.settings import MEDIA_ROOT, MEDIA_URL
 from user_1.models import User_register, p_detail
 from django.core.files.storage import FileSystemStorage
@@ -22,24 +22,16 @@ def add_property_details_in_database(request):
 
         seller_id=request.POST['user_id'] 
         property_data={} 
-        property_data['property_type']=request.POST['property_type'] 
-        property_data['property_age']=request.POST['property_age'] 
-        property_data['selling_option']=request.POST['selling_option'] 
-        property_data['construction_status']=request.POST['construction_status'] 
-        property_data['floor']=request.POST['floor']
-        property_data['bhk']=request.POST['bhk']  
-        property_data['bathroom']=request.POST['bathroom'] 
-        property_data['balcony']=request.POST['balcony'] 
-        property_data['furnish_type']=request.POST['furnish_type'] 
-        property_data['geography_area']=request.POST['geography_area'] 
-        property_data['parking_type']=request.POST['parking_type'] 
-        property_data['property_value']=request.POST['property_value'] 
-        property_data['property_rent_price']=request.POST['property_rent_price'] 
-        property_data['from_avail_property_date']=request.POST['from_avail_property_date'] 
-        property_data['country']=request.POST['country'] 
-        property_data['state']=request.POST['state']
-        property_data['city']=request.POST['city']
-        property_data['property_address']=request.POST['property_address'] 
+        property_values = dict(request.POST)
+        property_values = list(property_values.keys()) 
+        if "csrfmiddlewaretoken" in property_values:
+            property_values.remove("csrfmiddlewaretoken")
+        if "user_id" in property_values:
+            property_values.remove("user_id")
+        if "images" in property_values:
+            property_values.remove("images")
+        for i in property_values: 
+            property_data[i] = request.POST[i]
         property_data['property_image']= property_image_save
         property_data['property_video']= {}  
         # fetching last property detail from databases  
@@ -70,18 +62,30 @@ def update_property_image(request, property_id):
     
 def get_all_property_data(property_id=None, property_type=None): 
     if property_id == None: 
-        my_data=p_detail.objects.values()
-        json_data=my_data[0]
-        data=json.dumps(json_data, indent=4, sort_keys=True, default=str)  
+        data=p_detail.objects.values()
+        data=data[0]
+        data=json.dumps(data, indent=4, sort_keys=True, default=str)  
     elif property_type != None: 
         data = p_detail.objects.filter(property_data__property_type=property_type)
     elif property_id is not None: 
         data=p_detail.objects.get(pk=property_id) 
-    return data 
+
+    number_of_item = 5
+    paginator = Paginator(data, number_of_item) 
+    first_page = paginator.page(1).object_list 
+    page_range = paginator.page_range 
+    return data, first_page, page_range
 
 def delete_all_property_data(property_id): 
     # if request.method=='POST': 
-    instance=p_detail.objects.filter(pk=property_id) 
+    instance=p_detail.objects.get(pk=property_id) 
+    property_image_data= instance.property_data['property_image'] 
+    for i in property_image_data: 
+        i = i.replace("/media/", "") 
+        if i in os.listdir(MEDIA_ROOT): 
+            os.remove("media/"+i) 
+        else: 
+            print("Not found")
     instance.delete() 
     return True 
 
@@ -162,3 +166,31 @@ def search_property_type(request, sale_type = None, property_type = None):
         data = p_detail.objects.filter(property_data__property_type=property_type) 
         # data=data[0].property_data 
         return data 
+
+def delete_all_images_from_media(property_id): 
+    property_data=p_detail.objects.get(id=property_id) 
+    property_image_data= property_data.property_data['property_image'] 
+    for i in property_image_data: 
+        if i in os.listdir(MEDIA_ROOT): 
+            os.remove("media/"+i) 
+        else: 
+            print("Not found") 
+    return True
+
+def save_location(request): 
+    user_id=request.session['user_id']
+    latitude = request.POST['data[latitude]']
+    longitude = request.POST['data[longitude]']
+    location_number = {
+                "latitude":latitude, 
+                "longitude":longitude
+            }
+    login_user=User_register.objects.get(user_id=user_id) 
+    request.session['user_id']=user_id  
+    if len(login_user.user_other_data['location_number']) >1:
+        if login_user.user_other_data['location_number']['latitude'] != '': 
+            return HttpResponse("Success") 
+    else: 
+        login_user.user_other_data['location_number'] = location_number 
+        login_user.save() 
+        return HttpResponse("Success")

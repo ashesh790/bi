@@ -1,0 +1,27 @@
+<head>
+    <style>
+        #map {
+            height: 400px;
+            width: 80%
+        }
+    </style>
+    <script defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCG2YHIuPJYMOJzS6wSw5eZ0dTYXnhZFLs&libraries=places">
+        </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <input type="text" id="place_name">
+    <script>
+        $(document).ready(function () {
+            var auto_complete;
+            var id = "place_name";
+            auto_complete = new google.maps.places.Autocomplete((document.getElementById(id)), {
+                types: ['geocode'],
+            })
+        });
+
+    </script>
+</body>

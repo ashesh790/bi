@@ -1,0 +1,158 @@
+{% extends 'theme/master.html' %}
+{% block manage_property %}active{% endblock %}
+{% block main_content %}
+<style>
+    #main{
+        padding: 0px;
+    }
+    #scroller{
+        overflow: auto; 
+        display:flex;
+    }
+    #dashboard_btn, #list_btn{
+        margin:10px;
+    }
+    .p_type_btn {
+        border-radius: 20px;
+        border: 1px solid white;
+        padding: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        background-color: skyblue;
+        color: black !important;
+    }
+
+    .p_type_btn:hover {
+        background-color: white;
+        color: black !important;
+    }
+
+    .active_btn {
+        background-color: aliceblue;
+        color: #0099ff !important;
+    }
+
+    @media (max-width: 768px) {
+        ::-webkit-scrollbar {
+            display: none;
+            /* Safari and Chrome */
+        }
+    }
+</style>
+<div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" id="main">
+    <div class="container">
+        <div class="scroller" id="scroller">
+            <!-- <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white add_property_page"
+                style="margin:10px;" value="all"><a href="{% url 'add_property_details' %}">Add new
+                    property</a></button> -->
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn"  id="dashboard_btn"
+                value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" id="list_btn">
+                <a href="{% url 'prop_table' %}">Property list</a></button>
+        </div>
+    </div>
+</div>
+
+<!-- javaScript code -->
+<script>
+    var page_name = "{{add_property_details}}";
+
+    if (page_name == "add_property_page") {
+        $(".add_property_page").addClass("active_btn");
+    }
+    // advance filter configuration 
+    $('#country_based').change(function (e) {
+        //alert("Clikced!"); 
+        e.preventDefault();
+        var country_name = $(this).val() || "";
+        //alert(country_name); 
+        //var data_target = $(property).text();
+        $.ajax({
+            url: "{% url 'state_list' %}",
+            type: "GET",
+            data: {
+                'country_name': country_name,
+            },
+            success: function (property_data) {
+                $("#state_based").empty();
+                $('#state_based').append(`<option value="">Select state</option>`);
+                property_data = JSON.parse(property_data)
+                for (let [key, value] of Object.entries(property_data)) {
+                    $('#state_based').append(`<option value="${value.iso2}">${value.name}</option>`);
+                }
+            }
+        });
+    });
+
+    $('#state_based').change(function (e) {
+        //alert("Clikced!"); 
+        e.preventDefault();
+        var country_name = $("#country_based").val() || "";
+        var state_name = $(this).val() || "";
+        $.ajax({
+            url: "{% url 'city_list' %}",
+            type: "GET",
+            data: {
+                'state_name': state_name,
+                'country_name': country_name,
+            },
+            success: function (property_data) {
+                $("#city_based").empty();
+                $('#city_based').append(`<option value="">Select City</option>`);
+                property_data = JSON.parse(property_data)
+                for (let [key, value] of Object.entries(property_data)) {
+                    $('#city_based').append(`<option value="${value.name}">${value.name}</option>`);
+                }
+            }
+        });
+    });
+
+    // ------------------------------Form Validation-------------------------------- 
+    $("#property_type").change(function () {
+        if ($(this).val() == "Land") {
+            $(".property_age_div").hide();
+            $("#property_age").val("");
+            $(".floor_div").hide();
+            $("#floor").val("");
+            $(".bathroom_div").hide();
+            $("#bathroom").val("");
+            $(".construction_status_div").hide();
+            $("#construction_status").val("");
+            $(".balcony_div").hide();
+            $("#balcony").val("");
+            $(".furnish_type_div").hide();
+            $("#furnish_type").val("");
+            $(".parking_type_div").hide();
+            $("#parking_type").val("");
+            $(".bhk_div").hide();
+            $("#bhk").val("");
+        }
+        else {
+            $(".property_age_div").show();
+            $(".floor_div").show();
+            $(".bathroom_div").show();
+            $(".construction_status_div").show();
+            $(".balcony_div").show();
+            $(".furnish_type_div").show();
+            $(".parking_type_div").show();
+            $(".bhk_div").show();
+        }
+    });
+    $("#selling_option").click(function () {
+        if ($(this).val() == "Rent") {
+            $(".property_value").hide();
+            $(".property_rent_price").show();
+        }
+        else if ($(this).val() == "Sell") {
+            $(".property_value").show();
+            $(".property_rent_price").hide();
+        }
+        else {
+            $(".property_value").show();
+            $(".property_rent_price").show();
+        }
+    });
+    $("#selling_option").click();
+
+</script>
+{% endblock %}

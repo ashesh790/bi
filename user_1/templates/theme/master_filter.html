@@ -25,11 +25,62 @@
             display: none;
             /* Safari and Chrome */
         }
+
+        .p_type_btn {
+            border-radius: 20px;
+            border: 1px solid white;
+            font-size: 15px;
+            font-weight: 600;
+        }
+    }
+
+    .search_field {
+        border-left: 2px solid #0099ff !important;
+        border-bottom: 2px solid #0099ff !important;
+        border-top: 0;
+        border-right: 0;
+    }
+
+
+
+    select {
+        border: 0px;
+        border-radius: 5px;
+        outline: 0px;
+    }
+
+    input {
+        border: 0px;
+        border-radius: 5px;
+        outline: 0px;
+    }
+
+    #construction_status_trash_icon>i {
+        margin-top: 0.8rem;
+    }
+
+    .search_modal {
+        position: fixed;
+        top: 100px;
+        right: 0;
+        left: auto;
+        z-index: 1060;
+        display: none;
+        width: 50%;
+        height: 100%;
+        overflow: hidden;
+        outline: 0;
+    }
+
+    .fa-bookmark:hover {
+        font-size: 24px;
+        transition: transform 0.1s;
+        /* Add smooth transition effect */
     }
 </style>
 <!-- Search Start -->
 <div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" style="padding: 0px;">
-    <div class="container">
+    <div>
         <div class="scroller" style="overflow: auto; display:flex;">
             {% csrf_token %}
             <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn"
@@ -44,10 +95,32 @@
     </div>
 </div>
 <div class="row mx-2">
-    <div class="col-lg-6"></div>
+    <div class="col-lg-6">
+        <div id="location_fltr">
+            <div style="align-items:center; display:flex;">
+                <div style="width:180px;">
+                    <h5>Search By Place:</h5>
+                </div>
+                <div style="width:200px;">
+                    <input type="text" id="place_name" placeholder="Enter Place Name"
+                        onkeyup="search_property_based_on_input_field_values()">
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
         <ul class="nav nav-pills d-inline-flex justify-content-end mb-3">
-            <li class="nav-item me-2 d-none">
+            <li class="nav-item me-2">
+                <div class="d-flex">
+                    <span id="all_filter__trash">
+                        <button class="btn btn-outline-primary search_field" data-toggle="modal" id="all_filter"
+                            data-target="#exampleModalCenter" onclick="search_field_applied(this);">
+                            Filter Property &nbsp;<i class="fa fa-filter" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                </div>
+            </li>
+            <li class="nav-item me-2">
                 <button class="btn btn-outline-primary active" data-bs-toggle="pill" value="all" id="all"
                     onclick="search_property_based_on_input_field_values(this);">All</a>
             </li>
@@ -65,195 +138,7 @@
     </div>
 </div>
 <div class="row m-2">
-    <div class="col-md-3" id="search_filter">
-        <h3>Filter properties by: </h3>
-        <div id="advance_filter_container">
-            <!-- filter using location -->
-            <div class="filter_value" id="location_based">
-                <h5>
-                    <div class="border text-left p-2" data-toggle="collapse" data-target="#location_fltr"
-                        aria-expanded="false" aria-controls="location_fltr" style="cursor: pointer;">
-                        <b>Location</b>
-                    </div>
-                </h5>
-                <div class="collapse show" id="location_fltr">
-                    <div class="card card-body">
-                        <div class="d-flex">
-                            <div id="country_based__trash">
-                                <select class="form-control selectpicker search_field" id="country_based"
-                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                    <option value="">Select Country</option>
-                                    {% for i in country %}
-                                    <option value="{{i.iso2}}">{{i.name}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                            <div id="state_based__trash">
-                                <select class="form-control mt-2 search_field" id="state_based"
-                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                    <option hidden>Select stateSelect stateSelect state</option>
-                                    <option value="" selected>Select state</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                            <div id="city_based__trash">
-                                <select class="form-control mt-2 search_field" id="city_based"
-                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                    <option hidden>Select CitySelect CitySelect CitySelect City</option>
-                                    <option value="" selected> Select City</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- filter using construction status -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#construction_fltr"
-                    aria-expanded="false" aria-controls="construction_fltr" style="cursor: pointer;">
-                    <b>Construction status</b>
-                </div>
-            </h5>
-            <div class="collapse" id="construction_fltr">
-                <div class="card card-body">
-                    <div class="d-flex">
-                        <div id="construction_status__trash">
-                            <select class="form-control mt-2 search_field" id="construction_status"
-                                onchange="search_property_based_on_input_field_values();search_field_applied(this);"
-                                onchange="search_field_applied(this);">
-                                <option value="">Construction status</option>
-                                {% for i in boundry_data.construction_status %}
-                                <option value="{{i}}">{{i}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- filter using bathroom count -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#bathroom_fltr"
-                    aria-expanded="false" aria-controls="bathroom_fltr" style="cursor: pointer;">
-                    <b>Bathrooms</b>
-                </div>
-            </h5>
-            <div class="collapse" id="bathroom_fltr">
-                <div class="card card-body">
-                    <div id="bathroom_val__trash">
-                        <select class="form-control mt-2 search_field" id="bathroom_val"
-                            onchange="search_field_applied(this);">
-                            <option value="">Bathrooms</option>
-                            {% for i in boundry_data.bathroom_details %}
-                            <option value="{{i}}">{{i}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- filter using balcony count -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#balcony_fltr"
-                    aria-expanded="false" aria-controls="balcony_fltr" style="cursor: pointer;">
-                    <b>Balcony</b>
-                </div>
-            </h5>
-            <div class="collapse" id="balcony_fltr">
-                <div class="card card-body">
-                    <div id="balcony_val__trash">
-                        <select class="form-control mt-2 search_field" id="balcony_val"
-                            onchange="search_field_applied(this);">
-                            <option value="">Balcony</option>
-                            {% for i in boundry_data.balcony_details %}
-                            <option>{{i}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- filter using balcony count -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#bhk_fltr" aria-expanded="false"
-                    aria-controls="bhk_fltr" style="cursor: pointer;">
-                    <b>BHK</b>
-                </div>
-            </h5>
-            <div class="collapse" id="bhk_fltr">
-                <div class="card card-body">
-                    <div id="bhk_val__trash">
-                        <select class="form-control mt-2 search_field" id="bhk_val">
-                            <option value="">BHK</option>
-                            {% for i in boundry_data.bhk_details %}
-                            <option value="{{i}}">{{i}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- filter using furnish type -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#furnish_fltr"
-                    aria-expanded="false" aria-controls="furnish_fltr" style="cursor: pointer;">
-                    <b>Furnish type</b>
-                </div>
-            </h5>
-            <div class="collapse" id="furnish_fltr">
-                <div class="card card-body" id="furnish_fltr_val">
-                    <div id="furnish_type__trash">
-                        <select class="form-control mt-2 search_field" id="furnish_type">
-                            <option value="">Furnish type</option>
-                            {% for i in boundry_data.furnish_type %}
-                            <option>{{i}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- filter using geography area -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#geography_fltr"
-                    aria-expanded="false" aria-controls="geography_fltr" style="cursor: pointer;">
-                    <b>Geography area</b>
-                </div>
-            </h5>
-            <div class="collapse" id="geography_fltr">
-                <div class="card card-body">
-                    <div id="geography_val__trash">
-                        <input type="number" class="form-control search_field" placeholder="2000Sq.ft"
-                            id="geography_val" onchange="search_field_applied(this);">
-                    </div>
-                </div>
-            </div>
-
-            <!-- filter using price area -->
-            <h5>
-                <div class="border text-left p-2" data-toggle="collapse" data-target="#price_fltr" aria-expanded="false"
-                    aria-controls="price_fltr" style="cursor: pointer;">
-                    <b>Price between</b>
-                </div>
-            </h5>
-            <div class="collapse" id="price_fltr">
-                <div class="card card-body" id="price_fltr_val">
-                    <label>To: </label>
-                    <div id="start_price_val__trash">
-                        <input type="number" placeholder="100" class="form-control search_field" id="start_price_val">
-                    </div>
-                    <label>From: </label>
-                    <div id="end_price_val__trash">
-                        <input type="number" placeholder="1000" class="form-control search_field" id="end_price_val">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-9">
+    <div class="col-md-12">
         <div class="tab-content">
             <div id="tab-1" class="tab-pane fade show p-0 active">
                 <div class="row g-4 property_counter">
@@ -266,15 +151,231 @@
     </div>
 </div>
 <!-- Search End -->
+
+<!-- Bootstrap modal -->
+<div class="modal fade search_modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" style="height: 500px;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Filter properties by:</h5>
+                <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12" id="search_filter">
+                    <div id="advance_filter_container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>Construction status: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="construction_status__trash">
+                                                <select class="search_field" id="construction_status"
+                                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                    <option value="">Construction status</option>
+                                                    {% for i in boundry_data.construction_status %}
+                                                    <option value="{{i}}">{{i}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- filter using bathroom count -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>Bathrooms: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="bathroom_val__trash">
+
+                                                <div class="" style="width:50%;">
+                                                    <select class="mt-2 search_field" id="bathroom_val"
+                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                        <option value="">Bathrooms</option>
+                                                        {% for i in boundry_data.bathroom_details %}
+                                                        <option value="{{i}}">{{i}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- filter using balcony count -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>Balcony: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="balcony_val__trash">
+
+                                                <div class="" style="width:50%;">
+                                                    <select class="mt-2 search_field" id="balcony_val"
+                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                        <option value="">Balcony</option>
+                                                        {% for i in boundry_data.balcony_details %}
+                                                        <option>{{i}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- filter using balcony count -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>BHK: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="bhk_val__trash">
+                                                <div class="" style="width:50%;">
+                                                    <select class="mt-2 search_field" id="bhk_val"
+                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                        <option value="">BHK</option>
+                                                        {% for i in boundry_data.bhk_details %}
+                                                        <option value="{{i}}">{{i}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- filter using furnish type -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>Furnish type: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="furnish_type__trash">
+                                                <div class="" style="width:50%;">
+                                                    <select class="mt-2 search_field" id="furnish_type"
+                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                        <option value="">Furnish type</option>
+                                                        {% for i in boundry_data.furnish_type %}
+                                                        <option>{{i}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- filter using geography area -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>Geography area: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="geography_val__trash">
+                                                <div class="" style="width:50%;">
+                                                    <input type="number" class="search_field" placeholder="2000Sq.ft"
+                                                        id="geography_val" onchange="search_field_applied(this);">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- filter using price area -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div style="width:50%;">
+                                        <label>Price between: </label>
+                                    </div>
+                                    <div style="width:50%;">
+                                        <div class="d-flex">
+                                            <div id="price_fltr_val">
+                                                <div class="" style="width:50%;">
+                                                    <label class="text-dark">To: </label>
+                                                    <div id="start_price_val__trash">
+                                                        <input type="number" placeholder="100" class="search_field"
+                                                            id="start_price_val">
+                                                    </div>
+                                                    <label class="text-dark">From: </label>
+                                                    <div id="end_price_val__trash">
+                                                        <input type="number" placeholder="1000" class="search_field"
+                                                            id="end_price_val">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Apply Filter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    var maxLength = 20;
+    // focus and click to secondry nav bar 
+    var elements = document.getElementsByClassName('p_type_btn');
+    var requiredElement = elements[0];
+
+    var totalPagesLength = 5;
+    var pagescount = 0;
+
+    setTimeout(function () {
+        $(requiredElement).focus();
+    }, 500);
+
     var property_type_val = "all";
     function active_class(selector) {
-        $('.fa-trash').click(); 
+        $('.fa-times-circle').click();
         $('.active_btn').removeClass('active_btn');
         $(selector).addClass("active_btn");
     }
     // search by property type 
     function property_type_core(property_type) {
+        debugger
         property_type_val = $(property_type).val();
         $.ajax({
             url: "{% url 'search_property_type' %}",
@@ -289,28 +390,44 @@
                     // console.log(data.prop_data);
                     $.each(data.prop_data, function (key, val) {
                         $(".property_counter").append(` 
-                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="property-item rounded overflow-hidden">
-                                <div class="position-relative overflow-hidden">
-                                    <a href="/property_details/${key}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
+                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
+                                <div class="position-relative overflow-hidden"> 
+                                    <div id="carouselExampleControls${key}" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner">
+                                            
+                                          <div class="carousel-item active">
+                                            <a href="/property_details/${key}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
+                                          </div>
+                                          ${val.property_image.slice(1).map(path => `<div class="carousel-item">
+                                            <a href="/property_details/${key}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
+                                          </div>`)} 
+                                          
+                                        </div>
+                                        <a class="carousel-control-prev" href="#carouselExampleControls${key}" role="button" data-slide="prev">
+                                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carouselExampleControls${key}" role="button" data-slide="next">
+                                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                      </div>
                                     <div
-                                        class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
-                                        For ${val.selling_option}</div>
-                                    <div
-                                        class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                        class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                         ${val.property_type}</div>
                                 </div>
-                                <div class="p-4 pb-0">
-                                    <h5 class="text-primary mb-3">${val.property_rent_price}/Month</h5>
-                                    <a class="d-block h5 mb-2" href="">${val.property_type}, For ${val.selling_option}</a>
-                                    <p><i class="fa fa-map-marker-alt text-primary me-2"></i>${val.property_address}</p>
-                                </div>
-                                <div class="d-flex border-top">
-                                    <small class="flex-fill text-center border-end py-2"><i
-                                            class="fa fa-ruler-combined text-primary me-2"></i>${val.geography_area}</small>
-                                    <small class="flex-fill text-center border-end py-2"><i
-                                            class="fa fa-bed text-primary me-2"></i>${val.construction_status}</small>
-                                    <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>${val.property_age} Year old</small>
+                                <div class="p-3 pb-0" style="position: relative;">  
+                                    <a href="/property_details/${key}" class="text-dark d-block">
+                                    <b class="text-primary mb-3">${val.property_rent_price}/Month</b>
+                                <span class="dot"></span>
+                                <span class="text-primary">${val.property_type}</span>&nbsp;<span class="dot"></span><span class="text-primary">&nbsp;${val.selling_option}</span></a>
+                                    <a href="/property_details/${key}">
+                                        <span><i class="fa fa-map-marker-alt text-primary me-2"></i><span class="text-primary">${val.property_address.slice(0, maxLength) + '...'}</span></span> 
+                                        <span style="position: absolute; bottom:0; right:10px;">
+                                            <h5><i class="fa fa-bookmark" aria-hidden="true"></i></h5>
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -322,6 +439,7 @@
                     $(".property_counter").append("<h1>Result not found</h1>")
                 }
             }
+
         })
     }
 
@@ -331,11 +449,19 @@
         if (`${field_id}_trash_icon`) {
             $(`#${field_id}_trash_icon`).remove();
         }
-        $(`#${field_id}__trash`).after(`
-        <span class="mx-2 my-2" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
-            <i class="fa fa-trash" aria-hidden="true"></i>
-        </span>
+        if (field_id == "all_filter") {
+            $(`#${field_id}__trash`).after(`
+            <span class="mx-2" id="${field_id}_trash_icon" onclick="remove_filter_value(this);active_class(this)"> 
+                <i class="fa fa-times-circle" aria-hidden="true"></i>
+            </span>
         `);
+        } else {
+            $(`#${field_id}__trash`).after(`
+            <span class="mx-2" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
+                <i class="fa fa-times-circle" aria-hidden="true"></i>
+            </span>
+            `);
+        }
     }
 
     // remove specific filter 
@@ -351,7 +477,7 @@
     // search property as per field which is selected in advance filter 
     function search_property_based_on_input_field_values(selling_type = null) {
         var selling_option_val = "";
-        console.log(property_type_val);
+        //console.log(property_type_val);
         if (selling_type != null) {
             selling_option_val = $(selling_type).val();
         }
@@ -362,7 +488,11 @@
             else if ($("#rent").hasClass("active")) {
                 selling_option_val = "Rent";
             }
+            else {
+                selling_option_val = "All";
+            }
         }
+
         var property_type = property_type_val;
         var country = $('#country_based').val() || "";
         var state = $('#state_based').val() || "";
@@ -373,8 +503,10 @@
         var bhk = $("#bhk_val").val() || "";
         var furnish_type = $('#furnish_type').val() || "";
         var geography_area = $('#geography_val').val() || "";
+        var place_name = $('#place_name').val() || "";
 
         var search_object = new Object();
+        if (place_name != "") { search_object.place_name = place_name };
         if (property_type != "") { search_object.property_type = property_type };
         if (country != "") { search_object.country = country };
         if (state != "") { search_object.state = state };
@@ -398,34 +530,49 @@
                 var i = 0;
                 property_id = property_data["id"];
                 property_data = property_data['property_data'];
-                // console.log(property_data);
+                //console.log(property_id);
                 if (property_data) {
                     $(".property_counter").empty();
                     for (var [key, val] of Object.entries(property_data)) {
-                        // console.log(property_id[i]);
+                        //console.log(property_id[i]); 
                         $(".property_counter").append(` 
-                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="property-item rounded overflow-hidden">
-                                <div class="position-relative overflow-hidden">
-                                    <a href="/property_details/${property_id[i]}"><img class="img-fluid" src="${val.property_image[0]}" style="width:100%; height: 190px;" alt=""></a>
+                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
+                                <div class="position-relative overflow-hidden"> 
+                                    <div id="carouselExampleControls${property_id[i]}" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner">
+                                          <div class="carousel-item active">
+                                            <a href="/property_details/${property_id[i]}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
+                                          </div>
+                                          ${val.property_image.slice(1).map(path => `
+                                            <div class="carousel-item">
+                                                <a href="/property_details/${property_id[i]}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
+                                            </div>`)} 
+                                        </div>
+                                        <a class="carousel-control-prev" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="prev">
+                                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="next">
+                                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                      </div>
                                     <div
-                                        class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
-                                        For ${val.selling_option}</div>
-                                    <div
-                                        class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                        class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                         ${val.property_type}</div>
                                 </div>
-                                <div class="p-4 pb-0">
-                                    <h5 class="text-primary mb-3">${val.property_rent_price}/Month</h5>
-                                    <a class="d-block h5 mb-2" href="">${val.property_type}, For ${val.selling_option}</a>
-                                    <p><i class="fa fa-map-marker-alt text-primary me-2"></i>${val.property_address}</p>
-                                </div>
-                                <div class="d-flex border-top">
-                                    <small class="flex-fill text-center border-end py-2"><i
-                                            class="fa fa-ruler-combined text-primary me-2"></i>${val.geography_area}</small>
-                                    <small class="flex-fill text-center border-end py-2"><i
-                                            class="fa fa-bed text-primary me-2"></i>${val.construction_status}</small>
-                                    <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>${val.property_age} Year old</small>
+                                <div class="p-3 pb-0" style="position: relative;">
+                                    <a href="/property_details/${property_id[i]}" class="text-dark d-block" style="display: block;">
+                                    <b class="text-primary mb-3">${val.property_rent_price}/Month</b>
+                                    </a>
+                                    <a class="d-block mb-2 text-dark" href="/property_details/${property_id[i]}">${val.property_type}, For ${val.selling_option}</a>
+                                    <a href="/property_details/${property_id[i]}">
+                                        <span><i class="fa fa-map-marker-alt text-primary me-2"></i><span class="text-primary">${val.property_address.slice(0, maxLength) + '...'}</span></span> 
+                                        <span style="position: absolute; bottom:0; right:10px;">
+                                            <h5><i class="fa fa-bookmark" aria-hidden="true"></i></h5>
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -459,7 +606,6 @@
                 success: function (property_data) {
                     $("#state_based").empty();
                     $('#state_based').append(`<option value="">Select state</option>`);
-                    $('#state_based').append(`<option hidden>Select stateSelect stateSelect state</option>`);
                     property_data = JSON.parse(property_data)
                     for (let [key, value] of Object.entries(property_data)) {
                         $('#state_based').append(`<option value="${value.iso2}">${value.name}</option>`);
@@ -484,7 +630,6 @@
                 success: function (property_data) {
                     $("#city_based").empty();
                     $('#city_based').append(`<option value="">Select City</option>`);
-                    $('#city_based').append(`<option hidden>Select stateSelect stateSelect state</option>`);
                     property_data = JSON.parse(property_data)
                     for (let [key, value] of Object.entries(property_data)) {
                         $('#city_based').append(`<option value="${value.name}">${value.name}</option>`);

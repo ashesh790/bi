@@ -1,13 +1,20 @@
 {% extends 'theme/master.html' %}
-{% block add_property_details %}active{% endblock %}
-{% block main_content %} 
+{% block manage_property %}active{% endblock %}
+{% block main_content %}
 <style>
+    #main{
+        padding: 0px;
+    }
+    #scroller{
+        overflow: auto; 
+        display:flex;
+    }
     .p_type_btn {
         border-radius: 20px;
         border: 1px solid white;
         padding: 10px;
         font-size: 15px;
-        font-weight: 600; 
+        font-weight: 600;
         background-color: skyblue;
         color: black !important;
     }
@@ -16,11 +23,15 @@
         background-color: white;
         color: black !important;
     }
+    #dashboard_btn, #list_btn{
+        margin:10px;
 
-    .active_btn{
+    }
+    .active_btn {
         background-color: aliceblue;
         color: #0099ff !important;
     }
+
     @media (max-width: 768px) {
         ::-webkit-scrollbar {
             display: none;
@@ -28,12 +39,14 @@
         }
     }
 </style>
-<div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" style="padding: 0px;">
+<div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" id="main">
     <div class="container">
-        <div class="scroller" style="overflow: auto; display:flex;"> 
-            <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white add_property_page" style="margin:10px;" value="all"><a href="{% url 'add_property_details' %}">Add new property</a></button>
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page" style="margin:10px;" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button> 
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn property_table" style="margin:10px;">
+        <div class="scroller" id="scroller">
+            <!-- <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white add_property_page"
+                style="margin:10px;" value="all"><a href="{% url 'add_property_details' %}">Add new
+                    property</a></button> -->
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page" id="dashboard_btn" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn property_table" id="list_btn">
                 <a href="{% url 'prop_table' %}">Property list</a></button>
         </div>
     </div>
@@ -59,25 +72,24 @@
             <td>{{i.property_data.property_type}}</td>
             <td>{{i.property_data.selling_option}}</td>
             <td>{{i.property_data.property_age}}</td>
-            <td><a href="delete_property_record/{{i.id}}">Delete
-                    <i class="mdi mdi-delete h2" data-toggle="tooltip" data-placement="top" title="Delete"></i>
+            <td><a href="delete_property_record/{{i.id}}">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
                 </a>
             </td>
             <td>
                 <a href="update_property_record/{{i.id}}">Update
-                    <i class="mdi mdi-tooltip-edit h2" data-bs-toggle="tooltip" data-bs-placement="right"
-                        title="Edit"></i>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </a>
             </td>
         </tr>
         {% endfor %}
     </tbody>
-</table> 
+</table>
 <script>
-    var page_name = "{{property_table}}"; 
-     
-    if (page_name == "property_table"){
-        $(".property_table").addClass("active_btn"); 
+    var page_name = "{{property_table}}";
+
+    if (page_name == "property_table") {
+        $(".property_table").addClass("active_btn");
     }
 </script>
 {% endblock %}
