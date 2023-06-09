@@ -1,5 +1,6 @@
 import json
 import requests
+import re
 from django.conf import settings
 from django.core.files.storage import default_storage
 from urllib import request
@@ -11,7 +12,7 @@ from django.contrib.auth.models import User
 from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
 from user_1.apis.fetch_api.advance_filter_functions import advance_filter_boundary, search_properties
 from user_1.apis.fetch_api.country_api import property_type_list, country_list, state_list, city_list
-from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_property_data, delete_property_image_from_database, get_all_property_data, property_bound_data, search_property_type, update_property_data_record, update_property_image
+from user_1.apis.fetch_api.main_functions import add_property_details_in_database, delete_all_images_from_media, delete_all_property_data, delete_property_image_from_database, get_all_property_data, property_bound_data, save_location, search_property_type, show_property_location_wise, update_property_data_record, update_property_image, save_location
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user 
 from user_1.models import User_register, p_detail 
 from django.core.serializers import serialize 
@@ -22,16 +23,14 @@ from django.core.files.storage import FileSystemStorage
 # Note: Create login and signup in single html page 
 
 def advance_filter(request): 
-    try:
+    try: 
         property_data = p_detail.objects.all() 
         boundry_data = advance_filter_boundary(request) 
         boundry_data = json.loads(boundry_data.content) 
         return render(request, "advance_filter/filter.html", {"boundry_data":boundry_data['data'], "country":boundry_data['country'], "property_data":property_data}) 
-    except Exception as err: 
-        print(err)
-        return render(request, "theme/404.html")
+    except Exception as ex: 
+        return render(request, "theme/404.html") 
     
-
 # Login function 
 def sign_up(request): 
     try: 
@@ -62,8 +61,7 @@ def sign_up(request):
                 return False 
         else: 
             return render(request, "theme/signup.html")
-    except Exception as err: 
-        print(err)
+    except Exception as ex: 
         return render(request, "theme/404.html")
 
  
@@ -79,11 +77,9 @@ def login(request):
                 LOGIN_ERR = "Invalid Credentials"
                 return JsonResponse({"err": LOGIN_ERR}) 
         else: 
-            return render(request, "theme/login.html")
-    except Exception as err: 
-        print(err)
-        return render(request, "theme/404.html")
-    
+            return render(request, "theme/login.html") 
+    except Exception as ex: 
+        return render(request, "theme/404.html") 
     
 # logout 
 def logout(request): 
@@ -94,8 +90,7 @@ def logout(request):
             except: 
                 print("Logout") 
         return render(request, 'theme/login.html')
-    except Exception as err: 
-        print(err)
+    except Exception as ex: 
         return render(request, "theme/404.html") 
  
 def add_property_details(request):    
@@ -120,36 +115,66 @@ def add_property_details(request):
             "country_name_list": country_name_list, 
             "add_property_details": "add_property_page"})  
     except Exception as ex: 
-        print(f"Solve this: {ex}") 
-    return render(request, 'theme/add_property.html', {"add_property_details": "add_property_page"}) 
+        return render(request, "theme/404.html")
 
 
 def show_property_detail(request,property_id): 
     try: 
         property_id=property_id  
-        data=get_all_property_data(property_id=property_id)   
+        data, first_page, page_range=get_all_property_data(property_id=property_id)   
         template=loader.get_template('show_property_detail.html')
         context={
-            "data":data, 
+            "data":data,
+            "first_page":first_page, 
+            "page_range":page_range
         }
         return HttpResponse(template.render(context, request)) 
-    except Exception as err: 
-        print(err)
+    except Exception as ex: 
         return render(request, "theme/404.html") 
 
 
 def delete_property(request, property_id): 
     try: 
+        country_name_list = country_list(request) 
+        country_name_list = json.loads(country_name_list) 
+        data = settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json"  
+        with open(data) as f:
+            data = json.load(f)  
+        data = data 
         property_id=property_id  
-        delete_all_property_data(property_id)  
-        return render(request,'theme/add_property.html') 
+        delete_all_property_data(property_id) 
+        return render(request, 'theme/add_property.html', {
+            "property_type":data["property_type"], 
+            "deal_option":data["deal_option"],
+            "construction_status":data["construction_status"], 
+            "furnish_type":data["furnish_type"], 
+            "bhk_details":data["bhk_details"], 
+            "bathroom_details":data["bathroom_details"],
+            "balcony_details":data["balcony_details"], 
+            "parking_details":data["parking_details"], 
+            "country_name_list": country_name_list, 
+            "add_property_details": "add_property_page"}) 
     except Exception as ex: 
-        print(f"Solve this: {ex}") 
-    return render(request,'theme/add_property.html')
+        (request, "theme/404.html")
+    return render(request, 'theme/add_property.html', {
+            "property_type":data["property_type"], 
+            "deal_option":data["deal_option"],
+            "construction_status":data["construction_status"], 
+            "furnish_type":data["furnish_type"], 
+            "bhk_details":data["bhk_details"], 
+            "bathroom_details":data["bathroom_details"],
+            "balcony_details":data["balcony_details"], 
+            "parking_details":data["parking_details"], 
+            "country_name_list": country_name_list, 
+            "add_property_details": "add_property_page"})
 
 def update_property(request, property_id=0): 
     # postData = request.get_json()
     try: 
+        bondry_data = settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json" 
+        with open(bondry_data) as f:
+            bondry_data = json.load(f)  
+        bondry_data = bondry_data
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
         if request.method == 'POST': 
             media_data=request.FILES.getlist('images')
@@ -164,30 +189,30 @@ def update_property(request, property_id=0):
                     file_url = fss.url(file)
                 property_image_save.append(file_url) 
                 property_data['property_image']= property_image_save
-            data.property_data['property_type'] = request.POST['data[property_type]']  
-            data.property_data['property_age'] = request.POST['data[property_age]']  
-            data.property_data['selling_option'] = request.POST['data[selling_option]']  
-            data.property_data['construction_status'] = request.POST['data[construction_status]']  
-            data.property_data['floor'] = request.POST['data[floor]']  
-            data.property_data['bathroom'] = request.POST['data[bathroom]']  
-            data.property_data['balcony'] = request.POST['data[balcony]']  
-            data.property_data['bhk'] = request.POST['data[bhk]']  
-            data.property_data['furnish_type'] = request.POST['data[furnish_type]']  
-            data.property_data['geography_area'] = request.POST['data[geography_area]']  
-            data.property_data['parking_type'] = request.POST['data[parking_type]']  
-            data.property_data['property_value'] = request.POST['data[property_value]']  
-            data.property_data['property_rent_price'] = request.POST['data[property_rent_price]']  
-            data.property_data['from_avail_property_date'] = request.POST['data[from_avail_property_date]'] 
-            data.property_data['country'] = request.POST['data[property_country]'] 
-            data.property_data['state'] = request.POST['data[property_state]']
-            data.property_data['city'] = request.POST['data[property_city]'] 
-            data.property_data['property_address'] = request.POST['data[property_address]'] 
+            property_values = dict(request.POST) 
+            property_values = list(property_values.keys())
+            property_values.remove("csrfmiddlewaretoken")
+            property_values.remove("id") 
+            for i in property_values: 
+                column_name = i 
+                column_name = i.replace("data[", "") 
+                column_name = column_name.replace("]", "") 
+                data.property_data[column_name] = request.POST[i]
             data.save()  
             return render(request, 'theme/update_property.html', {'data':data, "id":property_id})
         property_id=property_id
         data=p_detail.objects.get(id=property_id) 
         property_data=data.property_data
-        return render(request, 'theme/update_property.html', {'data':property_data, "id":property_id})
+        
+        return render(request, 'theme/update_property.html', {'data':property_data, "id":property_id, 
+            "property_type":bondry_data["property_type"], 
+            "deal_option":bondry_data["deal_option"],
+            "construction_status":bondry_data["construction_status"], 
+            "furnish_type":bondry_data["furnish_type"], 
+            "bhk_details":bondry_data["bhk_details"], 
+            "bathroom_details":bondry_data["bathroom_details"],
+            "balcony_details":bondry_data["balcony_details"], 
+            "parking_details":bondry_data["parking_details"], })
     except Exception as ex: 
         print(f"Solve this: {ex}") 
     return render(request, 'theme/update_property.html', {'data':property_data, "id":property_id})  
@@ -228,41 +253,40 @@ def crud_property(request):
 
 def home(request): 
     try:
-        property_category=property_bound_data 
+        property_category=property_bound_data()
         property_data = p_detail.objects.all() 
+        reload_location = True
         boundry_data = advance_filter_boundary(request) 
-        boundry_data = json.loads(boundry_data.content) 
-        return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data, "boundry_data":boundry_data['data'], "country":boundry_data['country']})
-    except Exception as err: 
-        print(err)
-        return render(request, "theme/404.html")
-
-
-def about_us(request): 
-    try:
-        return render(request, 'theme/about.html') 
-    except Exception as err: 
-        print(err)
-        return render(request, "theme/404.html")
-
-def contact(request): 
+        boundry_data = json.loads(boundry_data.content)
+        if "location_number" in list(request.session.keys()):
+            location_property = show_property_location_wise(request)
+            if len(location_property) > 0 and location_property is not None:  
+                property_data = location_property  
+        return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data, "boundry_data":boundry_data['data'], "country":boundry_data['country']})    
+    except Exception as ex: 
+        print(ex)
+        return render(request, "theme/404.html") 
+    
+def about_us(request):  
     try: 
-        return render(request, 'theme/contact.html') 
-    except Exception as err: 
-        print(err)
+        return render(request, 'theme/about.html') 
+    except Exception as ex: 
         return render(request, "theme/404.html")
     
+def contact(request): 
+    try:
+        return render(request, 'theme/contact.html')
+    except Exception as ex: 
+        return render(request, "theme/404.html")
 
 def property_agent(request): 
-    try:  
+    try:
         return render(request, 'theme/property-agent.html')
-    except Exception as err: 
-        print(err)
+    except Exception as ex: 
         return render(request, "theme/404.html")
     
-
 def print_property_type(request): 
-    try:
+    try: 
         data = settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json"  
         with open(data) as f:
             data = json.load(f)  
@@ -275,28 +299,23 @@ def print_property_type(request):
             else:
                 property_c[i.property_data["property_type"]]=1 
         return render(request, 'theme/new_listed_property.html', {"property_c":property_c})
-    except Exception as err: 
-        print(err)
+    except Exception as ex: 
         return render(request, "theme/404.html") 
 
 def property_list(request): 
     try:
-        return render(request, 'theme/property-list.html')
-    except Exception as err: 
-        print(err)
-        return render(request, "theme/404.html") 
-    
+        return render(request, 'theme/property-list.html') 
+    except Exception as ex: 
+        return render(request, "theme/404.html")
 
 def property_category_wise(request, property_type): 
-    try: 
+    try:
         sale_type = None  
         data = search_property_type(request, sale_type, property_type) 
         # search_property_type(request, sale_type, property_type = None) 
-        return render(request, 'theme/property-category-wise.html', {'data':data, 'property_type':property_type}) 
-    except Exception as err: 
-        print(err)
-        return render(request, "theme/404.html")
-    
+        return render(request, 'theme/property-category-wise.html', {'data':data, 'property_type':property_type})
+    except Exception as ex: 
+        return render(request, "theme/404.html") 
 
 def property_sell_option_wise(request): 
     try: 
@@ -310,25 +329,21 @@ def property_sell_option_wise(request):
             data = search_property_type(request, sale_type, property_type) 
         # if (len(data) != 0): 
         #     return HttpResponse(json.dumps({"empty_message":f"There is no any property like '{property_type}' with 'For {sale_type}' "}))    
-        return HttpResponse(json.dumps({"data":data})) 
-    except Exception as err: 
-        print(err)
-        return render(request, "theme/404.html")
-    
+        return HttpResponse(json.dumps({"data":data}))
+    except Exception as ex: 
+        return render(request, "theme/404.html") 
 
 def show_full_property_detail(request, property_id): 
-    try:
+    try: 
         property_data = p_detail.objects.all()
         data = p_detail.objects.get(id=property_id)
         data = data.property_data 
         return render(request, 'theme/property-detail-page.html', {'data':data, 'property_id':property_id, 'property_data':property_data}) 
-    except Exception as err: 
-        print(err)
+    except Exception as ex: 
         return render(request, "theme/404.html")
-    
 
 def property_post_modal_management(request): 
-    try:
+    try: 
         sale_type = request.POST['p_dtl_btn_val'] 
         property_id = request.POST['property_id'] 
         if (sale_type == "saller_detail"): 
@@ -377,26 +392,43 @@ def property_post_modal_management(request):
                 # user_data = json.dumps(user_data) 
                 save_data.user_other_data = user_data
             save_data.save()
-        return HttpResponse(json.dumps({"sale_type":sale_type}))  
-    except Exception as err: 
-        print(err)
-        return render(request, "theme/404.html")
+        return HttpResponse(json.dumps({"sale_type":sale_type}))
+    except Exception as ex: 
+        return render(request, "theme/404.html")  
 
 def inquiries_from_user(request): 
     try: 
         user_data = User_register.objects.get(user_id=request.session._session['user_id']) 
         user_data = user_data.user_other_data 
         return HttpResponse(json.dumps({"user_data":user_data}))
-    except Exception as err: 
-        print(err)
+    except Exception as ex: 
         return render(request, "theme/404.html")
-
+    
 # Test functions  
 def test_function(request): 
-    try:
-        boundry_data = advance_filter_boundary(request) 
-        boundry_data = json.loads(boundry_data.content)
-        return render(request, 'theme/master_filter.html', {"boundry_data":boundry_data['data']}) 
-    except Exception as err: 
-        print(err)
-        return render(request, "theme/404.html")
+    boundry_data = advance_filter_boundary(request) 
+    boundry_data = json.loads(boundry_data.content)
+    return render(request, 'theme/master_filter.html', {"boundry_data":boundry_data['data']})   
+
+def bookmark_property_detail(request): 
+    try: 
+        property_id = request.POST["property_id"] 
+        user_id = request.session['user_id'] 
+        user_data = User_register.objects.get(user_id = user_id) 
+        if user_data.user_other_data is not None:
+            # user_data.user_other_data["saved_property"].append(property_id) 
+            if "saved_property" not in user_data.user_other_data.keys():
+                user_data.user_other_data["saved_property"] = [property_id]
+            else:
+                user_data.user_other_data["saved_property"].append(property_id)
+            user_data.save()
+            return HttpResponse("property_data")
+    except Exception as ex: 
+        print("Solve this: " + ex) 
+        return render(request, "theme/404.html") 
+
+def google_map(request): 
+    try: 
+        return render(request, "theme/google_map.html") 
+    except Exception as ex: 
+        return render("theme/404.html")  

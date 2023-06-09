@@ -1,13 +1,13 @@
 {% extends 'theme/master.html' %}
 {% block add_property_details %}active{% endblock %}
-{% block main_content %} 
+{% block main_content %}
 <style>
     .p_type_btn {
         border-radius: 20px;
         border: 1px solid white;
         padding: 10px;
         font-size: 15px;
-        font-weight: 600; 
+        font-weight: 600;
         background-color: skyblue;
         color: black !important;
     }
@@ -16,40 +16,29 @@
         background-color: white;
         color: black !important;
     }
-    .active_btn{
+
+    .active_btn {
         background-color: aliceblue;
         color: #0099ff !important;
     }
+
     @media (max-width: 768px) {
         ::-webkit-scrollbar {
             display: none;
             /* Safari and Chrome */
         }
     }
-</style> 
-<div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" style="padding: 0px;">
-    <div class="container">
-        <div class="scroller" style="overflow: auto; display:flex;"> 
-            <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white add_property_page" style="margin:10px;" value="all"><a href="{% url 'add_property_details' %}">Add new property</a></button>
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" style="margin:10px;">
-                <a href="{% url 'prop_table' %}">Property list</a></button>
-        </div>
-    </div>
-</div>
-<div class="container-fluid pt-4 px-4"> 
-    <div class="row bg-light rounded mx-0 p-2"> 
+</style>
+<div class="container-fluid pt-4 px-4">
+    <div class="row bg-light rounded mx-0 p-2">
         <form method="post" action="add_property_details" enctype="multipart/form-data">
             {% csrf_token %}
-            {% if instace_data %}
-            <p>{{instace_data.property_type}}</p>
-            {% endif %}
             <input type="text" value="{{request.session.user_id}}" name="user_id" id="user_id" hidden>
             <div class="row">
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 property_type_div">
                     <label for="property_type" class="form-label">Property Type</label>
                     <select class="form-select property_type" name="property_type" id="property_type"
-                        value="{{instace_data.property_type}}" onChange="myNewFunction(this);">
+                        value="{{instace_data.property_type}}">
                         {% if property_type %}
                         {% for property_type in property_type %}
                         <option value="{{property_type}}">{{property_type}}</option>
@@ -57,13 +46,13 @@
                         {% endif %}
                     </select>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 property_age_div">
                     <label for="property_age" class="form-label">How many years old your property (Age of
                         property)</label>
                     <input type="number" name="property_age" id="property_age" class="form-control"
                         value="{{instace_data.property_age}}">
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 selling_option">
                     <div id="selling_option_div">
                         <label for="selling_option" class="form-label selling_option" id="selling_option_label">Sell or
                             Rent</label>
@@ -76,10 +65,10 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 construction_status_div">
                     <div class="construction_status_div" id="construction_status_div">
                         <label class="form-label">Construction Status</label>
-                        <select class="form-select" name="construction_status">
+                        <select class="form-select" name="construction_status" id="construction_status">
                             {% if construction_status %}
                             {% for key, construction_status in construction_status.items %}
                             <option value="{{construction_status}}">{{construction_status}}</option>
@@ -88,13 +77,14 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 floor_div">
                     <label class="form-label">Floor</label>
-                    <input type="number" name="floor" class="form-control" min="1" value="{{instace_data.floor}}">
+                    <input type="number" name="floor" class="form-control" min="1" id="floor"
+                        value="{{instace_data.floor}}">
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 bhk_div">
                     <label class="form-label">BHK Detail</label>
-                    <select class="form-select" name="bhk">
+                    <select class="form-select" name="bhk" id="bhk">
                         {% if bhk_details %}
                         {% for key, bhk_details in bhk_details.items %}
                         <option value="{{bhk_details}}">{{bhk_details}} BHK</option>
@@ -102,9 +92,9 @@
                         {% endif %}
                     </select>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 bathroom_div">
                     <label for="bathroom" class="form-label">Bathroom</label>
-                    <select class="form-select" name="bathroom">
+                    <select class="form-select" name="bathroom" id="bathroom">
                         {% if bathroom_details %}
                         {% for key, bathroom_details in bathroom_details.items %}
                         <option value="{{bathroom_details}}">{{bathroom_details}} Bathroom</option>
@@ -112,9 +102,9 @@
                         {% endif %}
                     </select>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 balcony_div">
                     <label for="balcony" class="form-label balcony">Balcony</label>
-                    <select class="form-select" name="balcony">
+                    <select class="form-select" name="balcony" id="balcony">
                         {% if balcony_details %}
                         {% for key, balcony_details in balcony_details.items %}
                         <option value="{{balcony_details}}">{{balcony_details}} Balcony</option>
@@ -122,7 +112,7 @@
                         {% endif %}
                     </select>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 furnish_type_div">
                     <label for="furnish_type" class="form-label">Furnish Type</label>
                     <select class="form-select furnish_type" name="furnish_type" id="furnish_type">
                         {% if furnish_type %}
@@ -132,14 +122,14 @@
                         {% endif %}
                     </select>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 geography_area_div">
                     <label for="geo_area" class="form-label">Geographical Area In Square Feet</label>
                     <input type="text" name="geography_area" class="form-control" id="geo_area"
                         placeholder="500 sq. ft, 1000 sq. ft" value="{{instace_data.geography_area}}">
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 parking_type_div">
                     <label for="parking_type" class="form-label">Parking Detail</label>
-                    <select class="form-select" name="parking_type">
+                    <select class="form-select" name="parking_type" id="parking_type">
                         {% if parking_details %}
                         {% for key, parking_details in parking_details.items %}
                         <option value="{{parking_details}}">{{parking_details}}</option>
@@ -147,49 +137,39 @@
                         {% endif %}
                     </select>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 property_value">
                     <label for="property_value" class="form-label">Property Sell Price</label>
                     <input type="text" name="property_value" class="form-control property_value" id="property_value"
                         value="{{instace_data.property_value}}">
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 property_rent_price">
                     <label for="property_rent_price" class="form-label">Property Rent Price</label>
                     <input type="text" name="property_rent_price" class="form-control property_rent_price"
                         id="property_rent_price" value="{{instace_data.property_rent_price}}">
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 from_avail_property_date_div">
                     <label for="from_avail_property_date" class="form-label">When will available property</label>
                     <input type="date" name="from_avail_property_date" class="form-control"
                         id="from_avail_property_date" value="{{instace_data.from_avail_property_date}}">
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
-                    <label for="property_address" class="form-label">Country</label>
-                    <select class="form-select" name="country" id="country_based">
-                        <option value="country">Select country</option>
-                        {% for i in country_name_list %}
-                        <option value="{{i.iso2}}">{{i.name}}</option>
-                        {% endfor %}
-                    </select>
+
+                <div class="col-md-6 col-sm-12 mb-3 property_description_div">
+                    <label for="property_address" class="form-label">Other Description</label>
+                    <textarea type="textarea" name="property_description" class="form-control property_description"
+                        id="property_description">{{instace_data.property_description}}</textarea>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
-                    <label for="property_address" class="form-label">State</label>
-                    <select class="form-select" name="state" id="state_based">
-                        <option value="state">Select state</option>
-                    </select>
+                <div class="col-md-6 col-sm-12 mb-3 from_avail_property_date_div">
+                    <label for="address_sutosuggestion" class="form-label">Enter city name</label>
+                    <input type="text" placeholder="Enter City Name" class="form-control" id="place_name"
+                        name="place_name">
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3">
-                    <label for="property_address" class="form-label">City</label>
-                    <select class="form-select" name="city" id="city_based">
-                        <option value="city">Select city</option>
-                    </select>
-                </div>
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-6 col-sm-12 mb-3 property_address_div">
                     <label for="property_address" class="form-label">Property Address</label>
                     <textarea type="textarea" name="property_address" class="form-control property_address"
                         id="property_address">{{instace_data.property_address}}</textarea>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
-                    <form method="post" action="/images/{{id}}/" enctype="multipart/form-data">
+                    <form method="post" action="/manage_image_upload/{{id}}/" enctype="multipart/form-data">
                         {% csrf_token %}
                         <label for="images" class="form-label">Upload property image or video</label>
                         <input type="file" class="form-control" name="images" multiple>
@@ -205,17 +185,17 @@
 </div>
 
 <!-- javaScript code -->
-<script> 
-    var page_name = "{{add_property_details}}"; 
-     
-    if (page_name == "add_property_page"){
-        $(".add_property_page").addClass("active_btn"); 
+<script>
+    var page_name = "{{add_property_details}}";
+
+    if (page_name == "add_property_page") {
+        $(".add_property_page").addClass("active_btn");
     }
     // advance filter configuration 
     $('#country_based').change(function (e) {
         //alert("Clikced!"); 
         e.preventDefault();
-        var country_name = $(this).val();
+        var country_name = $(this).val() || "";
         //alert(country_name); 
         //var data_target = $(property).text();
         $.ajax({
@@ -238,8 +218,8 @@
     $('#state_based').change(function (e) {
         //alert("Clikced!"); 
         e.preventDefault();
-        var country_name = $("#country_based").val();
-        var state_name = $(this).val();
+        var country_name = $("#country_based").val() || "";
+        var state_name = $(this).val() || "";
         $.ajax({
             url: "{% url 'city_list' %}",
             type: "GET",
@@ -257,5 +237,53 @@
             }
         });
     });
+
+    // ------------------------------Form Validation-------------------------------- 
+    $("#property_type").change(function () {
+        if ($(this).val() == "Land") {
+            $(".property_age_div").hide();
+            $("#property_age").val("");
+            $(".floor_div").hide();
+            $("#floor").val("");
+            $(".bathroom_div").hide();
+            $("#bathroom").val("");
+            $(".construction_status_div").hide();
+            $("#construction_status").val("");
+            $(".balcony_div").hide();
+            $("#balcony").val("");
+            $(".furnish_type_div").hide();
+            $("#furnish_type").val("");
+            $(".parking_type_div").hide();
+            $("#parking_type").val("");
+            $(".bhk_div").hide();
+            $("#bhk").val("");
+        }
+        else {
+            $(".property_age_div").show();
+            $(".floor_div").show();
+            $(".bathroom_div").show();
+            $(".construction_status_div").show();
+            $(".balcony_div").show();
+            $(".furnish_type_div").show();
+            $(".parking_type_div").show();
+            $(".bhk_div").show();
+        }
+    });
+    $("#selling_option").click(function () {
+        if ($(this).val() == "Rent") {
+            $(".property_value").hide();
+            $(".property_rent_price").show();
+        }
+        else if ($(this).val() == "Sell") {
+            $(".property_value").show();
+            $(".property_rent_price").hide();
+        }
+        else {
+            $(".property_value").show();
+            $(".property_rent_price").show();
+        }
+    });
+    $("#selling_option").click();
+
 </script>
 {% endblock %}

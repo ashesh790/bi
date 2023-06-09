@@ -362,7 +362,7 @@
             var property_type_list = [response];
             var property_type = property_type_list[0].property_type_list;
             for (var i in property_type) {
-                console.log(property_type[i])
+                //console.log(property_type[i])
                 $(".property_type").append("<option value=" + property_type[i] + ">" + property_type[i] + "</option>");
             }
         });
@@ -393,7 +393,7 @@
                         property_value = value.property_value
                     }
                     var prop_design = ""
-                    console.log(key, value.property_type, value);
+                    //console.log(key, value.property_type, value);
                     $("#filtered").append(
                         `<div class="col-lg-4 col-md-6 wow fadeInUp filtered_data" data-wow-delay="0.1s">
                                 <div class="property-item rounded overflow-hidden">

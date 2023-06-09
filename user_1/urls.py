@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 from user_1 import views 
 urlpatterns = [ 
     path("", views.home, name="test_html_page"), 
+    path("save_location", views.save_location, name="save_location"), 
     path('home', views.home, name="home"), 
     path('signup',views.sign_up, name="signup"),  
     path('login',views.login, name="login"),  
@@ -31,7 +32,7 @@ urlpatterns = [
     path('update_property_record/<int:property_id>/delete_property_image/<str:image_name>/', views.delete_property_image, name="delete_property_record"), 
     path('update_property_record/<int:property_id>/',views.update_property, name="update-property"), 
     path("crud_property", views.crud_property, name="crud_property"), 
-    path("images/<int:property_id>/", views.manage_image_upload, name="manage_image_upload"), 
+    path("manage_image_upload/<int:property_id>/", views.manage_image_upload, name="manage_image_upload"), 
     path("dashboard", views.dashboard, name="dashboard"), 
     path("about", views.about_us, name="about"), 
     path("contact", views.contact, name="contact"), 
@@ -52,5 +53,7 @@ urlpatterns = [
     path("state_list", views.state_list, name="state_list"),
     path("city_list", views.city_list, name="city_list"), 
     path("search_properties", views.search_properties, name="search_properties"), 
-    path("search_property_type", views.search_property_type, name="search_property_type") 
+    path("search_property_type", views.search_property_type, name="search_property_type"), 
+    path("bookmark_property_detail", views.bookmark_property_detail, name="bookmark_property_detail"), 
+    path("google_map", views.google_map, name="google_map")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

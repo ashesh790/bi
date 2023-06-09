@@ -1,6 +1,7 @@
 {
     "property_type": [
         "Apartment",
+        "PG",
         "House",
         "Townhouse",
         "Land",
@@ -11,12 +12,12 @@
         "Villa",
         "Other"
     ],
-    "property_status": {
-        "sold": "sold",
-        "leased": "leased",
-        "rented": "rented",
-        "leasedout": "leasedout"
-    },
+    "property_status": [
+        "Sold",
+        "Leased",
+        "Rented",
+        "Leasedout"
+    ],
     "property_features": [
         "airconditioning",
         "",
@@ -62,15 +63,16 @@
         "workshop"
     ],
     "deal_option": {
-        "rent": "Rent",
-        "sale": "Sale"
+        "Rent": "Rent",
+        "Sell": "Sell",
+        "Rent and Sell": "Rent and Sell"
     },
     "construction_status": {
-        "underconstruction": "Under construction",
-        "completed": "Completed",
-        "preconstruction": "Pre construction",
-        "offplan": "Offplan",
-        "new": "New"
+        "Under construction": "Under construction",
+        "Completed": "Completed",
+        "Pre construction": "Pre construction",
+        "Offplan": "Offplan",
+        "New": "New"
     },
     "bhk_details": {
         "1": "1",
@@ -139,13 +141,13 @@
         "20": "20"
     },
     "furnish_type": {
-        "furnished": "Fully Furnished",
-        "unfurnished": "Unfurnished",
-        "semifurnished": "Semi furnished"
+        "Fully Furnished": "Fully Furnished",
+        "Unfurnished": "Unfurnished",
+        "Semi furnished": "Semi furnished"
     },
     "parking_details": {
-        "covered": "Covered",
-        "open": "Open",
-        "both": "Covered and Open"
+        "Covered": "Covered",
+        "Open": "Open",
+        "Covered and Open": "Covered and Open"
     }
 }
