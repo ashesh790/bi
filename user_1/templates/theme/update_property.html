@@ -102,7 +102,7 @@
                 <div class="col-md-4 col-sm-12 property_age_div">
                     <div class="p-3 border bg-light">
                         <label for="property_age" class="form-label">How many years old your property </label>
-                        <input type="number" name="property_age" id="property_age" class="form-control"
+                        <input type="number" name="property_age" id="property_age" class="form-control prop_val"
                             value="{{data.property_age}}">
                     </div>
                 </div>
@@ -263,8 +263,9 @@
                 <div class="col-md-4 col-sm-12 property_description">
                     <div class="p-3 border bg-light">
                         <label for="property_address" class="form-label">Other Description</label>
-                        <textarea type="textarea" name="property_description" class="form-control property_description"
-                            rows="8" id="property_description">{{instace_data.property_description}}</textarea>
+                        <textarea type="textarea" name="property_description"
+                            class="form-control property_description prop_val" rows="8"
+                            id="property_description">{{data.property_description}}</textarea>
                     </div>
                 </div>
             </div>
