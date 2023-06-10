@@ -200,7 +200,7 @@ def show_property_location_wise(request):
     longitude = request.session['location_number']['longitude'] 
     address_dict = get_location_name(latitude, longitude) 
     property = search_properties(request, address_dict, reload_location) 
-    return property 
+    return property, address_dict['city']
     # data = p_detail.objects.all() 
     # property_data = {} 
     # for i in data: 

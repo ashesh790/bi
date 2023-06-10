@@ -256,13 +256,14 @@ def home(request):
         property_category=property_bound_data()
         property_data = p_detail.objects.all() 
         reload_location = True
+        city_name = ''
         boundry_data = advance_filter_boundary(request) 
         boundry_data = json.loads(boundry_data.content)
         if "location_number" in list(request.session.keys()):
-            location_property = show_property_location_wise(request)
+            location_property, city_name = show_property_location_wise(request) 
             if len(location_property) > 0 and location_property is not None:  
                 property_data = location_property  
-        return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data, "boundry_data":boundry_data['data'], "country":boundry_data['country']})    
+        return render(request, 'theme/index.html', {'property_category':property_category, 'property_data':property_data, "boundry_data":boundry_data['data'], "country":boundry_data['country'], "city_name":city_name})    
     except Exception as ex: 
         print(ex)
         return render(request, "theme/404.html") 
