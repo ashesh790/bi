@@ -7,6 +7,19 @@
         margin-right: auto;
         width: 50%;
     }
+
+    @media screen and (max-width: 820px) {
+        #main {
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            padding: 0% !important;
+        }
+
+        .login_btn {
+            margin: 0% !important;
+        }
+    }
 </style>
 <div class="row g-3 mt-5 p-5" id="main">
     {% csrf_token %}
@@ -31,7 +44,7 @@
                 <input type="text" class="form-control" id="longitude" value="" hidden>
             </div>
         </div>
-        <div class="col-12 m-3">
+        <div class="col-12 m-3 login_btn">
             <div class="alert alert-danger d-none" role="alert" id="login_err">
                 <button type="button" class="close btn" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

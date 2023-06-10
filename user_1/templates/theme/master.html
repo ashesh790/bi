@@ -90,6 +90,15 @@
                 outline: 0 !important;
                 width: 100% !important;
             }
+
+            #login_btn_2 {
+                margin: 10px;
+            }
+
+            #logout_btn {
+                margin: 10px;
+                border-radius: 20px;
+            }
         }
 
         @media screen and (max-width: 920px) {
@@ -234,7 +243,7 @@
         }
 
         #logout_btn {
-            border-radius: 20px;
+            border-radius: 10%;
         }
 
         #login_btn_2 {
@@ -317,10 +326,10 @@
                 {% if 'user_name' in request.session %}
                 Welcome {{request.session.user_name}} :&nbsp;
                 <a data-toggle="modal" data-target="#glassAnimals"
-                    class="btn btn-outline-primary px-3 d-none d-lg-flex bg-primary" id="logout_btn"
-                    style="border-radius: 10%;"><i class="fa fa-user text-white" aria-hidden="true"></i></a>
+                    class="btn btn-outline-primary px-3 d-lg-flex bg-primary" id="logout_btn"><i
+                        class="fa fa-user text-white" aria-hidden="true"></i></a>
                 {% else%}
-                <a href="login" class="btn btn-primary px-3 d-none d-lg-flex" id="login_btn_2">Login</a>
+                <a href="login" class="btn btn-primary px-3 d-lg-flex" id="login_btn_2">Login</a>
                 {% endif %}
             </div>
         </nav>
