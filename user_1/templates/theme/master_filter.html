@@ -20,28 +20,12 @@
         color: #0099ff !important;
     }
 
-    @media (max-width: 768px) {
-        ::-webkit-scrollbar {
-            display: none;
-            /* Safari and Chrome */
-        }
-
-        .p_type_btn {
-            border-radius: 20px;
-            border: 1px solid white;
-            font-size: 15px;
-            font-weight: 600;
-        }
-    }
-
     .search_field {
         border-left: 2px solid #0099ff !important;
         border-bottom: 2px solid #0099ff !important;
         border-top: 0;
         border-right: 0;
     }
-
-
 
     select {
         border: 0px;
@@ -77,17 +61,132 @@
         transition: transform 0.1s;
         /* Add smooth transition effect */
     }
+
+    #location_search_bar {
+        align-items: center;
+        display: flex;
+    }
+
+    #search_by_place_label {
+        width: 200px;
+    }
+
+    @media screen and (max-width: 412px) {
+        #location_search_bar {
+            align-items: center;
+            display: block;
+        }
+
+        #search_by_place_label {
+            width: auto;
+        }
+
+        .search_utils_btn button {
+            width: 24%;
+        }
+
+        .search_utils_btn {
+            margin-top: 10px;
+        }
+
+        #place_name {
+            width: 100%;
+        }
+    }
+
+    @media (min-width: 100px) and (max-width: 280px) {
+        #location_search_bar {
+            align-items: center;
+            display: block;
+        }
+
+        #search_by_place_label {
+            width: auto;
+        }
+
+        .search_utils_btn button {
+            width: 100% !important;
+        }
+
+        .search_utils_btn button {
+            margin-top: 5px;
+        }
+
+        .search_utils_btn {
+            margin-top: 10px;
+        }
+
+        #place_name {
+            width: auto;
+        }
+    }
+
+    @media screen and (max-width: 540px) {
+        #location_search_bar {
+            align-items: center;
+            display: block;
+        }
+
+        #search_by_place_label {
+            width: auto;
+        }
+
+        .search_utils_btn button {
+            width: 24%;
+        }
+
+        .search_utils_btn {
+            margin-top: 10px;
+        }
+
+        #place_name {
+            width: 100%;
+        }
+    }
+
+    @media (min-width:540px) and (max-width: 820px) {
+        #location_search_bar {
+            align-items: center;
+            display: flex;
+        }
+
+        #search_by_place_label {
+            width: 140px;
+        }
+
+        .search_utils_btn button {
+            width: 22%;
+        }
+
+        .search_utils_btn {
+            margin-top: 10px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        ::-webkit-scrollbar {
+            display: none;
+            /* Safari and Chrome */
+        }
+
+        .p_type_btn {
+            border-radius: 20px;
+            border: 1px solid white;
+            font-size: 15px;
+            font-weight: 600;
+        }
+    }
 </style>
 <!-- Search Start -->
 <div class="container-fluid bg-primary mb-4 wow fadeIn" data-wow-delay="0.1s" style="padding: 0px;">
     <div>
         <div class="scroller" style="overflow: auto; display:flex;">
             {% csrf_token %}
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn"
+            <button class="btn btn-outline-primary text-white border-white p_type_btn"
                 onclick="property_type_core(this);active_class(this);" style="margin:10px;" value="all">All
                 Type</button>
             {% for i in boundry_data.property_type %}
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn"
+            <button class="btn btn-outline-primary text-white border-white p_type_btn"
                 onclick="property_type_core(this);active_class(this);" style="margin:10px;" id="{{i}}"
                 value="{{i}}">{{i}}</button>
             {% endfor %}
@@ -95,45 +194,32 @@
     </div>
 </div>
 <div class="row mx-2">
-    <div class="col-lg-6">
+    <div class="col-sm-12 col-md-7 col-lg-6">
         <div id="location_fltr">
-            <div style="align-items:center; display:flex;">
-                <div style="width:180px;">
-                    <h5>Search By Place:</h5>
+            <div id="location_search_bar">
+                <div id="search_by_place_label">
+                    <h5>By Location:</h5>
                 </div>
-                <div style="width:200px;">
+                <div>
                     <input type="text" id="place_name" placeholder="Enter Place Name" onkeyup="delay_search()">
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
-        <ul class="nav nav-pills d-inline-flex justify-content-end mb-3">
-            <li class="nav-item me-2">
-                <div class="d-flex">
-                    <span id="all_filter__trash">
-                        <button class="btn btn-outline-primary search_field" data-toggle="modal" id="all_filter"
-                            data-target="#exampleModalCenter" onclick="search_field_applied(this);">
-                            Filter Property &nbsp;<i class="fa fa-filter" aria-hidden="true"></i>
-                        </button>
-                    </span>
-                </div>
-            </li>
-            <li class="nav-item me-2">
-                <button class="btn btn-outline-primary active" data-bs-toggle="pill" value="all" id="all"
-                    onclick="search_property_based_on_input_field_values(this);">All</a>
-            </li>
-            <li class="nav-item me-2">
-                <button class="btn btn-outline-primary" data-bs-toggle="pill" value="Sale" id="sell"
-                    onclick="search_property_based_on_input_field_values(this);">For
-                    Sale</button>
-            </li>
-            <li class="nav-item me-0">
-                <button class="btn btn-outline-primary" data-bs-toggle="pill" value="Rent" id="rent"
-                    onclick="search_property_based_on_input_field_values(this);">For
-                    Rent</button>
-            </li>
-        </ul>
+    <div class="col-sm-12 col-md-5 col-lg-6 text-start text-lg-end wow slideInRight search_utils_btn align-left"
+        data-wow-delay="0.1s">
+        <span id="all_filter__trash">
+            <button class="btn btn-outline-primary search_field" data-toggle="modal" id="all_filter"
+                data-target="#exampleModalCenter" onclick="search_field_applied(this);">
+                Filter &nbsp;<i class="fa fa-filter" aria-hidden="true"></i>
+            </button>
+        </span>
+        <button class="btn btn-outline-primary active" data-bs-toggle="pill" value="all" id="all"
+            onclick="search_property_based_on_input_field_values(this);">All</button>
+        <button class="btn btn-outline-primary" data-bs-toggle="pill" value="Sale" id="sell"
+            onclick="search_property_based_on_input_field_values(this);">Sale</button>
+        <button class="btn btn-outline-primary" data-bs-toggle="pill" value="Rent" id="rent"
+            onclick="search_property_based_on_input_field_values(this);">Rent</button>
     </div>
 </div>
 <div class="row m-2">
