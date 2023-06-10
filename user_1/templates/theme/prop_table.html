@@ -2,13 +2,15 @@
 {% block manage_property %}active{% endblock %}
 {% block main_content %}
 <style>
-    #main{
+    #main {
         padding: 0px;
     }
-    #scroller{
-        overflow: auto; 
-        display:flex;
+
+    #scroller {
+        overflow: auto;
+        display: flex;
     }
+
     .p_type_btn {
         border-radius: 20px;
         border: 1px solid white;
@@ -23,10 +25,13 @@
         background-color: white;
         color: black !important;
     }
-    #dashboard_btn, #list_btn{
-        margin:10px;
+
+    #dashboard_btn,
+    #list_btn {
+        margin: 10px;
 
     }
+
     .active_btn {
         background-color: aliceblue;
         color: #0099ff !important;
@@ -45,8 +50,10 @@
             <!-- <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white add_property_page"
                 style="margin:10px;" value="all"><a href="{% url 'add_property_details' %}">Add new
                     property</a></button> -->
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page" id="dashboard_btn" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn property_table" id="list_btn">
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page"
+                id="dashboard_btn" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn property_table"
+                id="list_btn">
                 <a href="{% url 'prop_table' %}">Property list</a></button>
         </div>
     </div>
@@ -55,36 +62,37 @@
     <h1>Property Table</h1>
 </div>
 <hr>
-<table class="table">
-    <thead>
-        <tr>
-            <!-- <th scope="col">Property Index</th> -->
-            <th scope="col">Property type</th>
-            <th scope="col">Selling Option</th>
-            <th scope="col">Property age</th>
-            <th scope="col">Operation</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for i in data %}
-        <tr>
-            <!-- <th scope="row">{{count}}</th> -->
-            <td>{{i.property_data.property_type}}</td>
-            <td>{{i.property_data.selling_option}}</td>
-            <td>{{i.property_data.property_age}}</td>
-            <td><a href="delete_property_record/{{i.id}}">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                </a>
-            </td>
-            <td>
-                <a href="update_property_record/{{i.id}}">Update
-                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                </a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="container container-fluid">
+    <table class="table table-light table-striped">
+        <thead>
+            <tr>
+                <!-- <th scope="col">Property Index</th> -->
+                <th scope="col">Property type</th>
+                <th scope="col">Selling Option</th>
+                <th scope="col">Property age</th>
+                <th scope="col">Operation</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in data %}
+            <tr>
+                <!-- <th scope="row">{{count}}</th> -->
+                <td>{{i.property_data.property_type}}</td>
+                <td>{{i.property_data.selling_option}}</td>
+                <td>{{i.property_data.property_age}}</td>
+                <td>
+                    <a href="delete_property_record/{{i.id}}" class="me-2">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                    <a href="update_property_record/{{i.id}}" class="me-2">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 <script>
     var page_name = "{{property_table}}";
 
