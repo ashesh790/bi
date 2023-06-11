@@ -280,6 +280,53 @@
             border: 1px solid #0099ff;
             width: 300px;
         }
+
+        .add_property_btn {
+            position: fixed;
+            right: 10px;
+            bottom: 10px;
+            z-index: 99;
+            border-radius: 20px;
+            border-width: 5px;
+            border: dotted;
+        }
+
+        .add_property_btn:hover {
+            position: fixed;
+            right: 10px;
+            bottom: 10px;
+            z-index: 99;
+            border-radius: 20px;
+            background-color: #0099ff;
+            border-color: #ddd;
+            color: white;
+        }
+
+        @keyframes border-animation {
+            0% {
+                border-width: 1px;
+            }
+
+            50% {
+                border-width: 4px;
+            }
+
+            100% {
+                border-width: 1px;
+            }
+        }
+
+        .border-animation {
+            animation: border-animation 2s infinite;
+        }
+
+        .btn-primary:hover {
+            color: #000;
+            background-color: #0099ff;
+            border-color: #0099ff;
+            color: white;
+            border: solid;
+        }
     </style>
 </head>
 
@@ -317,8 +364,8 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
                     <a href="{% url 'home' %}" class="nav-item nav-link {% block home %}{% endblock %}">Home</a>
-                    <a href="{% url 'add_property_details' %}"
-                        class="nav-item nav-link {% block add_property_details %}{% endblock %}">Add new property</a>
+                    <!-- <a href="{% url 'add_property_details' %}"
+                        class="nav-item nav-link {% block add_property_details %}{% endblock %}">Add new property</a> -->
                     <a href="{% url 'dashboard' %}"
                         class="nav-item nav-link {% block manage_property %}{% endblock %}">Manage property</a>
                     <a href="{% url 'property_agent' %}"
@@ -382,7 +429,8 @@
 
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+        {% block btn_shortcut%}<a href="{% url 'add_property_details' %}" class="btn btn-primary add_property_btn">Add
+            Property</a>{% endblock %}
     </div>
     <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
