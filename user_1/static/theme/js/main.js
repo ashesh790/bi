@@ -7,10 +7,10 @@ $(document).ready(function () {
     if (mediaQuery.matches) {
         // Apply styles for average mobile devices
         $('.p_type_btn').addClass('col-4');
-        $('.p_type_btn').removeClass('col-2');
+        $('.p_type_btn').removeClass('col-1');
     } else {
         // Remove styles for average mobile devices
-        $('.p_type_btn').addClass('col-2');
+        $('.p_type_btn').addClass('col-1');
         $('.p_type_btn').removeClass('col-4');
     }
 });

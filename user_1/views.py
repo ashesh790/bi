@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
+from user_1 import serializers
 from user_1.apis.REST_API.database import (
     p_detail_api,
     specific_property,
@@ -45,8 +46,7 @@ from user_1.models import User_register, p_detail
 from django.core.serializers import serialize
 import shutil
 from django.core.files.storage import FileSystemStorage
-
-from user_1.serializers import p_detail_Serializer
+from django.core import serializers
 
 # from user_1.forms import MyForm
 
@@ -570,14 +570,33 @@ def bookmark_property_detail(request):
         property_id = request.POST["property_id"]
         user_id = request.session["user_id"]
         user_data = User_register.objects.get(user_id=user_id)
-        if user_data.user_other_data is not None:
-            # user_data.user_other_data["saved_property"].append(property_id)
-            if "saved_property" not in user_data.user_other_data.keys():
-                user_data.user_other_data["saved_property"] = [property_id]
-            else:
-                user_data.user_other_data["saved_property"].append(property_id)
+        remove_property = (
+            True if "remove_saved_property" in list(request.POST) else False
+        )
+        if not remove_property:
+            if property_id in user_data.user_other_data["saved_property"]:
+                return HttpResponse("property_data")
+            if user_data.user_other_data is not None:
+                # user_data.user_other_data["saved_property"].append(property_id)
+                if "saved_property" not in user_data.user_other_data.keys():
+                    user_data.user_other_data["saved_property"] = [property_id]
+                else:
+                    user_data.user_other_data["saved_property"].append(property_id)
+                    saved_property_list = user_data.user_other_data["saved_property"]
+                    user_data.user_other_data["saved_property"] = list(
+                        set(saved_property_list)
+                    )
+                user_data.save()
+                return HttpResponse("saved")
+        else:
+            if property_id in user_data.user_other_data["saved_property"]:
+                user_data.user_other_data["saved_property"].remove(property_id)
             user_data.save()
-            return HttpResponse("property_data")
+            remaining_property = saved_property(request, True)
+            if remaining_property.content == "Empty":
+                return HttpResponse("Empty")
+            else:
+                return HttpResponse(remaining_property.content)
     except Exception as ex:
         print("Solve this: " + ex)
         return render(request, "theme/404.html")
@@ -588,3 +607,26 @@ def google_map(request):
         return render(request, "theme/google_map.html")
     except Exception as ex:
         return render("theme/404.html")
+
+
+def saved_property(request, remaining_property=False):
+    try:
+        saved_property_dict = {}
+        user_id = request.session["user_id"]
+        user_data = User_register.objects.get(user_id=user_id)
+        saved_property_list = user_data.user_other_data["saved_property"]
+        for i in saved_property_list:
+            query_data = p_detail.objects.get(id=i)
+            saved_property_dict[i] = query_data.property_data
+        if remaining_property:
+            if len(saved_property_dict) > 0:
+                return HttpResponse(
+                    json.dumps({"saved_property_dict": saved_property_dict})
+                )
+            else:
+                return HttpResponse("Empty")
+        else:
+            context = {"saved_property_dict": saved_property_dict}
+            return render(request, "theme/saved_proper.html", context)
+    except Exception as ex:
+        return render(request, ex, "theme/404.html")

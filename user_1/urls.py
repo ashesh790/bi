@@ -46,6 +46,7 @@ urlpatterns = [
         views.show_property_detail,
         name="show-property-detail",
     ),
+    path("saved_property", views.saved_property, name="saved_property"),
     path(
         "delete_property_record/<int:property_id>/",
         views.delete_property,
