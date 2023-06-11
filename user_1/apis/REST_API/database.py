@@ -1,4 +1,5 @@
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404
 from user_1.models import User_register, p_detail
 from user_1.serializers import p_detail_Serializer
 from rest_framework.renderers import JSONRenderer
@@ -25,3 +26,8 @@ def user_wise_property(request, saller_id):
     data = p_detail_Serializer(data, many=True)
     data = JSONRenderer().render(data.data)
     return HttpResponse(data)
+
+
+def convert_string_to_object(user_id_str):
+    user_register = get_object_or_404(User_register, user_id=user_id_str)
+    return user_register

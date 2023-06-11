@@ -25,12 +25,12 @@ urlpatterns = [
     path("save_location", views.save_location, name="save_location"),
     path("properties", views.p_detail_api, name="p_detail_api"),
     path(
-        "properties/<str:property_id>",
+        "properties/<str:property_id>/",
         views.specific_property,
         name="specific_property",
     ),
     path(
-        "saller/<str:saller_id>",
+        "saller/<str:saller_id>/",
         views.user_wise_property,
         name="user_wise_property",
     ),
