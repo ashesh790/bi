@@ -35,6 +35,7 @@ from user_1.apis.fetch_api.main_functions import (
     get_all_property_data,
     property_bound_data,
     save_location,
+    saved_property_ids,
     search_property_type,
     show_property_location_wise,
     update_property_data_record,
@@ -365,6 +366,8 @@ def crud_property(request):
 
 def home(request):
     try:
+        user_id = request.session["user_id"]
+        saved_property_list = saved_property_ids(user_id)
         property_category = property_bound_data()
         property_data = p_detail.objects.all()
         reload_location = True
@@ -384,6 +387,7 @@ def home(request):
                 "boundry_data": boundry_data["data"],
                 "country": boundry_data["country"],
                 "city_name": city_name,
+                "saved_property_list": saved_property_list,
             },
         )
     except Exception as ex:
@@ -575,7 +579,9 @@ def bookmark_property_detail(request):
         )
         if not remove_property:
             if property_id in user_data.user_other_data["saved_property"]:
-                return HttpResponse("property_data")
+                user_data.user_other_data["saved_property"].remove(property_id)
+                user_data.save()
+                return HttpResponse("Removed")
             if user_data.user_other_data is not None:
                 # user_data.user_other_data["saved_property"].append(property_id)
                 if "saved_property" not in user_data.user_other_data.keys():
@@ -591,7 +597,7 @@ def bookmark_property_detail(request):
         else:
             if property_id in user_data.user_other_data["saved_property"]:
                 user_data.user_other_data["saved_property"].remove(property_id)
-            user_data.save()
+                user_data.save()
             remaining_property = saved_property(request, True)
             if remaining_property.content == "Empty":
                 return HttpResponse("Empty")
@@ -629,4 +635,4 @@ def saved_property(request, remaining_property=False):
             context = {"saved_property_dict": saved_property_dict}
             return render(request, "theme/saved_proper.html", context)
     except Exception as ex:
-        return render(request, ex, "theme/404.html")
+        return render(request, "theme/404.html")

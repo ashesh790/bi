@@ -162,7 +162,7 @@
                                     <a href="/property_details/${key}">
                                         <span><i class="fa fa-map-marker-alt text-primary me-2"></i><span class="text-primary">${val.property_address.slice(0, maxLength) + '...'}</span></span> 
                                     </a> 
-                                    <span style="position: absolute; bottom:0; right:10px;" id="tooltip_parent" prop_id="{{key}}" onclick="remove_bookmark_property(this);">
+                                    <span style="position: absolute; bottom:0; right:10px;" id="tooltip_parent" prop_id="${key}" onclick="remove_bookmark_property(this);">
                                         <h5><i class="fa fa-bookmark" aria-hidden="true"></i></h5>
                                     </span>z
                                 </div>
@@ -172,8 +172,8 @@
                     });
                 }
                 else {
-                    alert("Property removed from bookmark");
-                    location.reload();
+                    $(".property_container").empty();
+                    $(".property_container").html("<div>No more saved property</div> <a href=''>Explore More!</a>");
                 }
             }
         });

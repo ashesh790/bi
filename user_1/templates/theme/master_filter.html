@@ -475,6 +475,7 @@
                     $(".property_counter").empty();
                     // console.log(data.prop_data);
                     $.each(data.prop_data, function (key, val) {
+
                         $(".property_counter").append(` 
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
@@ -508,12 +509,12 @@
                                     <b class="text-primary mb-3">${val.property_rent_price}/Month</b>
                                 <span class="dot"></span>
                                 <span class="text-primary">${val.property_type}</span>&nbsp;<span class="dot"></span><span class="text-primary">&nbsp;${val.selling_option}</span></a>
-                                    <a href="/property_details/${key}">
+                                    <a href="/property_details/${key}"> 
                                         <span><i class="fa fa-map-marker-alt text-primary me-2"></i><span class="text-primary">${val.property_address.slice(0, maxLength) + '...'}</span></span> 
+                                    </a> 
                                         <span style="position: absolute; bottom:0; right:10px;">
-                                            <h5><i class="fa fa-bookmark" aria-hidden="true"></i></h5>
+                                            <h5><i class="fa fa-bookmark-o saved_property" aria-hidden="true" prop_id="${key}" onclick="bookmark_property(this);"></i></h5>
                                         </span>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -613,6 +614,7 @@
                 "search_object": JSON.stringify(search_object),
             },
             success: function (property_data) {
+
                 var i = 0;
                 property_id = property_data["id"];
                 property_data = property_data['property_data'];
@@ -620,7 +622,6 @@
                 if (property_data) {
                     $(".property_counter").empty();
                     for (var [key, val] of Object.entries(property_data)) {
-                        //console.log(property_id[i]); 
                         $(".property_counter").append(` 
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
@@ -655,10 +656,10 @@
                                     <a class="d-block mb-2 text-dark" href="/property_details/${property_id[i]}">${val.property_type}, For ${val.selling_option}</a>
                                     <a href="/property_details/${property_id[i]}">
                                         <span><i class="fa fa-map-marker-alt text-primary me-2"></i><span class="text-primary">${val.property_address.slice(0, maxLength) + '...'}</span></span> 
-                                        <span style="position: absolute; bottom:0; right:10px;">
-                                            <h5><i class="fa fa-bookmark" aria-hidden="true"></i></h5>
-                                        </span>
                                     </a>
+                                        <span style="position: absolute; bottom:0; right:10px;">
+                                            <h5><i class="fa fa-bookmark-o saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this);"></i></h5>
+                                        </span>
                                 </div>
                             </div>
                         </div>
@@ -675,7 +676,9 @@
     }
 
     $(document).ready(function (e) {
-
+        $('.saved_property').on('click', function () {
+            $(this).toggleClass('fa-bookmark-o fa-bookmark');
+        });
         // advance filter configuration by country 
         $('#country_based').change(function (e) {
             //alert("Clikced!"); 
@@ -741,7 +744,21 @@
         `);
         setTimeout(function () {
             search_property_based_on_input_field_values(search_delay_field)
-        }, 2000);
+        }, 500);
     }
+    function bookmark_property(property_id) {
+
+        var property_id = $(property_id).attr("prop_id");
+        $.ajax({
+            url: "{% url 'bookmark_property_detail' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                'property_id': property_id,
+            },
+            success: function (response) {
+            }
+        });
+    } 
 </script>
 {% endblock %}
