@@ -442,6 +442,9 @@
 </div>
 
 <script>
+    var saved_property_list = `{{ saved_property_list|safe }}`.toString();
+    var saved_property_list = JSON.parse(saved_property_list.replace(/'/g, "\""));
+    console.log(saved_property_list);
     var maxLength = 20;
     // focus and click to secondry nav bar 
     var elements = document.getElementsByClassName('p_type_btn');
@@ -453,6 +456,11 @@
     setTimeout(function () {
         $(requiredElement).focus();
     }, 500);
+
+    $('.saved_property').on('click', function () {
+
+        $(this).toggleClass('fa-bookmark-o fa-bookmark');
+    });
 
     var property_type_val = "all";
     function active_class(selector) {
@@ -472,10 +480,12 @@
             },
             success: function (data) {
                 if (Object.keys(data.prop_data).length != 0) {
+
                     $(".property_counter").empty();
                     // console.log(data.prop_data);
                     $.each(data.prop_data, function (key, val) {
-
+                        var is_bookmark = saved_property_list.includes(key.toString());
+                        var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${key}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
                         $(".property_counter").append(` 
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
@@ -513,7 +523,9 @@
                                         <span><i class="fa fa-map-marker-alt text-primary me-2"></i><span class="text-primary">${val.property_address.slice(0, maxLength) + '...'}</span></span> 
                                     </a> 
                                         <span style="position: absolute; bottom:0; right:10px;">
-                                            <h5><i class="fa fa-bookmark-o saved_property" aria-hidden="true" prop_id="${key}" onclick="bookmark_property(this);"></i></h5>
+                                            <h5>
+                                                ${bookmark_icon}  
+                                            </h5>
                                         </span>
                                 </div>
                             </div>
@@ -614,14 +626,15 @@
                 "search_object": JSON.stringify(search_object),
             },
             success: function (property_data) {
-
-                var i = 0;
                 property_id = property_data["id"];
                 property_data = property_data['property_data'];
+                var i = 0;
                 //console.log(property_id);
                 if (property_data) {
                     $(".property_counter").empty();
                     for (var [key, val] of Object.entries(property_data)) {
+                        var is_bookmark = saved_property_list.includes(property_id[i].toString());
+                        var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
                         $(".property_counter").append(` 
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
@@ -658,7 +671,9 @@
                                         <span><i class="fa fa-map-marker-alt text-primary me-2"></i><span class="text-primary">${val.property_address.slice(0, maxLength) + '...'}</span></span> 
                                     </a>
                                         <span style="position: absolute; bottom:0; right:10px;">
-                                            <h5><i class="fa fa-bookmark-o saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this);"></i></h5>
+                                            <h5>
+                                                ${bookmark_icon} 
+                                            </h5>
                                         </span>
                                 </div>
                             </div>
@@ -676,9 +691,6 @@
     }
 
     $(document).ready(function (e) {
-        $('.saved_property').on('click', function () {
-            $(this).toggleClass('fa-bookmark-o fa-bookmark');
-        });
         // advance filter configuration by country 
         $('#country_based').change(function (e) {
             //alert("Clikced!"); 
