@@ -3,5 +3,79 @@
 {% block about %}active{% endblock %}
 {% block main_content %}
 <!-- Header Start -->
+<!DOCTYPE html>
+<html>
 
+<head>
+    <title>Toaster Demo</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="jquery-toaster.js"></script>
+    <style>
+        .toaster {
+            position: fixed;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            border-radius: 5px;
+            z-index: 9999;
+        }
+
+        .bottom-center {
+            bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="showToaster" class="mt-5">Show Toaster</button>
+
+    <script>
+        $(document).ready(function () {
+            $("#showToaster").on("click", function () {
+                $.fn.toaster("Link Copied", {
+                    duration: 2000,
+                    position: "bottom-center",
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+<script>
+    (function ($) {
+        $.fn.toaster = function (message, options) {
+            var settings = $.extend(
+                {
+                    duration: 3000,
+                    position: "bottom-center",
+                },
+                options
+            );
+
+            var toasterElement = $("<div>", { class: "toaster" })
+                .text(message)
+                .appendTo("body")
+                .addClass(settings.position)
+                .hide()
+                .fadeIn();
+
+            // Adjust the position based on the chosen option
+            if (settings.position === "bottom-center") {
+                var leftPosition = (window.innerWidth - toasterElement.outerWidth()) / 2;
+                toasterElement.css("left", leftPosition);
+            }
+
+            setTimeout(function () {
+                toasterElement.fadeOut(function () {
+                    $(this).remove();
+                });
+            }, settings.duration);
+        };
+    })(jQuery);
+
+
+</script>
 {% endblock %}
