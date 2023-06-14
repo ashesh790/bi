@@ -122,3 +122,10 @@ function showPosition(position) {
     $("#longitude").val(lng);
 }
 getLocation();
+
+function toaster_call(message) {
+    $.fn.toaster(message, {
+        duration: 2000,
+        position: "bottom-center",
+    });
+} 

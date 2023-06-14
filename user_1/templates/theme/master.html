@@ -327,6 +327,42 @@
             color: white;
             border: solid;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -427,11 +463,30 @@
         </div>
         <!-- Footer End -->
 
-
         <!-- Back to Top -->
         {% block btn_shortcut%}<a href="{% url 'add_property_details' %}" class="btn btn-primary add_property_btn">Add
             Property</a>{% endblock %}
     </div>
+
+    <!-- Universal modals -->
+    <div id="shareModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <button class="btn btn-primary-outline" onclick="shareURL()">Share on WhatsApp</button>
+            <button class="btn btn-primary-outline" onclick="copyURL()">Copy URL</button>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#showToaster").on("click", function () {
+                $.fn.toaster("Link Copied", {
+                    duration: 2000,
+                    position: "bottom-center",
+                });
+            });
+        });
+    </script>
     <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'theme/lib/wow/wow.min.js' %}"></script>
@@ -465,6 +520,77 @@
                     }
                 });
         }, 5000);
+        // Function to open the modal
+        function openModal() {
+            var modal = document.getElementById("shareModal");
+            modal.style.display = "block";
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            var modal = document.getElementById("shareModal");
+            modal.style.display = "none";
+        }
+
+        // Function to share the URL on WhatsApp
+        function shareURL() {
+            var url = window.location.href;
+            var shareText = "Check out this URL: " + url;
+            var encodedShareText = encodeURIComponent(shareText);
+            var shareURL = "https://api.whatsapp.com/send?text=" + encodedShareText;
+            window.open(shareURL);
+            closeModal();
+        }
+
+        // Function to copy the URL to the clipboard
+        function copyURL() {
+            var url = window.location.href;
+            navigator.clipboard.writeText(url).then(function () {
+                closeModal();
+                toaster_call("Link Copied!");
+            }, function () {
+                alert("Copying URL failed. Please manually copy the URL.");
+                closeModal();
+            });
+        }
+
+        // Event listener to close the modal when clicking on the close button or outside the modal
+        window.addEventListener("click", function (event) {
+            var modal = document.getElementById("shareModal");
+            if (event.target == modal) {
+                closeModal();
+            }
+        });
+        (function ($) {
+            $.fn.toaster = function (message, options) {
+                var settings = $.extend(
+                    {
+                        duration: 3000,
+                        position: "bottom-center",
+                    },
+                    options
+                );
+
+                var toasterElement = $("<div>", { class: "toaster" })
+                    .text(message)
+                    .appendTo("body")
+                    .addClass(settings.position)
+                    .hide()
+                    .fadeIn();
+
+                // Adjust the position based on the chosen option
+                if (settings.position === "bottom-center") {
+                    var leftPosition = (window.innerWidth - toasterElement.outerWidth()) / 2;
+                    toasterElement.css("left", leftPosition);
+                }
+
+                setTimeout(function () {
+                    toasterElement.fadeOut(function () {
+                        $(this).remove();
+                    });
+                }, settings.duration);
+            };
+        })(jQuery);
     </script>
 </body>
 
