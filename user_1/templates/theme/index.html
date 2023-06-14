@@ -12,10 +12,6 @@
         overflow: auto;
     }
 
-    #prop_item {
-        height: 300px !important;
-    }
-
     #property_details {
         width: 100%;
         height: 190px;
@@ -30,10 +26,18 @@
         display: block;
     }
 
-    #tooltip_parent {
-        position: absolute;
-        bottom: 0;
-        right: 10px;
+    .toaster {
+        position: fixed;
+        padding: 10px;
+        background-color: #333;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        border-radius: 5px;
+        z-index: 9999;
+    }
+
+    .bottom-center {
+        bottom: 20px;
     }
 </style>
 <div class="col-md-12">
@@ -42,7 +46,7 @@
             <div class="row g-4 property_counter gallery" id="prop_count_gallery">
                 {% for i in property_data %}
                 <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="property-item rounded overflow-hidden border" id="prop_item">
+                    <div class="property-item rounded border" id="prop_item">
                         <div class="position-relative overflow-hidden">
                             <div id="carouselExampleControlsNoTouching{{i.id}}" class="carousel slide"
                                 data-interval="true" data-bs-touch="false">
@@ -103,33 +107,32 @@
                                         {{i.property_data.property_address|truncatechars:20}}...
                                     </span>
                                 </a>
-                                <span>
-                                    <h5>
-                                        {% if i.id|stringformat:"s" in saved_property_list %}
-                                        <i class="fa fa-bookmark saved_property" id="tooltip_parent"
-                                            data-bs-toggle="tooltip" prop_id="{{i.id}}"
-                                            onclick="bookmark_property(this);" data-bs-placement="top"
-                                            data-bs-title="Tooltip on top"></i>
-                                        {% else %}
-                                        <i class="fa fa-bookmark-o saved_property" id="tooltip_parent"
-                                            data-bs-toggle="tooltip" prop_id="{{i.id}}"
-                                            onclick="bookmark_property(this);" data-bs-placement="top"
-                                            data-bs-title="Tooltip on top"></i>
-                                        {% endif %}
-                                    </h5>
-                                </span>
                             </a>
                         </div>
-                    </div>
-                    <div class="rounded overflow-hidden border">
                         <div class="d-flex border-top">
-                            <small class="flex-fill text-center border-end py-2"><i
-                                    class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</small>
-                            <small class="flex-fill text-center border-end py-2"><i
-                                    class="fa fa-bed text-primary me-2"></i>3
-                                Bed</small>
-                            <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>2
-                                Bath</small>
+                            <small class="flex-fill text-center mt-2">
+                                <h5>
+                                    <i class="fa fa-phone"></i>
+                                </h5>
+                            </small>
+                            <small class="flex-fill text-center mt-2">
+                                <h5>
+                                    <i class="fa fa-share-alt" onclick="openModal();"></i>
+                                </h5>
+                            </small>
+                            <small class="flex-fill text-center mt-2">
+                                <h5>
+                                    {% if i.id|stringformat:"s" in saved_property_list %}
+                                    <i class="fa fa-bookmark saved_property" id="tooltip_parent"
+                                        data-bs-toggle="tooltip" prop_id="{{i.id}}" onclick="bookmark_property(this);"
+                                        data-bs-placement="top" data-bs-title="Tooltip on top"></i>
+                                    {% else %}
+                                    <i class="fa fa-bookmark-o saved_property" id="tooltip_parent"
+                                        data-bs-toggle="tooltip" prop_id="{{i.id}}" onclick="bookmark_property(this);"
+                                        data-bs-placement="top" data-bs-title="Tooltip on top"></i>
+                                    {% endif %}
+                                </h5>
+                            </small>
                         </div>
                     </div>
                 </div>
