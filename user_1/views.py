@@ -574,10 +574,10 @@ def bookmark_property_detail(request):
         property_id = request.POST["property_id"]
         user_id = request.session["user_id"]
         user_data = User_register.objects.get(user_id=user_id)
-        remove_property = (
+        removed_property = (
             True if "remove_saved_property" in list(request.POST) else False
         )
-        if not remove_property:
+        if not removed_property:
             if property_id in user_data.user_other_data["saved_property"]:
                 user_data.user_other_data["saved_property"].remove(property_id)
                 user_data.save()

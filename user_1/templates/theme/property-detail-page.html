@@ -149,14 +149,14 @@
                                         </span>
                                     </div>
                                     <div class="col-3">
-                                        <span id="{{i.id}}" onclick="bookmark_property(this);">
+                                        <span id="{{property_id}}" onclick="bookmark_property(this);">
                                             <h5 class="icon_form_contact" id="contect_icon"><i
                                                     class="fa fa-bookmark-o text-white mt-1" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
                                         </span>
                                     </div>
                                     <div class="col-3">
-                                        <span onclick="openModal();">
+                                        <span onclick="openModal(this);" url="property_details/{{property_id}}">
                                             <h5 class="icon_form_contact" id="contect_icon"><i
                                                     class="fa fa-share-alt text-white mt-1" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>

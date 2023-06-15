@@ -8,10 +8,6 @@
         width: 100%;
     }
 
-    #prop_count_gallery {
-        overflow: auto;
-    }
-
     #property_details {
         width: 100%;
         height: 190px;
@@ -24,20 +20,6 @@
     #Month {
         background-color: white;
         display: block;
-    }
-
-    .toaster {
-        position: fixed;
-        padding: 10px;
-        background-color: #333;
-        color: #fff;
-        font-family: Arial, sans-serif;
-        border-radius: 5px;
-        z-index: 9999;
-    }
-
-    .bottom-center {
-        bottom: 20px;
     }
 </style>
 <div class="col-md-12">
@@ -90,37 +72,33 @@
                                 class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                 {{i.property_data.property_type}}</div> -->
                         </div>
-                        <div class="p-4 pb-0" id="Month_parent">
-                            <a class="d-block mb-2" href="property_details/{{i.id}}" id="/Month"><b
-                                    class="text-primary mb-3">{{i.property_data.property_rent_price}}/Month
-                                </b>
-                                <span class="dot"></span>
-                                <span class="text-dark">
-                                    <span class="text-primary"><b>{{i.property_data.property_type}}</b></span>,
-                                    For
-                                    <span class="text-primary"><b></b>{{i.property_data.selling_option}}</b></span>
-                                </span>
-                                <a href="property_details/{{i.id}}">
-                                    <i class="fa fa-map-marker-alt text-primary me-2">
-                                    </i>
-                                    <span class="property_address">
-                                        {{i.property_data.property_address|truncatechars:20}}...
-                                    </span>
-                                </a>
+                        <div class="p-3 pb-0">
+                            <a class="d-block mb-2" href="property_details/{{i.id}}" id="/Month">
+                                <h5 class="text-primary mb-2">${{i.property_data.property_rent_price}}</h5>
                             </a>
+                            <a class="d-block mb-2" href="property_details/{{i.id}}">
+                                <b class="d-block h5 mb-2">{{i.property_data.property_type}} For
+                                    {{i.property_data.selling_option}}
+                                </b>
+                            </a>
+                            <p>
+                                <i
+                                    class="fa fa-map-marker text-primary me-2"></i>{{i.property_data.property_address|truncatechars:20}}...
+                            </p>
                         </div>
                         <div class="d-flex border-top">
-                            <small class="flex-fill text-center mt-2">
+                            <small class="flex-fill text-center mt-1">
                                 <h5>
                                     <i class="fa fa-phone"></i>
                                 </h5>
                             </small>
-                            <small class="flex-fill text-center mt-2">
+                            <small class="flex-fill text-center mt-1">
                                 <h5>
-                                    <i class="fa fa-share-alt" onclick="openModal();"></i>
+                                    <i class="fa fa-share-alt" url="property_details/{{i.id}}"
+                                        onclick="openModal(this);"></i>
                                 </h5>
                             </small>
-                            <small class="flex-fill text-center mt-2">
+                            <small class="flex-fill text-center mt-1">
                                 <h5>
                                     {% if i.id|stringformat:"s" in saved_property_list %}
                                     <i class="fa fa-bookmark saved_property" id="tooltip_parent"

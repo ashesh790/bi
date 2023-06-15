@@ -488,7 +488,7 @@
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${key}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
                         $(".property_counter").append(` 
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
+                            <div class="property-item rounded overflow-hidden border prop_item">
                                 <div class="position-relative overflow-hidden"> 
                                     <div id="carouselExampleControls${key}" class="carousel slide" data-ride="carousel">
                                         <div class="carousel-inner">
@@ -514,19 +514,36 @@
                                         class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                         ${val.property_type}</div>
                                 </div>
-                                <div class="p-3 pb-0" style="position: relative;">  
-                                    <a href="/property_details/${key}" class="text-dark d-block">
-                                    <b class="text-primary mb-3">${val.property_rent_price}/Month</b>
-                                <span class="dot"></span>
-                                <span class="text-primary">${val.property_type}</span>&nbsp;<span class="dot"></span><span class="text-primary">&nbsp;${val.selling_option}</span></a>
-                                    <a href="/property_details/${key}"> 
-                                        <span><i class="fa fa-map-marker-alt text-primary me-2"></i><span class="text-primary">${val.property_address.slice(0, maxLength) + '...'}</span></span> 
-                                    </a> 
-                                        <span style="position: absolute; bottom:0; right:10px;">
-                                            <h5>
-                                                ${bookmark_icon}  
-                                            </h5>
-                                        </span>
+                                <div class="p-3 pb-0">
+                                    <a class="d-block mb-2" href="property_details/${key}" id="/Month">
+                                        <h5 class="text-primary mb-2">${val.property_rent_price}</h5>
+                                    </a>
+                                    <a class="d-block mb-2" href="property_details/${key}">
+                                        <b class="d-block h5 mb-2">${val.property_type} For
+                                            ${val.selling_option}
+                                        </b>
+                                    </a>
+                                    <p>
+                                        <i
+                                            class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, maxLength) + '...'}
+                                    </p>
+                                </div>
+                                <div class="d-flex border-top">
+                                    <small class="flex-fill text-center mt-1">
+                                        <h5>
+                                            <i class="fa fa-phone"></i>
+                                        </h5>
+                                    </small>
+                                    <small class="flex-fill text-center mt-1">
+                                        <h5>
+                                            <i class="fa fa-share-alt" url="property_details/${key}" onclick="openModal(this);"></i>
+                                        </h5>
+                                    </small>
+                                    <small class="flex-fill text-center mt-1">
+                                        <h5>
+                                            ${bookmark_icon}
+                                        </h5>
+                                    </small>
                                 </div>
                             </div>
                         </div>
@@ -637,7 +654,7 @@
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
                         $(".property_counter").append(` 
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
+                            <div class="property-item rounded overflow-hidden border prop_item">
                                 <div class="position-relative overflow-hidden"> 
                                     <div id="carouselExampleControls${property_id[i]}" class="carousel slide" data-ride="carousel">
                                         <div class="carousel-inner">
@@ -662,19 +679,36 @@
                                         class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                         ${val.property_type}</div>
                                 </div>
-                                <div class="p-3 pb-0" style="position: relative;">
-                                    <a href="/property_details/${property_id[i]}" class="text-dark d-block" style="display: block;">
-                                    <b class="text-primary mb-3">${val.property_rent_price}/Month</b>
+                                <div class="p-3 pb-0">
+                                    <a class="d-block mb-2" href="property_details/${key}" id="/Month">
+                                        <h5 class="text-primary mb-2">${val.property_rent_price}</h5>
                                     </a>
-                                    <a class="d-block mb-2 text-dark" href="/property_details/${property_id[i]}">${val.property_type}, For ${val.selling_option}</a>
-                                    <a href="/property_details/${property_id[i]}">
-                                        <span><i class="fa fa-map-marker-alt text-primary me-2"></i><span class="text-primary">${val.property_address.slice(0, maxLength) + '...'}</span></span> 
+                                    <a class="d-block mb-2" href="property_details/${key}">
+                                        <b class="d-block h5 mb-2">${val.property_type} For
+                                            ${val.selling_option}
+                                        </b>
                                     </a>
-                                        <span style="position: absolute; bottom:0; right:10px;">
-                                            <h5>
-                                                ${bookmark_icon} 
-                                            </h5>
-                                        </span>
+                                    <p>
+                                        <i
+                                            class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, maxLength) + '...'}
+                                    </p>
+                                </div>
+                                <div class="d-flex border-top">
+                                    <small class="flex-fill text-center mt-1">
+                                        <h5>
+                                            <i class="fa fa-phone"></i>
+                                        </h5>
+                                    </small>
+                                    <small class="flex-fill text-center mt-1">
+                                        <h5>
+                                            <i class="fa fa-share-alt" url="property_details/${property_id[i]}" onclick="openModal(this);"></i>
+                                        </h5>
+                                    </small>
+                                    <small class="flex-fill text-center mt-1">
+                                        <h5>
+                                            ${bookmark_icon}
+                                        </h5>
+                                    </small>
                                 </div>
                             </div>
                         </div>
@@ -769,6 +803,13 @@
                 'property_id': property_id,
             },
             success: function (response) {
+                if (response == "Removed") {
+                    toaster_call("Removed!")
+                }
+                else {
+                    toaster_call("Saved!")
+                }
+
             }
         });
     } 

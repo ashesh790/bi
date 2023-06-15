@@ -128,4 +128,4 @@ function toaster_call(message) {
         duration: 2000,
         position: "bottom-center",
     });
-} 
+}

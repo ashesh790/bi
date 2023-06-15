@@ -363,6 +363,24 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+        #prop_item {
+            height: 350px !important;
+        }
+
+        .toaster {
+            position: fixed;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            border-radius: 5px;
+            z-index: 9999;
+        }
+
+        .bottom-center {
+            bottom: 20px;
+        }
     </style>
 </head>
 
@@ -499,6 +517,8 @@
     <!-- Template Javascript -->
     <script src="{% static 'theme/js/main.js' %}"></script>
     <script>
+        var share_url_for_specific_peroperty = "";
+        var DOMAIN_NAME = "http://127.0.0.1:8000"
         setTimeout(function () {
             var latitude = $("#latitude").val();
             var longitude = $("#longitude").val();
@@ -521,7 +541,9 @@
                 });
         }, 5000);
         // Function to open the modal
-        function openModal() {
+        function openModal(url) {
+            share_url_for_specific_peroperty = `${DOMAIN_NAME}/${create_share_link(url)}`;
+            debugger
             var modal = document.getElementById("shareModal");
             modal.style.display = "block";
         }
@@ -534,7 +556,7 @@
 
         // Function to share the URL on WhatsApp
         function shareURL() {
-            var url = window.location.href;
+            var url = share_url_for_specific_peroperty;
             var shareText = "Check out this URL: " + url;
             var encodedShareText = encodeURIComponent(shareText);
             var shareURL = "https://api.whatsapp.com/send?text=" + encodedShareText;
@@ -544,7 +566,7 @@
 
         // Function to copy the URL to the clipboard
         function copyURL() {
-            var url = window.location.href;
+            var url = share_url_for_specific_peroperty;
             navigator.clipboard.writeText(url).then(function () {
                 closeModal();
                 toaster_call("Link Copied!");
@@ -591,6 +613,11 @@
                 }, settings.duration);
             };
         })(jQuery);
+        function create_share_link(url) {
+            debugger
+            var url = $(url).attr("url");
+            return url;
+        }
     </script>
 </body>
 
