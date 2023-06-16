@@ -28,54 +28,20 @@
 </head>
 
 <body>
-    <button id="showToaster" class="mt-5">Show Toaster</button>
-
-    <script>
-        $(document).ready(function () {
-            $("#showToaster").on("click", function () {
-                $.fn.toaster("Link Copied", {
-                    duration: 2000,
-                    position: "bottom-center",
-                });
-            });
-        });
-    </script>
+    <table>
+        <tr>
+            <td>
+                <a href="tel:+900300400">Phone: 900 300 400</a>
+            </td>
+        </tr>
+    </table>
 </body>
 
 </html>
 
 <script>
-    (function ($) {
-        $.fn.toaster = function (message, options) {
-            var settings = $.extend(
-                {
-                    duration: 3000,
-                    position: "bottom-center",
-                },
-                options
-            );
-
-            var toasterElement = $("<div>", { class: "toaster" })
-                .text(message)
-                .appendTo("body")
-                .addClass(settings.position)
-                .hide()
-                .fadeIn();
-
-            // Adjust the position based on the chosen option
-            if (settings.position === "bottom-center") {
-                var leftPosition = (window.innerWidth - toasterElement.outerWidth()) / 2;
-                toasterElement.css("left", leftPosition);
-            }
-
-            setTimeout(function () {
-                toasterElement.fadeOut(function () {
-                    $(this).remove();
-                });
-            }, settings.duration);
-        };
-    })(jQuery);
-
-
+    function openApplication() {
+        window.open('tell://');
+    }
 </script>
 {% endblock %}

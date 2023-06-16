@@ -370,7 +370,6 @@ def home(request):
         saved_property_list = saved_property_ids(user_id)
         property_category = property_bound_data()
         property_data = p_detail.objects.all()
-        reload_location = True
         city_name = ""
         boundry_data = advance_filter_boundary(request)
         boundry_data = json.loads(boundry_data.content)
@@ -388,6 +387,7 @@ def home(request):
                 "country": boundry_data["country"],
                 "city_name": city_name,
                 "saved_property_list": saved_property_list,
+                "user_phone_number": request.session["user_mobile_number"],
             },
         )
     except Exception as ex:
@@ -482,13 +482,12 @@ def property_sell_option_wise(request):
 
 def show_full_property_detail(request, property_id):
     try:
-        property_data = p_detail.objects.all()
         data = p_detail.objects.get(id=property_id)
         data = data.property_data
         return render(
             request,
             "theme/property-detail-page.html",
-            {"data": data, "property_id": property_id, "property_data": property_data},
+            {"data": data, "property_id": property_id},
         )
     except Exception as ex:
         return render(request, "theme/404.html")
