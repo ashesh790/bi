@@ -370,13 +370,18 @@ def home(request):
         saved_property_list = saved_property_ids(user_id)
         property_category = property_bound_data()
         property_data = p_detail.objects.all()
+        property_data_all = {}
+        for i in property_data:
+            user_mobile = user_all_details(request, i.id)
+            user_mobile = user_mobile["user_mobile"]
+            property_data_all[f"{user_mobile}__{i.id}"] = i
         city_name = ""
         boundry_data = advance_filter_boundary(request)
         boundry_data = json.loads(boundry_data.content)
-        if "location_number" in list(request.session.keys()):
-            location_property, city_name = show_property_location_wise(request)
-            if len(location_property) > 0 and location_property is not None:
-                property_data = location_property
+        # if "location_number" in list(request.session.keys()):
+        #     location_property, city_name = show_property_location_wise(request)
+        #     if len(location_property) > 0 and location_property is not None:
+        #         property_data = location_property
         return render(
             request,
             "theme/index.html",
@@ -387,7 +392,7 @@ def home(request):
                 "country": boundry_data["country"],
                 "city_name": city_name,
                 "saved_property_list": saved_property_list,
-                "user_phone_number": request.session["user_mobile_number"],
+                "property_data_all": property_data_all,
             },
         )
     except Exception as ex:
@@ -490,62 +495,29 @@ def show_full_property_detail(request, property_id):
             {"data": data, "property_id": property_id},
         )
     except Exception as ex:
+        print(ex)
         return render(request, "theme/404.html")
 
 
-def property_post_modal_management(request):
+def user_all_details(request, property_id):
     try:
-        sale_type = request.POST["p_dtl_btn_val"]
-        property_id = request.POST["property_id"]
-        if sale_type == "saller_detail":
-            data = p_detail.objects.get(id=property_id)
-            user_id = data.seller_id.pk
-            user_data = User_register.objects.get(pk=user_id)
-            user_email = user_data.user_email
-            user_name = user_data.user_name
-            user_mobile = user_data.user_mobile
-            user_gender = user_data.user_gender
-            saller_data = {
-                "Saller email": user_email,
-                "Saller name": user_name,
-                "Saller mobile": user_mobile,
-                "Saller gender": user_gender,
-            }
-            return HttpResponse(json.dumps({"saller_data": saller_data}))
-        elif sale_type == "save_post":
-            pass
-        elif sale_type == "share_post":
-            pass
-        elif sale_type == "submit_btn_dc":
-            property_id = request.POST["property_id"]
-            sender_name = request.POST["sender_name"]
-            sender_mobile = request.POST["sender_mobile"]
-            sender_email = request.POST["sender_email"]
-            description = request.POST["description"]
-            inquiry_dtl = {
-                "property_id": property_id,
-                "sender_name": sender_name,
-                "sender_mobile": sender_mobile,
-                "sender_email": sender_email,
-                "description": description,
-            }
-            # inquiry_dtl = json.dumps(inquiry_dtl)
-            data = p_detail.objects.get(id=property_id)
-            user_id = data.seller_id.pk
-            save_data = User_register.objects.get(pk=user_id)
-            user_data = save_data.user_other_data
-            if user_data is not None or len(user_data) != 0:
-                # user_data = json.loads(user_data)
-                user_data["inquiry_dtl"].append(inquiry_dtl)
-                save_data.user_other_data = user_data
-            else:
-                user_data = {"inquiry_dtl": [inquiry_dtl]}
-                # user_data = json.dumps(user_data)
-                save_data.user_other_data = user_data
-            save_data.save()
-        return HttpResponse(json.dumps({"sale_type": sale_type}))
+        data = p_detail.objects.get(id=property_id)
+        user_id = data.seller_id.pk
+        user_data = User_register.objects.get(pk=user_id)
+        user_email = user_data.user_email
+        user_name = user_data.user_name
+        user_mobile = user_data.user_mobile
+        user_gender = user_data.user_gender
+        saller_data = {
+            "user_email": user_email,
+            "user_name": user_name,
+            "user_mobile": user_mobile,
+            "user_gender": user_gender,
+        }
+
+        return saller_data
     except Exception as ex:
-        return render(request, "theme/404.html")
+        print(ex)
 
 
 def inquiries_from_user(request):

@@ -90,9 +90,9 @@ urlpatterns = [
         name="property_details",
     ),
     path(
-        "show_required_model",
-        views.property_post_modal_management,
-        name="property_post_modal_management",
+        "user_all_details",
+        views.user_all_details,
+        name="user_all_detais",
     ),
     path("test_function", views.test_function, name="test_function"),
     path("inquiries_from_user", views.inquiries_from_user, name="inquiries_from_user"),
