@@ -217,8 +217,15 @@ def show_property_location_wise(request):
     latitude = request.session["location_number"]["latitude"]
     longitude = request.session["location_number"]["longitude"]
     address_dict = get_location_name(latitude, longitude)
-    property = search_properties(request, address_dict, reload_location)
-    return property, address_dict["city"]
+    if address_dict is not None or len(address_dict) > 0:
+        if address_dict["city"] != "" and address_dict["city"] is not None:
+            location_fetched = address_dict["city"]
+        elif address_dict["state"] != "" and address_dict["state"] is not None:
+            location_fetched = address_dict["state"]
+        elif address_dict["country"] != "" and address_dict["country"] is not None:
+            location_fetched = address_dict["country"]
+    property = search_properties(request, location_fetched, reload_location)
+    return property, location_fetched
     # data = p_detail.objects.all()
     # property_data = {}
     # for i in data:
@@ -245,3 +252,24 @@ def saved_property_ids(user_id):
     for property_id in user_data.user_other_data["saved_property"]:
         saved_property_list.append(property_id)
     return saved_property_list
+
+
+def user_all_details(request, property_id):
+    try:
+        data = p_detail.objects.get(id=property_id)
+        user_id = data.seller_id.pk
+        user_data = User_register.objects.get(pk=user_id)
+        user_email = user_data.user_email
+        user_name = user_data.user_name
+        user_mobile = user_data.user_mobile
+        user_gender = user_data.user_gender
+        saller_data = {
+            "user_email": user_email,
+            "user_name": user_name,
+            "user_mobile": user_mobile,
+            "user_gender": user_gender,
+        }
+
+        return saller_data
+    except Exception as ex:
+        print(ex)

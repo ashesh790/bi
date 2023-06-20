@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from user_1.apis.fetch_api.country_api import country_list
 from django.core import serializers
 from django.http import JsonResponse
-from user_1.models import p_detail
+from user_1.models import User_register, p_detail
 
 
 def advance_filter_boundary(request):
@@ -23,8 +23,9 @@ def advance_filter_boundary(request):
 
 
 def search_properties(request, address_dict=None, reload_location=None):
+    property_data_all = {}
     if reload_location is not None:
-        address_dict = {"place_name": address_dict["city"]}
+        address_dict = {"place_name": address_dict}
         if address_dict is not None:
             property_details = address_dict
     else:
@@ -62,6 +63,27 @@ def search_properties(request, address_dict=None, reload_location=None):
             return JsonResponse(search_results)
         else:
             return HttpResponse("No data found")
+
+
+def user_all_details(request, property_id):
+    try:
+        data = p_detail.objects.get(id=property_id)
+        user_id = data.seller_id.pk
+        user_data = User_register.objects.get(pk=user_id)
+        user_email = user_data.user_email
+        user_name = user_data.user_name
+        user_mobile = user_data.user_mobile
+        user_gender = user_data.user_gender
+        saller_data = {
+            "user_email": user_email,
+            "user_name": user_name,
+            "user_mobile": user_mobile,
+            "user_gender": user_gender,
+        }
+
+        return saller_data
+    except Exception as ex:
+        print(ex)
 
 
 def search_properties_by_string(request):

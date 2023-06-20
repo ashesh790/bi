@@ -15,3 +15,5 @@ media/
 .myvenv
 bi 
 database 
+venv 
+venv2 

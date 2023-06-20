@@ -41,6 +41,7 @@ from user_1.apis.fetch_api.main_functions import (
     update_property_data_record,
     update_property_image,
     save_location,
+    user_all_details,
 )
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
 from user_1.models import User_register, p_detail
@@ -366,6 +367,7 @@ def crud_property(request):
 
 def home(request):
     try:
+        location_fetched = ""
         user_id = request.session["user_id"]
         saved_property_list = saved_property_ids(user_id)
         property_category = property_bound_data()
@@ -375,13 +377,17 @@ def home(request):
             user_mobile = user_all_details(request, i.id)
             user_mobile = user_mobile["user_mobile"]
             property_data_all[f"{user_mobile}__{i.id}"] = i
-        city_name = ""
         boundry_data = advance_filter_boundary(request)
         boundry_data = json.loads(boundry_data.content)
-        # if "location_number" in list(request.session.keys()):
-        #     location_property, city_name = show_property_location_wise(request)
-        #     if len(location_property) > 0 and location_property is not None:
-        #         property_data = location_property
+        if "location_number" in list(request.session.keys()):
+            location_property, location_fetched = show_property_location_wise(request)
+            if len(location_property) > 0 and location_property is not None:
+                property_data = location_property
+                property_data_all = {}
+            for i in property_data:
+                user_mobile = user_all_details(request, i.id)
+                user_mobile = user_mobile["user_mobile"]
+                property_data_all[f"{user_mobile}__{i.id}"] = i
         return render(
             request,
             "theme/index.html",
@@ -390,7 +396,7 @@ def home(request):
                 "property_data": property_data,
                 "boundry_data": boundry_data["data"],
                 "country": boundry_data["country"],
-                "city_name": city_name,
+                "location_fetched": location_fetched,
                 "saved_property_list": saved_property_list,
                 "property_data_all": property_data_all,
             },

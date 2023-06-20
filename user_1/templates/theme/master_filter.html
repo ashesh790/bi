@@ -202,7 +202,7 @@
                 </div>
                 <div>
                     <input type="text" id="place_name" placeholder="Enter Place Name" onkeyup="delay_search()"
-                        value="{{city_name}}">
+                        value="{{location_fetched}}">
                 </div>
             </div>
         </div>
@@ -643,6 +643,7 @@
                 "search_object": JSON.stringify(search_object),
             },
             success: function (property_data) {
+                debugger
                 property_id = property_data["id"];
                 property_data = property_data['property_data'];
                 var i = 0;
