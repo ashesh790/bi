@@ -372,23 +372,24 @@ def home(request):
         saved_property_list = saved_property_ids(user_id)
         property_category = property_bound_data()
         property_data = p_detail.objects.all()
-        property_data_all = {}
+        property_data_number = []
         for i in property_data:
             user_mobile = user_all_details(request, i.id)
             user_mobile = user_mobile["user_mobile"]
-            property_data_all[f"{user_mobile}__{i.id}"] = i
+            property_data_number.append(user_mobile)
         boundry_data = advance_filter_boundary(request)
         boundry_data = json.loads(boundry_data.content)
         if "location_number" in list(request.session.keys()):
             location_property, location_fetched = show_property_location_wise(request) 
             if location_property is not None and len(location_property) > 0:
                 if len(location_property) > 0 and location_property is not None:
-                    property_data = location_property
-                    property_data_all = {}
+                    property_data = location_property 
+                property_data_number=[] 
                 for i in property_data:
                     user_mobile = user_all_details(request, i.id)
                     user_mobile = user_mobile["user_mobile"]
-                    property_data_all[f"{user_mobile}__{i.id}"] = i
+                    property_data_number.append(user_mobile)
+        property_data = [property_data, property_data_number]
         return render(
             request,
             "theme/index.html",
@@ -399,7 +400,7 @@ def home(request):
                 "country": boundry_data["country"],
                 "location_fetched": location_fetched,
                 "saved_property_list": saved_property_list,
-                "property_data_all": property_data_all,
+                "property_data_number": property_data_number,
             },
         )
     except Exception as ex:

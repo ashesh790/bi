@@ -1,7 +1,7 @@
 {% extends 'theme/master_filter.html' %}
 {% load static %}
 {% block home %}active{% endblock %}
-{% block property %}
+{% block property %} 
 <!-- Search Start -->
 <style>
     img {
@@ -25,8 +25,8 @@
 <div class="col-md-12">
     <div class="tab-content">
         <div id="tab-1" class="tab-pane fade show p-0 active">
-            <div class="row g-4 property_counter gallery" id="prop_count_gallery">
-                {% for key, val in property_data_all.items %}
+            <div class="row g-4 property_counter gallery" id="prop_count_gallery"> 
+                {% for val in property_data|first %} 
                 <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="property-item rounded border" id="prop_item">
                         <div class="position-relative overflow-hidden">
@@ -89,7 +89,7 @@
                         <div class="d-flex border-top">
                             <small class="flex-fill text-center mt-1">
                                 <h5>
-                                    <a href='tel:{{key}}'><i class="fa fa-phone"></i></a>
+                                    <a href='tel:{{ key }}'><i class="fa fa-phone"></i></a>
                                 </h5>
                             </small>
                             <small class="flex-fill text-center mt-1">

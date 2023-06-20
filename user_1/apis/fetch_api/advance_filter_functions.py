@@ -23,7 +23,6 @@ def advance_filter_boundary(request):
 
 
 def search_properties(request, address_dict=None, reload_location=None):
-    property_data_all = {}
     if reload_location is not None:
         address_dict = {"place_name": address_dict}
         if address_dict is not None:
