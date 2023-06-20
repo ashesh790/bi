@@ -643,8 +643,8 @@
                 "search_object": JSON.stringify(search_object),
             },
             success: function (property_data) {
-                debugger
                 property_id = property_data["id"];
+                user_mobile = property_data['user_mobile']
                 property_data = property_data['property_data'];
                 var i = 0;
                 //console.log(property_id);
@@ -697,7 +697,7 @@
                                 <div class="d-flex border-top">
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
-                                            <a href="tel:{{user_phone_number}}"><i class="fa fa-phone"></i></a>
+                                            <a href="tel:${user_mobile[i]}"><i class="fa fa-phone"></i></a>
                                         </h5>
                                     </small>
                                     <small class="flex-fill text-center mt-1">

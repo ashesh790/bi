@@ -212,7 +212,8 @@ def save_location(request):
     return HttpResponse("Location saved")
 
 
-def show_property_location_wise(request):
+def show_property_location_wise(request): 
+    location_fetched = "" 
     reload_location = True
     latitude = request.session["location_number"]["latitude"]
     longitude = request.session["location_number"]["longitude"]
@@ -248,10 +249,13 @@ def get_location_name(latitude, longitude):
 def saved_property_ids(user_id):
     saved_property_list = []
     user_id = user_id
-    user_data = User_register.objects.get(user_id=user_id)
-    for property_id in user_data.user_other_data["saved_property"]:
-        saved_property_list.append(property_id)
-    return saved_property_list
+    user_data = User_register.objects.get(user_id=user_id) 
+    if "saved_property" in user_data.user_other_data:
+        for property_id in user_data.user_other_data["saved_property"]:
+            saved_property_list.append(property_id)
+        return saved_property_list 
+    else: 
+        return None
 
 
 def user_all_details(request, property_id):

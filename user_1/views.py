@@ -380,14 +380,15 @@ def home(request):
         boundry_data = advance_filter_boundary(request)
         boundry_data = json.loads(boundry_data.content)
         if "location_number" in list(request.session.keys()):
-            location_property, location_fetched = show_property_location_wise(request)
-            if len(location_property) > 0 and location_property is not None:
-                property_data = location_property
-                property_data_all = {}
-            for i in property_data:
-                user_mobile = user_all_details(request, i.id)
-                user_mobile = user_mobile["user_mobile"]
-                property_data_all[f"{user_mobile}__{i.id}"] = i
+            location_property, location_fetched = show_property_location_wise(request) 
+            if location_property is not None and len(location_property) > 0:
+                if len(location_property) > 0 and location_property is not None:
+                    property_data = location_property
+                    property_data_all = {}
+                for i in property_data:
+                    user_mobile = user_all_details(request, i.id)
+                    user_mobile = user_mobile["user_mobile"]
+                    property_data_all[f"{user_mobile}__{i.id}"] = i
         return render(
             request,
             "theme/index.html",

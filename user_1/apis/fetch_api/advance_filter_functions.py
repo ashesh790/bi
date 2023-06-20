@@ -31,17 +31,18 @@ def search_properties(request, address_dict=None, reload_location=None):
     else:
         property_details = request.POST["search_object"]
         property_details = json.loads(property_details)
-        if (
-            property_details["property_type"] == "all"
-            or property_details["property_type"] == "All"
-        ):
-            property_details.pop("property_type")
-
-        if (
-            property_details["selling_option"] == "all"
-            or property_details["selling_option"] == "All"
-        ):
-            property_details.pop("selling_option")
+        if "property_type" in property_details:
+            if (
+                property_details["property_type"] == "all"
+                or property_details["property_type"] == "All"
+            ):
+                property_details.pop("property_type")
+        if "selling_option" in property_details:
+            if (
+                property_details["selling_option"] == "all"
+                or property_details["selling_option"] == "All"
+            ):
+                property_details.pop("selling_option")
     query = Q()
     for field, value in property_details.items():
         if field == "place_name":
@@ -56,9 +57,15 @@ def search_properties(request, address_dict=None, reload_location=None):
     if reload_location is not None:
         if search_results is not None:
             return search_results
-    else:
+    else: 
+        user_details = []
         if search_results.exists():
-            search_results = pd.DataFrame(search_results.values())
+            search_results = pd.DataFrame(search_results.values()) 
+            user_ids = list(search_results['id'].values) 
+            for i in user_ids: 
+                user_basic_details = user_all_details(request, i)
+                user_details.append(user_basic_details['user_mobile']) 
+            search_results['user_mobile'] = pd.DataFrame(user_details) 
             search_results = search_results.to_dict()
             return JsonResponse(search_results)
         else:
