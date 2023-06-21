@@ -17,3 +17,4 @@ bi
 database 
 venv 
 venv2 
+*.pyc
