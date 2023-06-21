@@ -341,7 +341,7 @@
             background-color: rgba(0, 0, 0, 0.5);
         }
 
-        .share_modal-content {
+        .share-modal-content {
             background-color: #fefefe;
             margin: 15% auto;
             padding: 20px;
@@ -530,7 +530,7 @@
         // Function to open the modal
         function openModal(url) {
             share_url_for_specific_peroperty = `${DOMAIN_NAME}/${create_share_link(url)}`;
-            debugger
+            
             var modal = document.getElementById("shareModal");
             modal.style.display = "block";
         }
@@ -601,7 +601,7 @@
             };
         })(jQuery);
         function create_share_link(url) {
-            debugger
+            
             var url = $(url).attr("url");
             return url;
         }

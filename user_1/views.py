@@ -559,10 +559,11 @@ def bookmark_property_detail(request):
             True if "remove_saved_property" in list(request.POST) else False
         )
         if not removed_property:
-            if property_id in user_data.user_other_data["saved_property"]:
-                user_data.user_other_data["saved_property"].remove(property_id)
-                user_data.save()
-                return HttpResponse("Removed")
+            if "saved_property" in user_data.user_other_data: 
+                if property_id in user_data.user_other_data["saved_property"]:
+                    user_data.user_other_data["saved_property"].remove(property_id)
+                    user_data.save()
+                    return HttpResponse("Removed")
             if user_data.user_other_data is not None:
                 # user_data.user_other_data["saved_property"].append(property_id)
                 if "saved_property" not in user_data.user_other_data.keys():
