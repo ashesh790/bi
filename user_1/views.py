@@ -601,8 +601,12 @@ def saved_property(request, remaining_property=False):
     try:
         saved_property_dict = {}
         user_id = request.session["user_id"]
-        user_data = User_register.objects.get(user_id=user_id)
-        saved_property_list = user_data.user_other_data["saved_property"]
+        user_data = User_register.objects.get(user_id=user_id) 
+        if "saved_property" in user_data.user_other_data: 
+            saved_property_list = user_data.user_other_data["saved_property"] 
+        else: 
+            context = {"saved_property_dict": "null"}
+            return render(request, "theme/saved_proper.html", context)
         for i in saved_property_list:
             query_data = p_detail.objects.get(id=i)
             saved_property_dict[i] = query_data.property_data
