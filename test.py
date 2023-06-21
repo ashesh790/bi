@@ -1,19 +1,19 @@
-var property_type = $("#property_type").val();
-var property_age = $("#property_age").val();
-var selling_option = $("#selling_option").val();
-var construction_status = $("#construction_status").val();
-var floor = $("#floor").val();
-var bhk = $("#bhk").val();
-var bathroom = $("#bathroom").val();
-var balcony = $("#balcony").val();
-var geo_area = $("#geo_area").val();
-var property_value = $("#property_value").val();
-var property_rent_price = $("#property_rent_price").val();
-var from_avail_property_date = $("#from_avail_property_date").val();
-var property_country = $("#country").val();
-var property_state = $("#state").val();
-var property_city = $("#city").val();
-var property_address = $("#property_address").val();
-var property_description = $("#property_description").val();
-var furnish_type = $("#furnish_type").val();
-var parking_type = $("#parking_type").val();
+def add_usage_charge(charge_id, charged_feature_data): 
+    initialize_shopify_wrapper(userId)
+    usage_charge_data = {
+        'usage_charge': {
+            'description': charged_feature_data.title,
+            'price': charged_feature_data.price,
+            'quantity': 1
+        }
+    }
+
+    url = f'https://adgnosis-test.myshopify.com/admin/api/2023-10/recurring_application_charges/{recurring_charge_id}/usage_charges.json'
+
+    response = requests.post(url, headers=headers, data=json.dumps(usage_charge_data))
+
+    # Check the response
+    if response.status_code == 201:
+        return response
+    else:
+        print_object('Failed to add usage charge. Response:', user_id)

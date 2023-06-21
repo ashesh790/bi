@@ -55,8 +55,13 @@
         cursor: pointer;
         border-radius: 10px;
         box-shadow: 0px 0px 10px 0px #0099ff;
+    } 
+    @media screen and (max-width: 412px) {
+        #main .col-md-7 {
+            padding: 0% !important;
+        } 
     }
-</style>
+</style> 
 <!-- Property List Start -->
 <div class="container-xxl mt-5">
     <div class="">
@@ -142,32 +147,27 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-3">
-                                        <span id="{{i.id}}" onclick="bookmark_property(this);">
+                                        <span id="{{i.id}}">
                                             <h5 class="icon_form_contact" id="contect_icon"><i
                                                     class="fa fa-phone text-white mt-1" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
                                         </span>
                                     </div>
                                     <div class="col-3">
-                                        <span id="{{i.id}}" onclick="bookmark_property(this);">
+                                        <span id="{{property_id}}" onclick="bookmark_property(this);">
                                             <h5 class="icon_form_contact" id="contect_icon"><i
                                                     class="fa fa-bookmark-o text-white mt-1" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
                                         </span>
                                     </div>
                                     <div class="col-3">
-                                        <span id="{{i.id}}" onclick="bookmark_property(this);">
+                                        <span onclick="openModal(this);" url="property_details/{{property_id}}">
                                             <h5 class="icon_form_contact" id="contect_icon"><i
                                                     class="fa fa-share-alt text-white mt-1" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
                                         </span>
                                     </div>
                                     <div class="col-3">
-                                        <!-- <button value="Direct contact to saller" id="direct_contact" type="button"
-                                            data-toggle="modal" data-target="#exampleModal"
-                                            class="btn btn-outline-primary w-100 p_dtl_btn"
-                                            onclick="show_appr_modal(this);">Direct
-                                            Contact</button> -->
                                         <span id="{{i.id}}" onclick="bookmark_property(this);">
                                             <h5 class="icon_form_contact" id="contect_icon"><i
                                                     class="fa fa-comment fa-beat text-white mt-1"
@@ -336,83 +336,6 @@
 <!-- javaScript code -->
 
 <script>
-    function show_appr_modal(element_by_click) {
-        var p_dtl_btn_val = $(element_by_click).attr("id");
-        if (p_dtl_btn_val === "saller_detail") {
-            var property_id = '{{ property_id }}';
-            // alert(property_id); 
-            //console.log(p_dtl_btn_val);
-            $.ajax({
-                url: "{% url 'property_post_modal_management' %}",
-                type: "POST",
-                data: {
-                    csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-                    'p_dtl_btn_val': p_dtl_btn_val,
-                    'property_id': property_id
-                },
-                success: function (response) {
-                    $(".modal-body").empty();
-                    p_dtl_btn_val = p_dtl_btn_val.replace(/_/g, ' ');
-                    p_dtl_btn_val = p_dtl_btn_val.toUpperCase();
-                    $("#exampleModalLabel").text(p_dtl_btn_val);
-                    $(".saller_data_card").hide();
-                    $("#submit_btn").hide();
-                    var response_array = [response]
-                    saller_data = JSON.parse(response)
-                    //console.log(typeof saller_data);
-                    saller_data = saller_data['saller_data']
-                    for (let [key, value] of Object.entries(saller_data)) {
-                        key = key.replace(/_/g, ' ');
-                        //console.log(typeof value);
-                        $(".modal-body").append(`
-                    <div class="col-6 mt-2">
-                        <lable type="text" class="form-lable"><b>${key}</b></lable>
-                      </div>
-                      <div class="col-12 mt-2"> 
-                        <input type="text" class="form-control" value=${value} disabled>
-                      </div>
-                    `)
-                    }
-                },
-                error: function (response) {
-                    //console.log("Error Occured");
-                },
-            });
-        }
-        else if (p_dtl_btn_val == "direct_contact") {
-            $("#submit_btn").show();
-            p_dtl_btn_val = p_dtl_btn_val.replace(/_/g, ' ');
-            p_dtl_btn_val = p_dtl_btn_val.toUpperCase();
-            $("#exampleModalLabel").text(p_dtl_btn_val);
-            $(".modal-body").empty();
-            $(".modal-body").append(`
-                    <div class="col-6 mt-2">
-                        <lable type="text" class="form-lable"><b>Your Name</b></lable>
-                    </div>
-                    <div class="col-12 mt-2"> 
-                        <input type="text" class="form-control" placeholder="John doe">
-                    </div> 
-                    <div class="col-6 mt-2">
-                        <lable type="text" class="form-lable"><b>Mobile Number</b></lable>
-                    </div>
-                    <div class="col-12 mt-2"> 
-                        <input type="text" class="form-control" placeholder="1234567890">
-                    </div> 
-                    <div class="col-6 mt-2">
-                        <lable type="text" class="form-lable"><b>Email Address</b></lable>
-                    </div>
-                    <div class="col-12 mt-2"> 
-                        <input type="text" class="form-control" placeholder="john@gmail.com">
-                    </div> 
-                    <div class="col-6 mt-2">
-                        <lable type="text" class="form-lable"><b>Description</b></lable>
-                    </div>
-                    <div class="col-12 mt-2"> 
-                        <textarea type="text" class="form-control"></textarea> 
-                    </div>
-                    `)
-        }
-    }
     function submit_dtl(p_dtl_btn_val) {
         var p_dtl_btn_val = $(p_dtl_btn_val).attr("id");
         var property_id = '{{ property_id }}';
@@ -422,7 +345,7 @@
         var description = $(".modal-body textarea").val();
 
         $.ajax({
-            url: "{% url 'property_post_modal_management' %}",
+            url: "{% url 'user_all_detais' %}",
             type: "POST",
             data: {
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),

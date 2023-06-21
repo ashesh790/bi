@@ -3,5 +3,45 @@
 {% block about %}active{% endblock %}
 {% block main_content %}
 <!-- Header Start -->
+<!DOCTYPE html>
+<html>
 
+<head>
+    <title>Toaster Demo</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="jquery-toaster.js"></script>
+    <style>
+        .toaster {
+            position: fixed;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            border-radius: 5px;
+            z-index: 9999;
+        }
+
+        .bottom-center {
+            bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td>
+                <a href="tel:+900300400">Phone: 900 300 400</a>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
+
+<script>
+    function openApplication() {
+        window.open('tell://');
+    }
+</script>
 {% endblock %}

@@ -1,3 +1,19 @@
+// media query 
+$(document).ready(function () {
+    // Define the media query for average mobile devices
+    var mediaQuery = window.matchMedia('(max-width: 820px)');
+
+    // Function to handle the media query change
+    if (mediaQuery.matches) {
+        // Apply styles for average mobile devices
+        $('.p_type_btn').addClass('col-4');
+        $('.p_type_btn').removeClass('col-1');
+    } else {
+        // Remove styles for average mobile devices
+        $('.p_type_btn').addClass('col-1');
+        $('.p_type_btn').removeClass('col-4');
+    }
+});
 (function ($) {
     "use strict";
 
@@ -105,4 +121,11 @@ function showPosition(position) {
     $("#latitude").val(lat);
     $("#longitude").val(lng);
 }
-getLocation(); 
+getLocation();
+
+function toaster_call(message) {
+    $.fn.toaster(message, {
+        duration: 2000,
+        position: "bottom-center",
+    });
+}

@@ -1,19 +1,12 @@
 {% extends 'theme/master_filter.html' %}
 {% load static %}
 {% block home %}active{% endblock %}
-{% block property %}
+{% block property %} 
+{% load custom_filters %}
 <!-- Search Start -->
 <style>
     img {
         width: 100%;
-    }
-
-    #prop_count_gallery {
-        overflow: auto;
-    }
-
-    #prop_item {
-        height: 300px !important;
     }
 
     #property_details {
@@ -29,33 +22,27 @@
         background-color: white;
         display: block;
     }
-
-    #tooltip_parent {
-        position: absolute;
-        bottom: 0;
-        right: 10px;
-    }
 </style>
 <div class="col-md-12">
     <div class="tab-content">
         <div id="tab-1" class="tab-pane fade show p-0 active">
-            <div class="row g-4 property_counter gallery" id="prop_count_gallery">
-                {% for i in property_data %}
+            <div class="row g-4 property_counter gallery" id="prop_count_gallery"> 
+                {% for key, val in property_data_all.items %} 
                 <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="property-item rounded overflow-hidden border" id="prop_item">
+                    <div class="property-item rounded border" id="prop_item">
                         <div class="position-relative overflow-hidden">
-                            <div id="carouselExampleControlsNoTouching{{i.id}}" class="carousel slide"
+                            <div id="carouselExampleControlsNoTouching{{val.id}}" class="carousel slide"
                                 data-interval="true" data-bs-touch="false">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <a href="property_details/{{i.id}}"><img class="img-fluid d-block w-100"
-                                                id="property_details" src="{{i.property_data.property_image|first}}"
+                                        <a href="property_details/{{val.id}}"><img class="img-fluid d-block w-100"
+                                                id="property_details" src="{{val.property_data.property_image|first}}"
                                                 alt=""></a>
                                     </div>
-                                    {% if i.property_data.property_image %}
-                                    {% for j in i.property_data.property_image|slice:"1:"%}
+                                    {% if val.property_data.property_image %}
+                                    {% for j in val.property_data.property_image|slice:"1:"%}
                                     <div class="carousel-item">
-                                        <a href="property_details/{{i.id}}"><img class="img-fluid d-block w-100"
+                                        <a href="property_details/{{val.id}}"><img class="img-fluid d-block w-100"
                                                 id="property_details" src="{{j}}" alt=""></a>
                                     </div>
                                     {% endfor %}
@@ -65,7 +52,7 @@
                                 </div>
                                 <b>
                                     <button class="carousel-control-prev" type="button"
-                                        data-bs-target="#carouselExampleControlsNoTouching{{i.id}}"
+                                        data-bs-target="#carouselExampleControlsNoTouching{{val.id}}"
                                         data-bs-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                         <span class="visually-hidden">Previous</span>
@@ -73,7 +60,7 @@
                                 </b>
                                 <b>
                                     <button class="carousel-control-next" type="button"
-                                        data-bs-target="#carouselExampleControlsNoTouching{{i.id}}"
+                                        data-bs-target="#carouselExampleControlsNoTouching{{val.id}}"
                                         data-bs-slide="next">
                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                         <span class="visually-hidden">Next</span>
@@ -81,33 +68,50 @@
                                 </b>
                             </div>
                             <!-- <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
-                                For {{i.property_data.selling_option}}</div> -->
+                                For {{val.property_data.selling_option}}</div> -->
                             <!-- <div
                                 class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
-                                {{i.property_data.property_type}}</div> -->
+                                {{val.property_data.property_type}}</div> -->
                         </div>
-                        <div class="p-4 pb-0" id="Month_parent">
-                            <a class="d-block mb-2" href="property_details/{{i.id}}" id="/Month"><b
-                                    class="text-primary mb-3">{{i.property_data.property_rent_price}}/Month
-                                </b>
-                                <span class="dot"></span>
-                                <span class="text-dark">
-                                    <span class="text-primary"><b>{{i.property_data.property_type}}</b></span>,
-                                    For
-                                    <span class="text-primary"><b></b>{{i.property_data.selling_option}}</b></span>
-                                </span>
-                                <a href="property_details/{{i.id}}">
-                                    <i class="fa fa-map-marker-alt text-primary me-2">
-                                    </i>
-                                    <span class="property_address">
-                                        {{i.property_data.property_address|truncatechars:20}}...
-                                    </span>
-                                </a>
-                                <span id="tooltip_parent" prop_id="{{i.id}}" onclick="bookmark_property(this);">
-                                    <h5><i class="fa fa-bookmark-o" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            data-bs-title="Tooltip on top"></i></h5>
-                                </span>
+                        <div class="p-3 pb-0">
+                            <a class="d-block mb-2" href="property_details/{{val.id}}" id="/Month">
+                                <h5 class="text-primary mb-2">${{val.property_data.property_rent_price}}</h5>
                             </a>
+                            <a class="d-block mb-2" href="property_details/{{val.id}}">
+                                <b class="d-block h5 mb-2">{{val.property_data.property_type}} For
+                                    {{val.property_data.selling_option}}
+                                </b>
+                            </a>
+                            <p>
+                                <i
+                                    class="fa fa-map-marker text-primary me-2"></i>{{val.property_data.property_address|truncatechars:20}}...
+                            </p>
+                        </div>
+                        <div class="d-flex border-top">
+                            <small class="flex-fill text-center mt-1">
+                                <h5>
+                                    <a href='tel:{{key|split:"_"|first}}'><i class="fa fa-phone"></i></a>
+                                </h5>
+                            </small>
+                            <small class="flex-fill text-center mt-1">
+                                <h5>
+                                    <i class="fa fa-share-alt" url="property_details/{{val.id}}"
+                                        onclick="openModal(this);"></i>
+                                </h5>
+                            </small>
+                            <small class="flex-fill text-center mt-1">
+                                <h5>
+                                    {% if val.id|stringformat:"s" in saved_property_list %}
+                                    <i class="fa fa-bookmark saved_property" id="tooltip_parent"
+                                        data-bs-toggle="tooltip" prop_id="{{val.id}}" onclick="bookmark_property(this);"
+                                        data-bs-placement="top" data-bs-title="Tooltip on top"></i>
+                                    {% else %}
+                                    <i class="fa fa-bookmark-o saved_property" id="tooltip_parent"
+                                        data-bs-toggle="tooltip" prop_id="{{val.id}}" onclick="bookmark_property(this);"
+                                        data-bs-placement="top" data-bs-title="Tooltip on top"></i>
+                                    {% endif %}
+                                </h5>
+                            </small>
                         </div>
                     </div>
                 </div>
@@ -126,21 +130,5 @@
     setInterval(function () {
         $(".carousel-control-next").click();
     }, 15000);
-
-    function bookmark_property(property_id) {
-
-        var property_id = $(property_id).attr("prop_id");
-        $.ajax({
-            url: "{% url 'bookmark_property_detail' %}",
-            type: "POST",
-            data: {
-                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-                'property_id': property_id,
-            },
-            success: function (response) {
-
-            }
-        });
-    }
 </script>
 {% endblock %}
