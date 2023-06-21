@@ -199,7 +199,9 @@ def delete_all_images_from_media(property_id):
     return True
 
 
-def save_location(request):
+def save_location(request): 
+    if "user_id" not in request.session: 
+        return HttpResponse("Do Login")
     user_id = request.session["user_id"]
     latitude = request.POST["data[latitude]"]
     longitude = request.POST["data[longitude]"]
@@ -209,7 +211,7 @@ def save_location(request):
     request.session["user_id"] = user_id
     login_user.user_other_data["location_number"] = location_number
     login_user.save()
-    return HttpResponse("Location saved")
+    return HttpResponse("Location saved") 
 
 
 def show_property_location_wise(request): 

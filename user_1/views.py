@@ -135,7 +135,8 @@ def logout(request):
     try:
         if request:
             try:
-                del request.session["user_name"]
+                del request.session["user_name"] 
+                del request.session["user_id"]
             except:
                 print("Logout")
         return render(request, "theme/login.html")
@@ -144,7 +145,9 @@ def logout(request):
 
 
 def add_property_details(request):
-    try:
+    try: 
+        if "user_id" not in request.session: 
+            return redirect("/login")
         if request.method == "POST" and len(request.POST) is not None:
             property_details = add_property_details_in_database(request)
         country_name_list = country_list(request)
@@ -345,6 +348,8 @@ def prop_table(request):
 
 
 def dashboard(request):
+    if "user_id" not in request.session:
+        return redirect("/login")
     user_id = User_register.objects.get(user_id=request.session._session["user_id"])
     # count for user inquiries
     # user_inq_len = len(user_id.user_other_data['inquiry_dtl'])
@@ -370,8 +375,10 @@ def home(request):
     try: 
         property_data_all = {}
         location_fetched = "" 
-        user_id = request.session["user_id"]
-        saved_property_list = saved_property_ids(user_id)
+        saved_property_list = ""
+        if "user_id" in request.session: 
+            user_id = request.session["user_id"]
+            saved_property_list = saved_property_ids(user_id)
         property_category = property_bound_data()
         property_data = p_detail.objects.all()
         property_data_number = []
@@ -551,9 +558,11 @@ def test_function(request):
 
 
 def bookmark_property_detail(request):
-    try:
+    try: 
+        if "user_id" not in request.session: 
+            raise Exception
+        user_id = request.session["user_id"] 
         property_id = request.POST["property_id"]
-        user_id = request.session["user_id"]
         user_data = User_register.objects.get(user_id=user_id)
         removed_property = (
             True if "remove_saved_property" in list(request.POST) else False
@@ -599,8 +608,10 @@ def google_map(request):
 
 def saved_property(request, remaining_property=False):
     try:
-        saved_property_dict = {}
-        user_id = request.session["user_id"]
+        saved_property_dict = {} 
+        if "user_id" not in request.session:
+            return redirect("/login")
+        user_id = request.session["user_id"] 
         user_data = User_register.objects.get(user_id=user_id) 
         if "saved_property" in user_data.user_other_data: 
             saved_property_list = user_data.user_other_data["saved_property"] 
