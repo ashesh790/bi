@@ -115,6 +115,7 @@ urlpatterns = [
         "bookmark_property_detail",
         views.bookmark_property_detail,
         name="bookmark_property_detail",
-    ),
+    ), 
+    path("update_profile", views.update_profile, name="update_profile"),
     path("google_map", views.google_map, name="google_map"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

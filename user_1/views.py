@@ -633,3 +633,6 @@ def saved_property(request, remaining_property=False):
             return render(request, "theme/saved_proper.html", context)
     except Exception as ex:
         return render(request, "theme/404.html")
+
+def update_profile(request): 
+    return render(request, "theme/profile.html") 
