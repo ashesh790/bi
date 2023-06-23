@@ -26,81 +26,58 @@
 <div class="row g-3 p-5" id="main">
   {% csrf_token %}
   <div class="row">
-    <div class="col-md-6 mt-3 mt-3">
+    <div class="col-md-6 mt-3">
       <div class="form-floating">
-        <input type="text " class="form-control" id="name" placeholder="Your Name">
-        <label for="name">User Name</label>
+        <input type="text" class="form-control" id="user_name" placeholder="Your Name"
+          value="{{user_detail.user_name}}">
+        <label for="name">Name</label>
         <span id="username_error" class="text-danger"></span>
       </div>
     </div>
     <div class="col-md-6 mt-3">
       <div class="form-floating">
-        <input type="password" class="form-control" id="psw" placeholder="Your Password">
-        <label for="email">Your Password</label>
+        <input type="email" class="form-control" id="user_email" placeholder="Your Email"
+          value="{{user_detail.user_email}}">
+        <label for="email">Email</label>
         <span id="password_error" class="text-danger"></span>
       </div>
     </div>
     <div class="col-md-6 mt-3">
       <div class="form-floating">
-        <input type="text" class="form-control" id="name" placeholder="Your Name">
-        <label for="name">User Name</label>
+        <input type="text" class="form-control" id="user_mobile" placeholder="Your Name"
+          value="{{user_detail.user_mobile}}">
+        <label for="name">Contact No.</label>
         <span id="username_error" class="text-danger"></span>
       </div>
     </div>
     <div class="col-md-6 mt-3">
       <div class="form-floating">
-        <input type="password" class="form-control" id="psw" placeholder="Your Password">
+        <input type="password" class="form-control" id="user_psw" placeholder="Your Password"
+          value="{{user_detail.user_psw}}">
         <label for="email">Your Password</label>
         <span id="password_error" class="text-danger"></span>
       </div>
     </div>
     <div class="col-md-6 mt-3">
       <div class="form-floating">
-        <input type="text" class="form-control" id="name" placeholder="Your Name">
-        <label for="name">User Name</label>
-        <span id="username_error" class="text-danger"></span>
-      </div>
-    </div>
-    <div class="col-md-6 mt-3">
-      <div class="form-floating">
-        <input type="password" class="form-control" id="psw" placeholder="Your Password">
-        <label for="email">Your Password</label>
+        <input type="file" class="form-control" id="user_icon" placeholder="Your Password">
+        <label for="email">User Icon</label>
         <span id="password_error" class="text-danger"></span>
       </div>
     </div>
     <div class="col-md-6 mt-3">
       <div class="form-floating">
-        <input type="file" class="form-control" id="psw" placeholder="Your Password">
-        <label for="email">Your Password</label>
-        <span id="password_error" class="text-danger"></span>
-      </div>
-    </div>
-    <div class="col-md-6 mt-4">
-      <div class="form-group">
-        <label for="genderRadio">Gender:</label>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="genderRadio" id="maleRadio" value="male">
-          <label class="form-check-label" for="maleRadio">Male</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="genderRadio" id="femaleRadio" value="female">
-          <label class="form-check-label" for="femaleRadio">Female</label>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-12">
-      <div class="form-floating">
-        <input type="text" class="form-control" id="latitude" value="" hidden>
-        <input type="text" class="form-control" id="longitude" value="" hidden>
+        <input type="text" class="form-control" id="place_name" placeholder="Your Password" style="width: 254px;">
+        <label for="email">User Location</label>
       </div>
     </div>
     <div class="col-12 mt-3 login_btn">
-      <div class="alert alert-danger d-none" role="alert" id="login_err">
+      <div class="alert alert-danger d-none" role="alert">
         <button type="button" class="close btn" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <button class="btn btn-primary w-100 py-3 auth_btn">Login</button>
+      <button class="btn btn-primary w-100 py-3 auth_btn" onclick="profile_update();">Login</button>
     </div>
     <div class="mt-2 m-3">
       <span>New User ?</span>
@@ -114,4 +91,57 @@
     </div>
   </div>
 </div>
+<script>
+  function profile_update() {
+    var user_gender = "";
+    var url = "update_profile";
+    var user_id = "{{user_detail.user_id}}";
+    var user_name = document.getElementById("user_name").value;
+    var user_email = document.getElementById("user_email").value;
+    var user_psw = document.getElementById("user_psw").value;
+    var user_icon = document.getElementById("user_icon").value;
+    var user_location = document.getElementById("place_name").value;
+
+    var data_for_call = {
+      "user_id": user_id,
+      "user_name": user_name,
+      "user_email": user_email,
+      "user_psw": user_psw,
+      "user_icon": user_icon,
+      "user_location": user_location,
+    }
+
+    // Create a new XMLHttpRequest object
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url, true);
+
+    // Set the request headers
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+    const csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+
+    // Define the callback function to handle the response
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          // Request was successful
+          const response = JSON.parse(xhr.responseText);
+          console.log(response);
+        } else {
+          // Request encountered an error
+          console.log(xhr.status + ': ' + xhr.responseText);
+        }
+      }
+    };
+
+    // Convert the data to JSON format
+    const jsonData = JSON.stringify(data_for_call);
+
+    // Send the request
+    xhr.send(jsonData);
+  }
+
+</script>
 {% endblock %}

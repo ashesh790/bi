@@ -314,8 +314,8 @@ def update_property(request, property_id=0):
     )
 
 
-def manage_image_upload(request, property_id):
-    update_property_image(request, property_id)
+def manage_image_upload(request, property_id=None):
+    update_property_image(request, property_id, None)
     return redirect(f"/update_property_record/{property_id}")
 
 
@@ -635,4 +635,34 @@ def saved_property(request, remaining_property=False):
         return render(request, "theme/404.html")
 
 def update_profile(request): 
-    return render(request, "theme/profile.html") 
+    user_id = request.session["user_id"] 
+    user_data = User_register.objects.get(user_id = user_id) 
+    user_detail = {
+        "user_id" : user_id,
+        "user_name" : user_data.user_name, 
+        "user_email": user_data.user_email, 
+        "user_mobile": user_data.user_mobile, 
+        "user_psw": user_data.user_psw, 
+        "user_location": user_data.user_other_data['location_number'] 
+    }
+    if request.method == "POST": 
+        if request.content_type == 'application/json': 
+            data = json.loads(request.body) 
+            user_id = data.get("user_id")
+            user_name = data.get("user_name") 
+            user_email = data.get("user_email") 
+            user_psw = data.get("user_psw") 
+            user_icon = data.get("user_icon") 
+            user_icon = user_icon.replace("C:\\fakepath\\", "")
+            user_location = data.get("user_location") 
+
+            user_record = User_register.objects.get(user_id = user_id) 
+            user_record.user_name = user_name 
+            user_record.user_other_data['user_icon'] = user_icon
+            user_record.save() 
+            update_property_image(None, None, user_icon)
+            return JsonResponse({"Hello":"Hello"}) 
+    context = {
+        "user_detail":user_detail 
+    }
+    return render(request, "theme/profile.html", context) 

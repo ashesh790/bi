@@ -47,14 +47,16 @@ def add_property_details_in_database(request):
         return False
 
 
-def update_property_image(request, property_id):
+def update_property_image(request = None, property_id = None, file_name = None): 
+    fss = FileSystemStorage()
+    if file_name is not None: 
+        fss.save(file_name) 
     user_id = request.session["user_id"]
     property_data = p_detail.objects.get(id=property_id)
     if request.method == "POST":
         data = request.FILES.getlist("images")
         property_image_save = []
         property_video_save = []
-        fss = FileSystemStorage()
         for i in data:
             file = fss.save(i.name, i)
             file_url = fss.url(file)
