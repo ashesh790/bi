@@ -315,7 +315,9 @@ def update_property(request, property_id=0):
 
 
 def manage_image_upload(request, property_id=None):
-    update_property_image(request, property_id, None)
+    user_icon = update_property_image(request, property_id) 
+    if user_icon == "user_icon": 
+        return redirect("/update_profile") 
     return redirect(f"/update_property_record/{property_id}")
 
 

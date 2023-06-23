@@ -60,9 +60,13 @@
     </div>
     <div class="col-md-6 mt-3">
       <div class="form-floating">
-        <input type="file" class="form-control" id="user_icon" placeholder="Your Password">
-        <label for="email">User Icon</label>
-        <span id="password_error" class="text-danger"></span>
+        <form class="form" method="POST" action="/manage_image_upload/0/" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="row">
+            <input type="file" class="form-control" name="user_icon" class="col-md-9" id="user_icon">
+            <input type="submit" class="btn btn-primary mt-2">
+          </div>
+        </form>
       </div>
     </div>
     <div class="col-md-6 mt-3">
