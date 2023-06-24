@@ -20,3 +20,4 @@ class User_register(models.Model):
 class p_detail(models.Model):
     seller_id = models.ForeignKey(User_register, on_delete=models.CASCADE)
     property_data = models.JSONField()
+    property_other_data = models.JSONField(default=dict) 

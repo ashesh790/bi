@@ -8,7 +8,7 @@ class User_register_admin(admin.ModelAdmin):
     ]
 class p_detail_admin(admin.ModelAdmin): 
     list_display=[
-        'id','seller_id','property_data' 
+        'id','seller_id','property_data', 'property_other_data'
     ]
 
 # Register your models here.
