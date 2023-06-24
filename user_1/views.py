@@ -661,6 +661,8 @@ def update_profile(request):
             user_record.user_psw = data.get("user_psw") 
             if len(request.FILES)>0: 
                 user_record.user_other_data['user_icon'] = data.get("user_icon") 
+            if len(user_detail["user_location"])>0: 
+                user_record.user_other_data['user_location'] = data.get("user_location")  
             user_record.save() 
             return JsonResponse({"Hello":"Hello"}) 
     context = {
