@@ -4,7 +4,7 @@ from urllib import request
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
-from staying_source.settings import MEDIA_ROOT, MEDIA_URL
+from staying_source.settings import MEDIA_ROOT, MEDIA_ROOT_USER_ICON, MEDIA_URL
 from user_1.apis.fetch_api.advance_filter_functions import search_properties
 from user_1.models import User_register, p_detail
 from django.core.files.storage import FileSystemStorage
@@ -50,7 +50,10 @@ def add_property_details_in_database(request):
 def update_property_image(request = None, property_id = None, user_icon = None): 
     if property_id == 0: 
         if len(request.FILES) > 0:
-            user_id = request.session['user_id']
+            user_id = request.session['user_id'] 
+            user_icon = os.listdir(MEDIA_ROOT_USER_ICON + user_id) 
+            for i in range(0, len(user_icon)):
+                os.remove("media/user_icons/" + user_id + "/"+ user_icon[i])
             # Create an instance of FileSystemStorage with the desired folder name
             custom_storage = FileSystemStorage(location=f'media/user_icons/{user_id}/')
             user_icon = request.FILES['file'] 

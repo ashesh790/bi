@@ -659,9 +659,11 @@ def update_profile(request):
             user_record.user_email = data.get("user_email") 
             user_record.user_mobile = data.get("user_mobile") 
             user_record.user_psw = data.get("user_psw") 
-            if len(request.FILES)>0: 
+            if "user_icon" in data: 
+                user_icon = str(data.get("user_icon")) 
+                user_icon = user_icon.replace("C:\\fakepath\\", "") 
                 user_record.user_other_data['user_icon'] = data.get("user_icon") 
-            if len(user_detail["user_location"])>0: 
+            if "user_location" in data: 
                 user_record.user_other_data['user_location'] = data.get("user_location")  
             user_record.save() 
             return JsonResponse({"Hello":"Hello"}) 
