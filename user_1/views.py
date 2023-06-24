@@ -666,6 +666,7 @@ def update_profile(request):
             if len(data['user_location']) > 0: 
                 user_record.user_other_data['user_location'] = data.get("user_location") 
                 request.session["user_location"] = data.get("user_location") 
+                request.session['user_name'] = data.get("user_name")
             user_record.save() 
             return JsonResponse({"Hello":"Hello"}) 
     context = {
