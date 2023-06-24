@@ -668,6 +668,7 @@ def update_profile(request):
                 request.session["user_location"] = data.get("user_location") 
             user_record.save() 
             return JsonResponse({"Hello":"Hello"}) 
+    user_detail["user_location"] = user_detail["user_location"][0]
     context = {
         "user_detail":user_detail 
     }
