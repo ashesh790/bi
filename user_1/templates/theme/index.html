@@ -1,7 +1,7 @@
 {% extends 'theme/master_filter.html' %}
 {% load static %}
 {% block home %}active{% endblock %}
-{% block property %} 
+{% block property %}
 {% load custom_filters %}
 <!-- Search Start -->
 <style>
@@ -26,8 +26,8 @@
 <div class="col-md-12">
     <div class="tab-content">
         <div id="tab-1" class="tab-pane fade show p-0 active">
-            <div class="row g-4 property_counter gallery" id="prop_count_gallery"> 
-                {% for key, val in property_data_all.items %} 
+            <div class="row g-4 property_counter gallery" id="prop_count_gallery">
+                {% for key, val in property_data_all.items %}
                 <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="property-item rounded border" id="prop_item">
                         <div class="position-relative overflow-hidden">
@@ -92,10 +92,11 @@
                                 <h5>
                                     <a href='tel:{{key|split:"_"|first}}'><i class="fa fa-phone"></i></a>
                                 </h5>
-                            </small> 
+                            </small>
                             <small class="flex-fill text-center mt-1">
                                 <h5>
-                                    <i class="fa fa-comment"></i>
+                                    <i class="fa-regular fa-heart"></i>
+                                    <!-- <i class="fa-solid fa-heart"></i> -->
                                 </h5>
                             </small>
                             <small class="flex-fill text-center mt-1">
