@@ -22,86 +22,124 @@
       margin: 0% !important;
     }
   }
+
+  .circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+    margin: auto;
+  }
+
+  #upload-form {
+    margin: auto !important;
+  }
+
+  .user_icon {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+  }
 </style>
 <div class="row g-3 p-5" id="main">
   {% csrf_token %}
   <div class="row">
-    <div class="col-md-6 mt-3">
-      <div class="form-floating">
-        <input type="text" class="form-control" id="user_name" placeholder="Your Name"
-          value="{{user_detail.user_name}}">
-        <label for="name">Name</label>
-        <span id="username_error" class="text-danger"></span>
-      </div>
-    </div>
-    <div class="col-md-6 mt-3">
-      <div class="form-floating">
-        <input type="email" class="form-control" id="user_email" placeholder="Your Email"
-          value="{{user_detail.user_email}}">
-        <label for="email">Email</label>
-        <span id="password_error" class="text-danger"></span>
-      </div>
-    </div>
-    <div class="col-md-6 mt-3">
-      <div class="form-floating">
-        <input type="text" class="form-control" id="user_mobile" placeholder="Your Name"
-          value="{{user_detail.user_mobile}}">
-        <label for="name">Contact No.</label>
-        <span id="username_error" class="text-danger"></span>
-      </div>
-    </div>
-    <div class="col-md-6 mt-3">
-      <div class="form-floating">
-        <input type="password" class="form-control" id="user_psw" placeholder="Your Password"
-          value="{{user_detail.user_psw}}">
-        <label for="email">Your Password</label>
-        <span id="password_error" class="text-danger"></span>
-      </div>
-    </div>
-    <div class="col-md-6 mt-3">
-      <div class="form-floating">
-        <form class="form" method="POST" action="/manage_image_upload/0/" enctype="multipart/form-data">
+    <div class="col-12">
+      <div class="circle-container">
+        <div class="circle">
+          <img class="user_icon" src="/media/user_icons/9d9b3527-0764-11ee-8e93-c4346b482059/download (7).jpg"
+            alt="Your Image">
+        </div>
+        <form class="form" method="POST" enctype="multipart/form-data" id="upload-form">
           {% csrf_token %}
-          <div class="row">
-            <input type="file" class="form-control" name="user_icon" class="col-md-9" id="user_icon">
-            <input type="submit" class="btn btn-primary mt-2">
-          </div>
+          <input type="file" name="file" class="form-control mt-2" name="user_icon" class="col-md-9" id="user_icon"
+            style="margin: auto; width: 20%;">
+          <label for="file-input">
+          </label>
         </form>
       </div>
     </div>
-    <div class="col-md-6 mt-3">
-      <div class="form-floating">
-        <input type="text" class="form-control" id="place_name" placeholder="Your Password" style="width: 254px;">
-        <label for="email">User Location</label>
+    <div class="row">
+      <div class="col-md-6 mt-3">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="user_name" placeholder="Your Name"
+            value="{{user_detail.user_name}}">
+          <label for="name">Name</label>
+          <span id="username_error" class="text-danger"></span>
+        </div>
       </div>
-    </div>
-    <div class="col-12 mt-3 login_btn">
-      <div class="alert alert-danger d-none" role="alert">
-        <button type="button" class="close btn" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+      <div class="col-md-6 mt-3">
+        <div class="form-floating">
+          <input type="email" class="form-control" id="user_email" placeholder="Your Email"
+            value="{{user_detail.user_email}}">
+          <label for="email">Email</label>
+          <span id="password_error" class="text-danger"></span>
+        </div>
       </div>
-      <button class="btn btn-primary w-100 py-3 auth_btn" onclick="profile_update();">Login</button>
-    </div>
-    <div class="mt-2 m-3">
-      <span>New User ?</span>
-      <span><a href="signup">Register Here!</a></span>
-    </div>
-    <div class="mt-2 m-3">
-      <span>Start with : </span>
-      <span><a href="login">Google</a></span>
-      <span><a href="login">Facebook</a></span>
-      <span><a href="login">Whatsapp</a></span>
+      <div class="col-md-6 mt-3">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="user_mobile" placeholder="Your Name"
+            value="{{user_detail.user_mobile}}">
+          <label for="name">Contact No.</label>
+          <span id="username_error" class="text-danger"></span>
+        </div>
+      </div>
+      <div class="col-md-6 mt-3">
+        <div class="form-floating">
+          <input type="password" class="form-control" id="user_psw" placeholder="Your Password"
+            value="{{user_detail.user_psw}}">
+          <label for="email">Your Password</label>
+          <span id="password_error" class="text-danger"></span>
+        </div>
+      </div>
+      <div class="col-md-6 mt-3">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="place_name" placeholder="Your Password" style="width: 254px;">
+          <label for="email">User Location</label>
+        </div>
+      </div>
+      <div class="col-12 mt-3 login_btn">
+        <div class="alert alert-danger d-none" role="alert">
+          <button type="button" class="close btn" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <button class="btn btn-primary w-100 py-3 auth_btn" onclick="profile_update();">Update
+          Profile</button>
+      </div>
     </div>
   </div>
 </div>
 <script>
+  $('#upload-form').submit(function (e) {
+    e.preventDefault(); // Prevent form submission
+
+    var formData = new FormData(this);
+
+    $.ajax({
+      url: '/manage_image_upload/0/',  // Replace with your Django view URL
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (response) {
+        // Handle successful upload
+        console.log(response);
+      },
+      error: function (xhr, status, error) {
+        // Handle error
+        console.log(error);
+      }
+    });
+  });
+
   function profile_update() {
     var user_gender = "";
     var url = "update_profile";
     var user_id = "{{user_detail.user_id}}";
     var user_name = document.getElementById("user_name").value;
     var user_email = document.getElementById("user_email").value;
+    var user_mobile = document.getElementById("user_mobile").value;
     var user_psw = document.getElementById("user_psw").value;
     var user_icon = document.getElementById("user_icon").value;
     var user_location = document.getElementById("place_name").value;
@@ -110,6 +148,7 @@
       "user_id": user_id,
       "user_name": user_name,
       "user_email": user_email,
+      "user_mobile": user_mobile,
       "user_psw": user_psw,
       "user_icon": user_icon,
       "user_location": user_location,
@@ -133,6 +172,7 @@
           // Request was successful
           const response = JSON.parse(xhr.responseText);
           console.log(response);
+          $('#upload-form').submit();
         } else {
           // Request encountered an error
           console.log(xhr.status + ': ' + xhr.responseText);

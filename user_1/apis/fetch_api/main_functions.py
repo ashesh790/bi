@@ -47,15 +47,19 @@ def add_property_details_in_database(request):
         return False
 
 
-def update_property_image(request = None, property_id = None): 
-    if property_id == 0:
-        # Create an instance of FileSystemStorage with the desired folder name
-        custom_storage = FileSystemStorage(location='media/user_icons')
-        user_icon = request.FILES['user_icon'] 
-        # Access the URL of the saved file
-        file_url = custom_storage.url(user_icon)
-        custom_storage.save(user_icon.name, user_icon) 
-        return "user_icon" 
+def update_property_image(request = None, property_id = None, user_icon = None): 
+    if property_id == 0: 
+        if len(request.FILES) > 0:
+            user_id = request.session['user_id']
+            # Create an instance of FileSystemStorage with the desired folder name
+            custom_storage = FileSystemStorage(location=f'media/user_icons/{user_id}/')
+            user_icon = request.FILES['file'] 
+            # Access the URL of the saved file
+            file_url = custom_storage.url(user_icon)
+            custom_storage.save(user_icon.name, user_icon) 
+            return "True" 
+        else: 
+            return "False"
     
     property_data = p_detail.objects.get(id=property_id)
     if request.method == "POST": 
