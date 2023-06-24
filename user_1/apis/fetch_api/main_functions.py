@@ -264,14 +264,18 @@ def get_location_name(latitude, longitude):
     return address_dict if location else None
 
 
-def saved_property_ids(user_id):
-    saved_property_list = []
+def liked_and_saved_property_ids(user_id):
+    saved_property_list = [] 
+    liked_property_list = [] 
     user_id = user_id
     user_data = User_register.objects.get(user_id=user_id) 
     if "saved_property" in user_data.user_other_data:
         for property_id in user_data.user_other_data["saved_property"]:
-            saved_property_list.append(property_id)
-        return saved_property_list 
+            saved_property_list.append(property_id) 
+    if "liked_property" in user_data.user_other_data: 
+        for liked_property in user_data.user_other_data['liked_property']: 
+            liked_property_list.append(liked_property)
+        return saved_property_list, liked_property_list
     else: 
         return None
 
@@ -295,3 +299,18 @@ def user_all_details(request, property_id):
         return saller_data
     except Exception as ex:
         print(ex)
+
+def add_like_property_count(property_id, remove_like = False): 
+    property_record = p_detail.objects.get(id = property_id) 
+    if not remove_like: 
+        if "likes" in property_record.property_other_data: 
+            property_record.property_other_data['likes'] += 1 
+        else: 
+            property_record.property_other_data['likes'] = 1 
+        property_record.save()
+        return "liked"
+    else:
+        if property_record.property_other_data['likes']>0: 
+            property_record.property_other_data['likes'] -= 1 
+            property_record.save()
+            return "like_removed" 

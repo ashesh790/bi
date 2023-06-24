@@ -95,8 +95,12 @@
                             </small>
                             <small class="flex-fill text-center mt-1">
                                 <h5>
-                                    <i class="fa-regular fa-heart"></i>
-                                    <!-- <i class="fa-solid fa-heart"></i> -->
+                                    {% if val.id|stringformat:"s" in liked_property_list %}
+                                    <i class="fa-solid fa-heart" prop_id="{{val.id}}" onclick="like_prperty(this);"></i>
+                                    {% else %}
+                                    <i class="fa-regular fa-heart" prop_id="{{val.id}}"
+                                        onclick="like_prperty(this);"></i>
+                                    {% endif %}
                                 </h5>
                             </small>
                             <small class="flex-fill text-center mt-1">
@@ -133,6 +137,31 @@
 </div>
 <!-- Search End -->
 <script>
+    function like_prperty(like) {
+        let property_id = $(like).attr("prop_id");
+        $.ajax({
+            url: "{% url 'add_like_by_user' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                'property_id': property_id,
+            },
+            success: function (response) {
+                if (response == "liked") {
+                    $(like).addClass("fa-solid");
+                    $(like).removeClass("fa-regular");
+                    toaster_call("Liked!");
+                }
+                else {
+                    $(like).addClass("fa-regular");
+                    $(like).removeClass("fa-solid");
+                }
+            },
+            error: function (response) {
+                toaster_call("Error");
+            },
+        });
+    }
     setInterval(function () {
         $(".carousel-control-next").click();
     }, 15000);

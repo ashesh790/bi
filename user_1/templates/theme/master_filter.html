@@ -479,6 +479,7 @@
                 "data": property_type_val
             },
             success: function (data) {
+                console.log(data);
                 if (Object.keys(data.prop_data).length != 0) {
 
                     $(".property_counter").empty();
@@ -648,6 +649,7 @@
                 "search_object": JSON.stringify(search_object),
             },
             success: function (property_data) {
+                console.log(property_data);
                 property_id = property_data["id"];
                 user_mobile = property_data['user_mobile']
                 property_data = property_data['property_data'];

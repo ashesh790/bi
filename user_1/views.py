@@ -29,14 +29,15 @@ from user_1.apis.fetch_api.country_api import (
     city_list,
 )
 from user_1.apis.fetch_api.main_functions import (
+    add_like_property_count,
     add_property_details_in_database,
     delete_all_images_from_media,
     delete_all_property_data,
     delete_property_image_from_database,
     get_all_property_data,
+    liked_and_saved_property_ids,
     property_bound_data,
     save_location,
-    saved_property_ids,
     search_property_type,
     show_property_location_wise,
     update_property_data_record,
@@ -381,7 +382,7 @@ def home(request):
         saved_property_list = ""
         if "user_id" in request.session: 
             user_id = request.session["user_id"]
-            saved_property_list = saved_property_ids(user_id)
+            saved_property_list, liked_property_list = liked_and_saved_property_ids(user_id)
         property_category = property_bound_data()
         property_data = p_detail.objects.all()
         property_data_number = []
@@ -411,7 +412,8 @@ def home(request):
                 "boundry_data": boundry_data["data"],
                 "country": boundry_data["country"],
                 "location_fetched": location_fetched,
-                "saved_property_list": saved_property_list,
+                "saved_property_list": saved_property_list, 
+                "liked_property_list":liked_property_list, 
                 "property_data_number": property_data_number,
             },
         )
@@ -674,3 +676,22 @@ def update_profile(request):
         "user_detail":user_detail 
     }
     return render(request, "theme/profile.html", context) 
+
+def add_like_by_user(request): 
+    property_id = request.POST['property_id']
+    user_id = request.session['user_id'] 
+    user_data = User_register.objects.get(user_id = user_id) 
+    if "liked_property" in user_data.user_other_data:
+        if property_id in user_data.user_other_data['liked_property']: 
+            user_data.user_other_data['liked_property'].remove(property_id) 
+            status = add_like_property_count(property_id, True)
+        else: 
+            user_data.user_other_data['liked_property'].append(property_id) 
+            status = add_like_property_count(property_id, False)
+        user_data.save()
+        return HttpResponse(status) 
+    else: 
+        user_data.user_other_data['liked_property'] = [property_id] 
+        status = add_like_property_count(property_id, False)
+        user_data.save() 
+        return HttpResponse(status) 
