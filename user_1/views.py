@@ -646,11 +646,11 @@ def update_profile(request):
         "user_email": user_data.user_email, 
         "user_mobile": user_data.user_mobile, 
         "user_psw": user_data.user_psw, 
-        "user_location": user_data.user_other_data['location_number'], 
     } 
-    if len(request.FILES)>0: 
+    if "user_icon" in user_data.user_other_data: 
         user_detail['user_icon'] = user_data.user_other_data['user_icon'] 
-
+    if "user_location" in user_data.user_other_data: 
+        user_detail["user_location"] = user_data.user_other_data['user_location'], 
     if request.method == "POST": 
         if request.content_type == 'application/json': 
             data = json.loads(request.body) 
@@ -659,12 +659,13 @@ def update_profile(request):
             user_record.user_email = data.get("user_email") 
             user_record.user_mobile = data.get("user_mobile") 
             user_record.user_psw = data.get("user_psw") 
-            if "user_icon" in data: 
+            if len(data['user_icon']) > 0: 
                 user_icon = str(data.get("user_icon")) 
                 user_icon = user_icon.replace("C:\\fakepath\\", "") 
-                user_record.user_other_data['user_icon'] = data.get("user_icon") 
-            if "user_location" in data: 
-                user_record.user_other_data['user_location'] = data.get("user_location")  
+                user_record.user_other_data['user_icon'] = user_icon 
+            if len(data['user_location']) > 0: 
+                user_record.user_other_data['user_location'] = data.get("user_location") 
+                request.session["user_location"] = data.get("user_location") 
             user_record.save() 
             return JsonResponse({"Hello":"Hello"}) 
     context = {

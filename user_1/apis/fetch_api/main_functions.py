@@ -51,9 +51,10 @@ def update_property_image(request = None, property_id = None, user_icon = None):
     if property_id == 0: 
         if len(request.FILES) > 0:
             user_id = request.session['user_id'] 
-            user_icon = os.listdir(MEDIA_ROOT_USER_ICON + user_id) 
-            for i in range(0, len(user_icon)):
-                os.remove("media/user_icons/" + user_id + "/"+ user_icon[i])
+            if os.path.exists(MEDIA_ROOT_USER_ICON + user_id):
+                user_icon = os.listdir(MEDIA_ROOT_USER_ICON + user_id) 
+                for i in range(0, len(user_icon)):
+                    os.remove("media/user_icons/" + user_id + "/"+ user_icon[i])
             # Create an instance of FileSystemStorage with the desired folder name
             custom_storage = FileSystemStorage(location=f'media/user_icons/{user_id}/')
             user_icon = request.FILES['file'] 

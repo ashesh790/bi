@@ -47,15 +47,15 @@
     <div class="col-12">
       <div class="circle-container">
         <div class="circle">
-          <img class="user_icon" src="/media/user_icons/9d9b3527-0764-11ee-8e93-c4346b482059/download (1).jpg"
+          <img class="user_icon" src="/media/user_icons/{{user_detail.user_id}}/{{user_detail.user_icon}}"
             alt="Your Image">
         </div>
         <form class="form" method="POST" enctype="multipart/form-data" id="upload-form">
           {% csrf_token %}
-          <input type="file" name="file" class="form-control mt-2" name="user_icon" class="col-md-9" id="user_icon"
-            style="margin: auto; width: 20%;">
-          <label for="file-input">
-          </label>
+          <div style="display: flex;">
+            <input type="file" name="file" class="form-control mt-2" name="user_icon" class="col-md-9" id="user_icon"
+              style="margin: auto; width: 20%;">
+          </div>
         </form>
       </div>
     </div>
@@ -94,7 +94,8 @@
       </div>
       <div class="col-md-6 mt-3">
         <div class="form-floating">
-          <input type="text" class="form-control" id="place_name" placeholder="Your Password" style="width: 254px;">
+          <input type="text" class="form-control" id="place_name" placeholder="Your Password" style="width: 254px;"
+            value="{{user_detail.user_location}}">
           <label for="email">User Location</label>
         </div>
       </div>
@@ -125,6 +126,7 @@
       success: function (response) {
         // Handle successful upload
         console.log(response);
+        window.location.href = "/update_profile";
       },
       error: function (xhr, status, error) {
         // Handle error
@@ -171,7 +173,7 @@
         if (xhr.status === 200) {
           // Request was successful
           const response = JSON.parse(xhr.responseText);
-          console.log(response);
+          // toaster_call("Profile Updated!")
           $('#upload-form').submit();
         } else {
           // Request encountered an error
