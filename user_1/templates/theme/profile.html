@@ -1,0 +1,192 @@
+{% extends 'theme/master.html' %}
+{% load static %}
+{% block about %}
+{% endblock%}
+{% block main_content %}
+<style>
+  #main {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+
+  @media screen and (max-width: 820px) {
+    #main {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      padding: 0% !important;
+    }
+
+    .login_btn {
+      margin: 0% !important;
+    }
+  }
+
+  .circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+    margin: auto;
+  }
+
+  #upload-form {
+    margin: auto !important;
+  }
+
+  .user_icon {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+  }
+</style>
+<div class="row g-3 p-5" id="main">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-12">
+      <div class="circle-container">
+        <div class="circle">
+          <img class="user_icon" src="/media/user_icons/{{user_detail.user_id}}/{{user_detail.user_icon}}"
+            alt="Your Image">
+        </div>
+        <form class="form" method="POST" enctype="multipart/form-data" id="upload-form">
+          {% csrf_token %}
+          <div style="display: flex;">
+            <input type="file" name="file" class="form-control mt-2" name="user_icon" class="col-md-9" id="user_icon"
+              style="margin: auto; width: 20%;">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mt-3">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="user_name" placeholder="Your Name"
+            value="{{user_detail.user_name}}">
+          <label for="name">Name</label>
+          <span id="username_error" class="text-danger"></span>
+        </div>
+      </div>
+      <div class="col-md-6 mt-3">
+        <div class="form-floating">
+          <input type="email" class="form-control" id="user_email" placeholder="Your Email"
+            value="{{user_detail.user_email}}">
+          <label for="email">Email</label>
+          <span id="password_error" class="text-danger"></span>
+        </div>
+      </div>
+      <div class="col-md-6 mt-3">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="user_mobile" placeholder="Your Name"
+            value="{{user_detail.user_mobile}}">
+          <label for="name">Contact No.</label>
+          <span id="username_error" class="text-danger"></span>
+        </div>
+      </div>
+      <div class="col-md-6 mt-3">
+        <div class="form-floating">
+          <input type="password" class="form-control" id="user_psw" placeholder="Your Password"
+            value="{{user_detail.user_psw}}">
+          <label for="email">Your Password</label>
+          <span id="password_error" class="text-danger"></span>
+        </div>
+      </div>
+      <div class="col-md-6 mt-3">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="place_name" value="{{user_detail.user_location}}">
+          <label for="email">User Location</label>
+        </div>
+      </div>
+      <div class="col-12 mt-3 login_btn">
+        <div class="alert alert-danger d-none" role="alert">
+          <button type="button" class="close btn" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <button class="btn btn-primary w-100 py-3 auth_btn" onclick="profile_update();">Update
+          Profile</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $('#upload-form').submit(function (e) {
+    e.preventDefault(); // Prevent form submission
+
+    var formData = new FormData(this);
+
+    $.ajax({
+      url: '/manage_image_upload/0/',  // Replace with your Django view URL
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (response) {
+        // Handle successful upload
+        console.log(response);
+        window.location.href = "/update_profile";
+      },
+      error: function (xhr, status, error) {
+        // Handle error
+        console.log(error);
+      }
+    });
+  });
+
+  function profile_update() {
+    var user_gender = "";
+    var url = "update_profile";
+    var user_id = "{{user_detail.user_id}}";
+    var user_name = document.getElementById("user_name").value;
+    var user_email = document.getElementById("user_email").value;
+    var user_mobile = document.getElementById("user_mobile").value;
+    var user_psw = document.getElementById("user_psw").value;
+    var user_icon = document.getElementById("user_icon").value;
+    var user_location = document.getElementById("place_name").value;
+
+    var data_for_call = {
+      "user_id": user_id,
+      "user_name": user_name,
+      "user_email": user_email,
+      "user_mobile": user_mobile,
+      "user_psw": user_psw,
+      "user_icon": user_icon,
+      "user_location": user_location,
+    }
+
+    // Create a new XMLHttpRequest object
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url, true);
+
+    // Set the request headers
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+    const csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+
+    // Define the callback function to handle the response
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          // Request was successful
+          const response = JSON.parse(xhr.responseText);
+          // toaster_call("Profile Updated!")
+          $('#upload-form').submit();
+        } else {
+          // Request encountered an error
+          console.log(xhr.status + ': ' + xhr.responseText);
+        }
+      }
+    };
+
+    // Convert the data to JSON format
+    const jsonData = JSON.stringify(data_for_call);
+
+    // Send the request
+    xhr.send(jsonData);
+  }
+
+</script>
+{% endblock %}

@@ -4,7 +4,7 @@ from urllib import request
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
-from staying_source.settings import MEDIA_ROOT, MEDIA_URL
+from staying_source.settings import MEDIA_ROOT, MEDIA_ROOT_USER_ICON, MEDIA_URL
 from user_1.apis.fetch_api.advance_filter_functions import search_properties
 from user_1.models import User_register, p_detail
 from django.core.files.storage import FileSystemStorage
@@ -47,14 +47,30 @@ def add_property_details_in_database(request):
         return False
 
 
-def update_property_image(request, property_id):
-    user_id = request.session["user_id"]
+def update_property_image(request = None, property_id = None, user_icon = None): 
+    if property_id == 0: 
+        if len(request.FILES) > 0:
+            user_id = request.session['user_id'] 
+            if os.path.exists(MEDIA_ROOT_USER_ICON + user_id):
+                user_icon = os.listdir(MEDIA_ROOT_USER_ICON + user_id) 
+                for i in range(0, len(user_icon)):
+                    os.remove("media/user_icons/" + user_id + "/"+ user_icon[i])
+            # Create an instance of FileSystemStorage with the desired folder name
+            custom_storage = FileSystemStorage(location=f'media/user_icons/{user_id}/')
+            user_icon = request.FILES['file'] 
+            # Access the URL of the saved file
+            file_url = custom_storage.url(user_icon)
+            custom_storage.save(user_icon.name, user_icon) 
+            return "True" 
+        else: 
+            return "False"
+    
     property_data = p_detail.objects.get(id=property_id)
-    if request.method == "POST":
+    if request.method == "POST": 
+        fss = FileSystemStorage()
         data = request.FILES.getlist("images")
         property_image_save = []
         property_video_save = []
-        fss = FileSystemStorage()
         for i in data:
             file = fss.save(i.name, i)
             file_url = fss.url(file)
@@ -199,7 +215,9 @@ def delete_all_images_from_media(property_id):
     return True
 
 
-def save_location(request):
+def save_location(request): 
+    if "user_id" not in request.session: 
+        return HttpResponse("Do Login")
     user_id = request.session["user_id"]
     latitude = request.POST["data[latitude]"]
     longitude = request.POST["data[longitude]"]
@@ -209,7 +227,7 @@ def save_location(request):
     request.session["user_id"] = user_id
     login_user.user_other_data["location_number"] = location_number
     login_user.save()
-    return HttpResponse("Location saved")
+    return HttpResponse("Location saved") 
 
 
 def show_property_location_wise(request): 

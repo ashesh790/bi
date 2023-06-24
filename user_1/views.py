@@ -135,7 +135,8 @@ def logout(request):
     try:
         if request:
             try:
-                del request.session["user_name"]
+                del request.session["user_name"] 
+                del request.session["user_id"]
             except:
                 print("Logout")
         return render(request, "theme/login.html")
@@ -144,7 +145,9 @@ def logout(request):
 
 
 def add_property_details(request):
-    try:
+    try: 
+        if "user_id" not in request.session: 
+            return redirect("/login")
         if request.method == "POST" and len(request.POST) is not None:
             property_details = add_property_details_in_database(request)
         country_name_list = country_list(request)
@@ -311,8 +314,11 @@ def update_property(request, property_id=0):
     )
 
 
-def manage_image_upload(request, property_id):
-    update_property_image(request, property_id)
+def manage_image_upload(request, property_id=None):
+    user_id = request.session['user_id']
+    user_icon = update_property_image(request, property_id) 
+    if user_icon == "True" or user_icon == "False": 
+        return redirect("/update_profile") 
     return redirect(f"/update_property_record/{property_id}")
 
 
@@ -345,6 +351,8 @@ def prop_table(request):
 
 
 def dashboard(request):
+    if "user_id" not in request.session:
+        return redirect("/login")
     user_id = User_register.objects.get(user_id=request.session._session["user_id"])
     # count for user inquiries
     # user_inq_len = len(user_id.user_other_data['inquiry_dtl'])
@@ -370,8 +378,10 @@ def home(request):
     try: 
         property_data_all = {}
         location_fetched = "" 
-        user_id = request.session["user_id"]
-        saved_property_list = saved_property_ids(user_id)
+        saved_property_list = ""
+        if "user_id" in request.session: 
+            user_id = request.session["user_id"]
+            saved_property_list = saved_property_ids(user_id)
         property_category = property_bound_data()
         property_data = p_detail.objects.all()
         property_data_number = []
@@ -551,9 +561,11 @@ def test_function(request):
 
 
 def bookmark_property_detail(request):
-    try:
+    try: 
+        if "user_id" not in request.session: 
+            raise Exception
+        user_id = request.session["user_id"] 
         property_id = request.POST["property_id"]
-        user_id = request.session["user_id"]
         user_data = User_register.objects.get(user_id=user_id)
         removed_property = (
             True if "remove_saved_property" in list(request.POST) else False
@@ -599,8 +611,10 @@ def google_map(request):
 
 def saved_property(request, remaining_property=False):
     try:
-        saved_property_dict = {}
-        user_id = request.session["user_id"]
+        saved_property_dict = {} 
+        if "user_id" not in request.session:
+            return redirect("/login")
+        user_id = request.session["user_id"] 
         user_data = User_register.objects.get(user_id=user_id) 
         if "saved_property" in user_data.user_other_data: 
             saved_property_list = user_data.user_other_data["saved_property"] 
@@ -622,3 +636,39 @@ def saved_property(request, remaining_property=False):
             return render(request, "theme/saved_proper.html", context)
     except Exception as ex:
         return render(request, "theme/404.html")
+
+def update_profile(request): 
+    user_id = request.session["user_id"] 
+    user_data = User_register.objects.get(user_id = user_id) 
+    user_detail = {
+        "user_id" : user_id,
+        "user_name" : user_data.user_name, 
+        "user_email": user_data.user_email, 
+        "user_mobile": user_data.user_mobile, 
+        "user_psw": user_data.user_psw, 
+    } 
+    if "user_icon" in user_data.user_other_data: 
+        user_detail['user_icon'] = user_data.user_other_data['user_icon'] 
+    if "user_location" in user_data.user_other_data: 
+        user_detail["user_location"] = user_data.user_other_data['user_location'], 
+    if request.method == "POST": 
+        if request.content_type == 'application/json': 
+            data = json.loads(request.body) 
+            user_record = User_register.objects.get(user_id = user_id) 
+            user_record.user_name = data.get("user_name") 
+            user_record.user_email = data.get("user_email") 
+            user_record.user_mobile = data.get("user_mobile") 
+            user_record.user_psw = data.get("user_psw") 
+            if len(data['user_icon']) > 0: 
+                user_icon = str(data.get("user_icon")) 
+                user_icon = user_icon.replace("C:\\fakepath\\", "") 
+                user_record.user_other_data['user_icon'] = user_icon 
+            if len(data['user_location']) > 0: 
+                user_record.user_other_data['user_location'] = data.get("user_location") 
+                request.session["user_location"] = data.get("user_location") 
+            user_record.save() 
+            return JsonResponse({"Hello":"Hello"}) 
+    context = {
+        "user_detail":user_detail 
+    }
+    return render(request, "theme/profile.html", context) 

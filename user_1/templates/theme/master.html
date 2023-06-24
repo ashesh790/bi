@@ -439,8 +439,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <button class="btn w-100 btn_profile">Settings</button>
-                        <button class="btn w-100 btn_profile">Saved Property</button>
+                        <a href="{% url 'setting_profile' %}" class="btn w-100 btn_profile">Profile</a>
+                        <a href="{% url 'saved_property' %}" class="btn w-100 btn_profile">Saved Property</a>
                         <a href="{% url 'dashboard' %}" class="btn w-100 btn_profile">Manage Property</button></a>
                         <hr>
                         <a href="logout" class="btn w-100 btn_profile">Logout</a>
@@ -498,6 +498,7 @@
     <script src="{% static 'theme/lib/easing/easing.min.js' %}"></script>
     <script src="{% static 'theme/lib/waypoints/waypoints.min.js' %}"></script>
     <script src="{% static 'theme/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="https://kit.fontawesome.com/b51862cea5.js" crossorigin="anonymous"></script>
     <script defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCG2YHIuPJYMOJzS6wSw5eZ0dTYXnhZFLs&libraries=places">
         </script>
@@ -530,7 +531,7 @@
         // Function to open the modal
         function openModal(url) {
             share_url_for_specific_peroperty = `${DOMAIN_NAME}/${create_share_link(url)}`;
-            
+
             var modal = document.getElementById("shareModal");
             modal.style.display = "block";
         }
@@ -601,7 +602,7 @@
             };
         })(jQuery);
         function create_share_link(url) {
-            
+
             var url = $(url).attr("url");
             return url;
         }

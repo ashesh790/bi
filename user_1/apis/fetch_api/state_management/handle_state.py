@@ -54,7 +54,7 @@ def login_user(request):
                 user_id = login[0].user_id
                 login_user = User_register.objects.get(user_id=user_id)
                 request.session["user_mobile_number"] = login_user.user_mobile
-                request.session["user_id"] = user_id
+                request.session["user_id"] = user_id 
                 # login_user.user_other_data['location_number'] = location_number
                 login_user.save()
                 return True
