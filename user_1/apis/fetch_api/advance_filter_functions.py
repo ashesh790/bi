@@ -56,15 +56,15 @@ def search_properties(request, address_dict=None, reload_location=None):
     if reload_location is not None:
         if search_results is not None:
             return search_results
-    else: 
+    else:
         user_details = []
         if search_results.exists():
-            search_results = pd.DataFrame(search_results.values()) 
-            user_ids = list(search_results['id'].values) 
-            for i in user_ids: 
+            search_results = pd.DataFrame(search_results.values())
+            property_ids = list(search_results["id"].values)
+            for i in property_ids:
                 user_basic_details = user_all_details(request, i)
-                user_details.append(user_basic_details['user_mobile']) 
-            search_results['user_mobile'] = pd.DataFrame(user_details) 
+                user_details.append(user_basic_details["user_mobile"])
+            search_results["user_mobile"] = pd.DataFrame(user_details)
             search_results = search_results.to_dict()
             return JsonResponse(search_results)
         else:
