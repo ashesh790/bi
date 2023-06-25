@@ -22,6 +22,25 @@
         background-color: white;
         display: block;
     }
+
+    .popup {
+        position: absolute;
+        top: 70%;
+        left: 60%;
+        transform: translate(-50%, -50%);
+        padding: 10px;
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        width: 200px;
+        height: 100px;
+        overflow: auto;
+    }
+
+    .hidden {
+        display: none;
+    }
 </style>
 <div class="col-md-12">
     <div class="tab-content">
@@ -73,7 +92,7 @@
                                 class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                 {{val.property_data.property_type}}</div> -->
                         </div>
-                        <div class="p-3 pb-0">
+                        <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="{{key}}_popup">
                             <a class="d-block mb-2" href="property_details/{{val.id}}" id="/Month">
                                 <h5 class="text-primary mb-2">${{val.property_data.property_rent_price}}</h5>
                             </a>
@@ -122,6 +141,12 @@
                                     {% endif %}
                                 </h5>
                             </small>
+                            <small class="flex-fill text-center mt-1">
+                                <h5>
+                                    <i class="fa-solid fa-circle-info"
+                                        onclick="toggle_property_popup('{{key}}_popup')"></i>
+                                </h5>
+                            </small>
                         </div>
                     </div>
                 </div>
@@ -140,5 +165,20 @@
     setInterval(function () {
         $(".carousel-control-next").click();
     }, 15000);
+    // Open popup 
+    function toggle_property_popup(popup) {
+        var has_popup = $(`#${popup}`).find(".popup").length > 0;
+        if (has_popup) {
+            $(`#${popup}`).find(".popup").remove();
+            return false;
+        }
+        $(`#${popup}`).append(`<div class="popup">
+                                <button>Report Property</button>
+                                <button id="closePopupBtn">Close</button>
+                            </div>`);
+    }
+    $(document).on("click", "#closePopupBtn", function () {
+        $(this).closest(".popup").addClass("hidden");
+    });
 </script>
 {% endblock %}
