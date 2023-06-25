@@ -137,31 +137,6 @@
 </div>
 <!-- Search End -->
 <script>
-    function like_prperty(like) {
-        let property_id = $(like).attr("prop_id");
-        $.ajax({
-            url: "{% url 'add_like_by_user' %}",
-            type: "POST",
-            data: {
-                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-                'property_id': property_id,
-            },
-            success: function (response) {
-                if (response == "liked") {
-                    $(like).addClass("fa-solid");
-                    $(like).removeClass("fa-regular");
-                    toaster_call("Liked!");
-                }
-                else {
-                    $(like).addClass("fa-regular");
-                    $(like).removeClass("fa-solid");
-                }
-            },
-            error: function (response) {
-                toaster_call("Error");
-            },
-        });
-    }
     setInterval(function () {
         $(".carousel-control-next").click();
     }, 15000);

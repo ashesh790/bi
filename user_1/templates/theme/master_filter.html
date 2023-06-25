@@ -444,7 +444,10 @@
 <script>
     var saved_property_list = `{{ saved_property_list|safe }}`.toString();
     var saved_property_list = JSON.parse(saved_property_list.replace(/'/g, "\""));
-    console.log(saved_property_list);
+    var liked_property_list = `{{liked_property_list|safe}}`.toString();
+    var liked_property_list = JSON.parse(liked_property_list.replace(/'/g, "\""));
+    console.log("Saved", saved_property_list);
+    console.log("Liked", liked_property_list);
     var maxLength = 20;
     // focus and click to secondry nav bar 
     var elements = document.getElementsByClassName('p_type_btn');
@@ -487,6 +490,8 @@
                     $.each(data.prop_data, function (key, val) {
                         var is_bookmark = saved_property_list.includes(key.toString());
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${key}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
+                        var is_liked = liked_property_list.includes(key.toString());
+                        var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${key}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
                         $(".property_counter").append(` 
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden border prop_item">
@@ -537,7 +542,7 @@
                                     </small> 
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
-                                            <i class="fa-regular fa-heart"></i>
+                                            ${like_icon}
                                         </h5>
                                     </small>
                                     <small class="flex-fill text-center mt-1">
@@ -709,7 +714,6 @@
                                     </small> 
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
-                                            <i class="fa-regular fa-heart"></i>
                                         </h5>
                                     </small>
                                     <small class="flex-fill text-center mt-1">
@@ -806,7 +810,6 @@
         }, 500);
     }
     function bookmark_property(property_id) {
-
         var property_id = $(property_id).attr("prop_id");
         $.ajax({
             url: "{% url 'bookmark_property_detail' %}",
@@ -828,6 +831,31 @@
                 window.location.href = "/login";
             }
         });
-    } 
+    }
+    function like_prperty(like) {
+        let property_id = $(like).attr("prop_id");
+        $.ajax({
+            url: "{% url 'add_like_by_user' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                'property_id': property_id,
+            },
+            success: function (response) {
+                if (response == "liked") {
+                    $(like).addClass("fa-solid");
+                    $(like).removeClass("fa-regular");
+                    toaster_call("Liked!");
+                }
+                else {
+                    $(like).addClass("fa-regular");
+                    $(like).removeClass("fa-solid");
+                }
+            },
+            error: function (response) {
+                toaster_call("Error");
+            },
+        });
+    }
 </script>
 {% endblock %}
