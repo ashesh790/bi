@@ -164,6 +164,8 @@ def search_property_type(request, sale_type=None, property_type=None):
                     property_data__property_type=property_type_core
                 )
                 for i in property_type_core_data:
+                    user_detail = user_all_details(request, i.id)
+                    i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
             else:
                 property_filter = "all"
