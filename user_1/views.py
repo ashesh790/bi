@@ -2,7 +2,7 @@ import json
 from numpy import generic
 import requests
 import re
-import pandas as pd 
+import pandas as pd
 from django.conf import settings
 from django.core.files.storage import default_storage
 from urllib import request
@@ -136,7 +136,7 @@ def logout(request):
     try:
         if request:
             try:
-                del request.session["user_name"] 
+                del request.session["user_name"]
                 del request.session["user_id"]
             except:
                 print("Logout")
@@ -146,8 +146,8 @@ def logout(request):
 
 
 def add_property_details(request):
-    try: 
-        if "user_id" not in request.session: 
+    try:
+        if "user_id" not in request.session:
             return redirect("/login")
         if request.method == "POST" and len(request.POST) is not None:
             property_details = add_property_details_in_database(request)
@@ -316,10 +316,10 @@ def update_property(request, property_id=0):
 
 
 def manage_image_upload(request, property_id=None):
-    user_id = request.session['user_id']
-    user_icon = update_property_image(request, property_id) 
-    if user_icon == "True" or user_icon == "False": 
-        return redirect("/update_profile") 
+    user_id = request.session["user_id"]
+    user_icon = update_property_image(request, property_id)
+    if user_icon == "True" or user_icon == "False":
+        return redirect("/update_profile")
     return redirect(f"/update_property_record/{property_id}")
 
 
@@ -376,25 +376,27 @@ def crud_property(request):
 
 
 def home(request):
-    try: 
+    try:
         property_data_all = {}
-        location_fetched = "" 
+        location_fetched = ""
         saved_property_list = ""
-        if "user_id" in request.session: 
+        if "user_id" in request.session:
             user_id = request.session["user_id"]
-            saved_property_list, liked_property_list = liked_and_saved_property_ids(user_id)
+            saved_property_list, liked_property_list = liked_and_saved_property_ids(
+                user_id
+            )
         property_category = property_bound_data()
         property_data = p_detail.objects.all()
         property_data_number = []
         for i in property_data:
             user_mobile = user_all_details(request, i.id)
             user_mobile = user_mobile["user_mobile"]
-            property_data_number.append(user_mobile) 
+            property_data_number.append(user_mobile)
             property_data_all[f"{user_mobile}__{i.id}"] = i
         boundry_data = advance_filter_boundary(request)
         boundry_data = json.loads(boundry_data.content)
         if "location_number" in list(request.session.keys()):
-            location_property, location_fetched = show_property_location_wise(request) 
+            location_property, location_fetched = show_property_location_wise(request)
             if location_property is not None and len(location_property) > 0:
                 if len(location_property) > 0 and location_property is not None:
                     property_data = location_property
@@ -412,8 +414,8 @@ def home(request):
                 "boundry_data": boundry_data["data"],
                 "country": boundry_data["country"],
                 "location_fetched": location_fetched,
-                "saved_property_list": saved_property_list, 
-                "liked_property_list":liked_property_list, 
+                "saved_property_list": saved_property_list,
+                "liked_property_list": liked_property_list,
                 "property_data_number": property_data_number,
             },
         )
@@ -563,17 +565,17 @@ def test_function(request):
 
 
 def bookmark_property_detail(request):
-    try: 
-        if "user_id" not in request.session: 
+    try:
+        if "user_id" not in request.session:
             raise Exception
-        user_id = request.session["user_id"] 
+        user_id = request.session["user_id"]
         property_id = request.POST["property_id"]
         user_data = User_register.objects.get(user_id=user_id)
         removed_property = (
             True if "remove_saved_property" in list(request.POST) else False
         )
         if not removed_property:
-            if "saved_property" in user_data.user_other_data: 
+            if "saved_property" in user_data.user_other_data:
                 if property_id in user_data.user_other_data["saved_property"]:
                     user_data.user_other_data["saved_property"].remove(property_id)
                     user_data.save()
@@ -613,14 +615,14 @@ def google_map(request):
 
 def saved_property(request, remaining_property=False):
     try:
-        saved_property_dict = {} 
+        saved_property_dict = {}
         if "user_id" not in request.session:
             return redirect("/login")
-        user_id = request.session["user_id"] 
-        user_data = User_register.objects.get(user_id=user_id) 
-        if "saved_property" in user_data.user_other_data: 
-            saved_property_list = user_data.user_other_data["saved_property"] 
-        else: 
+        user_id = request.session["user_id"]
+        user_data = User_register.objects.get(user_id=user_id)
+        if "saved_property" in user_data.user_other_data:
+            saved_property_list = user_data.user_other_data["saved_property"]
+        else:
             context = {"saved_property_dict": "null"}
             return render(request, "theme/saved_proper.html", context)
         for i in saved_property_list:
@@ -639,59 +641,59 @@ def saved_property(request, remaining_property=False):
     except Exception as ex:
         return render(request, "theme/404.html")
 
-def update_profile(request): 
-    user_id = request.session["user_id"] 
-    user_data = User_register.objects.get(user_id = user_id) 
-    user_detail = {
-        "user_id" : user_id,
-        "user_name" : user_data.user_name, 
-        "user_email": user_data.user_email, 
-        "user_mobile": user_data.user_mobile, 
-        "user_psw": user_data.user_psw, 
-    } 
-    if "user_icon" in user_data.user_other_data: 
-        user_detail['user_icon'] = user_data.user_other_data['user_icon'] 
-    if "user_location" in user_data.user_other_data: 
-        user_detail["user_location"] = user_data.user_other_data['user_location'], 
-    if request.method == "POST": 
-        if request.content_type == 'application/json': 
-            data = json.loads(request.body) 
-            user_record = User_register.objects.get(user_id = user_id) 
-            user_record.user_name = data.get("user_name") 
-            user_record.user_email = data.get("user_email") 
-            user_record.user_mobile = data.get("user_mobile") 
-            user_record.user_psw = data.get("user_psw") 
-            if len(data['user_icon']) > 0: 
-                user_icon = str(data.get("user_icon")) 
-                user_icon = user_icon.replace("C:\\fakepath\\", "") 
-                user_record.user_other_data['user_icon'] = user_icon 
-            if len(data['user_location']) > 0: 
-                user_record.user_other_data['user_location'] = data.get("user_location") 
-                request.session["user_location"] = data.get("user_location") 
-                request.session['user_name'] = data.get("user_name")
-            user_record.save() 
-            return JsonResponse({"Hello":"Hello"}) 
-    user_detail["user_location"] = user_detail["user_location"][0]
-    context = {
-        "user_detail":user_detail 
-    }
-    return render(request, "theme/profile.html", context) 
 
-def add_like_by_user(request): 
-    property_id = request.POST['property_id']
-    user_id = request.session['user_id'] 
-    user_data = User_register.objects.get(user_id = user_id) 
+def update_profile(request):
+    user_id = request.session["user_id"]
+    user_data = User_register.objects.get(user_id=user_id)
+    user_detail = {
+        "user_id": user_id,
+        "user_name": user_data.user_name,
+        "user_email": user_data.user_email,
+        "user_mobile": user_data.user_mobile,
+        "user_psw": user_data.user_psw,
+    }
+    if "user_icon" in user_data.user_other_data:
+        user_detail["user_icon"] = user_data.user_other_data["user_icon"]
+    if "user_location" in user_data.user_other_data:
+        user_detail["user_location"] = (user_data.user_other_data["user_location"],)
+    if request.method == "POST":
+        if request.content_type == "application/json":
+            data = json.loads(request.body)
+            user_record = User_register.objects.get(user_id=user_id)
+            user_record.user_name = data.get("user_name")
+            user_record.user_email = data.get("user_email")
+            user_record.user_mobile = data.get("user_mobile")
+            user_record.user_psw = data.get("user_psw")
+            if len(data["user_icon"]) > 0:
+                user_icon = str(data.get("user_icon"))
+                user_icon = user_icon.replace("C:\\fakepath\\", "")
+                user_record.user_other_data["user_icon"] = user_icon
+            if len(data["user_location"]) > 0:
+                user_record.user_other_data["user_location"] = data.get("user_location")
+                request.session["user_location"] = data.get("user_location")
+                request.session["user_name"] = data.get("user_name")
+            user_record.save()
+            return JsonResponse({"Hello": "Hello"})
+    user_detail["user_location"] = user_detail["user_location"][0]
+    context = {"user_detail": user_detail}
+    return render(request, "theme/profile.html", context)
+
+
+def add_like_by_user(request):
+    property_id = request.POST["property_id"]
+    user_id = request.session["user_id"]
+    user_data = User_register.objects.get(user_id=user_id)
     if "liked_property" in user_data.user_other_data:
-        if property_id in user_data.user_other_data['liked_property']: 
-            user_data.user_other_data['liked_property'].remove(property_id) 
+        if property_id in user_data.user_other_data["liked_property"]:
+            user_data.user_other_data["liked_property"].remove(property_id)
             status = add_like_property_count(property_id, True)
-        else: 
-            user_data.user_other_data['liked_property'].append(property_id) 
+        else:
+            user_data.user_other_data["liked_property"].append(property_id)
             status = add_like_property_count(property_id, False)
         user_data.save()
-        return HttpResponse(status) 
-    else: 
-        user_data.user_other_data['liked_property'] = [property_id] 
+        return HttpResponse(status)
+    else:
+        user_data.user_other_data["liked_property"] = [property_id]
         status = add_like_property_count(property_id, False)
-        user_data.save() 
-        return HttpResponse(status) 
+        user_data.save()
+        return HttpResponse(status)
