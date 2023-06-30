@@ -727,6 +727,26 @@
         var url = $(url).attr("url");
         return url;
     }
+    // Open popup for report property 
+    function toggle_property_popup(popup) {
+        var has_popup = $(`#${popup}`).find("#popup_for_property").length > 0;
+        if (has_popup) {
+            $(`#${popup}`).find("#popup_for_property").remove();
+            return false;
+        }
+        const is_popup = document.getElementById("popup_for_property");
+        if (is_popup) {
+            $("#popup_for_property").remove();
+        }
+        var popup_id = popup.split("__");
+        popup_id = popup_id[1];
+        popup_id = popup_id.split("_");
+        popup_id = popup_id[0];
+        $(`#${popup}`).append(`<button class="btn" id="popup_for_property" value=${popup_id} onclick="report_form(this)">Report</button>`);
+    }
+    function report_form(Property_id) {
+        $(".click_modal").click();
+    }
 </script>
 
 </html>
