@@ -176,6 +176,26 @@
             font-weight: 600;
         }
     }
+
+    #popup_for_property {
+        position: absolute;
+        top: 80%;
+        left: 80%;
+        transform: translate(-50%, -50%);
+        padding: 10px;
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        width: 100px;
+        height: auto;
+        overflow: auto;
+        border-radius: 5px;
+    }
+
+    .hidden {
+        display: none;
+    }
 </style>
 <!-- Search Start -->
 <div class="container-fluid bg-primary mb-4 wow fadeIn mt-2" data-wow-delay="0.1s" style="padding: 0px;">
@@ -520,7 +540,7 @@
                                         class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                         ${val.property_type}</div>
                                 </div>
-                                <div class="p-3 pb-0">
+                                <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${key}_popup">
                                     <a class="d-block mb-2" href="property_details/${key}" id="/Month">
                                         <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
                                     </a>
@@ -553,6 +573,12 @@
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
                                             ${bookmark_icon}
+                                        </h5>
+                                    </small> 
+                                    <small class="flex-fill text-center mt-1">
+                                        <h5>
+                                            <i class="fa-solid fa-circle-info"
+                                                onclick="toggle_property_popup('modal__${key}_popup')"></i>
                                         </h5>
                                     </small>
                                 </div>
@@ -694,11 +720,11 @@
                                         class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                         ${val.property_type}</div>
                                 </div>
-                                <div class="p-3 pb-0">
-                                    <a class="d-block mb-2" href="property_details/${key}" id="/Month">
+                                <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${property_id[i]}_popup"> 
+                                    <a class="d-block mb-2" href="property_details/${property_id[i]}" id="/Month">
                                         <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
                                     </a>
-                                    <a class="d-block mb-2" href="property_details/${key}">
+                                    <a class="d-block mb-2" href="property_details/${property_id[i]}">
                                         <b class="d-block h5 mb-2">${val.property_type} For
                                             ${val.selling_option}
                                         </b>
@@ -727,6 +753,12 @@
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
                                             ${bookmark_icon}
+                                        </h5>
+                                    </small> 
+                                    <small class="flex-fill text-center mt-1">
+                                        <h5>
+                                            <i class="fa-solid fa-circle-info"
+                                                onclick="toggle_property_popup('modal__${property_id[i]}_popup')"></i>
                                         </h5>
                                     </small>
                                 </div>
