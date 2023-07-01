@@ -675,7 +675,8 @@ def update_profile(request):
                 request.session["user_name"] = data.get("user_name")
             user_record.save()
             return JsonResponse({"Hello": "Hello"})
-    user_detail["user_location"] = user_detail["user_location"][0]
+    if "user_location" in user_data.user_other_data:
+        user_detail["user_location"] = user_detail["user_location"][0]
     context = {"user_detail": user_detail}
     return render(request, "theme/profile.html", context)
 
