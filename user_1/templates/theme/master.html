@@ -483,8 +483,6 @@
     </div>
 
     <!-- Modal for report a property -->
-    <button type="button" class="d-none click_modal" data-bs-toggle="modal" data-bs-target="#report_form">
-    </button>
     <div class="modal fade" id="report_form" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="report_form_label" aria-hidden="true">
         <div class="modal-dialog">
@@ -497,14 +495,15 @@
                     <div class="container">
                         <div class="form-group">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="reportReason" id="spam" value="spam">
+                                <input class="form-check-input" type="radio" name="report_reason" id="spam"
+                                    value="spam">
                                 <label class="form-check-label" for="spam">
                                     It's spam
                                 </label>
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="reportReason" id="nudity"
+                                <input class="form-check-input" type="radio" name="report_reason" id="nudity"
                                     value="nudity">
                                 <label class="form-check-label" for="nudity">
                                     Nudity or sexual activity
@@ -512,7 +511,7 @@
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="reportReason" id="hateSpeech"
+                                <input class="form-check-input" type="radio" name="report_reason" id="hateSpeech"
                                     value="hateSpeech">
                                 <label class="form-check-label" for="hateSpeech">
                                     Hate speech or symbols
@@ -520,7 +519,7 @@
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="reportReason" id="violence"
+                                <input class="form-check-input" type="radio" name="report_reason" id="violence"
                                     value="violence">
                                 <label class="form-check-label" for="violence">
                                     Violence or dangerous organizations
@@ -528,7 +527,7 @@
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="reportReason" id="illegalSale"
+                                <input class="form-check-input" type="radio" name="report_reason" id="illegalSale"
                                     value="illegalSale">
                                 <label class="form-check-label" for="illegalSale">
                                     Sale of illegal or regulated goods
@@ -536,7 +535,7 @@
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="reportReason" id="bullying"
+                                <input class="form-check-input" type="radio" name="report_reason" id="bullying"
                                     value="bullying">
                                 <label class="form-check-label" for="bullying">
                                     Bullying or harassment
@@ -544,7 +543,7 @@
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="reportReason"
+                                <input class="form-check-input" type="radio" name="report_reason"
                                     id="intellectualProperty" value="intellectualProperty">
                                 <label class="form-check-label" for="intellectualProperty">
                                     Intellectual property violation
@@ -552,7 +551,7 @@
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="reportReason" id="suicide"
+                                <input class="form-check-input" type="radio" name="report_reason" id="suicide"
                                     value="suicide">
                                 <label class="form-check-label" for="suicide">
                                     Suicide or self-injury
@@ -560,7 +559,7 @@
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="reportReason" id="eatingDisorders"
+                                <input class="form-check-input" type="radio" name="report_reason" id="eatingDisorders"
                                     value="eatingDisorders">
                                 <label class="form-check-label" for="eatingDisorders">
                                     Eating disorders
@@ -568,14 +567,15 @@
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="reportReason" id="scam" value="scam">
+                                <input class="form-check-input" type="radio" name="report_reason" id="scam"
+                                    value="scam">
                                 <label class="form-check-label" for="scam">
                                     Scam or fraud
                                 </label>
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="reportReason" id="falseInfo"
+                                <input class="form-check-input" type="radio" name="report_reason" id="falseInfo"
                                     value="falseInfo">
                                 <label class="form-check-label" for="falseInfo">
                                     False information
@@ -583,7 +583,7 @@
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="reportReason" id="dontLike"
+                                <input class="form-check-input" type="radio" name="report_reason" id="dontLike"
                                     value="dontLike">
                                 <label class="form-check-label" for="dontLike">
                                     I just don't like it
@@ -591,7 +591,7 @@
                             </div>
                             <div class="mt-3">
                                 <label>Any other complaints?</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <textarea class="form-control" id="report_desc" rows="3"></textarea>
                                 <p class="mt-1 text-danger">NOTE: Our team will provide solution for this. Thank You!
                                 </p>
                             </div>
@@ -599,7 +599,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Send Report</button>
+                    <button type="button" class="btn btn-primary" value="" id="modal_property_id"
+                        onclick="submit_report_form(this);">Send Report</button>
                 </div>
             </div>
         </div>
@@ -725,7 +726,6 @@
         };
     })(jQuery);
     function create_share_link(url) {
-
         var url = $(url).attr("url");
         return url;
     }
@@ -746,8 +746,58 @@
         popup_id = popup_id[0];
         $(`#${popup}`).append(`<button class="btn" id="popup_for_property" value=${popup_id} onclick="report_form(this)">Report</button>`);
     }
-    function report_form(Property_id) {
-        $(".click_modal").click();
+    function report_form(property_id) {
+        var property_id = property_id.value
+        document.getElementById("modal_property_id").value = property_id;
+        $('#report_form').modal('show');
+    }
+
+    function submit_report_form(form) {
+        var proeprty_id = form.value;
+        var url = "submit_report_form";
+        var report_desc = document.getElementById("report_desc").value;
+        var report_reason = document.getElementsByName("report_reason");
+        for (var index = 0; index < report_reason.length; index++) {
+            var currentReason = report_reason[index];
+            if (currentReason.checked) {
+                report_reason = currentReason.value;
+                break;
+            }
+        }
+        var data_for_call = {
+            "proeprty_id": proeprty_id,
+            "report_reason": report_reason,
+            "report_desc": report_desc
+        }
+        // Create a new XMLHttpRequest object
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+
+        // Set the request headers
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        const csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+
+        // Convert the data to JSON format
+        const jsonData = JSON.stringify(data_for_call);
+
+        // Send the request
+        xhr.send(jsonData);
+
+        // Define the callback function to handle the response
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    $('#report_form').modal('hide');
+                    toaster_call("Report Sent..");
+                } else {
+                    // Request encountered an error
+                    console.log(xhr.status + ': ' + xhr.responseText);
+                }
+            }
+        };
     }
 </script>
 

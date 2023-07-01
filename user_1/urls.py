@@ -115,8 +115,9 @@ urlpatterns = [
         "bookmark_property_detail",
         views.bookmark_property_detail,
         name="bookmark_property_detail",
-    ), 
-    path("update_profile", views.update_profile, name="setting_profile"), 
-    path("add_like_by_user", views.add_like_by_user, name="add_like_by_user"), 
+    ),
+    path("update_profile", views.update_profile, name="setting_profile"),
+    path("add_like_by_user", views.add_like_by_user, name="add_like_by_user"),
+    path("submit_report_form", views.submit_report_form, name="submit_report_form"),
     path("google_map", views.google_map, name="google_map"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -697,3 +697,8 @@ def add_like_by_user(request):
         status = add_like_property_count(property_id, False)
         user_data.save()
         return HttpResponse(status)
+
+
+def submit_report_form(request):
+    data = {"data": "data"}
+    return JsonResponse(data)
