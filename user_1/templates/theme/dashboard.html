@@ -64,6 +64,7 @@
         margin: 10px;
     }
 </style>
+{% if data|length != 0 %}
 <div class="container-fluid bg-primary mb-4 wow fadeIn" id="property_deshboard" data-wow-delay="0.1s">
     <div class="container">
         <div class="scroller">
@@ -74,6 +75,12 @@
         </div>
     </div>
 </div>
+{% else %}
+<div class="container p-5">
+    <h5>You have no property!</h5>
+    <a href='add_property_details' class="btn btn-outline-primary">Add Property</a>
+</div>
+{% endif %}
 <div class="container-fluid pt-4 px-4">
     <div class="row bg-light rounded mx-0 p-2">
         {% for i in data %}

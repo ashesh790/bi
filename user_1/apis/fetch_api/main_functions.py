@@ -281,7 +281,7 @@ def liked_and_saved_property_ids(user_id):
             liked_property_list.append(liked_property)
         return saved_property_list, liked_property_list
     else:
-        return None
+        return saved_property_list, liked_property_list
 
 
 def user_all_details(request, property_id):

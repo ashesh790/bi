@@ -639,6 +639,7 @@ def saved_property(request, remaining_property=False):
             context = {"saved_property_dict": saved_property_dict}
             return render(request, "theme/saved_proper.html", context)
     except Exception as ex:
+        print(ex)
         return render(request, "theme/404.html")
 
 
