@@ -46,7 +46,7 @@ from user_1.apis.fetch_api.main_functions import (
     user_all_details,
 )
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
-from user_1.models import User_register, p_detail
+from user_1.models import User_register, p_detail, property_utility
 from django.core.serializers import serialize
 import shutil
 from django.core.files.storage import FileSystemStorage
@@ -700,5 +700,23 @@ def add_like_by_user(request):
 
 
 def submit_report_form(request):
-    data = {"data": "data"}
-    return JsonResponse(data)
+    try:
+        report_data = dict()
+        if request.method == "POST":
+            if request.content_type == "application/json":
+                data = json.loads(request.body)
+                property_id = p_detail.objects.get(id=data["property_id"])
+                seller_id = property_id.seller_id
+                property_report = {
+                    "report_reason": data["report_reason"],
+                    "report_desc": data["report_desc"],
+                }
+                property_utility.objects.create(
+                    property_id=property_id,
+                    seller_id=seller_id,
+                    property_report=property_report,
+                )
+        return JsonResponse({"status": "success"})
+    except Exception as ex:
+        print(ex)
+        return JsonResponse({"success": "error"})

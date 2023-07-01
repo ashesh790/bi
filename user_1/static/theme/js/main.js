@@ -27,10 +27,8 @@ $(document).ready(function () {
     };
     spinner();
 
-
     // Initiate the wowjs
     new WOW().init();
-
 
     // Sticky Navbar
     $(window).scroll(function () {

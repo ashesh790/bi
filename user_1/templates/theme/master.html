@@ -753,7 +753,7 @@
     }
 
     function submit_report_form(form) {
-        var proeprty_id = form.value;
+        var property_id = form.value;
         var url = "submit_report_form";
         var report_desc = document.getElementById("report_desc").value;
         var report_reason = document.getElementsByName("report_reason");
@@ -764,8 +764,8 @@
                 break;
             }
         }
-        var data_for_call = {
-            "proeprty_id": proeprty_id,
+        var data_for_report = {
+            "property_id": property_id,
             "report_reason": report_reason,
             "report_desc": report_desc
         }
@@ -781,7 +781,7 @@
         xhr.setRequestHeader('X-CSRFToken', csrftoken);
 
         // Convert the data to JSON format
-        const jsonData = JSON.stringify(data_for_call);
+        const jsonData = JSON.stringify(data_for_report);
 
         // Send the request
         xhr.send(jsonData);
