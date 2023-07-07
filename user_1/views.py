@@ -380,6 +380,7 @@ def home(request):
         property_data_all = {}
         location_fetched = ""
         saved_property_list = ""
+        liked_property_list = ""
         if "user_id" in request.session:
             user_id = request.session["user_id"]
             saved_property_list, liked_property_list = liked_and_saved_property_ids(
