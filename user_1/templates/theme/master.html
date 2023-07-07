@@ -789,6 +789,9 @@
         // Define the callback function to handle the response
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.response === "false") {
+                    window.location.href = "/login";
+                }
                 if (xhr.status === 200) {
                     $('#report_form').modal('hide');
                     toaster_call("Report Sent..");

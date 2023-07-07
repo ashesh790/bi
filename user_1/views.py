@@ -683,6 +683,8 @@ def update_profile(request):
 
 
 def add_like_by_user(request):
+    if "user_id" not in request.session:
+        raise ValueError
     property_id = request.POST["property_id"]
     user_id = request.session["user_id"]
     user_data = User_register.objects.get(user_id=user_id)
@@ -704,6 +706,8 @@ def add_like_by_user(request):
 
 def submit_report_form(request):
     try:
+        if "user_id" not in request.session:
+            return HttpResponse("false")
         report_data = dict()
         if request.method == "POST":
             if request.content_type == "application/json":
