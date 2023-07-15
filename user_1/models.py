@@ -8,11 +8,11 @@ class User_register(models.Model):
     user_id = models.SlugField(
         primary_key=True, unique=True, auto_created=True, default=uuid.uuid1
     )
-    user_name = models.CharField(max_length=20)
-    user_email = models.CharField(max_length=25)
-    user_mobile = models.CharField(max_length=20, null=True)
-    user_gender = models.CharField(max_length=5)
-    user_psw = models.CharField(max_length=10)
+    user_name = models.CharField(max_length=200)
+    user_email = models.CharField(max_length=200)
+    user_mobile = models.CharField(max_length=200, null=True)
+    user_gender = models.CharField(max_length=200)
+    user_psw = models.CharField(max_length=200)
     user_other_data = models.JSONField(default=dict)
 
 
@@ -25,5 +25,5 @@ class p_detail(models.Model):
 
 class property_utility(models.Model):
     property_id = models.ForeignKey(p_detail, on_delete=models.CASCADE)
-    seller_id = models.CharField(max_length=99)
+    seller_id = models.CharField(max_length=200)
     property_report = models.JSONField(default=dict)
