@@ -32,6 +32,7 @@ from user_1.apis.fetch_api.main_functions import (
     add_like_property_count,
     add_property_details_in_database,
     blocked_property,
+    byte_to_dict,
     delete_all_images_from_media,
     delete_all_property_data,
     delete_property_image_from_database,
@@ -443,6 +444,15 @@ def contact(request):
 def property_agent(request):
     try:
         return render(request, "theme/property-agent.html")
+    except Exception as ex:
+        return render(request, "theme/404.html")
+
+
+def solve_property_issue(request):
+    try:
+        blocked_property_list = blocked_property(request, True)
+        blocked_property_list = byte_to_dict(blocked_property_list)
+        return render(request, "theme/issue.html")
     except Exception as ex:
         return render(request, "theme/404.html")
 

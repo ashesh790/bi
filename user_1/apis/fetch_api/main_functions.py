@@ -321,14 +321,27 @@ def add_like_property_count(property_id, remove_like=False):
             return "like_removed"
 
 
-def blocked_property(request):
+def blocked_property(request, property_details=False):
     # code remain if multile user gave same proeprty report.
-    user_id = "9d9b3527-0764-11ee-8e93-c4346b482059"
+    user_id = request.session["user_id"]
     property_utils = property_utility.objects.filter(
         seller_id=User_register.objects.get(user_id=user_id)
     )
     property_id_reason = {}
-    for i in property_utils:
-        property_id_reason[i.property_id.id] = i.property_report["report_reason"]
-    data = json.dumps(property_id_reason)
-    return HttpResponse(data)
+    if len(property_utils) > 0:
+        for i in property_utils:
+            property_id_reason[i.property_id.id] = i.property_report["report_reason"]
+        data = json.dumps(property_id_reason)
+        return HttpResponse(data)
+    else:
+        return HttpResponse("No data")
+
+
+def byte_to_dict(bytes_data):
+    bytes_data = bytes_data.content
+    # Decode the bytes into a string
+    str_data = bytes_data.decode("utf-8")
+
+    # Parse the string into a dictionary
+    dict_data = json.loads(str_data)
+    return dict_data

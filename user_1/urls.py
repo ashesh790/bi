@@ -120,5 +120,8 @@ urlpatterns = [
     path("add_like_by_user", views.add_like_by_user, name="add_like_by_user"),
     path("submit_report_form", views.submit_report_form, name="submit_report_form"),
     path("blocked_property", views.blocked_property, name="blocked_property"),
+    path(
+        "solve_property_issue", views.solve_property_issue, name="solve_property_issue"
+    ),
     path("google_map", views.google_map, name="google_map"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
