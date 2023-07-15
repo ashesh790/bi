@@ -141,15 +141,16 @@ function toaster_call(message) {
  * @param {Object} data - The data to be sent with the request, in object format.
  * @returns {XMLHttpRequest} - The XMLHttpRequest object used to make the request.
  */
-function ajax_call(method, async, url, data) {
+function ajax_call(method, sync_async, url, data) {
+    const xhr = new XMLHttpRequest();
+
+    // Create a new XMLHttpRequest object 
+    xhr.open(method, url, sync_async);
+
     if (method === "POST" || method === "post") {
         const csrftoken = $("[name=csrfmiddlewaretoken]").val();
         xhr.setRequestHeader('X-CSRFToken', csrftoken);
     }
-
-    // Create a new XMLHttpRequest object
-    const xhr = new XMLHttpRequest();
-    xhr.open(method, url, sync_async);
 
     // Set the request headers
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -157,15 +158,18 @@ function ajax_call(method, async, url, data) {
 
     // Convert the data to JSON format
     const jsonData = JSON.stringify(data);
+    debugger
 
     // Send the request
     xhr.send(jsonData);
 
     // Define the callback function to handle the response
     xhr.onreadystatechange = function () {
+        debugger
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                return xhr;
+                console.log(xhr)
+                return xhr.data;
             } else {
                 // Request encountered an error
                 console.log(xhr.status + ': ' + xhr.responseText);

@@ -433,7 +433,8 @@
                 <a data-toggle="modal" data-target="#glassAnimals"
                     class="btn btn-outline-primary px-3 d-lg-flex bg-primary" id="logout_btn"><i
                         class="fa fa-user text-white" aria-hidden="true"></i></a> &nbsp;&nbsp;
-                <i class="fa-solid fa-bell" data-bs-toggle="modal" data-bs-target="#login_modal"></i>
+                <i onclick="show_notifications()" class="fa-solid fa-bell" data-bs-toggle="modal"
+                    data-bs-target="#login_modal"></i>
                 {% else%}
                 <a href="login" class="btn btn-primary px-3 d-lg-flex" id="login_btn_2">Login</a>
                 {% endif %}
@@ -450,7 +451,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        ...
+                        <div id="notifications"></div>
                     </div>
                 </div>
             </div>
@@ -622,7 +623,8 @@
                             <div class="mt-3">
                                 <label>Any other complaints?</label>
                                 <textarea class="form-control" id="report_desc" rows="3"></textarea>
-                                <p class="mt-1 text-danger">NOTE: Our team will provide solution for this. Thank You!
+                                <p class="mt-1 text-danger">NOTE: Our team will provide solution for this. Thank
+                                    You!
                                 </p>
                             </div>
                         </div>
@@ -831,6 +833,31 @@
                 }
             }
         };
+    }
+    function show_notifications() {
+        data = { "data": "data" }
+        $.ajax(
+            {
+                type: "POST",
+                url: "blocked_property",
+                data: {
+                    data: data,
+                    csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                },
+                success: function (response) {
+                    $("#notifications").empty();
+                    var data = JSON.parse(response);
+                    console.log(data.length);
+                    for (var [k, v] of Object.entries(data)) {
+                        $("#notifications").append(`
+                        <a href=""><p>Your property No. <b>${k}</b> is reported by <b class="text-danger">${v}</b>.<p></a>`);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $("#login_err").removeClass("d-none");
+                    $(".login_err").text("Something went wrong!");
+                }
+            });
     }
 </script>
 

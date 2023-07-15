@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
 from staying_source.settings import MEDIA_ROOT, MEDIA_ROOT_USER_ICON, MEDIA_URL
 from user_1.apis.fetch_api.advance_filter_functions import search_properties
-from user_1.models import User_register, p_detail
+from user_1.models import User_register, p_detail, property_utility
 from django.core.files.storage import FileSystemStorage
 from geopy.geocoders import Nominatim
 
@@ -319,3 +319,16 @@ def add_like_property_count(property_id, remove_like=False):
             property_record.property_other_data["likes"] -= 1
             property_record.save()
             return "like_removed"
+
+
+def blocked_property(request):
+    # code remain if multile user gave same proeprty report.
+    user_id = "9d9b3527-0764-11ee-8e93-c4346b482059"
+    property_utils = property_utility.objects.filter(
+        seller_id=User_register.objects.get(user_id=user_id)
+    )
+    property_id_reason = {}
+    for i in property_utils:
+        property_id_reason[i.property_id.id] = i.property_report["report_reason"]
+    data = json.dumps(property_id_reason)
+    return HttpResponse(data)

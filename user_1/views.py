@@ -31,6 +31,7 @@ from user_1.apis.fetch_api.country_api import (
 from user_1.apis.fetch_api.main_functions import (
     add_like_property_count,
     add_property_details_in_database,
+    blocked_property,
     delete_all_images_from_media,
     delete_all_property_data,
     delete_property_image_from_database,
