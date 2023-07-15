@@ -2,19 +2,34 @@
 {% block manage_property %}active{% endblock %}
 {% block main_content %}
 <style>
+    #main {
+        padding: 0px;
+    }
+
+    #scroller {
+        overflow: auto;
+        display: flex;
+    }
+
     .p_type_btn {
         border-radius: 20px;
         border: 1px solid white;
-        background-color: skyblue;
-        color: black !important;
         padding: 10px;
         font-size: 15px;
         font-weight: 600;
+        background-color: skyblue;
+        color: black !important;
     }
 
     .p_type_btn:hover {
         background-color: white;
         color: black !important;
+    }
+
+    #dashboard_btn,
+    #list_btn {
+        margin: 10px;
+
     }
 
     .active_btn {
@@ -27,50 +42,16 @@
             display: none;
             /* Safari and Chrome */
         }
-
-        .property_box {
-            margin-top: 10px !important;
-        }
-    }
-
-    .scroller {
-        overflow: auto;
-        display: flex;
-    }
-
-    #property_deshboard {
-        padding: 0px;
-    }
-
-    #Property_list {
-        margin: 10px;
-    }
-
-    #property_details {
-        width: 100%;
-        height: 190px;
-    }
-
-    #parent_Property {
-        position: relative;
-    }
-
-    #child_Property {
-        background-color: white;
-        display: block;
-    }
-
-    #Property_dashboard {
-        margin: 10px;
     }
 </style>
 {% if data|length != 0 %}
 <div class="container-fluid bg-primary mb-4 wow fadeIn" id="property_deshboard" data-wow-delay="0.1s">
     <div class="container">
-        <div class="scroller">
-            <button class="btn btn-outline-primary text-white border-white p_type_btn dashboard_page"
-                style="margin:10px;" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
-            <button class="btn btn-outline-primary text-white border-white p_type_btn" id="Property_list">
+        <div class="scroller" id="scroller">
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn dashboard_page"
+                id="dashboard_btn" value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn property_table"
+                id="list_btn">
                 <a href="{% url 'prop_table' %}">Property list</a></button>
         </div>
     </div>

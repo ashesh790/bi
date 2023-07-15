@@ -185,6 +185,19 @@
             outline: 0;
         }
 
+        .notification_modal {
+            position: fixed;
+            top: 0px;
+            right: 20px;
+            left: auto;
+            z-index: 1060;
+            width: 20%;
+            height: 100%;
+            display: none;
+            overflow: hidden;
+            outline: 0px;
+        }
+
         .btn_profile {
             border-left: 2px solid #0099ff !important;
             border-top: 0;
@@ -416,15 +429,32 @@
                     <a href="{% url 'about' %}" class="nav-item nav-link {% block about %}{% endblock %}">About</a>
                 </div>
                 {% if 'user_name' in request.session %}
-                Welcome {{request.session.user_name}} :&nbsp;
+                {{request.session.user_name}} &nbsp;
                 <a data-toggle="modal" data-target="#glassAnimals"
                     class="btn btn-outline-primary px-3 d-lg-flex bg-primary" id="logout_btn"><i
-                        class="fa fa-user text-white" aria-hidden="true"></i></a>
+                        class="fa fa-user text-white" aria-hidden="true"></i></a> &nbsp;&nbsp;
+                <i class="fa-solid fa-bell" data-bs-toggle="modal" data-bs-target="#login_modal"></i>
                 {% else%}
                 <a href="login" class="btn btn-primary px-3 d-lg-flex" id="login_btn_2">Login</a>
                 {% endif %}
             </div>
         </nav>
+        <!-- Button trigger modal -->
+        <!-- Modal -->
+        <div class="notification_modal fade" id="login_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Notifications</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Navbar End -->
         <!-- Modal for user profile -->
         <div class="login_modal fade" id="glassAnimals" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
