@@ -1,40 +1,15 @@
-{% extends 'theme/master.html' %}
-{% load static %}
-{% block about %}active{% endblock %}
-{% block main_content %}
-<!-- Header Start -->
+{% load socialaccount %}
+
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Toaster Demo</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="jquery-toaster.js"></script>
-    <style>
-        .toaster {
-            position: fixed;
-            padding: 10px;
-            background-color: #333;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            border-radius: 5px;
-            z-index: 9999;
-        }
-
-        .bottom-center {
-            bottom: 20px;
-        }
-    </style>
+    <title>Google Registration</title>
 </head>
 
 <body>
+    <h1>My Google Login Project</h1>
+    <a href="{% provider_login_url 'google'%}?next=/">Login with Google</a>
 </body>
 
 </html>
-
-<script>
-    function openApplication() {
-        window.open('tell://');
-    }
-</script>
-{% endblock %}

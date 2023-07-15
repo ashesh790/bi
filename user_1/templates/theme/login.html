@@ -1,5 +1,6 @@
 {% extends 'theme/master.html' %}
 {% load static %}
+{% load socialaccount %}
 {% block main_content %}
 <style>
     #main {
@@ -58,9 +59,9 @@
         </div>
         <div class="mt-2 m-3">
             <span>Start with : </span>
-            <span><a href="login">Google</a></span>
-            <span><a href="login">Facebook</a></span>
-            <span><a href="login">Whatsapp</a></span>
+            <a href="{% provider_login_url 'google'%}?next=/">Login with Google</a>
+            <!-- <span><a href="login">Facebook</a></span>
+            <span><a href="login">Whatsapp</a></span> -->
         </div>
     </div>
 </div>
