@@ -847,12 +847,19 @@
                 },
                 success: function (response) {
                     $("#notifications").empty();
+                    var notification_count = 0;
                     var data = JSON.parse(response);
-                    console.log(data.length);
                     for (var [k, v] of Object.entries(data)) {
+                        notification_count += 1;
+                        k = k.split("__");
+                        k = k[0];
+                        if (key == v) { }
                         $("#notifications").append(`
                         <a href=""><span>Your property No. <b>${k}</b> is reported by <b class="text-danger">${v}</b>.<span></a><br>`);
+                        var key = k;
+                        var val = v;
                     }
+                    console.log(notification_count);
                 },
                 error: function (xhr, status, error) {
                     $("#login_err").removeClass("d-none");

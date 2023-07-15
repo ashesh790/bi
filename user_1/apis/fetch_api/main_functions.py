@@ -329,8 +329,12 @@ def blocked_property(request, property_details=False):
     )
     property_id_reason = {}
     if len(property_utils) > 0:
+        count = 0
         for i in property_utils:
-            property_id_reason[i.property_id.id] = i.property_report["report_reason"]
+            count += 1
+            property_id_reason[f"{i.property_id.id}__{count}"] = i.property_report[
+                "report_reason"
+            ]
         data = json.dumps(property_id_reason)
         return HttpResponse(data)
     else:

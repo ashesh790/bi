@@ -379,6 +379,7 @@ def crud_property(request):
 
 def home(request):
     try:
+        update_property(request, property_id=1)
         property_data_all = {}
         location_fetched = ""
         saved_property_list = ""
@@ -450,6 +451,12 @@ def property_agent(request):
 
 def solve_property_issue(request):
     try:
+        if request.method == "POST":
+            property_id = request.POST["property_id"]
+            property_issue = request.POST["property_issue"]
+            if "property_issue_desc" in request.POST:
+                property_issue_desc = request.POST["property_issue_desc"]
+            property_data = p_detail.objects.get(id=property_id)
         blocked_property_list = blocked_property(request, True)
         blocked_property_list = byte_to_dict(blocked_property_list)
         return render(request, "theme/issue.html")
