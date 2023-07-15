@@ -191,7 +191,7 @@
             right: 20px;
             left: auto;
             z-index: 1060;
-            width: 20%;
+            width: 30%;
             height: 100%;
             display: none;
             overflow: hidden;
@@ -850,7 +850,7 @@
                     console.log(data.length);
                     for (var [k, v] of Object.entries(data)) {
                         $("#notifications").append(`
-                        <a href=""><p>Your property No. <b>${k}</b> is reported by <b class="text-danger">${v}</b>.<p></a>`);
+                        <a href=""><span>Your property No. <b>${k}</b> is reported by <b class="text-danger">${v}</b>.<span></a><br>`);
                     }
                 },
                 error: function (xhr, status, error) {
