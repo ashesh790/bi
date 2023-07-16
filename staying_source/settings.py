@@ -39,7 +39,48 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "user_1",
+    "allauth",
+    "allauth.account",
+    "django.contrib.sites",
+    # "account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
 ]
+TEMPLATE_CONTEXT_PROCESSORS = [
+    "account.context_processors.account",
+]
+
+MIDDLEWARE_CLASSES = [
+    "account.middleware.LocaleMiddleware",
+    "account.middleware.TimezoneMiddleware",
+]
+
+SITE_ID = 1
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = (
+    "http://127.0.0.1:8000/social-auth/complete/google-oauth2/"
+)
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+    }
+}
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -76,18 +117,18 @@ WSGI_APPLICATION = "staying_source.wsgi.application"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': str(os.path.join(BASE_DIR / "user_1.sql")),
-       'USER': 'user_1',
-       'PASSWORD': 'user_1',
-       'HOST': 'localhost',
-       'PORT': '8000',
-   }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": "Ashesh@12345",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
+    }
 }
 
 # Path where media is stored
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/") 
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MEDIA_ROOT_USER_ICON = os.path.join(BASE_DIR, "media/user_icons/")
 # Base url to serve media files
 MEDIA_URL = "/media/"

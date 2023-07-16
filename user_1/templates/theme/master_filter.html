@@ -176,6 +176,26 @@
             font-weight: 600;
         }
     }
+
+    #popup_for_property {
+        position: absolute;
+        top: 80%;
+        left: 80%;
+        transform: translate(-50%, -50%);
+        padding: 10px;
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        width: 100px;
+        height: auto;
+        overflow: auto;
+        border-radius: 5px;
+    }
+
+    .hidden {
+        display: none;
+    }
 </style>
 <!-- Search Start -->
 <div class="container-fluid bg-primary mb-4 wow fadeIn mt-2" data-wow-delay="0.1s" style="padding: 0px;">
@@ -444,7 +464,10 @@
 <script>
     var saved_property_list = `{{ saved_property_list|safe }}`.toString();
     var saved_property_list = JSON.parse(saved_property_list.replace(/'/g, "\""));
-    console.log(saved_property_list);
+    var liked_property_list = `{{liked_property_list|safe}}`.toString();
+    var liked_property_list = JSON.parse(liked_property_list.replace(/'/g, "\""));
+    console.log("Saved", saved_property_list);
+    console.log("Liked", liked_property_list);
     var maxLength = 20;
     // focus and click to secondry nav bar 
     var elements = document.getElementsByClassName('p_type_btn');
@@ -479,6 +502,7 @@
                 "data": property_type_val
             },
             success: function (data) {
+                console.log(data);
                 if (Object.keys(data.prop_data).length != 0) {
 
                     $(".property_counter").empty();
@@ -486,6 +510,8 @@
                     $.each(data.prop_data, function (key, val) {
                         var is_bookmark = saved_property_list.includes(key.toString());
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${key}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
+                        var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(key.toString());
+                        var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${key}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
                         $(".property_counter").append(` 
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden border prop_item">
@@ -514,7 +540,7 @@
                                         class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                         ${val.property_type}</div>
                                 </div>
-                                <div class="p-3 pb-0">
+                                <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${key}_popup">
                                     <a class="d-block mb-2" href="property_details/${key}" id="/Month">
                                         <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
                                     </a>
@@ -531,12 +557,12 @@
                                 <div class="d-flex border-top">
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
-                                            <a href="tel:{{user_phone_number}}"><i class="fa fa-phone"></i></a>
+                                            <a href="tel:${val.user_detail.user_mobile}"><i class="fa fa-phone"></i></a>
                                         </h5>
                                     </small> 
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
-                                            <i class="fa-regular fa-heart"></i>
+                                            ${like_icon}
                                         </h5>
                                     </small>
                                     <small class="flex-fill text-center mt-1">
@@ -547,6 +573,12 @@
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
                                             ${bookmark_icon}
+                                        </h5>
+                                    </small> 
+                                    <small class="flex-fill text-center mt-1">
+                                        <h5>
+                                            <i class="fa-solid fa-circle-info"
+                                                onclick="toggle_property_popup('modal__${key}_popup')"></i>
                                         </h5>
                                     </small>
                                 </div>
@@ -648,6 +680,7 @@
                 "search_object": JSON.stringify(search_object),
             },
             success: function (property_data) {
+                console.log(property_data);
                 property_id = property_data["id"];
                 user_mobile = property_data['user_mobile']
                 property_data = property_data['property_data'];
@@ -658,6 +691,8 @@
                     for (var [key, val] of Object.entries(property_data)) {
                         var is_bookmark = saved_property_list.includes(property_id[i].toString());
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
+                        var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(key.toString());
+                        var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
                         $(".property_counter").append(` 
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden border prop_item">
@@ -685,11 +720,11 @@
                                         class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                         ${val.property_type}</div>
                                 </div>
-                                <div class="p-3 pb-0">
-                                    <a class="d-block mb-2" href="property_details/${key}" id="/Month">
+                                <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${property_id[i]}_popup"> 
+                                    <a class="d-block mb-2" href="property_details/${property_id[i]}" id="/Month">
                                         <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
                                     </a>
-                                    <a class="d-block mb-2" href="property_details/${key}">
+                                    <a class="d-block mb-2" href="property_details/${property_id[i]}">
                                         <b class="d-block h5 mb-2">${val.property_type} For
                                             ${val.selling_option}
                                         </b>
@@ -706,8 +741,8 @@
                                         </h5>
                                     </small> 
                                     <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <i class="fa-regular fa-heart"></i>
+                                        <h5> 
+                                            ${like_icon}
                                         </h5>
                                     </small>
                                     <small class="flex-fill text-center mt-1">
@@ -718,6 +753,12 @@
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
                                             ${bookmark_icon}
+                                        </h5>
+                                    </small> 
+                                    <small class="flex-fill text-center mt-1">
+                                        <h5>
+                                            <i class="fa-solid fa-circle-info"
+                                                onclick="toggle_property_popup('modal__${property_id[i]}_popup')"></i>
                                         </h5>
                                     </small>
                                 </div>
@@ -804,7 +845,6 @@
         }, 500);
     }
     function bookmark_property(property_id) {
-
         var property_id = $(property_id).attr("prop_id");
         $.ajax({
             url: "{% url 'bookmark_property_detail' %}",
@@ -826,6 +866,31 @@
                 window.location.href = "/login";
             }
         });
-    } 
+    }
+    function like_prperty(like) {
+        let property_id = $(like).attr("prop_id");
+        $.ajax({
+            url: "{% url 'add_like_by_user' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                'property_id': property_id,
+            },
+            success: function (response) {
+                if (response == "liked") {
+                    $(like).addClass("fa-solid");
+                    $(like).removeClass("fa-regular");
+                    toaster_call("Liked!");
+                }
+                else {
+                    $(like).addClass("fa-regular");
+                    $(like).removeClass("fa-solid");
+                }
+            },
+            error: function () {
+                window.location.href = "/login";
+            },
+        });
+    }
 </script>
 {% endblock %}

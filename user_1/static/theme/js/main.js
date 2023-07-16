@@ -27,10 +27,8 @@ $(document).ready(function () {
     };
     spinner();
 
-
     // Initiate the wowjs
     new WOW().init();
-
 
     // Sticky Navbar
     $(window).scroll(function () {
@@ -124,8 +122,59 @@ function showPosition(position) {
 getLocation();
 
 function toaster_call(message) {
-    $.fn.toaster(message, {
-        duration: 2000,
-        position: "bottom-center",
-    });
+    if (message == null || message == "") {
+        return;
+    }
+    else {
+        $.fn.toaster(message, {
+            duration: 2000,
+            position: "bottom-center",
+        });
+    }
+}
+
+/**
+ * Makes an AJAX call to the specified URL using the given method, synchronous/asynchronous mode, and data.
+ * @param {string} method - The HTTP method to use for the request (e.g., "GET", "POST").
+ * @param {boolean} sync_async - Specifies whether the request should be synchronous (true) or asynchronous (false).
+ * @param {string} url - The URL to which the request should be made.
+ * @param {Object} data - The data to be sent with the request, in object format.
+ * @returns {XMLHttpRequest} - The XMLHttpRequest object used to make the request.
+ */
+function ajax_call(method, sync_async, url, data) {
+    const xhr = new XMLHttpRequest();
+
+    // Create a new XMLHttpRequest object 
+    xhr.open(method, url, sync_async);
+
+    if (method === "POST" || method === "post") {
+        const csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+    }
+
+    // Set the request headers
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+    // Convert the data to JSON format
+    const jsonData = JSON.stringify(data);
+    debugger
+
+    // Send the request
+    xhr.send(jsonData);
+
+    // Define the callback function to handle the response
+    xhr.onreadystatechange = function () {
+        debugger
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                console.log(xhr)
+                return xhr.data;
+            } else {
+                // Request encountered an error
+                console.log(xhr.status + ': ' + xhr.responseText);
+                toaster_call("Error..");
+            }
+        }
+    };
 }
