@@ -855,7 +855,7 @@
                         k = k[0];
                         if (key == v) { }
                         $("#notifications").append(`
-                        <a href=""><span>Your property No. <b>${k}</b> is reported by <b class="text-danger">${v}</b>.<span></a><br>`);
+                        <a href="update_property_record/${k}"><span>Your property No. <b>${k}</b> is reported by <b class="text-danger">${v}</b>.<span></a><br>`);
                         var key = k;
                         var val = v;
                     }
@@ -866,7 +866,7 @@
                     $(".login_err").text("Something went wrong!");
                 }
             });
-    }
+    } 
 </script>
 
 </html>
