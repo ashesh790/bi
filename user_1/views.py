@@ -113,6 +113,7 @@ def sign_up(request):
         else:
             return render(request, "theme/signup.html")
     except Exception as ex:
+        print(ex)
         return render(request, "theme/404.html")
 
 
@@ -154,7 +155,7 @@ def add_property_details(request):
         if request.method == "POST" and len(request.POST) is not None:
             property_details = add_property_details_in_database(request)
         country_name_list = country_list(request)
-        country_name_list = json.loads(country_name_list)
+        country_name_list = json.loads(country_name_list) # type: ignore
         data = (
             settings.BASE_DIR
             / "user_1"
@@ -199,7 +200,7 @@ def show_property_detail(request, property_id):
 def delete_property(request, property_id):
     try:
         country_name_list = country_list(request)
-        country_name_list = json.loads(country_name_list)
+        country_name_list = json.loads(country_name_list) # type: ignore
         data = (
             settings.BASE_DIR
             / "user_1"
@@ -379,7 +380,7 @@ def crud_property(request):
 
 def home(request):
     try:
-        update_property(request, property_id=1)
+        # update_property(request, property_id=1)
         property_data_all = {}
         location_fetched = ""
         saved_property_list = ""
@@ -745,3 +746,4 @@ def submit_report_form(request):
     except Exception as ex:
         print(ex)
         return JsonResponse({"success": "error"})
+
