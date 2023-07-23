@@ -87,10 +87,6 @@
                 pass_error = 'Password is required.';
             } else if (password.length < 8) {
                 pass_error = 'Password must be at least 8 characters long.';
-            } else if (!/[A-Z]/.test(password)) {
-                pass_error = 'Password must contain at least one uppercase letter.';
-            } else if (!/[a-z]/.test(password)) {
-                pass_error = 'Password must contain at least one lowercase letter.';
             } else if (!/[0-9]/.test(password)) {
                 pass_error = 'Password must contain at least one digit.';
             }
