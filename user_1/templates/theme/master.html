@@ -650,7 +650,8 @@
     });
 </script>
 <!-- JavaScript Libraries -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>  -->
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script> 
 <script src="{% static 'theme/lib/wow/wow.min.js' %}"></script>
 <script src="{% static 'theme/lib/easing/easing.min.js' %}"></script>
 <script src="{% static 'theme/lib/waypoints/waypoints.min.js' %}"></script>
@@ -663,7 +664,7 @@
 <script src="{% static 'theme/js/main.js' %}"></script>
 <script>
     var share_url_for_specific_peroperty = "";
-    var DOMAIN_NAME = "http://127.0.0.1:8000"
+    var DOMAIN_NAME = "http://127.0.0.1:8000"; 
     setTimeout(function () {
         var latitude = $("#latitude").val();
         var longitude = $("#longitude").val();
