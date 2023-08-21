@@ -85,7 +85,7 @@
                 error = 'Please enter your contact number.';
                 // Display the error message, if any 
                 err_html = `<span id="error-message" class="text-danger">${error}</span>`;
-                $('#number_label').after(error);
+                $('#number_label').after(err_html);
                 return false;
             }
 
@@ -93,13 +93,13 @@
                 error = 'Please enter your email.';
                 // Display the error message, if any
                 err_html = `<span id="error-message" class="text-danger">${error}</span>`;
-                $('#email_label').after(error);
+                $('#email_label').after(err_html);
                 return false;
             } else if (!validateEmail(email)) {
                 error = 'Please enter a valid email address.';
                 // Display the error message, if any 
                 err_html = `<span id="error-message" class="text-danger">${error}</span>`;
-                $('#email_label').after(error);
+                $('#email_label').after(err_html);
                 return false;
             }
 
@@ -107,13 +107,13 @@
                 error = 'Please enter your password.';
                 // Display the error message, if any 
                 err_html = `<span id="error-message" class="text-danger">${error}</span>`;
-                $('#password_label').after(error);
+                $('#password_label').after(err_html);
                 return false;
             } else if (password.length < 8) {
                 error = 'Password must be at least 8 characters long.';
                 // Display the error message, if any
                 err_html = `<span id="error-message" class="text-danger">${error}</span>`;
-                $('#password_label').after(error);
+                $('#password_label').after(err_html);
                 return false;
             }
 
