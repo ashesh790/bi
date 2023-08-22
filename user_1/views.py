@@ -622,7 +622,7 @@ def bookmark_property_detail(request):
             else:
                 return HttpResponse(remaining_property.content)
     except Exception as ex:
-        print("Solve this: " + ex)
+        print("Solve this: ", ex)
         return render(request, "theme/404.html")
 
 
