@@ -428,7 +428,7 @@
                         class="nav-item nav-link {% block contact %}{% endblock %}">Contact</a>
                     <a href="{% url 'about' %}" class="nav-item nav-link {% block about %}{% endblock %}">About</a>
                 </div>
-                <div class="navbar-nav ms-auto">
+                <div class="navbar-nav ms-auto"> 
                     {% if 'user_name' in request.session %}
                     <span class="mt-1">{{request.session.user_name}}</span> &nbsp;
                     <a data-toggle="modal" data-target="#glassAnimals"
