@@ -415,8 +415,8 @@
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto">
+            <div class="collapse navbar-collapse align-items-center" id="navbarCollapse">
+                <div class="navbar-nav ml-auto">
                     <a href="{% url 'home' %}" class="nav-item nav-link {% block home %}{% endblock %}">Home</a>
                     <a href="{% url 'saved_property' %}"
                         class="nav-item nav-link {% block saved_property %}{% endblock %}">Saved Property</a>
@@ -428,16 +428,18 @@
                         class="nav-item nav-link {% block contact %}{% endblock %}">Contact</a>
                     <a href="{% url 'about' %}" class="nav-item nav-link {% block about %}{% endblock %}">About</a>
                 </div>
-                {% if 'user_name' in request.session %}
-                {{request.session.user_name}} &nbsp;
-                <a data-toggle="modal" data-target="#glassAnimals"
-                    class="btn btn-outline-primary px-3 d-lg-flex bg-primary" id="logout_btn"><i
-                        class="fa fa-user text-white" aria-hidden="true"></i></a> &nbsp;&nbsp;
-                <i onclick="show_notifications()" class="fa-solid fa-bell" data-bs-toggle="modal"
-                    data-bs-target="#login_modal"></i>
-                {% else%}
-                <a href="login" class="btn btn-primary px-3 d-lg-flex" id="login_btn_2">Login</a>
-                {% endif %}
+                <div class="navbar-nav ms-auto">
+                    {% if 'user_name' in request.session %}
+                    <span class="mt-1">{{request.session.user_name}}</span> &nbsp;
+                    <a data-toggle="modal" data-target="#glassAnimals"
+                        class="btn btn-outline-primary px-3 d-lg-flex bg-primary" id="logout_btn"><i
+                            class="fa fa-user text-white" aria-hidden="true"></i></a> &nbsp;&nbsp;
+                    <i onclick="show_notifications()" class="fa-solid fa-bell mt-2" data-bs-toggle="modal"
+                        data-bs-target="#login_modal"></i>
+                    {% else%}
+                    <a href="login" class="btn btn-primary px-3 d-lg-flex" id="login_btn_2">Login</a>
+                    {% endif %} 
+                </div>
             </div>
         </nav>
         <!-- Button trigger modal -->

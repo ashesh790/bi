@@ -3,7 +3,6 @@ all_module
 .gitignore
 venv 
 staying_source/__pycache__ 
-user_1/__pycache__
 user_1/__pycache__/
 user_1/migrations/__pycache__/urls.cpython-311.pyc 
 user_1/migrations/__pycache__/urls.cpython-311.pyc

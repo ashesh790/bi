@@ -220,9 +220,22 @@
                 <div id="search_by_place_label">
                     <h5>By Location:</h5>
                 </div>
-                <div>
+                <div class="row"> 
+                    <div class="col-md-2">
                     <input type="text" id="place_name" placeholder="Enter Place Name" onkeyup="delay_search()"
-                        value="{{location_fetched}}">
+                        value="{{location_fetched}}"> 
+                    </div>
+                    <div class="col-md-2" id="bathroom_val__trash">
+                        <div class="" style="width:50%;">
+                            <select class="mt-2 search_field" id="bathroom_val"
+                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                <option value="">Bathrooms</option>
+                                {% for i in boundry_data.bathroom_details %}
+                                <option value="{{i}}">{{i}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -304,7 +317,6 @@
                                     <div style="width:50%;">
                                         <div class="d-flex">
                                             <div id="bathroom_val__trash">
-
                                                 <div class="" style="width:50%;">
                                                     <select class="mt-2 search_field" id="bathroom_val"
                                                         onchange="search_property_based_on_input_field_values();search_field_applied(this);">
