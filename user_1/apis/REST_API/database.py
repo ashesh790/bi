@@ -28,6 +28,6 @@ def user_wise_property(request, saller_id):
     return HttpResponse(data)
 
 
-def convert_string_to_object(user_id_str):
-    user_register = get_object_or_404(User_register, user_id=user_id_str)
+def convert_string_to_object(user_id_as_str):
+    user_register = get_object_or_404(User_register, user_id=user_id_as_str)
     return user_register

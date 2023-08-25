@@ -1,5 +1,6 @@
 {% extends 'theme/master.html' %}
 {% load static %}
+
 {% block main_content %}
 <style>
     #main {
@@ -22,7 +23,6 @@
     }
 </style>
 <div class="row g-3 mt-5 p-5" id="main">
-    {% csrf_token %}
     <div class="col-md-12">
         <div class="col-md-12 m-3">
             <div class="form-floating">
@@ -56,12 +56,6 @@
             <span>New User ?</span>
             <span><a href="signup">Register Here!</a></span>
         </div>
-        <div class="mt-2 m-3">
-            <span>Start with : </span>
-            <span><a href="login">Google</a></span>
-            <span><a href="login">Facebook</a></span>
-            <span><a href="login">Whatsapp</a></span>
-        </div>
     </div>
 </div>
 <!-- Javsscript code with jquery -->
@@ -93,10 +87,6 @@
                 pass_error = 'Password is required.';
             } else if (password.length < 8) {
                 pass_error = 'Password must be at least 8 characters long.';
-            } else if (!/[A-Z]/.test(password)) {
-                pass_error = 'Password must contain at least one uppercase letter.';
-            } else if (!/[a-z]/.test(password)) {
-                pass_error = 'Password must contain at least one lowercase letter.';
             } else if (!/[0-9]/.test(password)) {
                 pass_error = 'Password must contain at least one digit.';
             }

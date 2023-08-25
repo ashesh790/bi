@@ -176,6 +176,106 @@
             font-weight: 600;
         }
     }
+
+    #popup_for_property {
+        position: absolute;
+        top: 80%;
+        left: 80%;
+        transform: translate(-50%, -50%);
+        padding: 10px;
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        width: 100px;
+        height: auto;
+        overflow: auto;
+        border-radius: 5px;
+    }
+
+    /* Custom styles for buttons */
+    .custom-button {
+        border-radius: 0;
+        /* Reset border-radius */
+    }
+
+    /* Apply specific border-radius to first and last buttons */
+    .custom-button:first-child {
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+    }
+
+    .custom-button:last-child {
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .centered-text {
+        text-align: center;
+        line-height: 10px;
+        /* Adjust this value to vertically center the text */
+    }
+
+    /* Modified checkbox */
+    /* Hide the default checkbox */
+    .container_check input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    .container_check {
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    /* Create a custom checkbox */
+    .checkmark {
+        position: relative;
+        top: 8px;
+        left: 0;
+        height: 1.3em;
+        width: 1.3em;
+        background: #606062;
+        border-radius: 7px;
+        border-radius: 2px;
+        box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.30), 0px 1px 1px rgba(0, 5);
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .container_check input:checked~.checkmark {
+        background-image: linear-gradient(#0099ff, #0099ff)
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .container_check input:checked~.checkmark:after {
+        display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .container_check .checkmark:after {
+        left: 0.45em;
+        top: 0.20em;
+        width: 0.24em;
+        height: 0.6em;
+        border: solid white;
+        border-width: 0 0.15em 0.15em 0;
+        transform: rotate(45deg);
+    }
 </style>
 <!-- Search Start -->
 <div class="container-fluid bg-primary mb-4 wow fadeIn mt-2" data-wow-delay="0.1s" style="padding: 0px;">
@@ -194,38 +294,94 @@
     </div>
 </div>
 <div class="row mx-2">
-    <div class="col-sm-12 col-md-7 col-lg-6">
+    <div class="col-sm-12 col-md-12 col-lg-9">
         <div id="location_fltr">
             <div id="location_search_bar">
-                <div id="search_by_place_label">
-                    <h5>By Location:</h5>
-                </div>
-                <div>
-                    <input type="text" id="place_name" placeholder="Enter Place Name" onkeyup="delay_search()"
-                        value="{{location_fetched}}">
+                <div style="overflow: auto; display: flex;">
+                    <div class="col m-2">
+                        <div class="d-flex flex-nowrap button-container">
+                            <button class="btn btn-outline-primary active custom-button centered-text sale_btn" 
+                                data-bs-toggle="pill" value="all" id="all"
+                                onclick="search_property_based_on_input_field_values(this);"
+                                style="height:29px;">All</button>
+                            <button class="btn btn-outline-primary custom-button centered-text sale_btn" data-bs-toggle="pill"
+                                value="Sale" id="sell" onclick="search_property_based_on_input_field_values(this);"
+                                style="height:29px;">Sale</button>
+                            <button class="btn btn-outline-primary custom-button centered-text sale_btn" data-bs-toggle="pill"
+                                value="Rent" id="rent" onclick="search_property_based_on_input_field_values(this);"
+                                style="height:29px;">Rent</button>
+                        </div>
+                    </div> 
+                    <span id="main_container_filters" style="display: flex;">
+                    <div style="width: auto; position:relative;" id="furnish_type__trash" class="col m-2 d-flex">
+                        <select class="search_field" id="furnish_type"
+                            onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
+                            <option value="">Furnish type</option>
+                            {% for i in boundry_data.furnish_type %}
+                            <option>{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div style="width: auto; position:relative;" id="construction_status__trash" class="col m-2 d-flex">
+                        <select class="search_field" id="construction_status"
+                            onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
+                            <option value="">Construction status</option>
+                            {% for i in boundry_data.construction_status %}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div style="width: auto; position:relative;" id="bathroom_val__trash" class="col m-2 d-flex">
+                        <select class="search_field" id="bathroom_val"
+                            onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
+                            <option value="">Bathrooms</option>
+                            {% for i in boundry_data.bathroom_details %}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div style="width: auto; position:relative;" id="balcony_val__trash" class="col m-2 d-flex">
+
+                        <select class="search_field" id="balcony_val"
+                            onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
+                            <option value="">Balcony</option>
+                            {% for i in boundry_data.balcony_details %}
+                            <option>{{i}}</option>
+                            {% endfor %}
+                        </select>
+
+                    </div>
+                    <div style="width: auto; position:relative;" id="bhk_val__trash" class="col m-2 d-flex">
+
+                        <select class="search_field" id="bhk_val"
+                            onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
+                            <option value="">BHK</option>
+                            {% for i in boundry_data.bhk_details %}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endfor %}
+                        </select>
+
+                    </div> 
+                </span>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-12 col-md-5 col-lg-6 text-start text-lg-end wow slideInRight search_utils_btn align-left"
+    <div class="col-sm-12 col-md-5 col-lg-3 text-start text-lg-end wow slideInRight search_utils_btn align-left"
         data-wow-delay="0.1s">
-        <span id="all_filter__trashDelete">
+        <input type="text" id="place_name" placeholder="Enter Place Name" onkeyup="delay_search()"
+            value="{{location_fetched}}">
+        <span id="all_filter__trashDelete" class="d-none">
             <button class="btn btn-outline-primary search_field" data-toggle="modal" id="all_filter"
                 data-target="#exampleModalCenter" onclick="search_field_applied(this);">
                 Filter &nbsp;<i class="fa fa-filter" aria-hidden="true"></i>
             </button>
         </span>
-        <button class="btn btn-outline-primary active" data-bs-toggle="pill" value="all" id="all"
-            onclick="search_property_based_on_input_field_values(this);">All</button>
-        <button class="btn btn-outline-primary" data-bs-toggle="pill" value="Sale" id="sell"
-            onclick="search_property_based_on_input_field_values(this);">Sale</button>
-        <button class="btn btn-outline-primary" data-bs-toggle="pill" value="Rent" id="rent"
-            onclick="search_property_based_on_input_field_values(this);">Rent</button>
     </div>
 </div>
 <div class="row m-2">
     <div class="col-md-12">
-        <div class="tab-content">
+        <div class="tab-content mt-2">
             <div id="tab-1" class="tab-pane fade show p-0 active">
                 <div class="row g-4 property_counter">
                     {% block property %}
@@ -269,22 +425,9 @@
                                                     {% endfor %}
                                                 </select>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- filter using bathroom count -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex">
-                                    <div style="width:50%;">
-                                        <label>Bathrooms: </label>
-                                    </div>
-                                    <div style="width:50%;">
+                                        </div> 
                                         <div class="d-flex">
                                             <div id="bathroom_val__trash">
-
                                                 <div class="" style="width:50%;">
                                                     <select class="mt-2 search_field" id="bathroom_val"
                                                         onchange="search_property_based_on_input_field_values();search_field_applied(this);">
@@ -295,20 +438,20 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- filter using balcony count -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex">
-                                    <div style="width:50%;">
-                                        <label>Balcony: </label>
-                                    </div>
-                                    <div style="width:50%;">
+                                        </div> 
+                                        <div class="d-flex">
+                                            <div id="bathroom_val__trash">
+                                                <div class="" style="width:50%;">
+                                                    <select class="mt-2 search_field" id="bathroom_val"
+                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                        <option value="">Bathrooms</option>
+                                                        {% for i in boundry_data.bathroom_details %}
+                                                        <option value="{{i}}">{{i}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div> 
                                         <div class="d-flex">
                                             <div id="balcony_val__trash">
 
@@ -322,20 +465,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- filter using balcony count -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex">
-                                    <div style="width:50%;">
-                                        <label>BHK: </label>
-                                    </div>
-                                    <div style="width:50%;">
+                                        </div> 
                                         <div class="d-flex">
                                             <div id="bhk_val__trash">
                                                 <div class="" style="width:50%;">
@@ -348,20 +478,20 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- filter using furnish type -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex">
-                                    <div style="width:50%;">
-                                        <label>Furnish type: </label>
-                                    </div>
-                                    <div style="width:50%;">
+                                        </div> 
+                                        <div class="d-flex">
+                                            <div id="furnish_type__trash">
+                                                <div class="" style="width:50%;">
+                                                    <select class="mt-2 search_field" id="furnish_type"
+                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                        <option value="">Furnish type</option>
+                                                        {% for i in boundry_data.furnish_type %}
+                                                        <option>{{i}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div> 
                                         <div class="d-flex">
                                             <div id="furnish_type__trash">
                                                 <div class="" style="width:50%;">
@@ -379,57 +509,9 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- filter using geography area -->
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div>
-                                    <div style="width: 100%;">
-                                        <label>Geography area: </label>
-                                    </div>
-                                    <div style="width:100%;">
-                                        <div>
-                                            <div id="geography_val__trash">
-                                                <div class="" style="width:100%;">
-                                                    <input type="number" class="search_field" placeholder="2000Sq.ft"
-                                                        style="width:100%;" id="geography_val"
-                                                        onchange="search_field_applied(this);">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- filter using price area -->
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div>
-                                    <div style="width:100%;">
-                                        <label style="width:100%;">Price between: </label>
-                                    </div>
-                                    <div style="width:100%;">
-                                        <div>
-                                            <div id="price_fltr_val">
-                                                <div class="">
-                                                    <label class="text-dark">To: </label>
-                                                    <div id="start_price_val__trash">
-                                                        <input type="number" placeholder="100" class="search_field"
-                                                            style="width:100%;" id="start_price_val">
-                                                    </div>
-                                                    <label class="text-dark">From: </label>
-                                                    <div id="end_price_val__trash">
-                                                        <input type="number" placeholder="1000" class="search_field"
-                                                            style="width:100%;" id="end_price_val">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- filter using bathroom count --> 
+                       
+                    </div>
                     </div>
                 </div>
             </div>
@@ -444,7 +526,10 @@
 <script>
     var saved_property_list = `{{ saved_property_list|safe }}`.toString();
     var saved_property_list = JSON.parse(saved_property_list.replace(/'/g, "\""));
-    console.log(saved_property_list);
+    var liked_property_list = `{{liked_property_list|safe}}`.toString();
+    var liked_property_list = JSON.parse(liked_property_list.replace(/'/g, "\""));
+    console.log("Saved", saved_property_list);
+    console.log("Liked", liked_property_list);
     var maxLength = 20;
     // focus and click to secondry nav bar 
     var elements = document.getElementsByClassName('p_type_btn');
@@ -479,6 +564,7 @@
                 "data": property_type_val
             },
             success: function (data) {
+                console.log(data);
                 if (Object.keys(data.prop_data).length != 0) {
 
                     $(".property_counter").empty();
@@ -486,6 +572,8 @@
                     $.each(data.prop_data, function (key, val) {
                         var is_bookmark = saved_property_list.includes(key.toString());
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${key}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
+                        var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(key.toString());
+                        var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${key}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
                         $(".property_counter").append(` 
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden border prop_item">
@@ -514,7 +602,7 @@
                                         class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                         ${val.property_type}</div>
                                 </div>
-                                <div class="p-3 pb-0">
+                                <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${key}_popup">
                                     <a class="d-block mb-2" href="property_details/${key}" id="/Month">
                                         <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
                                     </a>
@@ -531,12 +619,12 @@
                                 <div class="d-flex border-top">
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
-                                            <a href="tel:{{user_phone_number}}"><i class="fa fa-phone"></i></a>
+                                            <a href="tel:${val.user_detail.user_mobile}"><i class="fa fa-phone"></i></a>
                                         </h5>
                                     </small> 
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
-                                            <i class="fa-regular fa-heart"></i>
+                                            ${like_icon}
                                         </h5>
                                     </small>
                                     <small class="flex-fill text-center mt-1">
@@ -547,6 +635,12 @@
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
                                             ${bookmark_icon}
+                                        </h5>
+                                    </small> 
+                                    <small class="flex-fill text-center mt-1">
+                                        <h5>
+                                            <i class="fa-solid fa-circle-info"
+                                                onclick="toggle_property_popup('modal__${key}_popup')"></i>
                                         </h5>
                                     </small>
                                 </div>
@@ -565,34 +659,42 @@
     }
 
     // Search field is applied and trash button for this field is added 
-    function search_field_applied(field) {
+    function search_field_applied(field) { 
         var field_id = $(field).attr("id");
-        if (`${field_id}_trash_icon`) {
-            $(`#${field_id}_trash_icon`).remove();
+        if  ($(document).hasClass(`${field_id}_trash_icon`)) {
+            $(`#${field_id}_trash_icon`).remove(); 
         }
         if (field_id == "all_filter") {
-            $(`#${field_id}__trash`).after(`
-            <span class="mx-2" id="${field_id}_trash_icon" onclick="remove_filter_value(this);active_class(this)"> 
-                <i class="fa fa-times-circle" aria-hidden="true"></i>
+            $(`#${field_id}__trash`).append(`
+            <span style="margin-left:2px; position:absolute; right:0;" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
+                <label class="container_check">
+                <input checked="checked" type="checkbox">
+                <div style="background-color:#0099ff; width:18px; height:18px; border-radius:20%; box-shadow:0 0 10px 0;"><b style="color:white; margin-left:4px; margin-top:0px;">x</b></div>
+                </label>
             </span>
         `);
         } else {
-            $(`#${field_id}__trash`).after(`
-            <span class="mx-2" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
-                <i class="fa fa-times-circle" aria-hidden="true"></i>
+            $(`#${field_id}__trash`).append(`
+            <span style="margin-left:2px; position:absolute; right:0;" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
+                <label class="container_check">
+                <input checked="checked" type="checkbox">
+                <div style="background-color:#0099ff; width:18px; height:18px; border-radius:20%; box-shadow:0 0 10px 0;"><b style="color:white; margin-left:4px; margin-top:0px;">x</b></div>
+                </label>
             </span>
             `);
         }
     }
 
     // remove specific filter 
-    function remove_filter_value(search_field) {
+    function remove_filter_value(search_field) { 
         var field_name = $(search_field).attr("id");
         real_field_name = field_name.replace("_trash_icon", "");
         $(`#${real_field_name}`).val("");
         search_property_based_on_input_field_values();
         //
-        $(`#${field_name}`).remove();
+        $(`#${field_name}`).remove(); 
+        var removed_filter_field = $(`#${real_field_name}__trash`);
+        $("#main_container_filters").append(removed_filter_field);
     }
 
     // search property as per field which is selected in advance filter 
@@ -648,6 +750,7 @@
                 "search_object": JSON.stringify(search_object),
             },
             success: function (property_data) {
+                console.log(property_data);
                 property_id = property_data["id"];
                 user_mobile = property_data['user_mobile']
                 property_data = property_data['property_data'];
@@ -658,6 +761,8 @@
                     for (var [key, val] of Object.entries(property_data)) {
                         var is_bookmark = saved_property_list.includes(property_id[i].toString());
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
+                        var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(key.toString());
+                        var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
                         $(".property_counter").append(` 
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden border prop_item">
@@ -685,11 +790,11 @@
                                         class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                         ${val.property_type}</div>
                                 </div>
-                                <div class="p-3 pb-0">
-                                    <a class="d-block mb-2" href="property_details/${key}" id="/Month">
+                                <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${property_id[i]}_popup"> 
+                                    <a class="d-block mb-2" href="property_details/${property_id[i]}" id="/Month">
                                         <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
                                     </a>
-                                    <a class="d-block mb-2" href="property_details/${key}">
+                                    <a class="d-block mb-2" href="property_details/${property_id[i]}">
                                         <b class="d-block h5 mb-2">${val.property_type} For
                                             ${val.selling_option}
                                         </b>
@@ -706,8 +811,8 @@
                                         </h5>
                                     </small> 
                                     <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <i class="fa-regular fa-heart"></i>
+                                        <h5> 
+                                            ${like_icon}
                                         </h5>
                                     </small>
                                     <small class="flex-fill text-center mt-1">
@@ -718,6 +823,12 @@
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
                                             ${bookmark_icon}
+                                        </h5>
+                                    </small> 
+                                    <small class="flex-fill text-center mt-1">
+                                        <h5>
+                                            <i class="fa-solid fa-circle-info"
+                                                onclick="toggle_property_popup('modal__${property_id[i]}_popup')"></i>
                                         </h5>
                                     </small>
                                 </div>
@@ -804,7 +915,6 @@
         }, 500);
     }
     function bookmark_property(property_id) {
-
         var property_id = $(property_id).attr("prop_id");
         $.ajax({
             url: "{% url 'bookmark_property_detail' %}",
@@ -826,6 +936,40 @@
                 window.location.href = "/login";
             }
         });
+    }
+    function like_prperty(like) {
+        let property_id = $(like).attr("prop_id");
+        $.ajax({
+            url: "{% url 'add_like_by_user' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                'property_id': property_id,
+            },
+            success: function (response) {
+                if (response == "liked") {
+                    $(like).addClass("fa-solid");
+                    $(like).removeClass("fa-regular");
+                    toaster_call("Liked!");
+                }
+                else {
+                    $(like).addClass("fa-regular");
+                    $(like).removeClass("fa-solid");
+                }
+            },
+            error: function () {
+                window.location.href = "/login";
+            },
+        });
     } 
-</script>
+    $(".sale_btn").click(function(){ 
+        $(".sale_btn").removeClass("active");
+        $(this).toggleClass("active"); 
+    }); 
+
+    function move_applied_to_first(filter_filter){ 
+        var filter_filter = $(filter_filter).attr("id");
+        $(`#${filter_filter}__trash`).prependTo("#main_container_filters");
+    }
+</script> 
 {% endblock %}

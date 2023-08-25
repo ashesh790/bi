@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "user_1",
 ]
 
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -77,13 +78,17 @@ WSGI_APPLICATION = "staying_source.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": str(os.path.join(BASE_DIR, "database/db.sqlite3")),
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": "123",
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
 
 # Path where media is stored
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/") 
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MEDIA_ROOT_USER_ICON = os.path.join(BASE_DIR, "media/user_icons/")
 # Base url to serve media files
 MEDIA_URL = "/media/"

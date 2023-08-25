@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
 from staying_source.settings import MEDIA_ROOT, MEDIA_ROOT_USER_ICON, MEDIA_URL
 from user_1.apis.fetch_api.advance_filter_functions import search_properties
-from user_1.models import User_register, p_detail
+from user_1.models import User_register, p_detail, property_utility
 from django.core.files.storage import FileSystemStorage
 from geopy.geocoders import Nominatim
 
@@ -47,26 +47,26 @@ def add_property_details_in_database(request):
         return False
 
 
-def update_property_image(request = None, property_id = None, user_icon = None): 
-    if property_id == 0: 
+def update_property_image(request=None, property_id=None, user_icon=None):
+    if property_id == 0:
         if len(request.FILES) > 0:
-            user_id = request.session['user_id'] 
+            user_id = request.session["user_id"]
             if os.path.exists(MEDIA_ROOT_USER_ICON + user_id):
-                user_icon = os.listdir(MEDIA_ROOT_USER_ICON + user_id) 
+                user_icon = os.listdir(MEDIA_ROOT_USER_ICON + user_id)
                 for i in range(0, len(user_icon)):
-                    os.remove("media/user_icons/" + user_id + "/"+ user_icon[i])
+                    os.remove("media/user_icons/" + user_id + "/" + user_icon[i])
             # Create an instance of FileSystemStorage with the desired folder name
-            custom_storage = FileSystemStorage(location=f'media/user_icons/{user_id}/')
-            user_icon = request.FILES['file'] 
+            custom_storage = FileSystemStorage(location=f"media/user_icons/{user_id}/")
+            user_icon = request.FILES["file"]
             # Access the URL of the saved file
             file_url = custom_storage.url(user_icon)
-            custom_storage.save(user_icon.name, user_icon) 
-            return "True" 
-        else: 
+            custom_storage.save(user_icon.name, user_icon)
+            return "True"
+        else:
             return "False"
-    
+
     property_data = p_detail.objects.get(id=property_id)
-    if request.method == "POST": 
+    if request.method == "POST":
         fss = FileSystemStorage()
         data = request.FILES.getlist("images")
         property_image_save = []
@@ -164,11 +164,15 @@ def search_property_type(request, sale_type=None, property_type=None):
                     property_data__property_type=property_type_core
                 )
                 for i in property_type_core_data:
+                    user_detail = user_all_details(request, i.id)
+                    i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
             else:
                 property_filter = "all"
                 property_type_core_data = p_detail.objects.all()
                 for i in property_type_core_data:
+                    user_detail = user_all_details(request, i.id)
+                    i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
             return JsonResponse(
                 {"prop_data": prop_data, "prop_data_type": property_type_core}
@@ -215,8 +219,8 @@ def delete_all_images_from_media(property_id):
     return True
 
 
-def save_location(request): 
-    if "user_id" not in request.session: 
+def save_location(request):
+    if "user_id" not in request.session:
         return HttpResponse("Do Login")
     user_id = request.session["user_id"]
     latitude = request.POST["data[latitude]"]
@@ -227,11 +231,11 @@ def save_location(request):
     request.session["user_id"] = user_id
     login_user.user_other_data["location_number"] = location_number
     login_user.save()
-    return HttpResponse("Location saved") 
+    return HttpResponse("Location saved")
 
 
-def show_property_location_wise(request): 
-    location_fetched = "" 
+def show_property_location_wise(request):
+    location_fetched = ""
     reload_location = True
     latitude = request.session["location_number"]["latitude"]
     longitude = request.session["location_number"]["longitude"]
@@ -264,16 +268,20 @@ def get_location_name(latitude, longitude):
     return address_dict if location else None
 
 
-def saved_property_ids(user_id):
+def liked_and_saved_property_ids(user_id):
     saved_property_list = []
+    liked_property_list = []
     user_id = user_id
-    user_data = User_register.objects.get(user_id=user_id) 
+    user_data = User_register.objects.get(user_id=user_id)
     if "saved_property" in user_data.user_other_data:
         for property_id in user_data.user_other_data["saved_property"]:
             saved_property_list.append(property_id)
-        return saved_property_list 
-    else: 
-        return None
+    if "liked_property" in user_data.user_other_data:
+        for liked_property in user_data.user_other_data["liked_property"]:
+            liked_property_list.append(liked_property)
+        return saved_property_list, liked_property_list
+    else:
+        return saved_property_list, liked_property_list
 
 
 def user_all_details(request, property_id):
@@ -295,3 +303,49 @@ def user_all_details(request, property_id):
         return saller_data
     except Exception as ex:
         print(ex)
+
+
+def add_like_property_count(property_id, remove_like=False):
+    property_record = p_detail.objects.get(id=property_id)
+    if not remove_like:
+        if "likes" in property_record.property_other_data:
+            property_record.property_other_data["likes"] += 1
+        else:
+            property_record.property_other_data["likes"] = 1
+        property_record.save()
+        return "liked"
+    else:
+        if property_record.property_other_data["likes"] > 0:
+            property_record.property_other_data["likes"] -= 1
+            property_record.save()
+            return "like_removed"
+
+
+def blocked_property(request, property_details=False):
+    # code remain if multile user gave same proeprty report.
+    user_id = request.session["user_id"]
+    property_utils = property_utility.objects.filter(
+        seller_id=User_register.objects.get(user_id=user_id)
+    )
+    property_id_reason = {}
+    if len(property_utils) > 0:
+        count = 0
+        for i in property_utils:
+            count += 1
+            property_id_reason[f"{i.property_id.id}__{count}"] = i.property_report[
+                "report_reason"
+            ]
+        data = json.dumps(property_id_reason)
+        return HttpResponse(data)
+    else:
+        return HttpResponse("No data")
+
+
+def byte_to_dict(bytes_data):
+    bytes_data = bytes_data.content
+    # Decode the bytes into a string
+    str_data = bytes_data.decode("utf-8")
+
+    # Parse the string into a dictionary
+    dict_data = json.loads(str_data)
+    return dict_data
