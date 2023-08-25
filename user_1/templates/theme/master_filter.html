@@ -311,10 +311,11 @@
                                 value="Rent" id="rent" onclick="search_property_based_on_input_field_values(this);"
                                 style="height:29px;">Rent</button>
                         </div>
-                    </div>
+                    </div> 
+                    <span id="main_container_filters" style="display: flex;">
                     <div style="width: auto; position:relative;" id="furnish_type__trash" class="col m-2 d-flex">
                         <select class="search_field" id="furnish_type"
-                            onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                            onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
                             <option value="">Furnish type</option>
                             {% for i in boundry_data.furnish_type %}
                             <option>{{i}}</option>
@@ -323,7 +324,7 @@
                     </div>
                     <div style="width: auto; position:relative;" id="construction_status__trash" class="col m-2 d-flex">
                         <select class="search_field" id="construction_status"
-                            onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                            onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
                             <option value="">Construction status</option>
                             {% for i in boundry_data.construction_status %}
                             <option value="{{i}}">{{i}}</option>
@@ -332,7 +333,7 @@
                     </div>
                     <div style="width: auto; position:relative;" id="bathroom_val__trash" class="col m-2 d-flex">
                         <select class="search_field" id="bathroom_val"
-                            onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                            onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
                             <option value="">Bathrooms</option>
                             {% for i in boundry_data.bathroom_details %}
                             <option value="{{i}}">{{i}}</option>
@@ -342,7 +343,7 @@
                     <div style="width: auto; position:relative;" id="balcony_val__trash" class="col m-2 d-flex">
 
                         <select class="search_field" id="balcony_val"
-                            onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                            onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
                             <option value="">Balcony</option>
                             {% for i in boundry_data.balcony_details %}
                             <option>{{i}}</option>
@@ -353,14 +354,15 @@
                     <div style="width: auto; position:relative;" id="bhk_val__trash" class="col m-2 d-flex">
 
                         <select class="search_field" id="bhk_val"
-                            onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                            onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
                             <option value="">BHK</option>
                             {% for i in boundry_data.bhk_details %}
                             <option value="{{i}}">{{i}}</option>
                             {% endfor %}
                         </select>
 
-                    </div>
+                    </div> 
+                </span>
                 </div>
             </div>
         </div>
@@ -659,8 +661,8 @@
     // Search field is applied and trash button for this field is added 
     function search_field_applied(field) { 
         var field_id = $(field).attr("id");
-        if (`${field_id}_trash_icon`) {
-            $(`#${field_id}_trash_icon`).remove();
+        if  ($(document).hasClass(`${field_id}_trash_icon`)) {
+            $(`#${field_id}_trash_icon`).remove(); 
         }
         if (field_id == "all_filter") {
             $(`#${field_id}__trash`).append(`
@@ -684,13 +686,15 @@
     }
 
     // remove specific filter 
-    function remove_filter_value(search_field) {
+    function remove_filter_value(search_field) { 
         var field_name = $(search_field).attr("id");
         real_field_name = field_name.replace("_trash_icon", "");
         $(`#${real_field_name}`).val("");
         search_property_based_on_input_field_values();
         //
-        $(`#${field_name}`).remove();
+        $(`#${field_name}`).remove(); 
+        var removed_filter_field = $(`#${real_field_name}__trash`);
+        $("#main_container_filters").append(removed_filter_field);
     }
 
     // search property as per field which is selected in advance filter 
@@ -961,6 +965,11 @@
     $(".sale_btn").click(function(){ 
         $(".sale_btn").removeClass("active");
         $(this).toggleClass("active"); 
-    });
-</script>
+    }); 
+
+    function move_applied_to_first(filter_filter){ 
+        var filter_filter = $(filter_filter).attr("id");
+        $(`#${filter_filter}__trash`).prependTo("#main_container_filters");
+    }
+</script> 
 {% endblock %}
