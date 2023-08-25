@@ -239,12 +239,12 @@
     /* Create a custom checkbox */
     .checkmark {
         position: relative;
-        top: 0;
+        top: 8px;
         left: 0;
         height: 1.3em;
         width: 1.3em;
         background: #606062;
-        border-radius: 7px; 
+        border-radius: 7px;
         border-radius: 2px;
         box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.30), 0px 1px 1px rgba(0, 5);
     }
@@ -297,15 +297,8 @@
     <div class="col-sm-12 col-md-12 col-lg-9">
         <div id="location_fltr">
             <div id="location_search_bar">
-                <!-- <div id="search_by_place_label">
-                    <h5>By Location:</h5>
-                </div> -->
-                <div class="row">
-                    <!-- <div class="col-md-2">
-                    <input type="text" id="place_name" placeholder="Enter Place Name" onkeyup="delay_search()"
-                        value="{{location_fetched}}"> 
-                    </div> -->
-                    <div class="col">
+                <div style="overflow: auto; display: flex;">
+                    <div class="col m-2">
                         <div class="d-flex flex-nowrap button-container">
                             <button class="btn btn-outline-primary active custom-button centered-text"
                                 data-bs-toggle="pill" value="all" id="all"
@@ -319,7 +312,7 @@
                                 style="height:29px;">Rent</button>
                         </div>
                     </div>
-                    <div style="width: auto;" id="furnish_type__trash">
+                    <div style="width: auto; position:relative;" id="furnish_type__trash" class="col m-2 d-flex">
                         <select class="search_field" id="furnish_type"
                             onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                             <option value="">Furnish type</option>
@@ -328,7 +321,7 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div style="width: auto;" id="construction_status__trash">
+                    <div style="width: auto; position:relative;" id="construction_status__trash" class="col m-2 d-flex">
                         <select class="search_field" id="construction_status"
                             onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                             <option value="">Construction status</option>
@@ -337,7 +330,7 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div style="width: auto;" id="bathroom_val__trash">
+                    <div style="width: auto; position:relative;" id="bathroom_val__trash" class="col m-2 d-flex">
                         <select class="search_field" id="bathroom_val"
                             onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                             <option value="">Bathrooms</option>
@@ -346,7 +339,7 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div style="width: auto;" id="balcony_val__trash">
+                    <div style="width: auto; position:relative;" id="balcony_val__trash" class="col m-2 d-flex">
 
                         <select class="search_field" id="balcony_val"
                             onchange="search_property_based_on_input_field_values();search_field_applied(this);">
@@ -357,7 +350,7 @@
                         </select>
 
                     </div>
-                    <div style="width: auto;" id="bhk_val__trash">
+                    <div style="width: auto; position:relative;" id="bhk_val__trash" class="col m-2 d-flex">
 
                         <select class="search_field" id="bhk_val"
                             onchange="search_property_based_on_input_field_values();search_field_applied(this);">
@@ -430,19 +423,7 @@
                                                     {% endfor %}
                                                 </select>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- filter using bathroom count -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex">
-                                    <div style="width:50%;">
-                                        <label>Bathrooms: </label>
-                                    </div>
-                                    <div style="width:50%;">
+                                        </div> 
                                         <div class="d-flex">
                                             <div id="bathroom_val__trash">
                                                 <div class="" style="width:50%;">
@@ -455,20 +436,20 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- filter using balcony count -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex">
-                                    <div style="width:50%;">
-                                        <label>Balcony: </label>
-                                    </div>
-                                    <div style="width:50%;">
+                                        </div> 
+                                        <div class="d-flex">
+                                            <div id="bathroom_val__trash">
+                                                <div class="" style="width:50%;">
+                                                    <select class="mt-2 search_field" id="bathroom_val"
+                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                        <option value="">Bathrooms</option>
+                                                        {% for i in boundry_data.bathroom_details %}
+                                                        <option value="{{i}}">{{i}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div> 
                                         <div class="d-flex">
                                             <div id="balcony_val__trash">
 
@@ -482,20 +463,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- filter using balcony count -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex">
-                                    <div style="width:50%;">
-                                        <label>BHK: </label>
-                                    </div>
-                                    <div style="width:50%;">
+                                        </div> 
                                         <div class="d-flex">
                                             <div id="bhk_val__trash">
                                                 <div class="" style="width:50%;">
@@ -508,20 +476,20 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- filter using furnish type -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex">
-                                    <div style="width:50%;">
-                                        <label>Furnish type: </label>
-                                    </div>
-                                    <div style="width:50%;">
+                                        </div> 
+                                        <div class="d-flex">
+                                            <div id="furnish_type__trash">
+                                                <div class="" style="width:50%;">
+                                                    <select class="mt-2 search_field" id="furnish_type"
+                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
+                                                        <option value="">Furnish type</option>
+                                                        {% for i in boundry_data.furnish_type %}
+                                                        <option>{{i}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div> 
                                         <div class="d-flex">
                                             <div id="furnish_type__trash">
                                                 <div class="" style="width:50%;">
@@ -539,57 +507,9 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- filter using geography area -->
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div>
-                                    <div style="width: 100%;">
-                                        <label>Geography area: </label>
-                                    </div>
-                                    <div style="width:100%;">
-                                        <div>
-                                            <div id="geography_val__trash">
-                                                <div class="" style="width:100%;">
-                                                    <input type="number" class="search_field" placeholder="2000Sq.ft"
-                                                        style="width:100%;" id="geography_val"
-                                                        onchange="search_field_applied(this);">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- filter using price area -->
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div>
-                                    <div style="width:100%;">
-                                        <label style="width:100%;">Price between: </label>
-                                    </div>
-                                    <div style="width:100%;">
-                                        <div>
-                                            <div id="price_fltr_val">
-                                                <div class="">
-                                                    <label class="text-dark">To: </label>
-                                                    <div id="start_price_val__trash">
-                                                        <input type="number" placeholder="100" class="search_field"
-                                                            style="width:100%;" id="start_price_val">
-                                                    </div>
-                                                    <label class="text-dark">From: </label>
-                                                    <div id="end_price_val__trash">
-                                                        <input type="number" placeholder="1000" class="search_field"
-                                                            style="width:100%;" id="end_price_val">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- filter using bathroom count --> 
+                       
+                    </div>
                     </div>
                 </div>
             </div>
@@ -737,27 +657,27 @@
     }
 
     // Search field is applied and trash button for this field is added 
-    function search_field_applied(field) {
+    function search_field_applied(field) { 
         var field_id = $(field).attr("id");
         if (`${field_id}_trash_icon`) {
             $(`#${field_id}_trash_icon`).remove();
         }
         if (field_id == "all_filter") {
             $(`#${field_id}__trash`).append(`
-            <span class="" id="${field_id}_trash_icon" onclick="remove_filter_value(this);active_class(this)"> 
+            <span style="margin-left:2px; position:absolute; right:0;" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
                 <label class="container_check">
-  <input checked="checked" type="checkbox">
-  <div class="checkmark"></div>
-</label>
+                <input checked="checked" type="checkbox">
+                <div style="background-color:#0099ff; width:18px; height:18px; border-radius:20%; box-shadow:0 0 10px 0;"><b style="color:white; margin-left:4px; margin-top:0px;">x</b></div>
+                </label>
             </span>
         `);
         } else {
             $(`#${field_id}__trash`).append(`
-            <span class="" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
+            <span style="margin-left:2px; position:absolute; right:0;" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
                 <label class="container_check">
-  <input checked="checked" type="checkbox">
-  <div class="checkmark"></div>
-</label>
+                <input checked="checked" type="checkbox">
+                <div style="background-color:#0099ff; width:18px; height:18px; border-radius:20%; box-shadow:0 0 10px 0;"><b style="color:white; margin-left:4px; margin-top:0px;">x</b></div>
+                </label>
             </span>
             `);
         }
