@@ -747,3 +747,6 @@ def submit_report_form(request):
         print(ex)
         return JsonResponse({"success": "error"})
 
+
+def chat(request, user_id):
+    return render(request, 'chat.html', {'user_id': user_id})

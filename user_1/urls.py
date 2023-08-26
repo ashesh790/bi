@@ -123,5 +123,6 @@ urlpatterns = [
     path(
         "solve_property_issue", views.solve_property_issue, name="solve_property_issue"
     ),
-    path("google_map", views.google_map, name="google_map"),
+    path("google_map", views.google_map, name="google_map"), 
+    path('chat/<str:user_id>/', views.chat, name='chat'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
