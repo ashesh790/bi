@@ -53,7 +53,7 @@ from django.core.serializers import serialize
 import shutil
 from django.core.files.storage import FileSystemStorage
 from django.core import serializers
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # from user_1.forms import MyForm
 
 # Note: Create login and signup in single html page
@@ -380,7 +380,8 @@ def crud_property(request):
 
 def home(request):
     try:
-        # update_property(request, property_id=1)
+        # update_property(request, property_id=1) 
+        page_number = request.GET.get('page')
         property_data_all = {}
         location_fetched = ""
         saved_property_list = ""
@@ -391,7 +392,7 @@ def home(request):
                 user_id
             )
         property_category = property_bound_data()
-        property_data = p_detail.objects.all()
+        property_data = p_detail.objects.all()  
         property_data_number = []
         for i in property_data:
             user_mobile = user_all_details(request, i.id)
@@ -409,19 +410,27 @@ def home(request):
                 for i in property_data:
                     user_mobile = user_all_details(request, i.id)
                     user_mobile = user_mobile["user_mobile"]
-                    property_data_all[f"{user_mobile}__{i.id}"] = i
+                    property_data_all[f"{user_mobile}__{i.id}"] = i 
+        property_data_all = list(property_data_all.items())                    
+        p = Paginator(property_data_all, 1)
+        page_object = p.page(page_number) 
+        data_touple = page_object.object_list 
+        pagination_data = dict() 
+        for i in data_touple: 
+            pagination_data[i[0]] = i[1]
         return render(
             request,
             "theme/index.html",
             {
                 "property_category": property_category,
-                "property_data_all": property_data_all,
+                "property_data_all": pagination_data,
                 "boundry_data": boundry_data["data"],
                 "country": boundry_data["country"],
                 "location_fetched": location_fetched,
                 "saved_property_list": saved_property_list,
                 "liked_property_list": liked_property_list,
-                "property_data_number": property_data_number,
+                "property_data_number": property_data_number, 
+                "page_obj":page_object,
             },
         )
     except Exception as ex:

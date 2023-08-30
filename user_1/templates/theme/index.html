@@ -140,6 +140,20 @@
         </div>
     </div>
 </div>
+<center>
+    {%if page_obj.has_previous %} {# whether the previous page exists #}
+    <a href="?page={{page_obj.previous_page_number}}">
+        <i class="fa-solid fa-arrow-left-long"></i>
+    </a> {# link to the prev page #}
+    {% endif %}
+    <span class="btn btn-outline-primary">{{page_obj.number}}</span> {# the current page number #}
+
+    {%if page_obj.has_next %} {# whether the next page exists #}
+    <a href="?page={{page_obj.next_page_number}}">
+        <i class="fa-solid fa-arrow-right-long"></i>
+    </a> {# link to the next page #}
+    {% endif %}
+</center>
 <!-- Search End -->
 <script>
     setInterval(function () {
