@@ -669,20 +669,12 @@
         }
         if (field_id == "all_filter") {
             $(`#${field_id}__trash`).append(`
-            <span style="margin-left:2px; position:absolute; right:0;" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
-                <label class="container_check">
-                <input checked="checked" type="checkbox">
-                <div style="background-color:#0099ff; width:18px; height:18px; border-radius:20%; box-shadow:0 0 10px 0;"><b style="color:white; margin-left:4px; margin-top:0px;">x</b></div>
-                </label>
+            <span style="margin-left:2px; position:absolute; right:-3px; top:-5px; background-color:#0099ff;" class="fa-solid fa-circle-xmark" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
             </span>
         `);
         } else {
             $(`#${field_id}__trash`).append(`
-            <span style="margin-left:2px; position:absolute; right:0;" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
-                <label class="container_check">
-                <input checked="checked" type="checkbox">
-                <div style="background-color:#0099ff; width:18px; height:18px; border-radius:20%; box-shadow:0 0 10px 0;"><b style="color:white; margin-left:4px; margin-top:0px;">x</b></div>
-                </label>
+            <span style="margin-left:2px; position:absolute; right:-3px; top:-5px; background-color;#0099ff;" class="fa-solid fa-circle-xmark" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
             </span>
             `);
         }
