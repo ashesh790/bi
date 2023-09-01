@@ -282,13 +282,14 @@
     <div>
         <div class="scroller" style="overflow: auto; display:flex;">
             {% csrf_token %}
-            <button class="btn btn-outline-primary text-white border-white p_type_btn"
-                onclick="property_type_core(this);active_class(this);" style="margin:10px;" value="all">All
-                Type</button>
+            <button class="btn btn-outline-primary text-white border-white p_type_btn scroller_1"
+                onclick="property_type_core(this);active_class(this); move_applied_to_first(this);" style="margin:10px;"
+                value="all">Clear</button>
             {% for i in boundry_data.property_type %}
             <button class="btn btn-outline-primary text-white border-white p_type_btn"
-                onclick="property_type_core(this);active_class(this);" style="margin:10px;" id="{{i}}"
-                value="{{i}}">{{i}}</button>
+                onclick="property_type_core(this);active_class(this); move_applied_to_first(this);" style="margin:10px;"
+                id="{{i}}" value="{{i}}">{{i}}
+            </button>
             {% endfor %}
         </div>
     </div>
@@ -528,9 +529,13 @@
 
 <script>
     var saved_property_list = `{{ saved_property_list|safe }}`.toString();
-    var saved_property_list = JSON.parse(saved_property_list.replace(/'/g, "\""));
+    if (saved_property_list != "") {
+        var saved_property_list = JSON.parse(saved_property_list.replace(/'/g, "\""));
+    }
     var liked_property_list = `{{liked_property_list|safe}}`.toString();
-    var liked_property_list = JSON.parse(liked_property_list.replace(/'/g, "\""));
+    if (liked_property_list != "") {
+        var liked_property_list = JSON.parse(liked_property_list.replace(/'/g, "\""));
+    }
     console.log("Saved", saved_property_list);
     console.log("Liked", liked_property_list);
     var maxLength = 20;
@@ -963,8 +968,15 @@
     });
 
     function move_applied_to_first(filter_filter) {
-        var filter_filter = $(filter_filter).attr("id");
-        $(`#${filter_filter}__trash`).prependTo("#main_container_filters");
+        if ($(filter_filter).hasClass("p_type_btn")) {
+            if ($(filter_filter).text() != "Clear") {
+                $(filter_filter).insertAfter(".scroller_1");
+            }
+        }
+        else {
+            var filter_filter = $(filter_filter).attr("id");
+            $(`#${filter_filter}__trash`).prependTo("#main_container_filters");
+        }
     }
 </script>
 {% endblock %}
