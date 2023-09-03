@@ -565,7 +565,7 @@
     }
     // search by property type 
     function property_type_core(property_type, page_number = 1) {
-        property_type_val = "all";
+        property_type_val = $(property_type).val();
         $.ajax({
             url: "{% url 'search_property_type' %}",
             type: "POST",

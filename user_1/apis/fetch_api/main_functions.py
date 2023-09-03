@@ -148,16 +148,15 @@ def property_bound_data():
             property_c[i.property_data["property_type"]] += 1
         else:
             property_c[i.property_data["property_type"]] = 1
-        # property_c[i.property_data["property_type"]] = i.property_data["property_type"]
     return property_c
 
 
 def search_property_type(request, sale_type=None, property_type=None): 
     page_number = 1 
-    items_per_page = 2 
+    items_per_page = 8 
+    if "page_number" in request.POST:  
+        page_number = request.POST["page_number"] 
 
-    items_per_page = 0 
-    page_number = request.POST["page_number"] 
     prop_data = {}
     sale_type = sale_type
     if property_type is None and sale_type is None:
@@ -169,14 +168,15 @@ def search_property_type(request, sale_type=None, property_type=None):
                 )
                 paginator = Paginator(property_type_core_data, items_per_page) 
                 property_type_core_data = paginator.page(page_number) 
-                property_type_core_data = property_type_core_data.object_list
+                property_type_core_data = property_type_core_data.object_list 
+                number_of_pages = paginator.num_pages
                 for i in property_type_core_data:
                     user_detail = user_all_details(request, i.id)
                     i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
             else:
                 property_type_core_data = p_detail.objects.all()
-                paginator = Paginator(property_type_core_data, 5) 
+                paginator = Paginator(property_type_core_data, items_per_page) 
                 property_type_core_data = paginator.page(page_number)
                 property_type_core_data = property_type_core_data.object_list
                 number_of_pages = paginator.num_pages 
@@ -191,7 +191,7 @@ def search_property_type(request, sale_type=None, property_type=None):
         if sale_type == "all":
             property_type = property_type
             data = p_detail.objects.filter(property_data__property_type=property_type) 
-            paginator = Paginator(data, 5) 
+            paginator = Paginator(data, items_per_page) 
             data = paginator.page(page_number) 
             data = data.object_list
         else:
@@ -201,7 +201,7 @@ def search_property_type(request, sale_type=None, property_type=None):
         for i in data:
             prop_data[i.id] = i.property_data
         data = prop_data
-        paginator = Paginator(data, 5) 
+        paginator = Paginator(data, items_per_page) 
         data = paginator.page(page_number) 
         data = data.object_list
         return data
@@ -210,7 +210,7 @@ def search_property_type(request, sale_type=None, property_type=None):
         for i in data:
             prop_data[i.id] = i.property_data
         data = prop_data 
-        paginator = Paginator(data, 5) 
+        paginator = Paginator(data, items_per_page) 
         data = paginator.page(page_number) 
         data = data.object_list
         return data
@@ -219,13 +219,13 @@ def search_property_type(request, sale_type=None, property_type=None):
         for i in data:
             prop_data[i.id] = i.property_data
         data = prop_data 
-        paginator = Paginator(data, 5) 
+        paginator = Paginator(data, items_per_page) 
         data = paginator.page(page_number) 
         data = data.object_list
         return data
     else:
         data = p_detail.objects.filter(property_data__property_type=property_type)
-        paginator = Paginator(data, 5) 
+        paginator = Paginator(data, items_per_page) 
         data = paginator.page(page_number) 
         data = data.object_list
         return data
