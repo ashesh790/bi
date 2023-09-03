@@ -528,6 +528,9 @@
 </div>
 
 <script>
+    // code for call property data in home page 
+    $(".scroller_1 ").click();
+
     var saved_property_list = `{{ saved_property_list|safe }}`.toString();
     if (saved_property_list != "") {
         var saved_property_list = JSON.parse(saved_property_list.replace(/'/g, "\""));
@@ -755,6 +758,7 @@
                 "search_object": JSON.stringify(search_object),
             },
             success: function (property_data) {
+
                 console.log(property_data);
                 property_id = property_data["id"];
                 user_mobile = property_data['user_mobile']
@@ -982,6 +986,11 @@
             var applied_filter = $(applied_filter).attr("id");
             $(`#${applied_filter}__trash`).prependTo("#main_container_filters");
         }
+    }
+
+    function pagination_for_property_product() {
+        var page = parseInt($('.pagination').find('li a[class="page active"]').html());
+        var total_page = parseInt($('.pagination').find('li a[class="page"]').length);
     }
 </script>
 {% endblock %}

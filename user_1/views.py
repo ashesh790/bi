@@ -376,65 +376,27 @@ def crud_property(request):
 
 
 # Render home page
-
-
 def home(request):
     try:
-        # update_property(request, property_id=1) 
         page_number = request.GET.get('page') 
         if page_number is None: 
-            page_number = 1  
-        page_object = ""
-        property_data_all = {}
-        location_fetched = ""
+            page_number = 1 
         saved_property_list = ""
         liked_property_list = ""
         if "user_id" in request.session:
             user_id = request.session["user_id"]
             saved_property_list, liked_property_list = liked_and_saved_property_ids(
                 user_id
-            )
-        property_category = property_bound_data()
-        property_data = p_detail.objects.all()  
-        property_data_number = []
-        for i in property_data:
-            user_mobile = user_all_details(request, i.id)
-            user_mobile = user_mobile["user_mobile"]
-            property_data_number.append(user_mobile)
-            property_data_all[f"{user_mobile}__{i.id}"] = i
+            ) 
         boundry_data = advance_filter_boundary(request)
-        boundry_data = json.loads(boundry_data.content)
-        if "location_number" in list(request.session.keys()):
-            location_property, location_fetched = show_property_location_wise(request)
-            if location_property is not None and len(location_property) > 0:
-                if len(location_property) > 0 and location_property is not None:
-                    property_data = location_property
-                    property_data_all = {}
-                for i in property_data:
-                    user_mobile = user_all_details(request, i.id)
-                    user_mobile = user_mobile["user_mobile"]
-                    property_data_all[f"{user_mobile}__{i.id}"] = i 
-        if (page_number) is not None: 
-            property_data_all = list(property_data_all.items())                    
-            p = Paginator(property_data_all, 1)
-            page_object = p.page(page_number) 
-            data_touple = page_object.object_list 
-            property_data_all = dict() 
-            for i in data_touple: 
-                property_data_all[i[0]] = i[1]
+        boundry_data = json.loads(boundry_data.content) 
         return render(
             request,
             "theme/index.html",
             {
-                "property_category": property_category,
-                "property_data_all": property_data_all,
                 "boundry_data": boundry_data["data"],
-                "country": boundry_data["country"],
-                "location_fetched": location_fetched,
                 "saved_property_list": saved_property_list,
                 "liked_property_list": liked_property_list,
-                "property_data_number": property_data_number, 
-                "page_obj":page_object,
             },
         )
     except Exception as ex:
