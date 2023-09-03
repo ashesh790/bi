@@ -574,7 +574,6 @@
             success: function (data) {
                 console.log(data);
                 if (Object.keys(data.prop_data).length != 0) {
-
                     $(".property_counter").empty();
                     // console.log(data.prop_data);
                     $.each(data.prop_data, function (key, val) {
@@ -588,14 +587,12 @@
                                 <div class="position-relative overflow-hidden"> 
                                     <div id="carouselExampleControls${key}" class="carousel slide" data-ride="carousel">
                                         <div class="carousel-inner">
-                                            
                                           <div class="carousel-item active">
                                             <a href="/property_details/${key}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
                                           </div>
                                           ${val.property_image.slice(1).map(path => `<div class="carousel-item">
                                             <a href="/property_details/${key}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
-                                          </div>`).join('')} 
-
+                                          </div>`).join('')}
                                         </div>
                                         <a class="carousel-control-prev" href="#carouselExampleControls${key}" role="button" data-slide="prev">
                                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -975,15 +972,15 @@
         $(this).toggleClass("active");
     });
 
-    function move_applied_to_first(filter_filter) {
-        if ($(filter_filter).hasClass("p_type_btn")) {
-            if ($(filter_filter).text() != "Clear") {
-                $(filter_filter).insertAfter(".scroller_1");
+    function move_applied_to_first(applied_filter) {
+        if ($(applied_filter).hasClass("p_type_btn")) {
+            if ($(applied_filter).text() != "Clear") {
+                $(applied_filter).insertAfter(".scroller_1");
             }
         }
         else {
-            var filter_filter = $(filter_filter).attr("id");
-            $(`#${filter_filter}__trash`).prependTo("#main_container_filters");
+            var applied_filter = $(applied_filter).attr("id");
+            $(`#${applied_filter}__trash`).prependTo("#main_container_filters");
         }
     }
 </script>
