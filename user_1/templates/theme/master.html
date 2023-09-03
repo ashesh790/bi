@@ -428,7 +428,7 @@
                         class="nav-item nav-link {% block contact %}{% endblock %}">Contact</a>
                     <a href="{% url 'about' %}" class="nav-item nav-link {% block about %}{% endblock %}">About</a>
                 </div>
-                <div class="navbar-nav ms-auto"> 
+                <div class="navbar-nav ms-auto">
                     {% if 'user_name' in request.session %}
                     <span class="mt-1">{{request.session.user_name}}</span> &nbsp;
                     <a data-toggle="modal" data-target="#glassAnimals"
@@ -438,7 +438,7 @@
                         data-bs-target="#login_modal"></i>
                     {% else%}
                     <a href="login" class="btn btn-primary px-3 d-lg-flex" id="login_btn_2">Login</a>
-                    {% endif %} 
+                    {% endif %}
                 </div>
             </div>
         </nav>
@@ -450,7 +450,6 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Notifications</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div id="notifications"></div>
@@ -653,7 +652,7 @@
 </script>
 <!-- JavaScript Libraries -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>  -->
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script> 
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'theme/lib/wow/wow.min.js' %}"></script>
 <script src="{% static 'theme/lib/easing/easing.min.js' %}"></script>
 <script src="{% static 'theme/lib/waypoints/waypoints.min.js' %}"></script>
@@ -666,7 +665,7 @@
 <script src="{% static 'theme/js/main.js' %}"></script>
 <script>
     var share_url_for_specific_peroperty = "";
-    var DOMAIN_NAME = "http://127.0.0.1:8000"; 
+    var DOMAIN_NAME = "http://127.0.0.1:8000";
     setTimeout(function () {
         var latitude = $("#latitude").val();
         var longitude = $("#longitude").val();
