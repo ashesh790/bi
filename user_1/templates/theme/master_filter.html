@@ -514,7 +514,6 @@
                             </div>
                         </div>
                         <!-- filter using bathroom count -->
-
                     </div>
                 </div>
             </div>
@@ -525,7 +524,7 @@
         </div>
     </div>
 </div>
-</div>
+<center id="page_number"></center>
 
 <script>
     // code for call property data in home page 
@@ -565,21 +564,18 @@
         $(selector).addClass("active_btn");
     }
     // search by property type 
-    function property_type_core(property_type) {
-        var is_next = true;
-        var is_prev = true;
-
-        property_type_val = $(property_type).val();
+    function property_type_core(property_type, page_number = 1) {
+        property_type_val = "all";
         $.ajax({
             url: "{% url 'search_property_type' %}",
             type: "POST",
             data: {
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
                 "data": property_type_val,
-                "is_prev": is_prev,
-                "is_next": is_next
+                "page_number": page_number
             },
             success: function (data) {
+                console.log(data.number_of_pages);
                 console.log(data);
                 if (Object.keys(data.prop_data).length != 0) {
                     $(".property_counter").empty();
@@ -661,6 +657,10 @@
                         </div>
                         `)
                     });
+                    $("#page_number").empty();
+                    for (var i = 0; i < data.number_of_pages; i++) {
+                        $("#page_number").append(`<button onclick="property_type_core('property_type', ${i + 1})">${i + 1}</button>`);
+                    }
                 }
                 else {
                     $(".property_counter").empty();

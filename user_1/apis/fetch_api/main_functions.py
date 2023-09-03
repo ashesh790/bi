@@ -152,15 +152,12 @@ def property_bound_data():
     return property_c
 
 
-def search_property_type(request, sale_type=None, property_type=None):  
+def search_property_type(request, sale_type=None, property_type=None): 
+    page_number = 1 
+    items_per_page = 2 
+
     items_per_page = 0 
-    previous_record = 0
-    is_next = request.POST["is_next"] 
-    is_prev = request.POST["is_prev"]
-    if is_next == 'true': 
-        items_per_page = 5 
-    elif (is_prev == 'true'): 
-        items_per_page = -5 
+    page_number = request.POST["page_number"] 
     prop_data = {}
     sale_type = sale_type
     if property_type is None and sale_type is None:
@@ -169,24 +166,34 @@ def search_property_type(request, sale_type=None, property_type=None):
             if property_type_core != "all":
                 property_type_core_data = p_detail.objects.filter(
                     property_data__property_type=property_type_core
-                )[:items_per_page]
+                )
+                paginator = Paginator(property_type_core_data, items_per_page) 
+                property_type_core_data = paginator.page(page_number) 
+                property_type_core_data = property_type_core_data.object_list
                 for i in property_type_core_data:
                     user_detail = user_all_details(request, i.id)
                     i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
             else:
-                property_type_core_data = p_detail.objects.all()[previous_record:5]
+                property_type_core_data = p_detail.objects.all()
+                paginator = Paginator(property_type_core_data, 5) 
+                property_type_core_data = paginator.page(page_number)
+                property_type_core_data = property_type_core_data.object_list
+                number_of_pages = paginator.num_pages 
                 for i in property_type_core_data:
                     user_detail = user_all_details(request, i.id)
                     i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
             return JsonResponse(
-                {"prop_data": prop_data, "prop_data_type": property_type_core}
+                {"prop_data": prop_data, "prop_data_type": property_type_core, "number_of_pages":number_of_pages}
             )
     if sale_type is not None and property_type is not None:
         if sale_type == "all":
             property_type = property_type
-            data = p_detail.objects.filter(property_data__property_type=property_type)[:items_per_page]
+            data = p_detail.objects.filter(property_data__property_type=property_type) 
+            paginator = Paginator(data, 5) 
+            data = paginator.page(page_number) 
+            data = data.object_list
         else:
             data = p_detail.objects.filter(
                 property_data__property_type=property_type
@@ -194,22 +201,33 @@ def search_property_type(request, sale_type=None, property_type=None):
         for i in data:
             prop_data[i.id] = i.property_data
         data = prop_data
+        paginator = Paginator(data, 5) 
+        data = paginator.page(page_number) 
+        data = data.object_list
         return data
     if sale_type == "Sale" or sale_type == "Rent":
-        data = p_detail.objects.filter(property_data__selling_option=sale_type)[:items_per_page]
+        data = p_detail.objects.filter(property_data__selling_option=sale_type)
         for i in data:
             prop_data[i.id] = i.property_data
-        data = prop_data
+        data = prop_data 
+        paginator = Paginator(data, 5) 
+        data = paginator.page(page_number) 
+        data = data.object_list
         return data
     elif sale_type == "all":
-        data = p_detail.objects.all()[:items_per_page]
+        data = p_detail.objects.all()
         for i in data:
             prop_data[i.id] = i.property_data
-        data = prop_data
+        data = prop_data 
+        paginator = Paginator(data, 5) 
+        data = paginator.page(page_number) 
+        data = data.object_list
         return data
     else:
-        data = p_detail.objects.filter(property_data__property_type=property_type)[:items_per_page]
-        # data=data[0].property_data
+        data = p_detail.objects.filter(property_data__property_type=property_type)
+        paginator = Paginator(data, 5) 
+        data = paginator.page(page_number) 
+        data = data.object_list
         return data
 
 
