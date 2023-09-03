@@ -152,7 +152,9 @@ def property_bound_data():
     return property_c
 
 
-def search_property_type(request, sale_type=None, property_type=None):
+def search_property_type(request, sale_type=None, property_type=None): 
+    page_no = 1 
+    items_per_page = 5 
     prop_data = {}
     sale_type = sale_type
     print(sale_type)
@@ -168,7 +170,6 @@ def search_property_type(request, sale_type=None, property_type=None):
                     i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
             else:
-                property_filter = "all"
                 property_type_core_data = p_detail.objects.all()
                 for i in property_type_core_data:
                     user_detail = user_all_details(request, i.id)
