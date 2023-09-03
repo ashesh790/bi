@@ -152,25 +152,30 @@ def property_bound_data():
     return property_c
 
 
-def search_property_type(request, sale_type=None, property_type=None): 
-    page_no = 1 
-    items_per_page = 5 
+def search_property_type(request, sale_type=None, property_type=None):  
+    items_per_page = 0 
+    previous_record = 0
+    is_next = request.POST["is_next"] 
+    is_prev = request.POST["is_prev"]
+    if is_next == 'true': 
+        items_per_page = 5 
+    elif (is_prev == 'true'): 
+        items_per_page = -5 
     prop_data = {}
     sale_type = sale_type
-    print(sale_type)
     if property_type is None and sale_type is None:
         if request.POST["data"]:
             property_type_core = request.POST["data"]
             if property_type_core != "all":
                 property_type_core_data = p_detail.objects.filter(
                     property_data__property_type=property_type_core
-                )
+                )[:items_per_page]
                 for i in property_type_core_data:
                     user_detail = user_all_details(request, i.id)
                     i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
             else:
-                property_type_core_data = p_detail.objects.all()
+                property_type_core_data = p_detail.objects.all()[previous_record:5]
                 for i in property_type_core_data:
                     user_detail = user_all_details(request, i.id)
                     i.property_data["user_detail"] = user_detail
@@ -178,11 +183,10 @@ def search_property_type(request, sale_type=None, property_type=None):
             return JsonResponse(
                 {"prop_data": prop_data, "prop_data_type": property_type_core}
             )
-
     if sale_type is not None and property_type is not None:
         if sale_type == "all":
             property_type = property_type
-            data = p_detail.objects.filter(property_data__property_type=property_type)
+            data = p_detail.objects.filter(property_data__property_type=property_type)[:items_per_page]
         else:
             data = p_detail.objects.filter(
                 property_data__property_type=property_type
@@ -192,19 +196,19 @@ def search_property_type(request, sale_type=None, property_type=None):
         data = prop_data
         return data
     if sale_type == "Sale" or sale_type == "Rent":
-        data = p_detail.objects.filter(property_data__selling_option=sale_type)
+        data = p_detail.objects.filter(property_data__selling_option=sale_type)[:items_per_page]
         for i in data:
             prop_data[i.id] = i.property_data
         data = prop_data
         return data
     elif sale_type == "all":
-        data = p_detail.objects.all()
+        data = p_detail.objects.all()[:items_per_page]
         for i in data:
             prop_data[i.id] = i.property_data
         data = prop_data
         return data
     else:
-        data = p_detail.objects.filter(property_data__property_type=property_type)
+        data = p_detail.objects.filter(property_data__property_type=property_type)[:items_per_page]
         # data=data[0].property_data
         return data
 

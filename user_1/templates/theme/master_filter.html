@@ -566,13 +566,18 @@
     }
     // search by property type 
     function property_type_core(property_type) {
+        var is_next = true;
+        var is_prev = true;
+
         property_type_val = $(property_type).val();
         $.ajax({
             url: "{% url 'search_property_type' %}",
             type: "POST",
             data: {
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-                "data": property_type_val
+                "data": property_type_val,
+                "is_prev": is_prev,
+                "is_next": is_next
             },
             success: function (data) {
                 console.log(data);
