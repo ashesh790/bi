@@ -562,6 +562,7 @@
         $('.fa-times-circle').click();
         $('.active_btn').removeClass('active_btn');
         $(selector).addClass("active_btn");
+        property_type_val = selector;
     }
     // search by property type 
     function property_type_core(property_type, page_number = 1) {
@@ -658,8 +659,10 @@
                         `)
                     });
                     $("#page_number").empty();
+                    console.log(property_type_val);
+
                     for (var i = 0; i < data.number_of_pages; i++) {
-                        $("#page_number").append(`<button onclick="property_type_core('property_type', ${i + 1})">${i + 1}</button>`);
+                        $("#page_number").append(`<button onclick="property_type_core(${property_type_val.id}, ${i + 1})">${i + 1}</button>`);
                     }
                 }
                 else {

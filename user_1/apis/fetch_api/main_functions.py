@@ -160,7 +160,7 @@ def search_property_type(request, sale_type=None, property_type=None):
     prop_data = {}
     sale_type = sale_type
     if property_type is None and sale_type is None:
-        if request.POST["data"]:
+        if "data" in request.POST:
             property_type_core = request.POST["data"]
             if property_type_core != "all":
                 property_type_core_data = p_detail.objects.filter(
@@ -228,7 +228,7 @@ def search_property_type(request, sale_type=None, property_type=None):
         paginator = Paginator(data, items_per_page) 
         data = paginator.page(page_number) 
         data = data.object_list
-        return data
+        return data 
 
 
 def delete_all_images_from_media(property_id):
