@@ -154,10 +154,12 @@ def property_bound_data():
 def search_property_type(request, sale_type=None, property_type=None): 
     page_number = 1 
     items_per_page = 8 
+    number_of_pages = 1
     if "page_number" in request.POST:  
         page_number = request.POST["page_number"] 
 
     prop_data = {}
+    property_type_core = "all"
     sale_type = sale_type
     if property_type is None and sale_type is None:
         if "data" in request.POST:
@@ -184,6 +186,19 @@ def search_property_type(request, sale_type=None, property_type=None):
                     user_detail = user_all_details(request, i.id)
                     i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
+            return JsonResponse(
+                {"prop_data": prop_data, "prop_data_type": property_type_core, "number_of_pages":number_of_pages}
+            )
+        else: 
+            property_type_core_data = p_detail.objects.all()
+            paginator = Paginator(property_type_core_data, items_per_page) 
+            property_type_core_data = paginator.page(page_number)
+            property_type_core_data = property_type_core_data.object_list
+            number_of_pages = paginator.num_pages 
+            for i in property_type_core_data:
+                user_detail = user_all_details(request, i.id)
+                i.property_data["user_detail"] = user_detail
+                prop_data[i.id] = i.property_data
             return JsonResponse(
                 {"prop_data": prop_data, "prop_data_type": property_type_core, "number_of_pages":number_of_pages}
             )

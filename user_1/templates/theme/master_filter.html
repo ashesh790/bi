@@ -659,10 +659,14 @@
                         `)
                     });
                     $("#page_number").empty();
-                    console.log(property_type_val);
-
                     for (var i = 0; i < data.number_of_pages; i++) {
-                        $("#page_number").append(`<button onclick="property_type_core(${property_type_val.id}, ${i + 1})">${i + 1}</button>`);
+                        if (property_type_val == undefined) {
+                            $("#page_number").append(`<button onclick="property_type_core('all', ${i + 1})">${i + 1}</button>`);
+                        }
+                        else {
+                            $("#page_number").append(`<button onclick="property_type_core('${property_type_val.id}', ${i + 1})">${i + 1}</button>`);
+                        }
+
                     }
                 }
                 else {
