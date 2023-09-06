@@ -283,12 +283,12 @@
         <div class="scroller" style="overflow: auto; display:flex;">
             {% csrf_token %}
             <button class="btn btn-outline-primary text-white border-white p_type_btn scroller_1"
-                onclick="property_type_core(this);active_class(this); move_applied_to_first(this);" style="margin:10px;"
-                value="all">Clear</button>
+                onclick="move_applied_to_first(this); search_property_based_on_input_field_values();"
+                style="margin:10px;" value="all">Clear</button>
             {% for i in boundry_data.property_type %}
             <button class="btn btn-outline-primary text-white border-white p_type_btn"
-                onclick="property_type_core(this);active_class(this); move_applied_to_first(this);" style="margin:10px;"
-                id="{{i}}" value="{{i}}">{{i}}
+                onclick="move_applied_to_first(this); search_property_based_on_input_field_values(); "
+                style="margin:10px;" id="{{i}}" value="{{i}}">{{i}}
             </button>
             {% endfor %}
         </div>
@@ -553,130 +553,8 @@
     }, 500);
 
     $('.saved_property').on('click', function () {
-
         $(this).toggleClass('fa-bookmark-o fa-bookmark');
     });
-
-    var property_type_val = "all";
-    function active_class(selector) {
-        $('.fa-times-circle').click();
-        $('.active_btn').removeClass('active_btn');
-        $(selector).addClass("active_btn");
-        property_type_val = selector;
-    }
-    // search by property type 
-    function property_type_core(property_type, page_number = 1) {
-        property_type_val = $(property_type).val();
-        $.ajax({
-            url: "{% url 'search_property_type' %}",
-            type: "POST",
-            data: {
-                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-                "data": property_type_val,
-                "page_number": page_number
-            },
-            success: function (data) {
-                console.log(data.number_of_pages);
-                console.log(data);
-                if (Object.keys(data.prop_data).length != 0) {
-                    $(".property_counter").empty();
-                    // console.log(data.prop_data);
-                    $.each(data.prop_data, function (key, val) {
-                        var is_bookmark = saved_property_list.includes(key.toString());
-                        var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${key}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
-                        var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(key.toString());
-                        var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${key}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
-                        $(".property_counter").append(` 
-                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="property-item rounded overflow-hidden border prop_item">
-                                <div class="position-relative overflow-hidden"> 
-                                    <div id="carouselExampleControls${key}" class="carousel slide" data-ride="carousel">
-                                        <div class="carousel-inner">
-                                          <div class="carousel-item active">
-                                            <a href="/property_details/${key}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
-                                          </div>
-                                          ${val.property_image.slice(1).map(path => `<div class="carousel-item">
-                                            <a href="/property_details/${key}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
-                                          </div>`).join('')}
-                                        </div>
-                                        <a class="carousel-control-prev" href="#carouselExampleControls${key}" role="button" data-slide="prev">
-                                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                          <span class="sr-only">Previous</span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#carouselExampleControls${key}" role="button" data-slide="next">
-                                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                          <span class="sr-only">Next</span>
-                                        </a>
-                                      </div>
-                                    <div
-                                        class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
-                                        ${val.property_type}</div>
-                                </div>
-                                <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${key}_popup">
-                                    <a class="d-block mb-2" href="property_details/${key}" id="/Month">
-                                        <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
-                                    </a>
-                                    <a class="d-block mb-2" href="property_details/${key}">
-                                        <b class="d-block h5 mb-2">${val.property_type} For
-                                            ${val.selling_option}
-                                        </b>
-                                    </a>
-                                    <p>
-                                        <i
-                                            class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, maxLength) + '...'}
-                                    </p>
-                                </div>
-                                <div class="d-flex border-top">
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <a href="tel:${val.user_detail.user_mobile}"><i class="fa fa-phone"></i></a>
-                                        </h5>
-                                    </small> 
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            ${like_icon}
-                                        </h5>
-                                    </small>
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <i class="fa fa-share-alt" url="property_details/${key}" onclick="openModal(this);"></i>
-                                        </h5>
-                                    </small>
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            ${bookmark_icon}
-                                        </h5>
-                                    </small> 
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <i class="fa-solid fa-circle-info"
-                                                onclick="toggle_property_popup('modal__${key}_popup')"></i>
-                                        </h5>
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                        `)
-                    });
-                    $("#page_number").empty();
-                    for (var i = 0; i < data.number_of_pages; i++) {
-                        if (property_type_val == undefined) {
-                            $("#page_number").append(`<button onclick="property_type_core('all', ${i + 1})">${i + 1}</button>`);
-                        }
-                        else {
-                            $("#page_number").append(`<button onclick="property_type_core('${property_type_val.id}', ${i + 1})">${i + 1}</button>`);
-                        }
-
-                    }
-                }
-                else {
-                    $(".property_counter").empty();
-                    $(".property_counter").append("<h1>Result not found</h1>")
-                }
-            }
-
-        })
-    }
 
     // Search field is applied and trash button for this field is added 
     function search_field_applied(field) {
@@ -717,10 +595,11 @@
         $("#main_container_filters").append(removed_filter_field);
     }
 
+    var property_type_val;
     // search property as per field which is selected in advance filter 
     function search_property_based_on_input_field_values(selling_type = null) {
         var selling_option_val = "";
-        //console.log(property_type_val);
+        //console.log(property_type_val); 
         if (selling_type != null) {
             selling_option_val = $(selling_type).val();
         }
@@ -736,7 +615,7 @@
             }
         }
 
-        var property_type = property_type_val;
+        var property_type = property_type_val.value;
         var place_name = $('#place_name').val() || "";
         var country = $('#country_based').val() || "";
         var state = $('#state_based').val() || "";
@@ -867,56 +746,6 @@
         });
     }
 
-    $(document).ready(function (e) {
-        // advance filter configuration by country 
-        $('#country_based').change(function (e) {
-            //alert("Clikced!"); 
-            e.preventDefault();
-            var country_name = $(this).val();
-            //alert(country_name); 
-            //var data_target = $(property).text();
-            $.ajax({
-                url: "{% url 'state_list' %}",
-                type: "GET",
-                data: {
-                    'country_name': country_name,
-                },
-                success: function (property_data) {
-                    $("#state_based").empty();
-                    $('#state_based').append(`<option value="">Select state</option>`);
-                    property_data = JSON.parse(property_data)
-                    for (let [key, value] of Object.entries(property_data)) {
-                        $('#state_based').append(`<option value="${value.iso2}">${value.name}</option>`);
-                    }
-                }
-            });
-        });
-
-        // advance filter configuration by state 
-        $('#state_based').change(function (e) {
-            //alert("Clikced!"); 
-            e.preventDefault();
-            var country_name = $("#country_based").val();
-            var state_name = $(this).val();
-            $.ajax({
-                url: "{% url 'city_list' %}",
-                type: "GET",
-                data: {
-                    'state_name': state_name,
-                    'country_name': country_name,
-                },
-                success: function (property_data) {
-                    $("#city_based").empty();
-                    $('#city_based').append(`<option value="">Select City</option>`);
-                    property_data = JSON.parse(property_data)
-                    for (let [key, value] of Object.entries(property_data)) {
-                        $('#city_based').append(`<option value="${value.name}">${value.name}</option>`);
-                    }
-                }
-            });
-        });
-    });
-
     function delay_search(search_delay_field = null) {
         // set spinner 
         $(".property_counter").empty();
@@ -989,6 +818,8 @@
     });
 
     function move_applied_to_first(applied_filter) {
+
+        property_type_val = applied_filter;
         if ($(applied_filter).hasClass("p_type_btn")) {
             if ($(applied_filter).text() != "Clear") {
                 $(applied_filter).insertAfter(".scroller_1");
