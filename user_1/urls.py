@@ -104,7 +104,7 @@ urlpatterns = [
         views.advance_filter_boundary,
         name="advance_filter_boundary",
     ),
-    path("country_list", views.country_list, name="country_list"),
+    # path("country_list", views.country_list, name="country_list"),
     path("state_list", views.state_list, name="state_list"),
     path("city_list", views.city_list, name="city_list"),
     path("search_properties", views.search_properties, name="search_properties"),

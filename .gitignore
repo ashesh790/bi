@@ -16,3 +16,4 @@ database
 venv 
 venv2 
 *.pyc
+user_1/fetch_api/__pycache__/main_functions.cpython-311.pyc

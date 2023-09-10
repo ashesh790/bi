@@ -14,12 +14,13 @@ def advance_filter_boundary(request):
     data = (
         settings.BASE_DIR / "user_1" / "static" / "property_boundry_api" / "data.json"
     )
-    country = country_list(request)
-    country = json.loads(country)
+    # country = country_list(request)
+    # country = json.loads(country)
     with open(data) as f:
         data = json.load(f)
 
-        data = {"data": data, "country": country}
+        # data = {"data": data, "country": country} 
+        data = {"data": data}
         return JsonResponse(data)
 
 
@@ -57,7 +58,7 @@ def search_properties(request, address_dict=None, reload_location=None):
                 query &= Q(**{"property_data__" + field: value})
 
     search_results = p_detail.objects.filter(query) 
-    paginator = Paginator(search_results, 5) 
+    paginator = Paginator(search_results, 10) 
     page = paginator.get_page(page_number)
     page_data = page.object_list
     if reload_location is not None:
@@ -76,7 +77,7 @@ def search_properties(request, address_dict=None, reload_location=None):
             total_pages =  paginator.num_pages
             return JsonResponse({"search_results":search_results, "has_next":page.has_next(), "total_pages":total_pages})
         else:
-            return HttpResponse("No data found")
+            return HttpResponse(None)
 
 
 def user_all_details(request, property_id):

@@ -676,17 +676,17 @@
                 "page_number": page_number
             },
             success: function (data) {
-                has_next = data.has_next;
-                total_pages = data.total_pages;
-                // All other data will be declared above, except property data
-                property_data = data.search_results;
-                console.log(property_data);
-                property_id = property_data["id"];
-                user_mobile = property_data['user_mobile']
-                property_data = property_data['property_data'];
-                var i = 0;
-                //console.log(property_id);
-                if (property_data) {
+                if (data != "None") {
+                    has_next = data.has_next;
+                    total_pages = data.total_pages;
+                    // All other data will be declared above, except property data
+                    property_data = data.search_results;
+                    console.log(property_data);
+                    property_id = property_data["id"];
+                    user_mobile = property_data['user_mobile']
+                    property_data = property_data['property_data'];
+                    var i = 0;
+                    //console.log(property_id);
                     $(".property_counter").empty();
                     for (var [key, val] of Object.entries(property_data)) {
                         var is_bookmark = saved_property_list.includes(property_id[i].toString());
@@ -775,6 +775,7 @@
                     }
                 }
                 else {
+                    $('#pagination').empty();
                     $(".property_counter").empty();
                     $(".property_counter").append("<h1>Result not found</h1>")
                 }

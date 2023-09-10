@@ -154,8 +154,8 @@ def add_property_details(request):
             return redirect("/login")
         if request.method == "POST" and len(request.POST) is not None:
             property_details = add_property_details_in_database(request)
-        country_name_list = country_list(request)
-        country_name_list = json.loads(country_name_list) # type: ignore
+        # country_name_list = country_list(request)
+        # country_name_list = json.loads(country_name_list) 
         data = (
             settings.BASE_DIR
             / "user_1"
@@ -178,7 +178,6 @@ def add_property_details(request):
                 "bathroom_details": data["bathroom_details"],
                 "balcony_details": data["balcony_details"],
                 "parking_details": data["parking_details"],
-                "country_name_list": country_name_list,
                 "add_property_details": "add_property_page",
             },
         )
@@ -199,8 +198,8 @@ def show_property_detail(request, property_id):
 
 def delete_property(request, property_id):
     try:
-        country_name_list = country_list(request)
-        country_name_list = json.loads(country_name_list) # type: ignore
+        # country_name_list = country_list(request)
+        # country_name_list = json.loads(country_name_list) 
         data = (
             settings.BASE_DIR
             / "user_1"
@@ -225,7 +224,6 @@ def delete_property(request, property_id):
                 "bathroom_details": data["bathroom_details"],
                 "balcony_details": data["balcony_details"],
                 "parking_details": data["parking_details"],
-                "country_name_list": country_name_list,
                 "add_property_details": "add_property_page",
             },
         )
@@ -243,7 +241,6 @@ def delete_property(request, property_id):
             "bathroom_details": data["bathroom_details"],
             "balcony_details": data["balcony_details"],
             "parking_details": data["parking_details"],
-            "country_name_list": country_name_list,
             "add_property_details": "add_property_page",
         },
     )
