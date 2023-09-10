@@ -7,6 +7,7 @@ from user_1.apis.fetch_api.country_api import country_list
 from django.core import serializers
 from django.http import JsonResponse
 from user_1.models import User_register, p_detail
+from django.core.paginator import Paginator
 
 
 def advance_filter_boundary(request):
@@ -22,7 +23,10 @@ def advance_filter_boundary(request):
         return JsonResponse(data)
 
 
-def search_properties(request, address_dict=None, reload_location=None):
+def search_properties(request, address_dict=None, reload_location=None): 
+    page_number = request.POST['page_number'] 
+    if len(page_number) == 0: 
+        page_number = 1
     if reload_location is not None:
         address_dict = {"place_name": address_dict}
         if address_dict is not None:
@@ -52,21 +56,25 @@ def search_properties(request, address_dict=None, reload_location=None):
             if value:
                 query &= Q(**{"property_data__" + field: value})
 
-    search_results = p_detail.objects.filter(query)
+    search_results = p_detail.objects.filter(query) 
+    paginator = Paginator(search_results, 5) 
+    page = paginator.get_page(page_number)
+    page_data = page.object_list
     if reload_location is not None:
         if search_results is not None:
             return search_results
     else:
         user_details = []
-        if search_results.exists():
-            search_results = pd.DataFrame(search_results.values())
+        if page_data:
+            search_results = pd.DataFrame(page_data.values())
             property_ids = list(search_results["id"].values)
             for i in property_ids:
                 user_basic_details = user_all_details(request, i)
                 user_details.append(user_basic_details["user_mobile"])
             search_results["user_mobile"] = pd.DataFrame(user_details)
-            search_results = search_results.to_dict()
-            return JsonResponse(search_results)
+            search_results = search_results.to_dict() 
+            total_pages =  paginator.num_pages
+            return JsonResponse({"search_results":search_results, "has_next":page.has_next(), "total_pages":total_pages})
         else:
             return HttpResponse("No data found")
 
