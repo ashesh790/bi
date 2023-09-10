@@ -71,8 +71,8 @@ def search_properties(request, address_dict=None, reload_location=None):
             property_ids = list(search_results["id"].values)
             for i in property_ids:
                 user_basic_details = user_all_details(request, i)
-                user_details.append(user_basic_details["user_mobile"])
-            search_results["user_mobile"] = pd.DataFrame(user_details)
+                user_details.append(json.dumps(user_basic_details)) 
+            search_results["user_data"] = pd.DataFrame(user_details)
             search_results = search_results.to_dict() 
             total_pages =  paginator.num_pages
             return JsonResponse({"search_results":search_results, "has_next":page.has_next(), "total_pages":total_pages})

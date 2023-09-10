@@ -5,6 +5,7 @@ from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
 from staying_source.settings import MEDIA_ROOT, MEDIA_ROOT_USER_ICON, MEDIA_URL
+from user_1.apis.REST_API.database import convert_string_to_object, user_wise_property
 from user_1.apis.fetch_api.advance_filter_functions import search_properties
 from user_1.models import User_register, p_detail, property_utility
 from django.core.files.storage import FileSystemStorage
@@ -331,7 +332,8 @@ def user_all_details(request, property_id):
         user_name = user_data.user_name
         user_mobile = user_data.user_mobile
         user_gender = user_data.user_gender
-        saller_data = {
+        saller_data = { 
+            "user_id":user_id,
             "user_email": user_email,
             "user_name": user_name,
             "user_mobile": user_mobile,
@@ -387,3 +389,28 @@ def byte_to_dict(bytes_data):
     # Parse the string into a dictionary
     dict_data = json.loads(str_data)
     return dict_data
+
+def property_user_profile(request): 
+    data_dictionary = {}
+    property_id = request.POST['property_id']
+    user_data = user_all_details(request, property_id) 
+    user_id = user_data["user_id"]
+    user_properties = user_profile_wise_property(request, user_id)  
+    for i in user_properties: 
+        data_dictionary[i.pk] = i.property_data
+    data = {"data_dictionary":data_dictionary}
+    return JsonResponse(data)
+
+
+def user_profile_wise_property(request, user_id): 
+    try: 
+        user_properties_list = []
+        if len(user_id)>0 and user_id is not None: 
+            data = p_detail.objects.filter(seller_id=user_id)   
+            for i in data: 
+                user_properties_list.append(i)
+        else: 
+            return None
+    except Exception as ex: 
+        return None
+    return user_properties_list

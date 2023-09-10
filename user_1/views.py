@@ -45,7 +45,8 @@ from user_1.apis.fetch_api.main_functions import (
     update_property_data_record,
     update_property_image,
     save_location,
-    user_all_details,
+    user_all_details, 
+    property_user_profile
 )
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
 from user_1.models import User_register, p_detail, property_utility

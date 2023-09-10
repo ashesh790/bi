@@ -549,8 +549,29 @@
         </div>
     </div>
 </div>
+
 <center>
     <span id="pagination"></span>
+    <div id="exampleModal" class="modal">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>The modal body is where all the text, images, and links go.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo
+        modal </button>
 </center>
 <script>
     // code for call property data in home page 
@@ -681,12 +702,10 @@
                     total_pages = data.total_pages;
                     // All other data will be declared above, except property data
                     property_data = data.search_results;
-                    console.log(property_data);
                     property_id = property_data["id"];
-                    user_mobile = property_data['user_mobile']
+                    user_mobile = data.search_results.user_data;
                     property_data = property_data['property_data'];
                     var i = 0;
-                    //console.log(property_id);
                     $(".property_counter").empty();
                     for (var [key, val] of Object.entries(property_data)) {
                         var is_bookmark = saved_property_list.includes(property_id[i].toString());
@@ -728,16 +747,21 @@
                                         <b class="d-block h5 mb-2">${val.property_type} For
                                             ${val.selling_option}
                                         </b>
-                                    </a>
-                                    <p>
+                                    </a> 
+                                    <div style="display:flex;"> 
+                                    <p style="width:70%;">
                                         <i
                                             class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, maxLength) + '...'}
-                                    </p>
+                                    </p> 
+                                    <p style="width:30%;">
+                                        By<b class="text-primary" onclick="property_user_profile(${property_id[i]});" style="cursor:pointer;"> ${JSON.parse(user_mobile[i]).user_name}</b> 
+                                    </p> 
+                                    </div>
                                 </div>
                                 <div class="d-flex border-top">
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
-                                            <a href="tel:${user_mobile[i]}"><i class="fa fa-phone"></i></a>
+                                            <a href="tel:${JSON.parse(user_mobile[i]).user_mobile}"><i class="fa fa-phone"></i></a>
                                         </h5>
                                     </small> 
                                     <small class="flex-fill text-center mt-1">
@@ -758,8 +782,8 @@
                                     <small class="flex-fill text-center mt-1">
                                         <h5>
                                             <i class="fa-solid fa-circle-info"
-                                                onclick="toggle_property_popup('modal__${property_id[i]}_popup')"></i>
-                                        </h5>
+                                                onclick="toggle_property_popup('modal__${property_id[i]}_popup')"></i> 
+                                        </h5> 
                                     </small>
                                 </div>
                             </div>
@@ -866,6 +890,22 @@
             var applied_filter = $(applied_filter).attr("id");
             $(`#${applied_filter}__trash`).prependTo("#main_container_filters");
         }
+    }
+    function property_user_profile(property_id) {
+        $.ajax({
+            url: "{% url 'property_user_profile' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                'property_id': property_id,
+            },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function () {
+                window.location.href = "/login";
+            }
+        });
     }
 </script>
 {% endblock %}
