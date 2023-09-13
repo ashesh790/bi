@@ -723,3 +723,6 @@ def submit_report_form(request):
 
 def chat(request, user_id):
     return render(request, 'chat.html', {'user_id': user_id})
+
+def user_public_profile(request, property_id): 
+    return render(request, "theme/user_public_profile.html")
