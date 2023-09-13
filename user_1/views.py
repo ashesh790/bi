@@ -121,16 +121,16 @@ def sign_up(request):
 # sign up
 def login(request):
     try:
-        if request.POST:
-            LOGIN_ERR = ""
-            login_status = login_user(request)
-            if login_status is not False:
-                return render(request, "theme/index.html")
-            else:
-                LOGIN_ERR = "Invalid Credentials"
-                return JsonResponse({"err": LOGIN_ERR})
-        else:
+        if not request.POST: 
             return render(request, "theme/login.html")
+
+        LOGIN_ERR = ""
+        login_status = login_user(request)
+        if login_status is False:
+            LOGIN_ERR = "Invalid Credentials"
+            return JsonResponse({"err": LOGIN_ERR})
+
+        return render(request, "theme/index.html")
     except Exception as ex:
         return render(request, "theme/404.html")
 

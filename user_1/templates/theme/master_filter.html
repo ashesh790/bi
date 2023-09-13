@@ -2,6 +2,13 @@
 {% load static %}
 {% block main_content %}
 <style>
+    .custom-modal-size {
+        max-width: 98%;
+        /* Adjust the width as needed */
+        max-height: 98%;
+        /* Adjust the height as needed */
+    }
+
     .active_btn_common {
         background-color: #0099ff;
     }
@@ -423,155 +430,21 @@
 </div>
 <!-- Search End -->
 
-<!-- Bootstrap modal -->
-<div class="modal fade search_modal" id="exampleModalCenter" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalCenterTitle" style="height: 500px;" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Filter properties by:</h5>
-                <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="col-md-12" id="search_filter">
-                    <div id="advance_filter_container">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex">
-                                    <div style="width:50%;">
-                                        <label>Construction status: </label>
-                                    </div>
-                                    <div style="width:50%;">
-                                        <div class="d-flex">
-                                            <div id="construction_status__trash">
-                                                <select class="search_field" id="construction_status"
-                                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                    <option value="">Construction status</option>
-                                                    {% for i in boundry_data.construction_status %}
-                                                    <option value="{{i}}">{{i}}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div id="bathroom_val__trash">
-                                                <div class="" style="width:50%;">
-                                                    <select class="mt-2 search_field" id="bathroom_val"
-                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                        <option value="">Bathrooms</option>
-                                                        {% for i in boundry_data.bathroom_details %}
-                                                        <option value="{{i}}">{{i}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div id="bathroom_val__trash">
-                                                <div class="" style="width:50%;">
-                                                    <select class="mt-2 search_field" id="bathroom_val"
-                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                        <option value="">Bathrooms</option>
-                                                        {% for i in boundry_data.bathroom_details %}
-                                                        <option value="{{i}}">{{i}} Bathrooms</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div id="balcony_val__trash">
-
-                                                <div class="" style="width:50%;">
-                                                    <select class="mt-2 search_field" id="balcony_val"
-                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                        <option value="">Balcony</option>
-                                                        {% for i in boundry_data.balcony_details %}
-                                                        <option>{{i}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div id="bhk_val__trash">
-                                                <div class="" style="width:50%;">
-                                                    <select class="mt-2 search_field" id="bhk_val"
-                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                        <option value="">BHK</option>
-                                                        {% for i in boundry_data.bhk_details %}
-                                                        <option value="{{i}}">{{i}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div id="furnish_type__trash">
-                                                <div class="" style="width:50%;">
-                                                    <select class="mt-2 search_field" id="furnish_type"
-                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                        <option value="">Furnish type</option>
-                                                        {% for i in boundry_data.furnish_type %}
-                                                        <option>{{i}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div id="furnish_type__trash">
-                                                <div class="" style="width:50%;">
-                                                    <select class="mt-2 search_field" id="furnish_type"
-                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                        <option value="">Furnish type</option>
-                                                        {% for i in boundry_data.furnish_type %}
-                                                        <option>{{i}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- filter using bathroom count -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Apply Filter</button>
-        </div>
-    </div>
-</div>
-
 <center>
     <span id="pagination"></span>
-    <div id="exampleModal" class="modal">
-        <div class="modal-dialog modal-fullscreen">
+    <div id="user_profile_modal" class="modal">
+        <div class="modal-dialog modal-fullscreen modal-dialog-centered custom-modal-size">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
                 <div class="modal-body">
-                    <p>The modal body is where all the text, images, and links go.</p>
+                    <div class="row px-5 py-2" style="height: 40%; border: 1px solid red;">
+                        <div class="col-ms-12 col-md-5">search_property_based_on_input_field_values</div>
+                        <div class="col-ms-12 col-md-7"></div>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo
-        modal </button>
 </center>
 <script>
     // code for call property data in home page 
@@ -713,82 +586,82 @@
                         var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(key.toString());
                         var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
                         $(".property_counter").append(` 
-                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="property-item rounded overflow-hidden border prop_item">
-                                <div class="position-relative overflow-hidden"> 
-                                    <div id="carouselExampleControls${property_id[i]}" class="carousel slide" data-ride="carousel">
-                                        <div class="carousel-inner">
-                                          <div class="carousel-item active">
-                                            <a href="/property_details/${property_id[i]}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
-                                          </div>
-                                          ${val.property_image.slice(1).map(path => `
-                                            <div class="carousel-item">
-                                                <a href="/property_details/${property_id[i]}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
-                                            </div>`).join('')} 
-                                        </div>
-                                        <a class="carousel-control-prev" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="prev">
-                                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                          <span class="sr-only">Previous</span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="next">
-                                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                          <span class="sr-only">Next</span>
-                                        </a>
-                                      </div>
-                                    <div
-                                        class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
-                                        ${val.property_type}</div>
-                                </div>
-                                <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${property_id[i]}_popup"> 
-                                    <a class="d-block mb-2" href="property_details/${property_id[i]}" id="/Month">
-                                        <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
-                                    </a>
-                                    <a class="d-block mb-2" href="property_details/${property_id[i]}">
-                                        <b class="d-block h5 mb-2">${val.property_type} For
-                                            ${val.selling_option}
-                                        </b>
-                                    </a> 
-                                    <div style="display:flex;"> 
-                                    <p style="width:70%;">
-                                        <i
-                                            class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, maxLength) + '...'}
-                                    </p> 
-                                    <p style="width:30%;">
-                                        By<b class="text-primary" onclick="property_user_profile(${property_id[i]});" style="cursor:pointer;"> ${JSON.parse(user_mobile[i]).user_name}</b> 
-                                    </p> 
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="property-item rounded overflow-hidden border prop_item">
+                            <div class="position-relative overflow-hidden"> 
+                            <div id="carouselExampleControls${property_id[i]}" class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                    <a href="/property_details/${property_id[i]}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
                                     </div>
-                                </div>
-                                <div class="d-flex border-top">
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <a href="tel:${JSON.parse(user_mobile[i]).user_mobile}"><i class="fa fa-phone"></i></a>
-                                        </h5>
-                                    </small> 
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5> 
-                                            ${like_icon}
-                                        </h5>
-                                    </small>
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <i class="fa fa-share-alt" url="property_details/${property_id[i]}" onclick="openModal(this);"></i>
-                                        </h5>
-                                    </small>
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            ${bookmark_icon}
-                                        </h5>
-                                    </small> 
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <i class="fa-solid fa-circle-info"
-                                                onclick="toggle_property_popup('modal__${property_id[i]}_popup')"></i> 
-                                        </h5> 
-                                    </small>
-                                </div>
+                                    ${val.property_image.slice(1).map(path => `
+                                    <div class="carousel-item">
+                                            <a href="/property_details/${property_id[i]}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
+                                    </div>`).join('')} 
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                    </a>
                             </div>
-                        </div>
-                        `);
+                            <div
+                                    class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                    ${val.property_type}</div>
+                            </div>
+                            <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${property_id[i]}_popup"> 
+                            <a class="d-block mb-2" href="property_details/${property_id[i]}" id="/Month">
+                                    <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
+                            </a>
+                            <a class="d-block mb-2" href="property_details/${property_id[i]}">
+                                    <b class="d-block h5 mb-2">${val.property_type} For
+                                    ${val.selling_option}
+                                    </b>
+                            </a> 
+                            <div style="display:flex;"> 
+                            <p style="width:70%;">
+                                    <i
+                                    class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, maxLength) + '...'}
+                            </p> 
+                            <p style="width:30%;">
+                                    By<b class="text-primary" onclick="property_user_profile(${property_id[i]});" style="cursor:pointer;"> ${JSON.parse(user_mobile[i]).user_name}</b> 
+                            </p> 
+                            </div>
+                            </div>
+                            <div class="d-flex border-top">
+                            <small class="flex-fill text-center mt-1">
+                                    <h5>
+                                    <a href="tel:${JSON.parse(user_mobile[i]).user_mobile}"><i class="fa fa-phone"></i></a>
+                                    </h5>
+                            </small> 
+                            <small class="flex-fill text-center mt-1">
+                                    <h5> 
+                                    ${like_icon}
+                                    </h5>
+                            </small>
+                            <small class="flex-fill text-center mt-1">
+                                    <h5>
+                                    <i class="fa fa-share-alt" url="property_details/${property_id[i]}" onclick="openModal(this);"></i>
+                                    </h5>
+                            </small>
+                            <small class="flex-fill text-center mt-1">
+                                    <h5>
+                                    ${bookmark_icon}
+                                    </h5>
+                            </small> 
+                            <small class="flex-fill text-center mt-1">
+                                    <h5>
+                                    <i class="fa-solid fa-circle-info"
+                                            onclick="toggle_property_popup('modal__${property_id[i]}_popup')"></i> 
+                                    </h5> 
+                            </small>
+                            </div>
+                    </div>
+                    </div>
+                    `);
                         i++;
                     }
                     if (has_next) {
@@ -900,7 +773,7 @@
                 'property_id': property_id,
             },
             success: function (response) {
-                console.log(response);
+                $("#user_profile_modal").modal("show");
             },
             error: function () {
                 window.location.href = "/login";
