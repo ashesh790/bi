@@ -1,11 +1,106 @@
-{% extends 'theme/master.html' %}
+{% extends 'theme/master_filter.html' %}
 {% load static %}
-{% block contact %}active{% endblock %}
-{% block main_content %}
+{% block user_profile_page %}
+<style>
+    .img-container {
+        text-align: center;
+    }
 
+    .user_pic {
+        border-radius: 50%;
+        height: 150px;
+        width: 150px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        /* text-align: center; */
+    }
+
+    span {
+        color: #a3a3a3;
+    }
+
+    li {
+        padding: 10px 0;
+    }
+
+    .icons {
+        color: #ffaaaa;
+        margin-right: 12px;
+    }
+
+    .link {
+        text-decoration: none;
+        color: #a3a3a3;
+    }
+
+    .link:hover {
+        color: #ffaaaa;
+    }
+
+    button {
+        background: #fff;
+        border: none;
+        color: #a3a3a3;
+        box-shadow: none !important;
+        text-transform: uppercase;
+    }
+
+    button:hover {
+        color: #ffaaaa;
+    }
+</style>
 <!-- Contact Start -->
-<div class="container-fluid py-5">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="row py-3">
+                <div class="col-sm-12 col-md-2 bg-white">
+                    <div class="img-container w-100 mb-2">
+                        <img src="{% static 'img.jpg' %}" alt="user_image" class="user_pic">
+                    </div>
+                    <div class="text-center">
+                        <h3>User name</h3>
+                        <span>Agent designation</span>
+                    </div>
+                </div>
+                <div class="col-ms-12 col-md-9">
+                    <div class="row py-2 py-5 text-center">
+                        <div class="col-sm-12 col-md-4">
+                            <span class="card text-dark">Followers</span>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <span class="card">Following</span>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <span class="card">Total properties</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" id="property_counter">
 
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-1">
+                    <div class="row py-2 py-5">
+                        <div class="col-sm-12 col-md-12">asdasdasdasdas</div>
+                        <div class="col-sm-12 col-md-12">asdasdasdasdas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
 </div>
-<!-- Contact End -->
+<script>
+    var saved_property_list = [];
+    $(document).ready(function () {
+        var seller_id = "{{ user_data.user_id }}";
+        search_property_based_on_input_field_values(selling_type = null, page_number = null, seller_id = seller_id.toString());
+    });
+
+</script>
 {% endblock %}

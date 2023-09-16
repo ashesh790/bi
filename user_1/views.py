@@ -516,27 +516,6 @@ def show_full_property_detail(request, property_id):
         return render(request, "theme/404.html")
 
 
-def user_all_details(request, property_id):
-    try:
-        data = p_detail.objects.get(id=property_id)
-        user_id = data.seller_id.pk
-        user_data = User_register.objects.get(pk=user_id)
-        user_email = user_data.user_email
-        user_name = user_data.user_name
-        user_mobile = user_data.user_mobile
-        user_gender = user_data.user_gender
-        saller_data = {
-            "user_email": user_email,
-            "user_name": user_name,
-            "user_mobile": user_mobile,
-            "user_gender": user_gender,
-        }
-
-        return saller_data
-    except Exception as ex:
-        print(ex)
-
-
 def inquiries_from_user(request):
     try:
         user_data = User_register.objects.get(
@@ -725,4 +704,5 @@ def chat(request, user_id):
     return render(request, 'chat.html', {'user_id': user_id})
 
 def user_public_profile(request, property_id): 
-    return render(request, "theme/user_public_profile.html")
+    user_data = user_all_details(property_id) 
+    return render(request, "theme/user_public_profile.html", {"user_data" : user_data}) 

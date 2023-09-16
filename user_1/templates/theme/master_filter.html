@@ -2,13 +2,6 @@
 {% load static %}
 {% block main_content %}
 <style>
-    .custom-modal-size {
-        max-width: 98%;
-        /* Adjust the width as needed */
-        max-height: 98%;
-        /* Adjust the height as needed */
-    }
-
     .active_btn_common {
         background-color: #0099ff;
     }
@@ -309,6 +302,9 @@
         transform: rotate(45deg);
     }
 </style>
+{% block user_profile_page %}
+
+{% endblock %}
 <!-- Search Start -->
 <div class="container-fluid bg-primary mb-4 wow fadeIn mt-2" data-wow-delay="0.1s" style="padding: 0px;">
     <div>
@@ -448,7 +444,11 @@
 </center>
 <script>
     // code for call property data in home page 
-    $(".scroller_1 ").click();
+    var is_profile_page = "{{ user_data.user_id }}";
+    if (is_profile_page == "") {
+        $(".scroller_1 ").click();
+    }
+
 
     var saved_property_list = `{{ saved_property_list|safe }}`.toString();
     if (saved_property_list != "") {
@@ -517,9 +517,12 @@
 
     var property_type_val;
     // search property as per field which is selected in advance filter 
-    function search_property_based_on_input_field_values(selling_type = null, page_number = null) {
+    var seller_id = "";
+    function search_property_based_on_input_field_values(selling_type = null, page_number = null, seller_id = null) {
+
+        seller_id = seller_id
         var selling_option_val = "";
-        //console.log(property_type_val); 
+        var property_type_val = "";
         if (selling_type != null) {
             selling_option_val = $(selling_type).val();
         }
@@ -560,7 +563,7 @@
         if (furnish_type != "") { search_object.furnish_type = furnish_type };
         if (geography_area != "") { search_object.geography_area = geography_area };
         if (selling_option_val != "") { search_object.selling_option = selling_option_val };
-
+        if (seller_id != null) { search_object.seller_id = seller_id }
         $.ajax({
             url: "{% url 'search_properties' %}",
             type: "POST",
@@ -592,11 +595,11 @@
                             <div id="carouselExampleControls${property_id[i]}" class="carousel slide" data-ride="carousel">
                                     <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                    <a href="/property_details/${property_id[i]}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
+                                    <a href="/property_details/${property_id[i]}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt="" loading="lazy"></a>
                                     </div>
                                     ${val.property_image.slice(1).map(path => `
                                     <div class="carousel-item">
-                                            <a href="/property_details/${property_id[i]}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
+                                            <a href="/property_details/${property_id[i]}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;" loading="lazy"></a>
                                     </div>`).join('')} 
                                     </div>
                                     <a class="carousel-control-prev" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="prev">
@@ -627,7 +630,7 @@
                                     class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, maxLength) + '...'}
                             </p> 
                             <p style="width:30%;">
-                                    By<a href="">${JSON.parse(user_mobile[i]).user_name}</a> 
+                                    By<a href="/user-public-profile/${property_id[i]}">${JSON.parse(user_mobile[i]).user_name}</a> 
                             </p> 
                             </div>
                             </div>
@@ -763,22 +766,6 @@
             var applied_filter = $(applied_filter).attr("id");
             $(`#${applied_filter}__trash`).prependTo("#main_container_filters");
         }
-    }
-    function property_user_profile(property_id) {
-        $.ajax({
-            url: "{% url 'property_user_profile' %}",
-            type: "POST",
-            data: {
-                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-                'property_id': property_id,
-            },
-            success: function (response) {
-                $("#user_profile_modal").modal("show");
-            },
-            error: function () {
-                window.location.href = "/login";
-            }
-        });
     }
 </script>
 {% endblock %}

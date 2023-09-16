@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
 from staying_source.settings import MEDIA_ROOT, MEDIA_ROOT_USER_ICON, MEDIA_URL
 from user_1.apis.REST_API.database import convert_string_to_object, user_wise_property
-from user_1.apis.fetch_api.advance_filter_functions import search_properties
+from user_1.apis.fetch_api.advance_filter_functions import search_properties, user_all_details
 from user_1.models import User_register, p_detail, property_utility
 from django.core.files.storage import FileSystemStorage
 from geopy.geocoders import Nominatim
@@ -174,7 +174,7 @@ def search_property_type(request, sale_type=None, property_type=None):
                 property_type_core_data = property_type_core_data.object_list 
                 number_of_pages = paginator.num_pages
                 for i in property_type_core_data:
-                    user_detail = user_all_details(request, i.id)
+                    user_detail = user_all_details(i.id)
                     i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
             else:
@@ -184,7 +184,7 @@ def search_property_type(request, sale_type=None, property_type=None):
                 property_type_core_data = property_type_core_data.object_list
                 number_of_pages = paginator.num_pages 
                 for i in property_type_core_data:
-                    user_detail = user_all_details(request, i.id)
+                    user_detail = user_all_details(i.id)
                     i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
             return JsonResponse(
@@ -197,7 +197,7 @@ def search_property_type(request, sale_type=None, property_type=None):
             property_type_core_data = property_type_core_data.object_list
             number_of_pages = paginator.num_pages 
             for i in property_type_core_data:
-                user_detail = user_all_details(request, i.id)
+                user_detail = user_all_details(i.id)
                 i.property_data["user_detail"] = user_detail
                 prop_data[i.id] = i.property_data
             return JsonResponse(
@@ -323,28 +323,6 @@ def liked_and_saved_property_ids(user_id):
         return saved_property_list, liked_property_list
 
 
-def user_all_details(request, property_id):
-    try:
-        data = p_detail.objects.get(id=property_id)
-        user_id = data.seller_id.pk
-        user_data = User_register.objects.get(pk=user_id)
-        user_email = user_data.user_email
-        user_name = user_data.user_name
-        user_mobile = user_data.user_mobile
-        user_gender = user_data.user_gender
-        saller_data = { 
-            "user_id":user_id,
-            "user_email": user_email,
-            "user_name": user_name,
-            "user_mobile": user_mobile,
-            "user_gender": user_gender,
-        }
-
-        return saller_data
-    except Exception as ex:
-        print(ex)
-
-
 def add_like_property_count(property_id, remove_like=False):
     property_record = p_detail.objects.get(id=property_id)
     if not remove_like:
@@ -391,18 +369,18 @@ def byte_to_dict(bytes_data):
     return dict_data
 
 def property_user_profile(request): 
+    property_id = request.POST['property_id'] 
     data_dictionary = {}
-    property_id = request.POST['property_id']
-    user_data = user_all_details(request, property_id) 
+    user_data = user_all_details(property_id) 
     user_id = user_data["user_id"]
-    user_properties = user_profile_wise_property(request, user_id)  
+    user_properties = user_profile_wise_property(user_id)  
     for i in user_properties: 
         data_dictionary[i.pk] = i.property_data
-    data = {"data_dictionary":data_dictionary}
+    data = {"data_dictionary":data_dictionary, "user_data":user_data}
     return JsonResponse(data)
 
 
-def user_profile_wise_property(request, user_id): 
+def user_profile_wise_property(user_id): 
     try: 
         user_properties_list = []
         if len(user_id)>0 and user_id is not None: 

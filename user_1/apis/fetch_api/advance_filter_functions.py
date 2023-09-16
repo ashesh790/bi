@@ -26,6 +26,7 @@ def advance_filter_boundary(request):
 
 def search_properties(request, address_dict=None, reload_location=None): 
     page_number = request.POST['page_number'] 
+    seller_id = False
     if len(page_number) == 0: 
         page_number = 1
     if reload_location is not None:
@@ -48,8 +49,10 @@ def search_properties(request, address_dict=None, reload_location=None):
             ):
                 property_details.pop("selling_option")
     query = Q()
-    for field, value in property_details.items():
-        if field == "place_name":
+    for field, value in property_details.items(): 
+        if field == "seller_id": 
+            query &= Q(**{"seller_id": value})
+        elif field == "place_name":
             query &= Q(**{"property_data__place_name__icontains": value})
         elif field == "property_type":
             query &= Q(**{"property_data__property_type__icontains": value})
@@ -58,7 +61,7 @@ def search_properties(request, address_dict=None, reload_location=None):
                 query &= Q(**{"property_data__" + field: value})
 
     search_results = p_detail.objects.filter(query) 
-    paginator = Paginator(search_results, 10) 
+    paginator = Paginator(search_results, 5) 
     page = paginator.get_page(page_number)
     page_data = page.object_list
     if reload_location is not None:
@@ -70,17 +73,17 @@ def search_properties(request, address_dict=None, reload_location=None):
             search_results = pd.DataFrame(page_data.values())
             property_ids = list(search_results["id"].values)
             for i in property_ids:
-                user_basic_details = user_all_details(request, i)
+                user_basic_details = user_all_details(i)
                 user_details.append(json.dumps(user_basic_details)) 
             search_results["user_data"] = pd.DataFrame(user_details)
             search_results = search_results.to_dict() 
             total_pages =  paginator.num_pages
-            return JsonResponse({"search_results":search_results, "has_next":page.has_next(), "total_pages":total_pages})
+            return JsonResponse({"search_results":search_results, "has_next":page.has_next(), "total_pages":total_pages, "seller_id":seller_id})
         else:
             return HttpResponse(None)
 
 
-def user_all_details(request, property_id):
+def user_all_details(property_id):
     try:
         data = p_detail.objects.get(id=property_id)
         user_id = data.seller_id.pk
@@ -89,7 +92,8 @@ def user_all_details(request, property_id):
         user_name = user_data.user_name
         user_mobile = user_data.user_mobile
         user_gender = user_data.user_gender
-        saller_data = {
+        saller_data = { 
+            "user_id":user_id,
             "user_email": user_email,
             "user_name": user_name,
             "user_mobile": user_mobile,
@@ -99,7 +103,6 @@ def user_all_details(request, property_id):
         return saller_data
     except Exception as ex:
         print(ex)
-
 
 def search_properties_by_string(request):
     search_string = request.POST["search_string"]
