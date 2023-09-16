@@ -705,4 +705,6 @@ def chat(request, user_id):
 
 def user_public_profile(request, property_id): 
     user_data = user_all_details(property_id) 
-    return render(request, "theme/user_public_profile.html", {"user_data" : user_data}) 
+    boundry_data = advance_filter_boundary(request)
+    boundry_data = json.loads(boundry_data.content)
+    return render(request, "theme/user_public_profile.html", {"user_data" : user_data, "boundry_data": boundry_data["data"],}) 

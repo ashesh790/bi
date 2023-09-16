@@ -51,6 +51,7 @@ def search_properties(request, address_dict=None, reload_location=None):
     query = Q()
     for field, value in property_details.items(): 
         if field == "seller_id": 
+            seller_id = True
             query &= Q(**{"seller_id": value})
         elif field == "place_name":
             query &= Q(**{"property_data__place_name__icontains": value})

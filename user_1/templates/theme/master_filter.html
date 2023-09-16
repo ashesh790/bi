@@ -302,11 +302,8 @@
         transform: rotate(45deg);
     }
 </style>
-{% block user_profile_page %}
-
-{% endblock %}
 <!-- Search Start -->
-<div class="container-fluid bg-primary mb-4 wow fadeIn mt-2" data-wow-delay="0.1s" style="padding: 0px;">
+<div class="container-fluid bg-primary mb-4 wow fadeIn scroller_main w-100" data-wow-delay="0.1s" style="padding: 0px;">
     <div>
         <div class="scroller" style="overflow: auto; display:flex;">
             {% csrf_token %}
@@ -425,7 +422,9 @@
     </div>
 </div>
 <!-- Search End -->
+{% block user_profile_page %}
 
+{% endblock %}
 <center>
     <span id="pagination"></span>
     <div id="user_profile_modal" class="modal">
@@ -515,14 +514,13 @@
         $("#main_container_filters").append(removed_filter_field);
     }
 
-    var property_type_val;
+    var property_type_val = "";
     // search property as per field which is selected in advance filter 
     var seller_id = "";
     function search_property_based_on_input_field_values(selling_type = null, page_number = null, seller_id = null) {
 
         seller_id = seller_id
         var selling_option_val = "";
-        var property_type_val = "";
         if (selling_type != null) {
             selling_option_val = $(selling_type).val();
         }
@@ -549,7 +547,7 @@
         var bhk = $("#bhk_val").val() || "";
         var furnish_type = $('#furnish_type').val() || "";
         var geography_area = $('#geography_val').val() || "";
-
+        debugger
         var search_object = new Object();
         if (place_name != "") { search_object.place_name = place_name };
         if (property_type != "") { search_object.property_type = property_type };
@@ -563,7 +561,7 @@
         if (furnish_type != "") { search_object.furnish_type = furnish_type };
         if (geography_area != "") { search_object.geography_area = geography_area };
         if (selling_option_val != "") { search_object.selling_option = selling_option_val };
-        if (seller_id != null) { search_object.seller_id = seller_id }
+        if (seller_id != null) { search_object.seller_id = seller_id };
         $.ajax({
             url: "{% url 'search_properties' %}",
             type: "POST",
@@ -582,13 +580,17 @@
                     user_mobile = data.search_results.user_data;
                     property_data = property_data['property_data'];
                     var i = 0;
-                    $(".property_counter").empty();
+                    var property_counter = $(".property_counter");
+                    if (data.seller_id == true) {
+                        property_counter = $("#property_counter");
+                    }
+                    $(property_counter).empty();
                     for (var [key, val] of Object.entries(property_data)) {
                         var is_bookmark = saved_property_list.includes(property_id[i].toString());
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
                         var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(key.toString());
                         var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
-                        $(".property_counter").append(` 
+                        $(property_counter).append(` 
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="property-item rounded overflow-hidden border prop_item">
                             <div class="position-relative overflow-hidden"> 

@@ -146,6 +146,11 @@
             cursor: pointer;
         }
 
+        .z-index {
+            z-index: 1000;
+            /* Set a higher z-index value */
+        }
+
         input:focus {
             outline: 0px none #fff !important;
         }
@@ -871,4 +876,14 @@
             });
 
     };
+
+    const navbar = $(".scroller_main");
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 40) {
+            navbar.addClass("position-fixed top-0 z-index")
+        }
+        else (
+            navbar.removeClass("position-fixed top-0 z-index")
+        )
+    })
 </script>
