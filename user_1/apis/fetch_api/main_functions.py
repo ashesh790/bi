@@ -258,42 +258,6 @@ def delete_all_images_from_media(property_id):
     return True
 
 
-def save_location(request):
-    if "user_id" not in request.session:
-        return HttpResponse("Do Login")
-    user_id = request.session["user_id"]
-    latitude = request.POST["data[latitude]"]
-    longitude = request.POST["data[longitude]"]
-    location_number = {"latitude": latitude, "longitude": longitude}
-    request.session["location_number"] = location_number
-    login_user = User_register.objects.get(user_id=user_id)
-    request.session["user_id"] = user_id
-    login_user.user_other_data["location_number"] = location_number
-    login_user.save()
-    return HttpResponse("Location saved")
-
-
-def show_property_location_wise(request):
-    location_fetched = ""
-    reload_location = True
-    latitude = request.session["location_number"]["latitude"]
-    longitude = request.session["location_number"]["longitude"]
-    address_dict = get_location_name(latitude, longitude)
-    if address_dict is not None or len(address_dict) > 0:
-        if address_dict["city"] != "" and address_dict["city"] is not None:
-            location_fetched = address_dict["city"]
-        elif address_dict["state"] != "" and address_dict["state"] is not None:
-            location_fetched = address_dict["state"]
-        elif address_dict["country"] != "" and address_dict["country"] is not None:
-            location_fetched = address_dict["country"]
-    property = search_properties(request, location_fetched, reload_location)
-    return property, location_fetched
-    # data = p_detail.objects.all()
-    # property_data = {}
-    # for i in data:
-    #     property_data[i.id] = i.property_data
-    # return JsonResponse({"property_data":property_data, "latitude":latitude, "longitude":longitude})
-
 
 def get_location_name(latitude, longitude):
     geolocator = Nominatim(user_agent="MyWebApp/1.0")
@@ -403,4 +367,4 @@ def read_static_files(file_name):
         ) 
     with open(file_path) as f:
         file_data = json.load(f)
-    return file_data
+    return file_data	
