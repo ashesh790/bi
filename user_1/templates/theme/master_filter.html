@@ -517,6 +517,7 @@
     var property_type_val = "";
     // search property as per field which is selected in advance filter 
     var seller_id = "";
+    var property_counter = $(".property_counter");
     function search_property_based_on_input_field_values(selling_type = null, page_number = null, seller_id = null) {
 
         seller_id = seller_id
@@ -547,7 +548,7 @@
         var bhk = $("#bhk_val").val() || "";
         var furnish_type = $('#furnish_type').val() || "";
         var geography_area = $('#geography_val').val() || "";
-        debugger
+        seller_id = sessionStorage.getItem("seller_id");
         var search_object = new Object();
         if (place_name != "") { search_object.place_name = place_name };
         if (property_type != "") { search_object.property_type = property_type };
@@ -580,7 +581,7 @@
                     user_mobile = data.search_results.user_data;
                     property_data = property_data['property_data'];
                     var i = 0;
-                    var property_counter = $(".property_counter");
+                    property_counter = $(".property_counter");
                     if (data.seller_id == true) {
                         property_counter = $("#property_counter");
                     }
@@ -629,7 +630,7 @@
                             <div style="display:flex;"> 
                             <p style="width:70%;">
                                     <i
-                                    class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, maxLength) + '...'}
+                                    class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, 10) + '...'}
                             </p> 
                             <p style="width:30%;">
                                     By<a href="/user-public-profile/${property_id[i]}">${JSON.parse(user_mobile[i]).user_name}</a> 
@@ -678,8 +679,8 @@
                 }
                 else {
                     $('#pagination').empty();
-                    $(".property_counter").empty();
-                    $(".property_counter").append("<h1>Result not found</h1>")
+                    $(property_counter).empty();
+                    $(property_counter).append("<h1>Result not found</h1>")
                 }
             }
         });
@@ -687,8 +688,8 @@
 
     function delay_search(search_delay_field = null) {
         // set spinner 
-        $(".property_counter").empty();
-        $(".property_counter").append(`
+        $(property_counter).empty();
+        $(property_counter).append(`
             <div class="col-lg-12 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
                     <div class="position-relative overflow-hidden"> 

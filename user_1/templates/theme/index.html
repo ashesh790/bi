@@ -42,5 +42,8 @@
     setInterval(function () {
         $(".carousel-control-next").click();
     }, 15000);
+    // clear redundunt session variable 
+    sessionStorage.removeItem("seller_id");
+
 </script>
 {% endblock %}

@@ -92,6 +92,7 @@
     var saved_property_list = [];
     $(document).ready(function () {
         var seller_id = "{{ user_data.user_id }}";
+        sessionStorage.setItem("seller_id", seller_id);
         search_property_based_on_input_field_values(selling_type = null, page_number = null, seller_id = seller_id.toString());
     });
 
