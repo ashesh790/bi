@@ -39,6 +39,7 @@ from user_1.apis.fetch_api.main_functions import (
     get_all_property_data,
     liked_and_saved_property_ids,
     property_bound_data,
+    read_static_files,
     save_location,
     search_property_type,
     show_property_location_wise,
@@ -157,16 +158,8 @@ def add_property_details(request):
             property_details = add_property_details_in_database(request)
         # country_name_list = country_list(request)
         # country_name_list = json.loads(country_name_list) 
-        data = (
-            settings.BASE_DIR
-            / "user_1"
-            / "static"
-            / "property_boundry_api"
-            / "data.json"
-        )
-        with open(data) as f:
-            data = json.load(f)
-        data = data
+        data = read_static_files("data.json")
+        
         return render(
             request,
             "theme/add_property.html",
@@ -201,16 +194,7 @@ def delete_property(request, property_id):
     try:
         # country_name_list = country_list(request)
         # country_name_list = json.loads(country_name_list) 
-        data = (
-            settings.BASE_DIR
-            / "user_1"
-            / "static"
-            / "property_boundry_api"
-            / "data.json"
-        )
-        with open(data) as f:
-            data = json.load(f)
-        data = data
+        data = read_static_files("data.json")
         property_id = property_id
         delete_all_property_data(property_id)
         return render(
@@ -250,16 +234,7 @@ def delete_property(request, property_id):
 def update_property(request, property_id=0):
     # postData = request.get_json()
     try:
-        bondry_data = (
-            settings.BASE_DIR
-            / "user_1"
-            / "static"
-            / "property_boundry_api"
-            / "data.json"
-        )
-        with open(bondry_data) as f:
-            bondry_data = json.load(f)
-        bondry_data = bondry_data
+        bondry_data = read_static_files("data.json")
         is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
         if request.method == "POST":
             media_data = request.FILES.getlist("images")
@@ -386,13 +361,12 @@ def home(request):
             saved_property_list, liked_property_list = liked_and_saved_property_ids(
                 user_id
             ) 
-        boundry_data = advance_filter_boundary(request)
-        boundry_data = json.loads(boundry_data.content) 
+        boundry_data = read_static_files("data.json") 
         return render(
             request,
             "theme/index.html",
             {
-                "boundry_data": boundry_data["data"],
+                "boundry_data": boundry_data,
                 "saved_property_list": saved_property_list,
                 "liked_property_list": liked_property_list,
             },
@@ -440,15 +414,7 @@ def solve_property_issue(request):
 
 def print_property_type(request):
     try:
-        data = (
-            settings.BASE_DIR
-            / "user_1"
-            / "static"
-            / "property_boundry_api"
-            / "data.json"
-        )
-        with open(data) as f:
-            data = json.load(f)
+        data = read_static_files("data.json")
         property_data = data["property_type"]
         property_count = p_detail.objects.all()
         property_c = {}
@@ -706,5 +672,17 @@ def chat(request, user_id):
 def user_public_profile(request, property_id): 
     user_data = user_all_details(property_id) 
     boundry_data = advance_filter_boundary(request)
-    boundry_data = json.loads(boundry_data.content)
-    return render(request, "theme/user_public_profile.html", {"user_data" : user_data, "boundry_data": boundry_data["data"],}) 
+    boundry_data = json.loads(boundry_data.content) 
+    if "user_id" in request.session:
+        user_id = request.session["user_id"]
+        saved_property_list, liked_property_list = liked_and_saved_property_ids(
+            user_id
+        )
+    return render(request, "theme/user_public_profile.html", 
+        {
+            "user_data" : user_data, 
+            "boundry_data": boundry_data["data"],
+            "saved_property_list": saved_property_list,
+            "liked_property_list": liked_property_list,
+        }
+    )  

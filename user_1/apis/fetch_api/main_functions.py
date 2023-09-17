@@ -391,4 +391,16 @@ def user_profile_wise_property(user_id):
             return None
     except Exception as ex: 
         return None
-    return user_properties_list
+    return user_properties_list 
+
+def read_static_files(file_name): 
+    file_path = (
+            settings.BASE_DIR
+            / "user_1"
+            / "static"
+            / "property_boundry_api"
+            / file_name
+        ) 
+    with open(file_path) as f:
+        file_data = json.load(f)
+    return file_data
