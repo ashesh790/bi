@@ -11,47 +11,6 @@
         height: 150px;
         width: 150px;
     }
-
-    ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        /* text-align: center; */
-    }
-
-    span {
-        color: #a3a3a3;
-    }
-
-    li {
-        padding: 10px 0;
-    }
-
-    .icons {
-        color: #ffaaaa;
-        margin-right: 12px;
-    }
-
-    .link {
-        text-decoration: none;
-        color: #a3a3a3;
-    }
-
-    .link:hover {
-        color: #ffaaaa;
-    }
-
-    button {
-        background: #fff;
-        border: none;
-        color: #a3a3a3;
-        box-shadow: none !important;
-        text-transform: uppercase;
-    }
-
-    button:hover {
-        color: #ffaaaa;
-    }
 </style>
 <!-- Contact Start -->
 <div class="container-fluid">
@@ -59,13 +18,15 @@
         <div class="col-md-12">
             <div class="row py-3">
                 <div class="col-sm-12 col-md-2 bg-white">
-                    <div class="img-container w-100 mb-2">
-                        <img src="{% static 'img.jpg' %}" alt="user_image" class="user_pic">
-                    </div>
-                    <div class="text-center">
-                        <h3>User name</h3>
-                        <span>Agent designation</span>
-                    </div>
+                    <span id="user_detail_div">
+                        <div class="img-container w-100 mb-2">
+                            <img src="{% static 'img.jpg' %}" alt="user_image" class="user_pic">
+                        </div>
+                        <div class="text-center">
+                            <h3>User name</h3>
+                            <span>Agent designation</span>
+                        </div>
+                    </span>
                 </div>
                 <div class="col-ms-12 col-md-10">
                     <div class="row text-center">
@@ -96,5 +57,25 @@
         search_property_based_on_input_field_values(selling_type = null, page_number = null, seller_id = seller_id.toString());
     });
 
+    const navbar2 = $("#user_detail_div");
+    if (window.matchMedia("(min-width: 425px)").matches) {
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 40) {
+                navbar2.addClass("z-index");
+                navbar2.css({
+                    "position": "fixed",
+                    "top": "65px",
+                    "left": "35px",
+                });
+            }
+            else {
+                navbar2.css({
+                    "position": "",
+                    "top": "0px",
+                    "left": "0px",
+                });
+            }
+        });
+    }
 </script>
 {% endblock %}

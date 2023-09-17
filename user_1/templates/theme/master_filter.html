@@ -770,5 +770,14 @@
             $(`#${applied_filter}__trash`).prependTo("#main_container_filters");
         }
     }
+    const navbar = $(".scroller_main");
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 40) {
+            navbar.addClass("position-fixed top-0 z-index")
+        }
+        else (
+            navbar.removeClass("position-fixed top-0 z-index")
+        )
+    })
 </script>
 {% endblock %}
