@@ -559,8 +559,14 @@ def saved_property(request, remaining_property=False):
             context = {"saved_property_dict": "null"}
             return render(request, "theme/saved_proper.html", context)
         for i in saved_property_list:
-            query_data = p_detail.objects.get(id=i)
+            try:
+                query_data = p_detail.objects.get(id=i) 
+            except Exception as ex: 
+                saved_property_list.remove(i)
+                continue
             saved_property_dict[i] = query_data.property_data
+        user_data.user_other_data["saved_property"] = saved_property_list 
+        user_data.save()
         if remaining_property:
             if len(saved_property_dict) > 0:
                 return HttpResponse(
