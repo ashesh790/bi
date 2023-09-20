@@ -1,6 +1,7 @@
 all_module 
 .vscode 
 .gitignore
+bivenv/
 venv 
 staying_source/__pycache__ 
 user_1/__pycache__/
@@ -16,3 +17,4 @@ database
 venv 
 venv2 
 *.pyc
+venv_1
