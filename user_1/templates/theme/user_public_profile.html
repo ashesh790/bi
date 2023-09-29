@@ -20,15 +20,17 @@
                 <div class="col-sm-12 col-md-2 bg-white">
                     <span id="user_detail_div">
                         <div class="img-container w-100 mb-2">
-                            <img src="{% static 'img.jpg' %}" alt="user_image" class="user_pic">
+                            <img class="user_pic" src="/media/user_icons/{{user_data.user_id}}/{{user_data.user_icon}}"
+                                alt="Your Image">
                         </div>
                         <div class="text-center">
                             <h3>{{user_data.user_name}}</h3>
-                            <span>{{user_data.user_email}}</span> 
-                            <div class="card text-center d-flex">
-                                <span><i class="fa fa-phone"></i><span>
-                                <span>{{user_data.user_mobile}}</span> 
-                                <span><i class="fa fa-copy"></i><span>
+                            <span>{{user_data.user_email}}</span>
+                            <div class="input-group mb-3 mt-2">
+                                <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                                <input type="text" class="form-control text-center"
+                                    aria-label="{{user_data.user_mobile}}" value="{{user_data.user_mobile}}">
+                                <span class="input-group-text"><i class="fa fa-copy"></i></span>
                             </div>
                         </div>
                     </span>

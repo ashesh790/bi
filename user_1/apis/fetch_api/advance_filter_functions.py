@@ -1,8 +1,10 @@
+import os 
 import json
 import pandas as pd
 from django.db.models import Q
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
+from staying_source.settings import MEDIA_ROOT_USER_ICON
 from user_1.apis.fetch_api.country_api import country_list
 from django.core import serializers
 from django.http import JsonResponse
@@ -86,25 +88,30 @@ def search_properties(request, address_dict=None, reload_location=None):
 
 def user_all_details(property_id):
     try:
+        name_of_files=list()
         data = p_detail.objects.get(id=property_id)
         user_id = data.seller_id.pk
-        user_data = User_register.objects.get(pk=user_id)
+        user_data = User_register.objects.get(pk=user_id) 
+        user_avtar_file_path = MEDIA_ROOT_USER_ICON + user_id
+        if os.path.isdir(user_avtar_file_path): 
+            name_of_files = [i for i in os.listdir(user_avtar_file_path) if os.path.join(user_avtar_file_path, i)]
         user_email = user_data.user_email
         user_name = user_data.user_name
         user_mobile = user_data.user_mobile
-        user_gender = user_data.user_gender
+        user_gender = user_data.user_gender 
+        user_icon = name_of_files[0]
         saller_data = { 
             "user_id":user_id,
             "user_email": user_email,
             "user_name": user_name,
             "user_mobile": user_mobile,
             "user_gender": user_gender,
+            "user_icon":user_icon,
         }
-
         return saller_data
     except Exception as ex:
         print(ex)
-
+        return None 
 def search_properties_by_string(request):
     search_string = request.POST["search_string"]
     search_results = p_detail.objects.filter(
