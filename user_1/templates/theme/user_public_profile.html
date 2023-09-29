@@ -25,7 +25,15 @@
                         </div>
                         <div class="text-center">
                             <h3>{{user_data.user_name}}</h3>
-                            <span>{{user_data.user_email}}</span>
+                            <div class="input-group">
+                                <input type="text" class="form-control" aria-label="{{user_data.user_email}}"
+                                    value="{{user_data.user_email}}">
+                                <span class="input-group-text">
+                                    <a href="mailto:{{user_data.user_email}}">
+                                        <i class="fa-solid fa-paper-plane"></i>
+                                    </a>
+                                </span>
+                            </div>
                             <div class="input-group mb-3 mt-2">
                                 <a class="input-group-text" href="tel:{{user_data.user_mobile}}"><i
                                         class="fa fa-phone"></i></a>
