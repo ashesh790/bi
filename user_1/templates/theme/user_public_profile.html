@@ -27,10 +27,12 @@
                             <h3>{{user_data.user_name}}</h3>
                             <span>{{user_data.user_email}}</span>
                             <div class="input-group mb-3 mt-2">
-                                <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                                <a class="input-group-text" href="tel:{{user_data.user_mobile}}"><i
+                                        class="fa fa-phone"></i></a>
                                 <input type="text" class="form-control text-center"
                                     aria-label="{{user_data.user_mobile}}" value="{{user_data.user_mobile}}">
-                                <span class="input-group-text"><i class="fa fa-copy"></i></span>
+                                <span class="input-group-text" onclick="copy_contact_number()"><i
+                                        class="fa fa-copy"></i></span>
                             </div>
                         </div>
                     </span>
@@ -82,6 +84,15 @@
                     "left": "0px",
                 });
             }
+        });
+    }
+
+    function copy_contact_number() {
+        var number = "{{user_data.user_mobile}}";
+        navigator.clipboard.writeText(number).then(function () {
+            toaster_call("Copied!");
+        }, function () {
+            alert("Copying URL failed. Please manually copy the Number.");
         });
     }
 </script>
