@@ -370,12 +370,11 @@
                             </select>
                         </div>
                         <div style="width: auto; position:relative;" id="balcony_val__trash" class="col m-2 d-flex">
-
                             <select class="search_field" id="balcony_val"
                                 onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
                                 <option value="">Balcony</option>
                                 {% for i in boundry_data.balcony_details %}
-                                <option>{{i}} Balcony</option>
+                                <option value="{{i}}">{{i}} Balcony</option>
                                 {% endfor %}
                             </select>
 
