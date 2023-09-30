@@ -55,13 +55,14 @@
         cursor: pointer;
         border-radius: 10px;
         box-shadow: 0px 0px 10px 0px #0099ff;
-    } 
+    }
+
     @media screen and (max-width: 412px) {
         #main .col-md-7 {
             padding: 0% !important;
-        } 
+        }
     }
-</style> 
+</style>
 <!-- Property List Start -->
 <div class="container-xxl mt-5">
     <div class="">
@@ -439,8 +440,8 @@
         });
 
     });
-    $("#image_gallary").click(function () {
-        $("img").click(function () {
+    $("#image_gallary").hover(function () {
+        $("img").hover(function () {
             var tag_name = $(this).prop("tagName");
             if (tag_name == "IMG") {
                 var img_src = $(this).attr("src");
