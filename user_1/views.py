@@ -33,19 +33,16 @@ from user_1.apis.fetch_api.main_functions import (
     add_property_details_in_database,
     blocked_property,
     byte_to_dict,
-    delete_all_images_from_media,
     delete_all_property_data,
     delete_property_image_from_database,
     get_all_property_data,
+    get_location_name,
     liked_and_saved_property_ids,
-    property_bound_data,
-    save_location,
+    read_static_files,
     search_property_type,
-    show_property_location_wise,
-    update_property_data_record,
     update_property_image,
-    save_location,
-    user_all_details,
+    user_all_details, 
+    property_user_profile
 )
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
 from user_1.models import User_register, p_detail, property_utility
@@ -120,16 +117,16 @@ def sign_up(request):
 # sign up
 def login(request):
     try:
-        if request.POST:
-            LOGIN_ERR = ""
-            login_status = login_user(request)
-            if login_status is not False:
-                return render(request, "theme/index.html")
-            else:
-                LOGIN_ERR = "Invalid Credentials"
-                return JsonResponse({"err": LOGIN_ERR})
-        else:
+        if not request.POST: 
             return render(request, "theme/login.html")
+
+        LOGIN_ERR = ""
+        login_status = login_user(request)
+        if login_status is False:
+            LOGIN_ERR = "Invalid Credentials"
+            return JsonResponse({"err": LOGIN_ERR})
+
+        return render(request, "theme/index.html")
     except Exception as ex:
         return render(request, "theme/404.html")
 
@@ -154,18 +151,10 @@ def add_property_details(request):
             return redirect("/login")
         if request.method == "POST" and len(request.POST) is not None:
             property_details = add_property_details_in_database(request)
-        country_name_list = country_list(request)
-        country_name_list = json.loads(country_name_list) # type: ignore
-        data = (
-            settings.BASE_DIR
-            / "user_1"
-            / "static"
-            / "property_boundry_api"
-            / "data.json"
-        )
-        with open(data) as f:
-            data = json.load(f)
-        data = data
+        # country_name_list = country_list(request)
+        # country_name_list = json.loads(country_name_list) 
+        data = read_static_files("data.json")
+        
         return render(
             request,
             "theme/add_property.html",
@@ -178,7 +167,6 @@ def add_property_details(request):
                 "bathroom_details": data["bathroom_details"],
                 "balcony_details": data["balcony_details"],
                 "parking_details": data["parking_details"],
-                "country_name_list": country_name_list,
                 "add_property_details": "add_property_page",
             },
         )
@@ -199,18 +187,9 @@ def show_property_detail(request, property_id):
 
 def delete_property(request, property_id):
     try:
-        country_name_list = country_list(request)
-        country_name_list = json.loads(country_name_list) # type: ignore
-        data = (
-            settings.BASE_DIR
-            / "user_1"
-            / "static"
-            / "property_boundry_api"
-            / "data.json"
-        )
-        with open(data) as f:
-            data = json.load(f)
-        data = data
+        # country_name_list = country_list(request)
+        # country_name_list = json.loads(country_name_list) 
+        data = read_static_files("data.json")
         property_id = property_id
         delete_all_property_data(property_id)
         return render(
@@ -225,7 +204,6 @@ def delete_property(request, property_id):
                 "bathroom_details": data["bathroom_details"],
                 "balcony_details": data["balcony_details"],
                 "parking_details": data["parking_details"],
-                "country_name_list": country_name_list,
                 "add_property_details": "add_property_page",
             },
         )
@@ -243,7 +221,6 @@ def delete_property(request, property_id):
             "bathroom_details": data["bathroom_details"],
             "balcony_details": data["balcony_details"],
             "parking_details": data["parking_details"],
-            "country_name_list": country_name_list,
             "add_property_details": "add_property_page",
         },
     )
@@ -252,16 +229,7 @@ def delete_property(request, property_id):
 def update_property(request, property_id=0):
     # postData = request.get_json()
     try:
-        bondry_data = (
-            settings.BASE_DIR
-            / "user_1"
-            / "static"
-            / "property_boundry_api"
-            / "data.json"
-        )
-        with open(bondry_data) as f:
-            bondry_data = json.load(f)
-        bondry_data = bondry_data
+        bondry_data = read_static_files("data.json")
         is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
         if request.method == "POST":
             media_data = request.FILES.getlist("images")
@@ -376,61 +344,26 @@ def crud_property(request):
 
 
 # Render home page
-
-
 def home(request):
     try:
-        # update_property(request, property_id=1) 
-        page_number = request.GET.get('page')
-        property_data_all = {}
-        location_fetched = ""
+        page_number = request.GET.get('page') 
+        if page_number is None: 
+            page_number = 1 
         saved_property_list = ""
         liked_property_list = ""
         if "user_id" in request.session:
             user_id = request.session["user_id"]
             saved_property_list, liked_property_list = liked_and_saved_property_ids(
                 user_id
-            )
-        property_category = property_bound_data()
-        property_data = p_detail.objects.all()  
-        property_data_number = []
-        for i in property_data:
-            user_mobile = user_all_details(request, i.id)
-            user_mobile = user_mobile["user_mobile"]
-            property_data_number.append(user_mobile)
-            property_data_all[f"{user_mobile}__{i.id}"] = i
-        boundry_data = advance_filter_boundary(request)
-        boundry_data = json.loads(boundry_data.content)
-        if "location_number" in list(request.session.keys()):
-            location_property, location_fetched = show_property_location_wise(request)
-            if location_property is not None and len(location_property) > 0:
-                if len(location_property) > 0 and location_property is not None:
-                    property_data = location_property
-                    property_data_all = {}
-                for i in property_data:
-                    user_mobile = user_all_details(request, i.id)
-                    user_mobile = user_mobile["user_mobile"]
-                    property_data_all[f"{user_mobile}__{i.id}"] = i 
-        property_data_all = list(property_data_all.items())                    
-        p = Paginator(property_data_all, 1)
-        page_object = p.page(page_number) 
-        data_touple = page_object.object_list 
-        pagination_data = dict() 
-        for i in data_touple: 
-            pagination_data[i[0]] = i[1]
+            ) 
+        boundry_data = read_static_files("data.json") 
         return render(
             request,
             "theme/index.html",
             {
-                "property_category": property_category,
-                "property_data_all": pagination_data,
-                "boundry_data": boundry_data["data"],
-                "country": boundry_data["country"],
-                "location_fetched": location_fetched,
+                "boundry_data": boundry_data,
                 "saved_property_list": saved_property_list,
                 "liked_property_list": liked_property_list,
-                "property_data_number": property_data_number, 
-                "page_obj":page_object,
             },
         )
     except Exception as ex:
@@ -476,15 +409,7 @@ def solve_property_issue(request):
 
 def print_property_type(request):
     try:
-        data = (
-            settings.BASE_DIR
-            / "user_1"
-            / "static"
-            / "property_boundry_api"
-            / "data.json"
-        )
-        with open(data) as f:
-            data = json.load(f)
+        data = read_static_files("data.json")
         property_data = data["property_type"]
         property_count = p_detail.objects.all()
         property_c = {}
@@ -550,27 +475,6 @@ def show_full_property_detail(request, property_id):
     except Exception as ex:
         print(ex)
         return render(request, "theme/404.html")
-
-
-def user_all_details(request, property_id):
-    try:
-        data = p_detail.objects.get(id=property_id)
-        user_id = data.seller_id.pk
-        user_data = User_register.objects.get(pk=user_id)
-        user_email = user_data.user_email
-        user_name = user_data.user_name
-        user_mobile = user_data.user_mobile
-        user_gender = user_data.user_gender
-        saller_data = {
-            "user_email": user_email,
-            "user_name": user_name,
-            "user_mobile": user_mobile,
-            "user_gender": user_gender,
-        }
-
-        return saller_data
-    except Exception as ex:
-        print(ex)
 
 
 def inquiries_from_user(request):
@@ -655,8 +559,14 @@ def saved_property(request, remaining_property=False):
             context = {"saved_property_dict": "null"}
             return render(request, "theme/saved_proper.html", context)
         for i in saved_property_list:
-            query_data = p_detail.objects.get(id=i)
+            try:
+                query_data = p_detail.objects.get(id=i) 
+            except Exception as ex: 
+                saved_property_list.remove(i)
+                continue
             saved_property_dict[i] = query_data.property_data
+        user_data.user_other_data["saved_property"] = saved_property_list 
+        user_data.save()
         if remaining_property:
             if len(saved_property_dict) > 0:
                 return HttpResponse(
@@ -759,3 +669,53 @@ def submit_report_form(request):
 
 def chat(request, user_id):
     return render(request, 'chat.html', {'user_id': user_id})
+
+def user_public_profile(request, property_id): 
+    user_data = user_all_details(property_id) 
+    boundry_data = advance_filter_boundary(request)
+    boundry_data = json.loads(boundry_data.content) 
+    if "user_id" in request.session:
+        user_id = request.session["user_id"]
+        saved_property_list, liked_property_list = liked_and_saved_property_ids(
+            user_id
+        )
+    return render(request, "theme/user_public_profile.html", 
+        {
+            "user_data" : user_data, 
+            "boundry_data": boundry_data["data"],
+            "saved_property_list": saved_property_list,
+            "liked_property_list": liked_property_list,
+        }
+    )  
+    
+
+def save_location(request):
+    if "user_id" not in request.session:
+        return HttpResponse("Do Login")
+    user_id = request.session["user_id"]
+    latitude = request.POST["data[latitude]"]
+    longitude = request.POST["data[longitude]"]
+    location_number = {"latitude": latitude, "longitude": longitude}
+    request.session["location_number"] = location_number
+    login_user = User_register.objects.get(user_id=user_id)
+    request.session["user_id"] = user_id
+    login_user.user_other_data["location_number"] = location_number
+    login_user.save()
+    return HttpResponse("Location saved") 
+
+
+def show_property_location_wise(request):
+    location_fetched = ""
+    reload_location = True
+    latitude = request.session["location_number"]["latitude"]
+    longitude = request.session["location_number"]["longitude"]
+    address_dict = get_location_name(latitude, longitude)
+    if address_dict is not None or len(address_dict) > 0:
+        if address_dict["city"] != "" and address_dict["city"] is not None:
+            location_fetched = address_dict["city"]
+        elif address_dict["state"] != "" and address_dict["state"] is not None:
+            location_fetched = address_dict["state"]
+        elif address_dict["country"] != "" and address_dict["country"] is not None:
+            location_fetched = address_dict["country"]
+    property = search_properties(request, location_fetched, reload_location)
+    return property, location_fetched

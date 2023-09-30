@@ -124,12 +124,10 @@
       contentType: false,
       success: function (response) {
         // Handle successful upload
-        console.log(response);
         window.location.href = "/update_profile";
       },
       error: function (xhr, status, error) {
         // Handle error
-        console.log(error);
       }
     });
   });
@@ -176,7 +174,6 @@
           $('#upload-form').submit();
         } else {
           // Request encountered an error
-          console.log(xhr.status + ': ' + xhr.responseText);
         }
       }
     };

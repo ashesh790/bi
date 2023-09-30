@@ -2,6 +2,10 @@
 {% load static %}
 {% block main_content %}
 <style>
+    .active_btn_common {
+        background-color: #0099ff;
+    }
+
     .p_type_btn {
         border-radius: 20px;
         border: 1px solid white;
@@ -37,6 +41,27 @@
         border: 0px;
         border-radius: 5px;
         outline: 0px;
+    }
+
+    #pagination {
+        display: inline-block;
+    }
+
+    #pagination span {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    #pagination span.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    #pagination span:hover:not(.active) {
+        background-color: #ddd;
     }
 
     #construction_status_trash_icon>i {
@@ -278,17 +303,18 @@
     }
 </style>
 <!-- Search Start -->
-<div class="container-fluid bg-primary mb-4 wow fadeIn mt-2" data-wow-delay="0.1s" style="padding: 0px;">
+<div class="container-fluid bg-primary mb-4 wow fadeIn scroller_main w-100" data-wow-delay="0.1s" style="padding: 0px;">
     <div>
         <div class="scroller" style="overflow: auto; display:flex;">
             {% csrf_token %}
-            <button class="btn btn-outline-primary text-white border-white p_type_btn"
-                onclick="property_type_core(this);active_class(this);" style="margin:10px;" value="all">All
-                Type</button>
+            <button class="btn btn-outline-primary text-white border-white p_type_btn scroller_1"
+                onclick="move_applied_to_first(this); search_property_based_on_input_field_values();"
+                style="margin:10px;" value="all">Clear</button>
             {% for i in boundry_data.property_type %}
             <button class="btn btn-outline-primary text-white border-white p_type_btn"
-                onclick="property_type_core(this);active_class(this);" style="margin:10px;" id="{{i}}"
-                value="{{i}}">{{i}}</button>
+                onclick="move_applied_to_first(this); search_property_based_on_input_field_values(); "
+                style="margin:10px;" id="{{i}}" value="{{i}}">{{i}}
+            </button>
             {% endfor %}
         </div>
     </div>
@@ -302,15 +328,15 @@
                         <div class="d-flex flex-nowrap button-container">
                             <button class="btn btn-outline-primary active custom-button centered-text sale_btn"
                                 data-bs-toggle="pill" value="all" id="all"
-                                onclick="search_property_based_on_input_field_values(this);"
+                                onclick="search_property_based_on_input_field_values(this, null);"
                                 style="height:29px;">All</button>
                             <button class="btn btn-outline-primary custom-button centered-text sale_btn"
                                 data-bs-toggle="pill" value="Sale" id="sell"
-                                onclick="search_property_based_on_input_field_values(this);"
+                                onclick="search_property_based_on_input_field_values(this, null);"
                                 style="height:29px;">Sale</button>
                             <button class="btn btn-outline-primary custom-button centered-text sale_btn"
                                 data-bs-toggle="pill" value="Rent" id="rent"
-                                onclick="search_property_based_on_input_field_values(this);"
+                                onclick="search_property_based_on_input_field_values(this, null);"
                                 style="height:29px;">Rent</button>
                         </div>
                     </div>
@@ -344,12 +370,11 @@
                             </select>
                         </div>
                         <div style="width: auto; position:relative;" id="balcony_val__trash" class="col m-2 d-flex">
-
                             <select class="search_field" id="balcony_val"
                                 onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
                                 <option value="">Balcony</option>
                                 {% for i in boundry_data.balcony_details %}
-                                <option>{{i}} Balcony</option>
+                                <option value="{{i}}">{{i}} Balcony</option>
                                 {% endfor %}
                             </select>
 
@@ -396,141 +421,41 @@
     </div>
 </div>
 <!-- Search End -->
+{% block user_profile_page %}
 
-<!-- Bootstrap modal -->
-<div class="modal fade search_modal" id="exampleModalCenter" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalCenterTitle" style="height: 500px;" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Filter properties by:</h5>
-                <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="col-md-12" id="search_filter">
-                    <div id="advance_filter_container">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex">
-                                    <div style="width:50%;">
-                                        <label>Construction status: </label>
-                                    </div>
-                                    <div style="width:50%;">
-                                        <div class="d-flex">
-                                            <div id="construction_status__trash">
-                                                <select class="search_field" id="construction_status"
-                                                    onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                    <option value="">Construction status</option>
-                                                    {% for i in boundry_data.construction_status %}
-                                                    <option value="{{i}}">{{i}}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div id="bathroom_val__trash">
-                                                <div class="" style="width:50%;">
-                                                    <select class="mt-2 search_field" id="bathroom_val"
-                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                        <option value="">Bathrooms</option>
-                                                        {% for i in boundry_data.bathroom_details %}
-                                                        <option value="{{i}}">{{i}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div id="bathroom_val__trash">
-                                                <div class="" style="width:50%;">
-                                                    <select class="mt-2 search_field" id="bathroom_val"
-                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                        <option value="">Bathrooms</option>
-                                                        {% for i in boundry_data.bathroom_details %}
-                                                        <option value="{{i}}">{{i}} Bathrooms</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div id="balcony_val__trash">
-
-                                                <div class="" style="width:50%;">
-                                                    <select class="mt-2 search_field" id="balcony_val"
-                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                        <option value="">Balcony</option>
-                                                        {% for i in boundry_data.balcony_details %}
-                                                        <option>{{i}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div id="bhk_val__trash">
-                                                <div class="" style="width:50%;">
-                                                    <select class="mt-2 search_field" id="bhk_val"
-                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                        <option value="">BHK</option>
-                                                        {% for i in boundry_data.bhk_details %}
-                                                        <option value="{{i}}">{{i}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div id="furnish_type__trash">
-                                                <div class="" style="width:50%;">
-                                                    <select class="mt-2 search_field" id="furnish_type"
-                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                        <option value="">Furnish type</option>
-                                                        {% for i in boundry_data.furnish_type %}
-                                                        <option>{{i}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div id="furnish_type__trash">
-                                                <div class="" style="width:50%;">
-                                                    <select class="mt-2 search_field" id="furnish_type"
-                                                        onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                                        <option value="">Furnish type</option>
-                                                        {% for i in boundry_data.furnish_type %}
-                                                        <option>{{i}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- filter using bathroom count -->
-
+{% endblock %}
+<center>
+    <span id="pagination"></span>
+    <div id="user_profile_modal" class="modal">
+        <div class="modal-dialog modal-fullscreen modal-dialog-centered custom-modal-size">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row px-5 py-2" style="height: 40%; border: 1px solid red;">
+                        <div class="col-ms-12 col-md-5">search_property_based_on_input_field_values</div>
+                        <div class="col-ms-12 col-md-7"></div>
                     </div>
                 </div>
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Apply Filter</button>
-        </div>
     </div>
-</div>
-</div>
-
+</center>
 <script>
+    // code for call property data in home page 
+    var is_profile_page = "{{ user_data.user_id }}";
+    if (is_profile_page == "") {
+        $(".scroller_1 ").click();
+    }
+
+
     var saved_property_list = `{{ saved_property_list|safe }}`.toString();
-    var saved_property_list = JSON.parse(saved_property_list.replace(/'/g, "\""));
+    if (saved_property_list != "") {
+        var saved_property_list = JSON.parse(saved_property_list.replace(/'/g, "\""));
+    }
     var liked_property_list = `{{liked_property_list|safe}}`.toString();
-    var liked_property_list = JSON.parse(liked_property_list.replace(/'/g, "\""));
+    if (liked_property_list != "") {
+        var liked_property_list = JSON.parse(liked_property_list.replace(/'/g, "\""));
+    }
     console.log("Saved", saved_property_list);
     console.log("Liked", liked_property_list);
     var maxLength = 20;
@@ -546,120 +471,8 @@
     }, 500);
 
     $('.saved_property').on('click', function () {
-
         $(this).toggleClass('fa-bookmark-o fa-bookmark');
     });
-
-    var property_type_val = "all";
-    function active_class(selector) {
-        $('.fa-times-circle').click();
-        $('.active_btn').removeClass('active_btn');
-        $(selector).addClass("active_btn");
-    }
-    // search by property type 
-    function property_type_core(property_type) {
-        property_type_val = $(property_type).val();
-        $.ajax({
-            url: "{% url 'search_property_type' %}",
-            type: "POST",
-            data: {
-                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
-                "data": property_type_val
-            },
-            success: function (data) {
-                console.log(data);
-                if (Object.keys(data.prop_data).length != 0) {
-
-                    $(".property_counter").empty();
-                    // console.log(data.prop_data);
-                    $.each(data.prop_data, function (key, val) {
-                        var is_bookmark = saved_property_list.includes(key.toString());
-                        var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${key}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
-                        var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(key.toString());
-                        var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${key}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
-                        $(".property_counter").append(` 
-                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="property-item rounded overflow-hidden border prop_item">
-                                <div class="position-relative overflow-hidden"> 
-                                    <div id="carouselExampleControls${key}" class="carousel slide" data-ride="carousel">
-                                        <div class="carousel-inner">
-                                            
-                                          <div class="carousel-item active">
-                                            <a href="/property_details/${key}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
-                                          </div>
-                                          ${val.property_image.slice(1).map(path => `<div class="carousel-item">
-                                            <a href="/property_details/${key}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
-                                          </div>`).join('')} 
-
-                                        </div>
-                                        <a class="carousel-control-prev" href="#carouselExampleControls${key}" role="button" data-slide="prev">
-                                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                          <span class="sr-only">Previous</span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#carouselExampleControls${key}" role="button" data-slide="next">
-                                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                          <span class="sr-only">Next</span>
-                                        </a>
-                                      </div>
-                                    <div
-                                        class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
-                                        ${val.property_type}</div>
-                                </div>
-                                <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${key}_popup">
-                                    <a class="d-block mb-2" href="property_details/${key}" id="/Month">
-                                        <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
-                                    </a>
-                                    <a class="d-block mb-2" href="property_details/${key}">
-                                        <b class="d-block h5 mb-2">${val.property_type} For
-                                            ${val.selling_option}
-                                        </b>
-                                    </a>
-                                    <p>
-                                        <i
-                                            class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, maxLength) + '...'}
-                                    </p>
-                                </div>
-                                <div class="d-flex border-top">
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <a href="tel:${val.user_detail.user_mobile}"><i class="fa fa-phone"></i></a>
-                                        </h5>
-                                    </small> 
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            ${like_icon}
-                                        </h5>
-                                    </small>
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <i class="fa fa-share-alt" url="property_details/${key}" onclick="openModal(this);"></i>
-                                        </h5>
-                                    </small>
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            ${bookmark_icon}
-                                        </h5>
-                                    </small> 
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <i class="fa-solid fa-circle-info"
-                                                onclick="toggle_property_popup('modal__${key}_popup')"></i>
-                                        </h5>
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                        `)
-                    });
-                }
-                else {
-                    $(".property_counter").empty();
-                    $(".property_counter").append("<h1>Result not found</h1>")
-                }
-            }
-
-        })
-    }
 
     // Search field is applied and trash button for this field is added 
     function search_field_applied(field) {
@@ -669,12 +482,20 @@
         }
         if (field_id == "all_filter") {
             $(`#${field_id}__trash`).append(`
-            <span style="margin-left:2px; position:absolute; right:-3px; top:-5px; background-color:#0099ff;" class="fa-solid fa-circle-xmark" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
+            <span style="margin-left:2px; position:absolute; right:0;" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
+                <label class="container_check">
+                <input checked="checked" type="checkbox">
+                <div style="background-color:#0099ff; width:18px; height:18px; border-radius:20%; box-shadow:0 0 10px 0;"><b style="color:white; margin-left:4px; margin-top:0px;">x</b></div>
+                </label> 
             </span>
         `);
         } else {
             $(`#${field_id}__trash`).append(`
-            <span style="margin-left:2px; position:absolute; right:-3px; top:-5px; background-color;#0099ff;" class="fa-solid fa-circle-xmark" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
+            <span style="margin-left:2px; position:absolute; right:0;" id="${field_id}_trash_icon" onclick="remove_filter_value(this);"> 
+                <label class="container_check">
+                <input checked="checked" type="checkbox">
+                <div style="background-color:#0099ff; width:18px; height:18px; border-radius:20%; box-shadow:0 0 10px 0;"><b style="color:white; margin-left:4px; margin-top:0px;">x</b></div>
+                </label> 
             </span>
             `);
         }
@@ -692,10 +513,14 @@
         $("#main_container_filters").append(removed_filter_field);
     }
 
+    var property_type_val = "";
     // search property as per field which is selected in advance filter 
-    function search_property_based_on_input_field_values(selling_type = null) {
+    var seller_id = "";
+    var property_counter = $(".property_counter");
+    function search_property_based_on_input_field_values(selling_type = null, page_number = null, seller_id = null) {
+
+        seller_id = seller_id
         var selling_option_val = "";
-        //console.log(property_type_val);
         if (selling_type != null) {
             selling_option_val = $(selling_type).val();
         }
@@ -711,7 +536,7 @@
             }
         }
 
-        var property_type = property_type_val;
+        var property_type = property_type_val.value;
         var place_name = $('#place_name').val() || "";
         var country = $('#country_based').val() || "";
         var state = $('#state_based').val() || "";
@@ -722,7 +547,7 @@
         var bhk = $("#bhk_val").val() || "";
         var furnish_type = $('#furnish_type').val() || "";
         var geography_area = $('#geography_val').val() || "";
-
+        seller_id = sessionStorage.getItem("seller_id");
         var search_object = new Object();
         if (place_name != "") { search_object.place_name = place_name };
         if (property_type != "") { search_object.property_type = property_type };
@@ -736,165 +561,134 @@
         if (furnish_type != "") { search_object.furnish_type = furnish_type };
         if (geography_area != "") { search_object.geography_area = geography_area };
         if (selling_option_val != "") { search_object.selling_option = selling_option_val };
-
+        if (seller_id != null) { search_object.seller_id = seller_id };
         $.ajax({
             url: "{% url 'search_properties' %}",
             type: "POST",
             data: {
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
                 "search_object": JSON.stringify(search_object),
+                "page_number": page_number
             },
-            success: function (property_data) {
-                console.log(property_data);
-                property_id = property_data["id"];
-                user_mobile = property_data['user_mobile']
-                property_data = property_data['property_data'];
-                var i = 0;
-                //console.log(property_id);
-                if (property_data) {
-                    $(".property_counter").empty();
+            success: function (data) {
+                if (data != "None") {
+                    has_next = data.has_next;
+                    total_pages = data.total_pages;
+                    // All other data will be declared above, except property data
+                    property_data = data.search_results;
+                    property_id = property_data["id"];
+                    user_mobile = data.search_results.user_data;
+                    property_data = property_data['property_data'];
+                    var i = 0;
+                    property_counter = $(".property_counter");
+                    if (data.seller_id == true) {
+                        property_counter = $("#property_counter");
+                    }
+                    $(property_counter).empty();
                     for (var [key, val] of Object.entries(property_data)) {
                         var is_bookmark = saved_property_list.includes(property_id[i].toString());
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
-                        var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(key.toString());
+                        var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(property_id[i].toString());
                         var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
-                        $(".property_counter").append(` 
-                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="property-item rounded overflow-hidden border prop_item">
-                                <div class="position-relative overflow-hidden"> 
-                                    <div id="carouselExampleControls${property_id[i]}" class="carousel slide" data-ride="carousel">
-                                        <div class="carousel-inner">
-                                          <div class="carousel-item active">
-                                            <a href="/property_details/${property_id[i]}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
-                                          </div>
-                                          ${val.property_image.slice(1).map(path => `
-                                            <div class="carousel-item">
-                                                <a href="/property_details/${property_id[i]}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
-                                            </div>`).join('')} 
-                                        </div>
-                                        <a class="carousel-control-prev" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="prev">
-                                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                          <span class="sr-only">Previous</span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="next">
-                                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                          <span class="sr-only">Next</span>
-                                        </a>
-                                      </div>
-                                    <div
-                                        class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
-                                        ${val.property_type}</div>
-                                </div>
-                                <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${property_id[i]}_popup"> 
-                                    <a class="d-block mb-2" href="property_details/${property_id[i]}" id="/Month">
-                                        <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
+                        $(property_counter).append(` 
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="property-item rounded overflow-hidden border prop_item">
+                            <div class="position-relative overflow-hidden"> 
+                            <div id="carouselExampleControls${property_id[i]}" class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                    <a href="/property_details/${property_id[i]}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt="" loading="lazy"></a>
+                                    </div>
+                                    ${val.property_image.slice(1).map(path => `
+                                    <div class="carousel-item">
+                                            <a href="/property_details/${property_id[i]}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;" loading="lazy"></a>
+                                    </div>`).join('')} 
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
                                     </a>
-                                    <a class="d-block mb-2" href="property_details/${property_id[i]}">
-                                        <b class="d-block h5 mb-2">${val.property_type} For
-                                            ${val.selling_option}
-                                        </b>
+                                    <a class="carousel-control-next" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
                                     </a>
-                                    <p>
-                                        <i
-                                            class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, maxLength) + '...'}
-                                    </p>
-                                </div>
-                                <div class="d-flex border-top">
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <a href="tel:${user_mobile[i]}"><i class="fa fa-phone"></i></a>
-                                        </h5>
-                                    </small> 
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5> 
-                                            ${like_icon}
-                                        </h5>
-                                    </small>
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <i class="fa fa-share-alt" url="property_details/${property_id[i]}" onclick="openModal(this);"></i>
-                                        </h5>
-                                    </small>
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            ${bookmark_icon}
-                                        </h5>
-                                    </small> 
-                                    <small class="flex-fill text-center mt-1">
-                                        <h5>
-                                            <i class="fa-solid fa-circle-info"
-                                                onclick="toggle_property_popup('modal__${property_id[i]}_popup')"></i>
-                                        </h5>
-                                    </small>
-                                </div>
                             </div>
-                        </div>
-                        `);
+                            <div
+                                    class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                    ${val.property_type}</div>
+                            </div>
+                            <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${property_id[i]}_popup"> 
+                            <a class="d-block mb-2" href="property_details/${property_id[i]}" id="/Month">
+                                    <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
+                            </a>
+                            <a class="d-block mb-2" href="property_details/${property_id[i]}">
+                                    <b class="d-block h5 mb-2">${val.property_type} For
+                                    ${val.selling_option}
+                                    </b>
+                            </a> 
+                            <div style="display:flex;"> 
+                            <p style="width:70%;">
+                                    <i
+                                    class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, 10) + '...'}
+                            </p> 
+                            <p style="width:30%;">
+                                    By<a href="/user-public-profile/${property_id[i]}">${JSON.parse(user_mobile[i]).user_name}</a> 
+                            </p> 
+                            </div>
+                            </div>
+                            <div class="d-flex border-top">
+                            <small class="flex-fill text-center mt-1">
+                                    <h5>
+                                    <a href="tel:${JSON.parse(user_mobile[i]).user_mobile}"><i class="fa fa-phone"></i></a>
+                                    </h5>
+                            </small> 
+                            <small class="flex-fill text-center mt-1">
+                                    <h5> 
+                                    ${like_icon}
+                                    </h5>
+                            </small>
+                            <small class="flex-fill text-center mt-1">
+                                    <h5>
+                                    <i class="fa fa-share-alt" url="property_details/${property_id[i]}" onclick="openModal(this);"></i>
+                                    </h5>
+                            </small>
+                            <small class="flex-fill text-center mt-1">
+                                    <h5>
+                                    ${bookmark_icon}
+                                    </h5>
+                            </small> 
+                            <small class="flex-fill text-center mt-1">
+                                    <h5>
+                                    <i class="fa-solid fa-circle-info"
+                                            onclick="toggle_property_popup('modal__${property_id[i]}_popup')"></i> 
+                                    </h5> 
+                            </small>
+                            </div>
+                    </div>
+                    </div>
+                    `);
                         i++;
+                    }
+                    if (has_next) {
+                        $('#pagination').empty();
+                        for (i = 1; i <= total_pages; i++) {
+                            $('#pagination').append(`<span onclick = "search_property_based_on_input_field_values(null, ${i});" style="color:#0099ff;">${i}</span>`);
+                        }
                     }
                 }
                 else {
-                    $(".property_counter").empty();
-                    $(".property_counter").append("<h1>Result not found</h1>")
+                    $('#pagination').empty();
+                    $(property_counter).empty();
+                    $(property_counter).append("<h1>Result not found</h1>")
                 }
             }
         });
     }
 
-    $(document).ready(function (e) {
-        // advance filter configuration by country 
-        $('#country_based').change(function (e) {
-            //alert("Clikced!"); 
-            e.preventDefault();
-            var country_name = $(this).val();
-            //alert(country_name); 
-            //var data_target = $(property).text();
-            $.ajax({
-                url: "{% url 'state_list' %}",
-                type: "GET",
-                data: {
-                    'country_name': country_name,
-                },
-                success: function (property_data) {
-                    $("#state_based").empty();
-                    $('#state_based').append(`<option value="">Select state</option>`);
-                    property_data = JSON.parse(property_data)
-                    for (let [key, value] of Object.entries(property_data)) {
-                        $('#state_based').append(`<option value="${value.iso2}">${value.name}</option>`);
-                    }
-                }
-            });
-        });
-
-        // advance filter configuration by state 
-        $('#state_based').change(function (e) {
-            //alert("Clikced!"); 
-            e.preventDefault();
-            var country_name = $("#country_based").val();
-            var state_name = $(this).val();
-            $.ajax({
-                url: "{% url 'city_list' %}",
-                type: "GET",
-                data: {
-                    'state_name': state_name,
-                    'country_name': country_name,
-                },
-                success: function (property_data) {
-                    $("#city_based").empty();
-                    $('#city_based').append(`<option value="">Select City</option>`);
-                    property_data = JSON.parse(property_data)
-                    for (let [key, value] of Object.entries(property_data)) {
-                        $('#city_based').append(`<option value="${value.name}">${value.name}</option>`);
-                    }
-                }
-            });
-        });
-    });
-
     function delay_search(search_delay_field = null) {
         // set spinner 
-        $(".property_counter").empty();
-        $(".property_counter").append(`
+        $(property_counter).empty();
+        $(property_counter).append(`
             <div class="col-lg-12 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
                     <div class="position-relative overflow-hidden"> 
@@ -906,7 +700,7 @@
             </div>
         `);
         setTimeout(function () {
-            search_property_based_on_input_field_values(search_delay_field)
+            search_property_based_on_input_field_values(search_delay_field, null);
         }, 500);
     }
     function bookmark_property(property_id) {
@@ -962,9 +756,27 @@
         $(this).toggleClass("active");
     });
 
-    function move_applied_to_first(filter_filter) {
-        var filter_filter = $(filter_filter).attr("id");
-        $(`#${filter_filter}__trash`).prependTo("#main_container_filters");
+    function move_applied_to_first(applied_filter) {
+
+        property_type_val = applied_filter;
+        if ($(applied_filter).hasClass("p_type_btn")) {
+            if ($(applied_filter).text() != "Clear") {
+                $(applied_filter).insertAfter(".scroller_1");
+            }
+        }
+        else {
+            var applied_filter = $(applied_filter).attr("id");
+            $(`#${applied_filter}__trash`).prependTo("#main_container_filters");
+        }
     }
+    const navbar = $(".scroller_main");
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 40) {
+            navbar.addClass("position-fixed top-0 z-index")
+        }
+        else (
+            navbar.removeClass("position-fixed top-0 z-index")
+        )
+    })
 </script>
 {% endblock %}

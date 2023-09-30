@@ -5,7 +5,8 @@ from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
 from staying_source.settings import MEDIA_ROOT, MEDIA_ROOT_USER_ICON, MEDIA_URL
-from user_1.apis.fetch_api.advance_filter_functions import search_properties
+from user_1.apis.REST_API.database import convert_string_to_object, user_wise_property
+from user_1.apis.fetch_api.advance_filter_functions import search_properties, user_all_details
 from user_1.models import User_register, p_detail, property_utility
 from django.core.files.storage import FileSystemStorage
 from geopy.geocoders import Nominatim
@@ -148,40 +149,67 @@ def property_bound_data():
             property_c[i.property_data["property_type"]] += 1
         else:
             property_c[i.property_data["property_type"]] = 1
-        # property_c[i.property_data["property_type"]] = i.property_data["property_type"]
     return property_c
 
 
-def search_property_type(request, sale_type=None, property_type=None):
+def search_property_type(request, sale_type=None, property_type=None): 
+    page_number = 1 
+    items_per_page = 8 
+    number_of_pages = 1
+    if "page_number" in request.POST:  
+        page_number = request.POST["page_number"] 
+
     prop_data = {}
+    property_type_core = "all"
     sale_type = sale_type
-    print(sale_type)
     if property_type is None and sale_type is None:
-        if request.POST["data"]:
+        if "data" in request.POST:
             property_type_core = request.POST["data"]
             if property_type_core != "all":
                 property_type_core_data = p_detail.objects.filter(
                     property_data__property_type=property_type_core
                 )
+                paginator = Paginator(property_type_core_data, items_per_page) 
+                property_type_core_data = paginator.page(page_number) 
+                property_type_core_data = property_type_core_data.object_list 
+                number_of_pages = paginator.num_pages
                 for i in property_type_core_data:
-                    user_detail = user_all_details(request, i.id)
+                    user_detail = user_all_details(i.id)
                     i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
             else:
-                property_filter = "all"
                 property_type_core_data = p_detail.objects.all()
+                paginator = Paginator(property_type_core_data, items_per_page) 
+                property_type_core_data = paginator.page(page_number)
+                property_type_core_data = property_type_core_data.object_list
+                number_of_pages = paginator.num_pages 
                 for i in property_type_core_data:
-                    user_detail = user_all_details(request, i.id)
+                    user_detail = user_all_details(i.id)
                     i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
             return JsonResponse(
-                {"prop_data": prop_data, "prop_data_type": property_type_core}
+                {"prop_data": prop_data, "prop_data_type": property_type_core, "number_of_pages":number_of_pages}
             )
-
+        else: 
+            property_type_core_data = p_detail.objects.all()
+            paginator = Paginator(property_type_core_data, items_per_page) 
+            property_type_core_data = paginator.page(page_number)
+            property_type_core_data = property_type_core_data.object_list
+            number_of_pages = paginator.num_pages 
+            for i in property_type_core_data:
+                user_detail = user_all_details(i.id)
+                i.property_data["user_detail"] = user_detail
+                prop_data[i.id] = i.property_data
+            return JsonResponse(
+                {"prop_data": prop_data, "prop_data_type": property_type_core, "number_of_pages":number_of_pages}
+            )
     if sale_type is not None and property_type is not None:
         if sale_type == "all":
             property_type = property_type
-            data = p_detail.objects.filter(property_data__property_type=property_type)
+            data = p_detail.objects.filter(property_data__property_type=property_type) 
+            paginator = Paginator(data, items_per_page) 
+            data = paginator.page(page_number) 
+            data = data.object_list
         else:
             data = p_detail.objects.filter(
                 property_data__property_type=property_type
@@ -189,23 +217,34 @@ def search_property_type(request, sale_type=None, property_type=None):
         for i in data:
             prop_data[i.id] = i.property_data
         data = prop_data
+        paginator = Paginator(data, items_per_page) 
+        data = paginator.page(page_number) 
+        data = data.object_list
         return data
     if sale_type == "Sale" or sale_type == "Rent":
         data = p_detail.objects.filter(property_data__selling_option=sale_type)
         for i in data:
             prop_data[i.id] = i.property_data
-        data = prop_data
+        data = prop_data 
+        paginator = Paginator(data, items_per_page) 
+        data = paginator.page(page_number) 
+        data = data.object_list
         return data
     elif sale_type == "all":
         data = p_detail.objects.all()
         for i in data:
             prop_data[i.id] = i.property_data
-        data = prop_data
+        data = prop_data 
+        paginator = Paginator(data, items_per_page) 
+        data = paginator.page(page_number) 
+        data = data.object_list
         return data
     else:
         data = p_detail.objects.filter(property_data__property_type=property_type)
-        # data=data[0].property_data
-        return data
+        paginator = Paginator(data, items_per_page) 
+        data = paginator.page(page_number) 
+        data = data.object_list
+        return data 
 
 
 def delete_all_images_from_media(property_id):
@@ -218,42 +257,6 @@ def delete_all_images_from_media(property_id):
             print("Not found")
     return True
 
-
-def save_location(request):
-    if "user_id" not in request.session:
-        return HttpResponse("Do Login")
-    user_id = request.session["user_id"]
-    latitude = request.POST["data[latitude]"]
-    longitude = request.POST["data[longitude]"]
-    location_number = {"latitude": latitude, "longitude": longitude}
-    request.session["location_number"] = location_number
-    login_user = User_register.objects.get(user_id=user_id)
-    request.session["user_id"] = user_id
-    login_user.user_other_data["location_number"] = location_number
-    login_user.save()
-    return HttpResponse("Location saved")
-
-
-def show_property_location_wise(request):
-    location_fetched = ""
-    reload_location = True
-    latitude = request.session["location_number"]["latitude"]
-    longitude = request.session["location_number"]["longitude"]
-    address_dict = get_location_name(latitude, longitude)
-    if address_dict is not None or len(address_dict) > 0:
-        if address_dict["city"] != "" and address_dict["city"] is not None:
-            location_fetched = address_dict["city"]
-        elif address_dict["state"] != "" and address_dict["state"] is not None:
-            location_fetched = address_dict["state"]
-        elif address_dict["country"] != "" and address_dict["country"] is not None:
-            location_fetched = address_dict["country"]
-    property = search_properties(request, location_fetched, reload_location)
-    return property, location_fetched
-    # data = p_detail.objects.all()
-    # property_data = {}
-    # for i in data:
-    #     property_data[i.id] = i.property_data
-    # return JsonResponse({"property_data":property_data, "latitude":latitude, "longitude":longitude})
 
 
 def get_location_name(latitude, longitude):
@@ -282,27 +285,6 @@ def liked_and_saved_property_ids(user_id):
         return saved_property_list, liked_property_list
     else:
         return saved_property_list, liked_property_list
-
-
-def user_all_details(request, property_id):
-    try:
-        data = p_detail.objects.get(id=property_id)
-        user_id = data.seller_id.pk
-        user_data = User_register.objects.get(pk=user_id)
-        user_email = user_data.user_email
-        user_name = user_data.user_name
-        user_mobile = user_data.user_mobile
-        user_gender = user_data.user_gender
-        saller_data = {
-            "user_email": user_email,
-            "user_name": user_name,
-            "user_mobile": user_mobile,
-            "user_gender": user_gender,
-        }
-
-        return saller_data
-    except Exception as ex:
-        print(ex)
 
 
 def add_like_property_count(property_id, remove_like=False):
@@ -349,3 +331,40 @@ def byte_to_dict(bytes_data):
     # Parse the string into a dictionary
     dict_data = json.loads(str_data)
     return dict_data
+
+def property_user_profile(request): 
+    property_id = request.POST['property_id'] 
+    data_dictionary = {}
+    user_data = user_all_details(property_id) 
+    user_id = user_data["user_id"]
+    user_properties = user_profile_wise_property(user_id)  
+    for i in user_properties: 
+        data_dictionary[i.pk] = i.property_data
+    data = {"data_dictionary":data_dictionary, "user_data":user_data}
+    return JsonResponse(data)
+
+
+def user_profile_wise_property(user_id): 
+    try: 
+        user_properties_list = []
+        if len(user_id)>0 and user_id is not None: 
+            data = p_detail.objects.filter(seller_id=user_id)   
+            for i in data: 
+                user_properties_list.append(i)
+        else: 
+            return None
+    except Exception as ex: 
+        return None
+    return user_properties_list 
+
+def read_static_files(file_name): 
+    file_path = (
+            settings.BASE_DIR
+            / "user_1"
+            / "static"
+            / "property_boundry_api"
+            / file_name
+        ) 
+    with open(file_path) as f:
+        file_data = json.load(f)
+    return file_data	

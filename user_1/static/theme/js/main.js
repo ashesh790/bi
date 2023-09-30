@@ -158,14 +158,14 @@ function ajax_call(method, sync_async, url, data) {
 
     // Convert the data to JSON format
     const jsonData = JSON.stringify(data);
-    debugger
+
 
     // Send the request
     xhr.send(jsonData);
 
     // Define the callback function to handle the response
     xhr.onreadystatechange = function () {
-        debugger
+
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 console.log(xhr)

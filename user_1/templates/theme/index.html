@@ -27,110 +27,7 @@
     <div class="tab-content">
         <div id="tab-1" class="tab-pane fade show p-0 active">
             <div class="row g-4 property_counter gallery" id="prop_count_gallery">
-                {% for key, val in property_data_all.items %}
-                <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="property-item rounded border" id="prop_item">
-                        <div class="position-relative overflow-hidden">
-                            <div id="carouselExampleControlsNoTouching{{val.id}}" class="carousel slide"
-                                data-interval="true" data-bs-touch="false">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <a href="property_details/{{val.id}}"><img class="img-fluid d-block w-100"
-                                                id="property_details" src="{{val.property_data.property_image|first}}"
-                                                alt=""></a>
-                                    </div>
-                                    {% if val.property_data.property_image %}
-                                    {% for j in val.property_data.property_image|slice:"1:"%}
-                                    <div class="carousel-item">
-                                        <a href="property_details/{{val.id}}"><img class="img-fluid d-block w-100"
-                                                id="property_details" src="{{j}}" alt=""></a>
-                                    </div>
-                                    {% endfor %}
-                                    {% else %}
-                                    <b>Image is not available</b>
-                                    {% endif %}
-                                </div>
-                                <b>
-                                    <button class="carousel-control-prev" type="button"
-                                        data-bs-target="#carouselExampleControlsNoTouching{{val.id}}"
-                                        data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                    </button>
-                                </b>
-                                <b>
-                                    <button class="carousel-control-next" type="button"
-                                        data-bs-target="#carouselExampleControlsNoTouching{{val.id}}"
-                                        data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                    </button>
-                                </b>
-                            </div>
-                        </div>
-                        <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="{{key}}_popup">
-                            <a class="d-block mb-2" href="property_details/{{val.id}}" id="/Month">
-                                <h5 class="text-primary mb-2">${{val.property_data.property_rent_price}}</h5>
-                            </a>
-                            <a class="d-block mb-2" href="property_details/{{val.id}}">
-                                <b class="d-block h5 mb-2">{{val.property_data.property_type}} For
-                                    {{val.property_data.selling_option}}
-                                </b>
-                            </a>
-                            <p>
-                                <i
-                                    class="fa fa-map-marker text-primary me-2"></i>{{val.property_data.property_address|truncatechars:20}}...
-                            </p>
-                        </div>
-                        <div class="d-flex border-top">
-                            <small class="flex-fill text-center mt-1">
-                                <h5>
-                                    {% if 'user_name' in request.session %}
-                                    <a href='tel:{{key|split:"_"|first}}'><i class="fa fa-phone"></i></a>
-                                    {% else %}
-                                    <a href='login'><i class="fa fa-phone"></i></a>
-                                    {% endif %}
-                                </h5>
-                            </small>
-                            <small class="flex-fill text-center mt-1">
-                                <h5>
-                                    {% if val.id|stringformat:"s" in liked_property_list %}
-                                    <i class="fa-solid fa-heart" prop_id="{{val.id}}" onclick="like_prperty(this);"></i>
-                                    {% else %}
-                                    <i class="fa-regular fa-heart" prop_id="{{val.id}}"
-                                        onclick="like_prperty(this);"></i>
-                                    {% endif %}
-                                </h5>
-                            </small>
-                            <small class="flex-fill text-center mt-1">
-                                <h5>
-                                    <i class="fa fa-share-alt" url="property_details/{{val.id}}"
-                                        onclick="openModal(this);"></i>
-                                </h5>
-                            </small>
-                            <small class="flex-fill text-center mt-1">
-                                <h5>
-                                    {% if val.id|stringformat:"s" in saved_property_list %}
-                                    <i class="fa fa-bookmark saved_property" id="tooltip_parent"
-                                        data-bs-toggle="tooltip" prop_id="{{val.id}}" onclick="bookmark_property(this);"
-                                        data-bs-placement="top" data-bs-title="Tooltip on top"></i>
-                                    {% else %}
-                                    <i class="fa fa-bookmark-o saved_property" id="tooltip_parent"
-                                        data-bs-toggle="tooltip" prop_id="{{val.id}}" onclick="bookmark_property(this);"
-                                        data-bs-placement="top" data-bs-title="Tooltip on top"></i>
-                                    {% endif %}
-                                </h5>
-                            </small>
-                            <small class="flex-fill text-center mt-1">
-                                <h5>
-                                    <i class="fa-solid fa-circle-info"
-                                        onclick="toggle_property_popup('{{key}}_popup')"></i>
-                                </h5>
-                            </small>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
+
             </div>
             <div class="pagination">
                 {% for i in page_range %}
@@ -140,24 +37,13 @@
         </div>
     </div>
 </div>
-<center>
-    {%if page_obj.has_previous %} {# whether the previous page exists #}
-    <a href="?page={{page_obj.previous_page_number}}">
-        <i class="fa-solid fa-arrow-left-long"></i>
-    </a> {# link to the prev page #}
-    {% endif %}
-    <span class="btn btn-outline-primary">{{page_obj.number}}</span> {# the current page number #}
-
-    {%if page_obj.has_next %} {# whether the next page exists #}
-    <a href="?page={{page_obj.next_page_number}}">
-        <i class="fa-solid fa-arrow-right-long"></i>
-    </a> {# link to the next page #}
-    {% endif %}
-</center>
 <!-- Search End -->
 <script>
     setInterval(function () {
         $(".carousel-control-next").click();
     }, 15000);
+    // clear redundunt session variable 
+    sessionStorage.removeItem("seller_id");
+
 </script>
 {% endblock %}

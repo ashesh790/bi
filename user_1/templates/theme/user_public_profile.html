@@ -1,0 +1,107 @@
+{% extends 'theme/master_filter.html' %}
+{% load static %}
+{% block user_profile_page %}
+<style>
+    .img-container {
+        text-align: center;
+    }
+
+    .user_pic {
+        border-radius: 50%;
+        height: 150px;
+        width: 150px;
+    }
+</style>
+<!-- Contact Start -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row py-3">
+                <div class="col-sm-12 col-md-2 bg-white">
+                    <span id="user_detail_div">
+                        <div class="img-container w-100 mb-2">
+                            <img class="user_pic" src="/media/user_icons/{{user_data.user_id}}/{{user_data.user_icon}}"
+                                alt="Your Image">
+                        </div>
+                        <div class="text-center">
+                            <h3>{{user_data.user_name}}</h3>
+                            <div class="input-group">
+                                <input type="text" class="form-control" aria-label="{{user_data.user_email}}"
+                                    value="{{user_data.user_email}}">
+                                <span class="input-group-text">
+                                    <a href="mailto:{{user_data.user_email}}">
+                                        <i class="fa-solid fa-paper-plane"></i>
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="input-group mb-3 mt-2">
+                                <a class="input-group-text" href="tel:{{user_data.user_mobile}}"><i
+                                        class="fa fa-phone"></i></a>
+                                <input type="text" class="form-control text-center"
+                                    aria-label="{{user_data.user_mobile}}" value="{{user_data.user_mobile}}">
+                                <span class="input-group-text" onclick="copy_contact_number()"><i
+                                        class="fa fa-copy"></i></span>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+                <div class="col-ms-12 col-md-10">
+                    <div class="row text-center">
+                        <div class="col-sm-12 col-md-4">
+                            <span class="card text-dark">Followers</span>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <span class="card">Following</span>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <span class="card">Total properties</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" id="property_counter"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+</div>
+<script>
+    var saved_property_list = [];
+    $(document).ready(function () {
+        var seller_id = "{{ user_data.user_id }}";
+        sessionStorage.setItem("seller_id", seller_id);
+        search_property_based_on_input_field_values(selling_type = null, page_number = null, seller_id = seller_id.toString());
+    });
+
+    const navbar2 = $("#user_detail_div");
+    if (window.matchMedia("(min-width: 425px)").matches) {
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 40) {
+                navbar2.addClass("z-index");
+                navbar2.css({
+                    "position": "fixed",
+                    "top": "65px",
+                    "left": "35px",
+                });
+            }
+            else {
+                navbar2.css({
+                    "position": "",
+                    "top": "0px",
+                    "left": "0px",
+                });
+            }
+        });
+    }
+
+    function copy_contact_number() {
+        var number = "{{user_data.user_mobile}}";
+        navigator.clipboard.writeText(number).then(function () {
+            toaster_call("Copied!");
+        }, function () {
+            alert("Copying URL failed. Please manually copy the Number.");
+        });
+    }
+</script>
+{% endblock %}

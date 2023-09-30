@@ -64,8 +64,8 @@
     ],
     "deal_option": {
         "Rent": "Rent",
-        "Sell": "Sell",
-        "Rent and Sell": "Rent and Sell"
+        "Sale": "Sale",
+        "Rent and Sale": "Rent and Sale"
     },
     "construction_status": {
         "Under construction": "Under construction",

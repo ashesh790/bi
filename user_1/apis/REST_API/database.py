@@ -21,7 +21,7 @@ def specific_property(request, property_id):
 
 
 def user_wise_property(request, saller_id):
-    user_id = User_register.objects.get(user_id=saller_id)
+    user_id = User_register.objects.filter(user_id=saller_id)
     data = p_detail.objects.filter(seller_id=user_id)
     data = p_detail_Serializer(data, many=True)
     data = JSONRenderer().render(data.data)
