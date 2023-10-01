@@ -346,7 +346,7 @@
                                 onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
                                 <option value="">Furnish type</option>
                                 {% for i in boundry_data.furnish_type %}
-                                <option>{{i}}</option>
+                                <option value="{{i}}">{{i}}</option>
                                 {% endfor %}
                             </select>
                         </div>
