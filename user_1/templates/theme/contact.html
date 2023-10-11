@@ -3,72 +3,84 @@
 {% block contact %}active{% endblock %}
 {% block main_content %}
 <style>
-    #main_form{
-        padding: 1vh 23vw;
+  #main_form {
+    padding: 1vh 23vw;
 
-    }
-    #header{
-        max-width: 600px;
-    }
-    #Address_parent, #email_parent, #num_parent{
-        border: 1px dashed rgba(0, 185, 142, .3);
-    }
-    #Address_icon, #email_icon, #num_icon{
-        width: 45px; 
-        height: 45px;
-    }
-    #message{
-        height: 150px;      
-    } 
-    .contact-form {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
-    .contact-form h2 {
-      color: #007bff;
-    }
-    .contact-form .form-control {
-      border-color: #007bff;
-    }
-    .contact-form .btn-primary {
-      background-color: #007bff;
-      border-color: #007bff;
-    } 
+  }
+
+  #header {
+    max-width: 600px;
+  }
+
+  #Address_parent,
+  #email_parent,
+  #num_parent {
+    border: 1px dashed rgba(0, 185, 142, .3);
+  }
+
+  #Address_icon,
+  #email_icon,
+  #num_icon {
+    width: 45px;
+    height: 45px;
+  }
+
+  #message {
+    height: 150px;
+  }
+
+  .contact-form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .contact-form h2 {
+    color: #007bff;
+  }
+
+  .contact-form .form-control {
+    border-color: #007bff;
+  }
+
+  .contact-form .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
 </style>
 
 
 <!-- Contact Start -->
 <div class="container-xxl py-5">
-    <div class="container">
-        <div class="container mt-5">
-            <div class="row">
-              <div class="col-lg-8 mx-auto">
-                <div class="contact-form">
-                  <h2 class="mb-4">Contact Us</h2>
-                  <form action="#" method="post">
-                    <div class="form-group">
-                      <label for="name">Name</label>
-                      <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="email">Email</label>
-                      <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="message">Message</label>
-                      <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block mt-">Submit</button>
-                  </form>
-                </div>
+  <div class="container">
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="contact-form">
+            <h2 class="mb-4">Contact Us</h2>
+            <form action="#" method="post">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
               </div>
-            </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+              </div>
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block mt-">Submit</button>
+            </form>
           </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 <!-- Contact End -->
 {% endblock %}
