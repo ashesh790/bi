@@ -99,7 +99,7 @@ def user_all_details(property_id):
         user_name = user_data.user_name
         user_mobile = user_data.user_mobile
         user_gender = user_data.user_gender 
-        user_icon = name_of_files if len(name_of_files) > 0 else ""
+        user_icon = name_of_files[0] if len(name_of_files) > 0 else ""
         saller_data = { 
             "user_id":user_id,
             "user_email": user_email,

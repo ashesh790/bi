@@ -301,6 +301,12 @@
         border-width: 0 0.15em 0.15em 0;
         transform: rotate(45deg);
     }
+
+    .small_picture {
+        height: 40px !important;
+        width: 40px !important;
+        padding: 0px;
+    }
 </style>
 <!-- Search Start -->
 <div class="container-fluid bg-primary mb-4 wow fadeIn scroller_main w-100" data-wow-delay="0.1s" style="padding: 0px;">
@@ -441,22 +447,50 @@
     </div>
 </center>
 <!-- Modal for property details -->
-<div class="modal fade" id="modal_for_property" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_for_property" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    data-bs-backdrop="static">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Heading</h1>
+                <button type="button btn-primary" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    id="close_modal"></button>
             </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+            <div class="modal-body" style="max-height:470px !important;">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="row">
+                            <div class="col-12">
+                                <img class="w-100"
+                                    src="http://127.0.0.1:8000/media/Screenshot from 2023-10-08 15-42-07.png">
+                                <div class="w-100 mt-2 d-flex">
+                                    <div class="small_picture">
+                                        <img class="w-100 h-100 border border-primary p-1"
+                                            src="http://127.0.0.1:8000/media/Screenshot from 2023-10-08 16-07-11.png">
+                                    </div>
+                                    <div class="small_picture">
+                                        <img class="w-100 h-100 border border-primary p-1"
+                                            src="http://127.0.0.1:8000/media/Screenshot from 2023-10-08 16-07-11.png">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6" style="overflow-y: scroll;">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <i class="fa-solid fa-chart-area m-1"></i>
+                                <b>Area</b>
+                                100 meter
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_for_property">
     Launch demo modal
@@ -538,7 +572,7 @@
     // search property as per field which is selected in advance filter 
     var seller_id = "";
     var property_counter = $(".property_counter");
-    function search_property_based_on_input_field_values(selling_type = null, page_number = null, seller_id = null) {
+    function search_property_based_on_input_field_values(selling_type = null, page_number = null, seller_id = null, property_id = null) {
 
         seller_id = seller_id
         var selling_option_val = "";
@@ -583,19 +617,20 @@
         if (geography_area != "") { search_object.geography_area = geography_area };
         if (selling_option_val != "") { search_object.selling_option = selling_option_val };
         if (seller_id != null) { search_object.seller_id = seller_id };
+        if (property_id != null) { search_object.property_id = property_id };
         $.ajax({
             url: "{% url 'search_properties' %}",
             type: "POST",
             data: {
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
                 "search_object": JSON.stringify(search_object),
-                "page_number": page_number
+                "page_number": page_number,
             },
             success: function (data) {
                 if (data != "None") {
+                    sessionStorage.setItem("data", JSON.stringify(data));
                     has_next = data.has_next;
                     total_pages = data.total_pages;
-                    // All other data will be declared above, except property data
                     property_data = data.search_results;
                     property_id = property_data["id"];
                     user_mobile = data.search_results.user_data;
@@ -618,11 +653,11 @@
                             <div id="carouselExampleControls${property_id[i]}" class="carousel slide" data-ride="carousel">
                                     <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                    <a href="/property_details/${property_id[i]}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt="" loading="lazy"></a>
+                                    <span onclick="show_property_modal(${property_id[i]})" data-bs-toggle="modal" data-bs-target="#modal_for_property"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt="" loading="lazy"></span> 
                                     </div>
-                                    ${val.property_image.slice(1).map(path => `
+                                    ${val.property_image.slice(1).map(path => ` 
                                     <div class="carousel-item">
-                                            <a href="/property_details/${property_id[i]}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;" loading="lazy"></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#modal_for_property"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;" loading="lazy"></a>
                                     </div>`).join('')} 
                                     </div>
                                     <a class="carousel-control-prev" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="prev">
@@ -799,5 +834,23 @@
             navbar.removeClass("position-fixed top-0 z-index")
         )
     })
+
+    function show_property_modal(property_id) {
+        var local_session_data = JSON.parse(sessionStorage.getItem("data"));
+        var data_object = Object();
+        for (var key in local_session_data.search_results.id) {
+            if (local_session_data.search_results.id[key] === property_id) {
+                is_value_present = true;
+                index = key;
+                continue;
+            }
+        }
+        var property_data_keys = Object.keys(local_session_data.search_results);
+        var data_keys = property_data_keys;
+        for (var i = 0; i < property_data_keys.length; i++) {
+            data_object[data_keys[i]] = local_session_data.search_results[property_data_keys[i]][index];
+        }
+        console.log(data_object);
+    }
 </script>
 {% endblock %}
