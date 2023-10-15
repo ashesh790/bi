@@ -6,11 +6,6 @@
         word-wrap: break-word;
     }
 
-    #prop_a {
-        width: 100%;
-        height: 430px;
-    }
-
     #prop_img {
         border: 1px solid #0099ff;
         height: 50px;
@@ -62,134 +57,71 @@
             padding: 0% !important;
         }
     }
+
+    .main_image {
+        height: 360px !important;
+    }
 </style>
 <!-- Property List Start -->
-<div class="container-xxl mt-5">
-    <div class="">
-        <div class="row" id="main">
-            <div class="col-md-7 p-5 pt-0 pb-0">
-                <div class="div">
-                    <div class="carousel-item active pr-0">
-                        {% if data.property_image %}
-                        <a href="#"><img class="img-fluid d-block w-100 main_image" id="prop_a"
-                                src="{{data.property_image|first}}" alt=""></a>
-                        <div class="row m-1" id="image_gallary">
-                            {% for i in data.property_image %}
-                            <span class="p-1 pt-3" id="prop_span">
-                                <img class="img-fluid" src="{{i}}" alt="" id="prop_img">
-                            </span>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        <b>Image is not available</b>
-                        {% endif %}
-                    </div>
+<div class="row p-5">
+    <div class="col-12">
+        <div class="row border border-primary shadow-lg bg-body-tertiary rounded">
+            <div class="col-sm-12 col-md-5 col-lg-5">
+                {% if data.property_image %}
+                <img class="img-fluid d-block main_image p-2" id="prop_a" src="{{data.property_image|first}}" alt="">
+                {% else %}
+                <b>Image is not available</b>
+                {% endif %}
+            </div>
+            <div class="col-sm-12 col-md-7 col-lg-7 mt-3">
+                <h4>{{data.bhk}} BHK, {{data.geography_area}} Sq.ft. {{data.property_type}} For {{data.selling_option}}
+                    In {{data.property_address}}</h4>
+                <hr>
+                <h5><i class="fa-solid fa-location-dot text-primary"></i>&nbsp;{{data.property_address}}</h5>
+                <hr>
+                {% if data.selling_option == "Rent" %}
+                <h6>{{data.selling_option}} In Rs. <b>{{data.property_rent_price}}/Month</b></h6>
+                {% else %}
+                <h6>{{data.property_value}}
+                </h6>
+                {% endif %}
+                <hr>
+                <i url="property_details/2" onclick="openModal(this);" style="font-style:normal;">
+                    <i class="fa fa-share-alt text-primary" aria-hidden="true"></i>&nbsp;Share this property
+                </i>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <i style="font-style:normal;">
+                    <i class="fa-solid fa-circle-info text-primary"></i> Property
+                    Feedback
+                </i>
+                <hr>
+                <div class="row p-2">
+                    <button class="col-md-3 m-1 btn btn-outline-primary">
+                        <b><i class="fa fa-phone" aria-hidden="true"></b></i>&nbsp;Contact No.
+                    </button>
+                    <button class="col-md-3 m-1 btn btn-outline-danger">
+                        <b><i class="fa-solid fa-headset"></i></b>&nbsp;Enquiry Now
+                    </button>
+                    <button class="col-md-3 m-1 btn btn-outline-success">
+                        <b><i class="fa-brands fa-whatsapp"></i></b>&nbsp;WhatsApp Chat
+                    </button>
+                    <button class="col-md-2 m-1 btn btn-primary">
+                        <b><i class="fa-regular fa-user"></i></i></b>&nbsp;Profile
+                    </button>
                 </div>
             </div>
+        </div>
 
-            <div class="col-md-5 p-3 pt-0 pb-0">
-                <div class="row" id="prop_table_detail">
-                    <div class="col-md-12">
-                        <div class="row" id="prop_parent">
-                            <div class="card card-body">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <b>{{data.property_type}}</b>
-                                    </div>
-                                    <div class="col-4">
-                                        {{data.property_age}} - <b>Year Old</b>
-                                    </div>
-                                    <div class="col-4">
-                                        <b>For </b>- {{data.selling_option}}
-                                    </div>
-                                    <hr>
-                                    <div class="col-4">
-                                        {{data.floor}} - <b>Floor</b>
-                                    </div>
-                                    <div class="col-4">
-                                        {{data.bhk}} - <b>B.H.K.</b>
-                                    </div>
-                                    <div class="col-4">
-                                        {{data.bathroom}} - <b>Bathroom</b>
-                                    </div>
-                                    <hr>
-                                    <div class="col-4">
-                                        {{data.balcony}} - <b>Balcony</b>
-                                    </div>
-                                    <div class="col-4">
-                                        <b>{{data.furnish_type}}
-                                        </b>
-                                    </div>
-                                    <div class="col-4">
-                                        <b>{{data.geography_area}} Sqft.</b>
-                                    </div>
-                                    <hr>
-                                    <div class="col-4">
-                                        <b>{{data.parking_type}}</b>
-                                    </div>
-                                    <div class="col-4">
-                                        {% if data.selling_option == "Rent" %}
-                                        <b>{{data.property_rent_price}}/Month</b>
-                                        {% else %}
-                                        <b>{{data.property_value}}
-                                        </b>
-                                        {% endif %}
-                                    </div>
-                                    <hr>
-                                    <div class="col-12">
-                                        From <b>{{data.from_avail_property_date}}</b> Property will be avilable
-                                    </div>
-                                    <hr>
-                                    <div class="col-sm-12">
-                                        <span><b>Property address: </b></span>
-                                        {{data.property_address}}
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-3">
-                                        <span id="{{i.id}}">
-                                            <h5 class="icon_form_contact" id="contect_icon"><i
-                                                    class="fa fa-phone text-white mt-1" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
-                                        </span>
-                                    </div>
-                                    <div class="col-3">
-                                        <span id="{{property_id}}" onclick="bookmark_property(this);">
-                                            <h5 class="icon_form_contact" id="contect_icon"><i
-                                                    class="fa fa-bookmark-o text-white mt-1" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
-                                        </span>
-                                    </div>
-                                    <div class="col-3">
-                                        <span onclick="openModal(this);" url="property_details/{{property_id}}">
-                                            <h5 class="icon_form_contact" id="contect_icon"><i
-                                                    class="fa fa-share-alt text-white mt-1" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
-                                        </span>
-                                    </div>
-                                    <div class="col-3">
-                                        <span id="{{i.id}}" onclick="bookmark_property(this);">
-                                            <h5 class="icon_form_contact" id="contect_icon"><i
-                                                    class="fa fa-comment fa-beat text-white mt-1"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Tooltip on top"></i></h5>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="row border border-primary shadow-lg bg-body-tertiary rounded mt-5">
+            <h2 class="p-3">Other detils related to property</h2>
+            <br>
+            <div class="col-sm-12">
+                <div class="row box_data p-3">
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- modal sets -->
-<!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Launch demo modal
-</button> -->
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -337,6 +269,21 @@
 <!-- javaScript code -->
 
 <script>
+    const name_to_icon = {
+        "bhk": `<i class='fa-solid fa-bed text-primary'></i>`,
+        "floor": `<i class="fa-solid fa-house text-primary"></i>`,
+        "balcony": `<i class="fa-solid fa-mountain-city text-primary"></i>`,
+        "bathroom": `<i class="fa-solid fa-bath text-primary"></i>`,
+        "furnish_type": `<i class="fa-solid fa-chair text-primary"></i>`,
+        "parking_type": `<i class="fa-solid fa-square-parking text-primary"></i>`,
+        "property_age": `<i class="fa-solid fa-house-flag text-primary"></i>`,
+        "property_type": `<i class="fa-solid fa-house-flag text-primary"></i>`,
+        "geography_area": `<i class="fa-solid fa-chart-area text-primary"></i>`,
+        "selling_option": `<i class="fa-solid fa-cart-arrow-down text-primary"></i>`,
+        "construction_status": `<i class="fa-solid fa-signal text-primary"></i>`,
+        "property_description": `<i class="fa-solid fa-align-center text-primary"></i>`,
+    };
+    show_property_modal("{{property_id}}")
     function submit_dtl(p_dtl_btn_val) {
         var p_dtl_btn_val = $(p_dtl_btn_val).attr("id");
         var property_id = '{{ property_id }}';
@@ -448,6 +395,67 @@
                 $(".main_image").attr("src", img_src);
             }
         });
-    }); 
+    });
+
+
+    // Iterate through the property information and get the related icons
+    // for (const name in propertyInfo) {
+    //     if (propertyInfo.hasOwnProperty(name)) {
+    //         const value = propertyInfo[name];
+    //         const icon = nameToIcon[name] || `<i class="fa-solid fa-check"></i>`; // Use a default icon if the name is not in the mapping
+    //         console.log(`${name}: ${value} - Icon: ${icon}`);
+    //     }
+    // }
+
+    function show_property_modal(property_id) {
+        $(".box_data").empty();
+        $(".modal-title").empty();
+        var local_session_data = JSON.parse(sessionStorage.getItem("data"));
+        var data_object = Object();
+        for (var key in local_session_data.search_results.id) {
+            if (local_session_data.search_results.id[key] === Number(property_id)) {
+                is_value_present = true;
+                index = key;
+                continue;
+            }
+        }
+        var property_data_keys = Object.keys(local_session_data.search_results);
+        var data_keys = property_data_keys;
+        for (var i = 0; i < property_data_keys.length; i++) {
+            data_object[data_keys[i]] = local_session_data.search_results[property_data_keys[i]][index];
+        }
+        for (var [key, val] of Object.entries(data_object.property_data)) {
+            if (key != "property_image" && key != "property_video" && val.length != 0) {
+                if (key != "from_avail_property_date" && key != "property_rent_price" && key != "property_sell_price" && key != "property_address") {
+                    var icon_i = name_to_icon[key]
+                    key = key.replace(/_/g, ' ');
+                    key = key.charAt(0).toUpperCase() + key.slice(1);
+                    $(".box_data").append(` 
+                    <div class="col-sm-12 col-md-2 p-1"> 
+                    <div class="border text-center p-2"
+                            style="width: 100% !important; height: 124px !important;">
+                            <b class="icon_picture">${icon_i}</b>
+                            <pre></pre>
+                            <b class="value_label text-dark">${key}</b>
+                            <pre></pre>
+                            <p class="value_val">${val}</p>
+                        </div> 
+                        </div>
+                            `);
+                }
+                if (key == "Property type") {
+                    $(".modal-title").append(`
+                    ${val} for
+                    `);
+                }
+                if (key == "Selling option") {
+                    $(".modal-title").append(`${val}&nbsp;`);
+                }
+                if (key == "from_avail_property_date") {
+                    $(".modal-title").append(`Available status: ${val}`);
+                }
+            }
+        }
+    }
 </script>
 {% endblock %}

@@ -338,7 +338,6 @@
         }
 
         .btn-primary:hover {
-            color: #000;
             background-color: #0099ff;
             border-color: #0099ff;
             color: white;
@@ -384,6 +383,10 @@
 
         .bottom-center {
             bottom: 20px;
+        }
+
+        .btn-outline-primary:hove {
+            color: white !important;
         }
     </style>
 </head>
@@ -679,7 +682,7 @@
         $.ajax(
             {
                 type: "POST",
-                url: "save_location",
+                url: "{% url 'save_location' %}",
                 data: {
                     data: data,
                     csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
