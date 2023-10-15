@@ -466,9 +466,12 @@ def property_sell_option_wise(request):
 def show_full_property_detail(request, property_id):
     try:
         data = p_detail.objects.get(id=property_id)
-        data = data.property_data 
-        property_data = {"data": data, "property_id": property_id}
-        return JsonResponse({"property_data":property_data})
+        data = data.property_data
+        return render(
+            request,
+            "theme/property-detail-page.html",
+            {"data": data, "property_id": property_id},
+        )
     except Exception as ex:
         print(ex)
         return render(request, "theme/404.html")
