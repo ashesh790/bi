@@ -61,17 +61,57 @@
     .main_image {
         height: 360px !important;
     }
+
+    .picture_label {
+        right: 20px;
+        bottom: 10px;
+        width: 100px;
+        height: 29px;
+        margin: auto;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+        background-color: whitesmoke;
+        padding: 2px;
+        cursor: pointer;
+    }
+
+    .picture_label:hover {
+        right: 20px;
+        bottom: 10px;
+        width: 100px;
+        height: 29px;
+        margin: auto;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+        background-color: #0099ff;
+        color: white;
+        padding: 2px;
+        cursor: pointer;
+    }
+
+    .img_in_modal {
+        height: 60px;
+        width: 60px;
+        padding: 5px;
+        border: 2px solid #0099ff !important;
+    }
+
+    .modal-footer {
+        justify-content: center;
+    }
+
+    .image_modal_container {
+        max-height: 505px;
+    }
 </style>
 <!-- Property List Start -->
 <div class="row p-5">
     <div class="col-12">
         <div class="row border border-primary shadow-lg bg-body-tertiary rounded">
-            <div class="col-sm-12 col-md-5 col-lg-5">
-                {% if data.property_image %}
-                <img class="img-fluid d-block main_image p-2" id="prop_a" src="{{data.property_image|first}}" alt="">
-                {% else %}
-                <b>Image is not available</b>
-                {% endif %}
+            <div class="col-sm-12 col-md-5 col-lg-5 position-relative">
+                <img class="img-fluid d-block main_image p-2" id="prop_a" src="" alt="">
+                <span class="position-absolute picture_label" data-bs-toggle="modal"
+                    data-bs-target="#modal_for_large_picture" onclick="picture_show_in_modal();">More Images</span>
             </div>
             <div class="col-sm-12 col-md-7 col-lg-7 mt-3">
                 <h4>{{data.bhk}} BHK, {{data.geography_area}} Sq.ft. {{data.property_type}} For {{data.selling_option}}
@@ -124,29 +164,6 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="btn btn-outline-primary close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card card-body saller_data_card">Something Went Wrong!</div>
-                <div class="row text-left saller_data_field">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-primary" onclick="submit_dtl(this);"
-                    id="submit_btn_dc">Submit</button>
-            </div>
-        </div>
-    </div>
-</div>
 <br>
 <div class="container container-fluid">
     <div class="tab-content mt-5">
@@ -259,6 +276,23 @@
                 <p><i class="fa fa-check text-primary me-3"></i>Sell</p>
                 <p><i class="fa fa-check text-primary me-3"></i>Rent</p>
                 <a class="btn btn-primary py-3 px-5 mt-3" href="">Read More</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_for_large_picture" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="row p-3">
+                <span class="mt-3 image_modal_container" style="width: 8% !important; overflow-x: auto;">
+                </span>
+                <div class="modal-body modal_wrapper_in_large" style="width: 92% !important;">
+                </div>
+            </div>
+            <div class="modal-footer">
             </div>
         </div>
     </div>
@@ -387,29 +421,18 @@
         });
 
     });
-    $("#image_gallary").hover(function () {
-        $("img").hover(function () {
+    $(".image_modal_container").click(function () {
+        $(".img_in_modal").click(function () {
             var tag_name = $(this).prop("tagName");
             if (tag_name == "IMG") {
                 var img_src = $(this).attr("src");
-                $(".main_image").attr("src", img_src);
+                $(".main_picture").attr("src", img_src);
             }
         });
     });
 
-
-    // Iterate through the property information and get the related icons
-    // for (const name in propertyInfo) {
-    //     if (propertyInfo.hasOwnProperty(name)) {
-    //         const value = propertyInfo[name];
-    //         const icon = nameToIcon[name] || `<i class="fa-solid fa-check"></i>`; // Use a default icon if the name is not in the mapping
-    //         console.log(`${name}: ${value} - Icon: ${icon}`);
-    //     }
-    // }
-
     function show_property_modal(property_id) {
         $(".box_data").empty();
-        $(".modal-title").empty();
         var local_session_data = JSON.parse(sessionStorage.getItem("data"));
         var data_object = Object();
         for (var key in local_session_data.search_results.id) {
@@ -425,6 +448,10 @@
             data_object[data_keys[i]] = local_session_data.search_results[property_data_keys[i]][index];
         }
         for (var [key, val] of Object.entries(data_object.property_data)) {
+            if (key == "property_image") {
+                $(".main_image").attr("src", val[0]);
+                sessionStorage.setItem("image_array", JSON.stringify(val));
+            }
             if (key != "property_image" && key != "property_video" && val.length != 0) {
                 if (key != "from_avail_property_date" && key != "property_rent_price" && key != "property_sell_price" && key != "property_address") {
                     var icon_i = name_to_icon[key]
@@ -432,29 +459,32 @@
                     key = key.charAt(0).toUpperCase() + key.slice(1);
                     $(".box_data").append(` 
                     <div class="col-sm-12 col-md-2 p-1"> 
-                    <div class="border text-center p-2"
-                            style="width: 100% !important; height: 124px !important;">
-                            <b class="icon_picture">${icon_i}</b>
-                            <pre></pre>
-                            <b class="value_label text-dark">${key}</b>
-                            <pre></pre>
-                            <p class="value_val">${val}</p>
-                        </div> 
+                        <div class="border text-center p-2"
+                                style="width: 100% !important; height: 124px !important;">
+                                <b class="icon_picture">${icon_i}</b>
+                                <pre></pre>
+                                <b class="value_label text-dark">${key}</b>
+                                <pre></pre>
+                                <p class="value_val">${val}</p>
+                            </div> 
                         </div>
                             `);
                 }
-                if (key == "Property type") {
-                    $(".modal-title").append(`
-                    ${val} for
-                    `);
-                }
-                if (key == "Selling option") {
-                    $(".modal-title").append(`${val}&nbsp;`);
-                }
-                if (key == "from_avail_property_date") {
-                    $(".modal-title").append(`Available status: ${val}`);
-                }
             }
+        }
+        // console.log(JSON.parse(sessionStorage.getItem("image_array"))); 
+    }
+
+
+    function picture_show_in_modal() {
+        $(".modal_wrapper_in_large").empty();
+        $(".image_modal_container").empty();
+        var image_array = JSON.parse(sessionStorage.getItem("image_array"));
+        $(".modal_wrapper_in_large").append(`<img src="${image_array[0]}" class="w-100 main_picture"> <button type="button" class="btn-close btn bg-white" data-bs-dismiss="modal" aria-label="Close" style="position:absolute; top:20px; right:20px; height:40px; width:40px;"></button>`);
+        for (var i = 0; i < image_array.length; i++) {
+            $(".image_modal_container").append(` 
+            <img src="${image_array[i]}" class="img_in_modal mt-1"> 
+            `)
         }
     }
 </script>
