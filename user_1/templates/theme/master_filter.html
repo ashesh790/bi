@@ -593,7 +593,6 @@
             },
             success: function (data) {
                 if (data != "None") {
-                    sessionStorage.setItem("data", JSON.stringify(data));
                     has_next = data.has_next;
                     total_pages = data.total_pages;
                     // All other data will be declared above, except property data
