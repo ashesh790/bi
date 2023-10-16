@@ -103,6 +103,10 @@
     .image_modal_container {
         max-height: 505px;
     }
+
+    .selling_option_details_for_rate {
+        display: inline;
+    }
 </style>
 <!-- Property List Start -->
 <div class="row p-5">
@@ -114,17 +118,18 @@
                     data-bs-target="#modal_for_large_picture" onclick="picture_show_in_modal();">More Images</span>
             </div>
             <div class="col-sm-12 col-md-7 col-lg-7 mt-3">
-                <h4>{{data.bhk}} BHK, {{data.geography_area}} Sq.ft. {{data.property_type}} For {{data.selling_option}}
-                    In {{data.property_address}}</h4>
+                <h4>
+                    <span class="bhk_details"></span>
+                    <span class="geography_area_details"></span>
+                    <span class="property_type_details"></span>
+                    <span class="selling_option_details"></span>
+                    <span class="property_address_details"></span>
+                </h4>
                 <hr>
-                <h5><i class="fa-solid fa-location-dot text-primary"></i>&nbsp;{{data.property_address}}</h5>
+                <h5><i class="fa-solid fa-location-dot text-primary"></i> <span class="property_address_details"></span>
+                </h5>
                 <hr>
-                {% if data.selling_option == "Rent" %}
-                <h6>{{data.selling_option}} In Rs. <b>{{data.property_rent_price}}/Month</b></h6>
-                {% else %}
-                <h6>{{data.property_value}}
-                </h6>
-                {% endif %}
+                <h6 class="selling_option_details_for_rate"><b class="selling_value"></b></h6>
                 <hr>
                 <i url="property_details/2" onclick="openModal(this);" style="font-style:normal;">
                     <i class="fa fa-share-alt text-primary" aria-hidden="true"></i>&nbsp;Share this property
@@ -163,7 +168,6 @@
     </div>
 </div>
 
-<!-- Modal -->
 <br>
 <div class="container container-fluid">
     <div class="tab-content mt-5">
@@ -292,16 +296,14 @@
                 <div class="modal-body modal_wrapper_in_large" style="width: 92% !important;">
                 </div>
             </div>
-            <div class="modal-footer">
-            </div>
         </div>
     </div>
 </div>
 <!-- About End -->
+
 {% csrf_token %}
 
 <!-- javaScript code -->
-
 <script>
     const name_to_icon = {
         "bhk": `<i class='fa-solid fa-bed text-primary'></i>`,
@@ -453,6 +455,29 @@
                 sessionStorage.setItem("image_array", JSON.stringify(val));
             }
             if (key != "property_image" && key != "property_video" && val.length != 0) {
+                if (key == "bhk") {
+                    $(".bhk_details").append(`${val} BHK, `);
+                }
+                if (key == "geography_area") {
+                    $(".geography_area_details").append(`${val} Sq.ft.`);
+                }
+                if (key == "property_type") {
+                    $(".property_type_details").append(`${val} For`);
+                }
+                if (key == "selling_option") {
+                    $(".selling_option_details").append(`${val} Sq.ft.`);
+                    if (val == "Rent") {
+                        $(".selling_option_details_for_rate").append(`${data_object.property_data.property_rent_price}/ Month`);
+                        $(".selling_value").append(`<i class="fa-regular fa-money-bill-1 text-primary"></i> ${val} In Rs. `);
+                    }
+                    else if (val == "Sale") {
+                        $(".selling_option_details_for_rate").append(`${data_object.property_data.property_value}`);
+                        $(".selling_value").append(`<i class="fa-regular fa-money-bill-1 text-primary"></i> ${val} In Rs. `);
+                    }
+                }
+                if (key == "property_address") {
+                    $(".property_address_details").append(`${val}`);
+                }
                 if (key != "from_avail_property_date" && key != "property_rent_price" && key != "property_sell_price" && key != "property_address") {
                     var icon_i = name_to_icon[key]
                     key = key.replace(/_/g, ' ');

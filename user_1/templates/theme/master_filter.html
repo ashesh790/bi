@@ -326,10 +326,6 @@
                 <div style="overflow: auto; display: flex;">
                     <div class="col m-2">
                         <div class="d-flex flex-nowrap button-container">
-                            <button class="btn btn-outline-primary active custom-button centered-text sale_btn"
-                                data-bs-toggle="pill" value="all" id="all"
-                                onclick="search_property_based_on_input_field_values(this, null);"
-                                style="height:29px;">All</button>
                             <button class="btn btn-outline-primary custom-button centered-text sale_btn"
                                 data-bs-toggle="pill" value="Sale" id="sell"
                                 onclick="search_property_based_on_input_field_values(this, null);"
@@ -395,16 +391,9 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12 col-md-5 col-lg-3 text-start text-lg-end wow slideInRight search_utils_btn align-left"
-        data-wow-delay="0.1s">
-        <input type="text" id="place_name" placeholder="Enter Place Name" onkeyup="delay_search()"
+    <div class="col-sm-12 col-md-5 col-lg-3 text-start text-lg-end slideInRight search_utils_btn align-left">
+        <input type="text" id="place_name" placeholder="Enter Place Name" onkeyup="delay_search()" class="m-2"
             value="{{location_fetched}}">
-        <span id="all_filter__trashDelete" class="d-none">
-            <button class="btn btn-outline-primary search_field" data-toggle="modal" id="all_filter"
-                data-target="#exampleModalCenter" onclick="search_field_applied(this);">
-                Filter &nbsp;<i class="fa fa-filter" aria-hidden="true"></i>
-            </button>
-        </span>
     </div>
 </div>
 <div class="row m-2">
