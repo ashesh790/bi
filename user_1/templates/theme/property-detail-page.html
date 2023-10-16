@@ -141,18 +141,18 @@
                 </i>
                 <hr>
                 <div class="row p-2">
-                    <button class="col-md-3 m-1 btn btn-outline-primary">
+                    <a class="col-md-3 m-1 btn btn-outline-primary contact_no">
                         <b><i class="fa fa-phone" aria-hidden="true"></b></i>&nbsp;Contact No.
-                    </button>
+                    </a>
                     <button class="col-md-3 m-1 btn btn-outline-danger">
                         <b><i class="fa-solid fa-headset"></i></b>&nbsp;Enquiry Now
                     </button>
-                    <button class="col-md-3 m-1 btn btn-outline-success">
+                    <a class="col-md-3 m-1 btn btn-outline-success whatsapp">
                         <b><i class="fa-brands fa-whatsapp"></i></b>&nbsp;WhatsApp Chat
-                    </button>
-                    <button class="col-md-2 m-1 btn btn-primary">
+                    </a>
+                    <a class="col-md-2 m-1 btn btn-primary user_profile">
                         <b><i class="fa-regular fa-user"></i></i></b>&nbsp;Profile
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -445,6 +445,10 @@
             }
         }
         var property_data_keys = Object.keys(local_session_data.search_results);
+        var user_data = JSON.parse(local_session_data.search_results.user_data[index]);
+        $(".contact_no").attr("href", `tel:${user_data.user_mobile}`);
+        $(".whatsapp").attr("href", `https://wa.me/${user_data.user_mobile}`);
+        $(".user_profile").attr("href", `/user-public-profile/${property_id}`);
         var data_keys = property_data_keys;
         for (var i = 0; i < property_data_keys.length; i++) {
             data_object[data_keys[i]] = local_session_data.search_results[property_data_keys[i]][index];
@@ -465,7 +469,7 @@
                     $(".property_type_details").append(`${val} For`);
                 }
                 if (key == "selling_option") {
-                    $(".selling_option_details").append(`${val} Sq.ft.`);
+                    $(".selling_option_details").append(`${val} In`);
                     if (val == "Rent") {
                         $(".selling_option_details_for_rate").append(`${data_object.property_data.property_rent_price}/ Month`);
                         $(".selling_value").append(`<i class="fa-regular fa-money-bill-1 text-primary"></i> ${val} In Rs. `);
