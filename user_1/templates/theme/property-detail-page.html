@@ -478,7 +478,7 @@
                 if (key == "property_address") {
                     $(".property_address_details").append(`${val}`);
                 }
-                if (key != "from_avail_property_date" && key != "property_rent_price" && key != "property_sell_price" && key != "property_address") {
+                if (key != "from_avail_property_date" && key != "property_rent_price" && key != "property_value" && key != "property_address") {
                     var icon_i = name_to_icon[key]
                     key = key.replace(/_/g, ' ');
                     key = key.charAt(0).toUpperCase() + key.slice(1);
