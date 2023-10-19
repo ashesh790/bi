@@ -338,7 +338,7 @@
                     </div>
                     <span id="main_container_filters" style="display: flex;">
                         <div style="width: auto; position:relative;" id="furnish_type__trash" class="col m-2 d-flex">
-                            <select class="search_field" id="furnish_type"
+                            <select class="search_field select_2" id="furnish_type"
                                 onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="">Furnish type</option>
                                 {% for i in boundry_data.furnish_type %}
@@ -348,7 +348,7 @@
                         </div>
                         <div style="width: auto; position:relative;" id="construction_status__trash"
                             class="col m-2 d-flex">
-                            <select class="search_field" id="construction_status"
+                            <select class="search_field select_2" id="construction_status"
                                 onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="">Construction status</option>
                                 {% for i in boundry_data.construction_status %}
@@ -357,7 +357,7 @@
                             </select>
                         </div>
                         <div style="width: auto; position:relative;" id="bathroom_val__trash" class="col m-2 d-flex">
-                            <select class="search_field" id="bathroom_val"
+                            <select class="search_field select_2" id="bathroom_val"
                                 onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="">Bathrooms</option>
                                 {% for i in boundry_data.bathroom_details %}
@@ -366,7 +366,7 @@
                             </select>
                         </div>
                         <div style="width: auto; position:relative;" id="balcony_val__trash" class="col m-2 d-flex">
-                            <select class="search_field" id="balcony_val"
+                            <select class="search_field select_2" id="balcony_val"
                                 onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="">Balcony</option>
                                 {% for i in boundry_data.balcony_details %}
@@ -377,7 +377,7 @@
                         </div>
                         <div style="width: auto; position:relative;" id="bhk_val__trash" class="col m-2 d-flex">
 
-                            <select class="search_field" id="bhk_val"
+                            <select class="search_field select_2" id="bhk_val"
                                 onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="">BHK</option>
                                 {% for i in boundry_data.bhk_details %}
@@ -429,27 +429,6 @@
         </div>
     </div>
 </center>
-<!-- Modal for property details -->
-<div class="modal fade" id="modal_for_property" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_for_property">
-    Launch demo modal
-</button>
 <script>
     // code for call property data in home page 
     var is_profile_page = "{{ user_data.user_id }}";
@@ -528,7 +507,7 @@
     var property_counter = $(".property_counter");
     function search_property_based_on_input_field_values(selling_type = null, page_number = null, seller_id = null) {
 
-        seller_id = seller_id
+        seller_id = seller_id;
         var selling_option_val = "";
         if (selling_type != null) {
             selling_option_val = $(selling_type).val();
@@ -594,6 +573,7 @@
                         property_counter = $("#property_counter");
                     }
                     $(property_counter).empty();
+                    $(".available_property_count").text(data.property_count);
                     for (var [key, val] of Object.entries(property_data)) {
                         var is_bookmark = saved_property_list.includes(property_id[i].toString());
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
@@ -787,5 +767,9 @@
             navbar.removeClass("position-fixed top-0 z-index")
         )
     })
+    // In your Javascript (external .js resource or <script> tag)
+    $(document).ready(function () {
+        $('.select_2').select2();
+    });
 </script>
 {% endblock %}

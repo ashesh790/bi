@@ -66,7 +66,8 @@ def search_properties(request, address_dict=None, reload_location=None):
     search_results = p_detail.objects.filter(query) 
     paginator = Paginator(search_results, 5) 
     page = paginator.get_page(page_number)
-    page_data = page.object_list
+    page_data = page.object_list 
+    property_count = len(search_results)
     if reload_location is not None:
         if search_results is not None:
             return search_results
@@ -81,7 +82,7 @@ def search_properties(request, address_dict=None, reload_location=None):
             search_results["user_data"] = pd.DataFrame(user_details)
             search_results = search_results.to_dict() 
             total_pages =  paginator.num_pages
-            return JsonResponse({"search_results":search_results, "has_next":page.has_next(), "total_pages":total_pages, "seller_id":seller_id})
+            return JsonResponse({"search_results":search_results, "has_next":page.has_next(), "total_pages":total_pages, "seller_id":seller_id, "property_count":property_count})
         else:
             return HttpResponse(None)
 
