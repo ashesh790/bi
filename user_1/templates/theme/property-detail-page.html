@@ -6,11 +6,6 @@
         word-wrap: break-word;
     }
 
-    #prop_a {
-        width: 100%;
-        height: 430px;
-    }
-
     #prop_img {
         border: 1px solid #0099ff;
         height: 50px;
@@ -62,159 +57,117 @@
             padding: 0% !important;
         }
     }
+
+    .main_image {
+        height: 360px !important;
+    }
+
+    .picture_label {
+        right: 20px;
+        bottom: 10px;
+        width: 100px;
+        height: 29px;
+        margin: auto;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+        background-color: whitesmoke;
+        padding: 2px;
+        cursor: pointer;
+    }
+
+    .picture_label:hover {
+        right: 20px;
+        bottom: 10px;
+        width: 100px;
+        height: 29px;
+        margin: auto;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+        background-color: #0099ff;
+        color: white;
+        padding: 2px;
+        cursor: pointer;
+    }
+
+    .img_in_modal {
+        height: 60px;
+        width: 60px;
+        padding: 5px;
+        border: 2px solid #0099ff !important;
+    }
+
+    .modal-footer {
+        justify-content: center;
+    }
+
+    .image_modal_container {
+        max-height: 505px;
+    }
+
+    .selling_option_details_for_rate {
+        display: inline;
+    }
 </style>
 <!-- Property List Start -->
-<div class="container-xxl mt-5">
-    <div class="">
-        <div class="row" id="main">
-            <div class="col-md-7 p-5 pt-0 pb-0">
-                <div class="div">
-                    <div class="carousel-item active pr-0">
-                        {% if data.property_image %}
-                        <a href="#"><img class="img-fluid d-block w-100 main_image" id="prop_a"
-                                src="{{data.property_image|first}}" alt=""></a>
-                        <div class="row m-1" id="image_gallary">
-                            {% for i in data.property_image %}
-                            <span class="p-1 pt-3" id="prop_span">
-                                <img class="img-fluid" src="{{i}}" alt="" id="prop_img">
-                            </span>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        <b>Image is not available</b>
-                        {% endif %}
-                    </div>
+<div class="row p-5">
+    <div class="col-12">
+        <div class="row border border-primary shadow-lg bg-body-tertiary rounded">
+            <div class="col-sm-12 col-md-5 col-lg-5 position-relative">
+                <img class="img-fluid d-block main_image p-2" id="prop_a" src="" alt="">
+                <span class="position-absolute picture_label" data-bs-toggle="modal"
+                    data-bs-target="#modal_for_large_picture" onclick="picture_show_in_modal();">More Images</span>
+            </div>
+            <div class="col-sm-12 col-md-7 col-lg-7 mt-3">
+                <h4>
+                    <span class="bhk_details"></span>
+                    <span class="geography_area_details"></span>
+                    <span class="property_type_details"></span>
+                    <span class="selling_option_details"></span>
+                    <span class="property_address_details"></span>
+                </h4>
+                <hr>
+                <h5><i class="fa-solid fa-location-dot text-primary"></i> <span class="property_address_details"></span>
+                </h5>
+                <hr>
+                <h6 class="selling_option_details_for_rate"><b class="selling_value"></b></h6>
+                <hr>
+                <i url="property_details/2" onclick="openModal(this);" style="font-style:normal;">
+                    <i class="fa fa-share-alt text-primary" aria-hidden="true"></i>&nbsp;Share this property
+                </i>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <i style="font-style:normal;">
+                    <i class="fa-solid fa-circle-info text-primary"></i> Property
+                    Feedback
+                </i>
+                <hr>
+                <div class="row p-2">
+                    <a class="col-md-3 m-1 btn btn-outline-primary contact_no">
+                        <b><i class="fa fa-phone" aria-hidden="true"></b></i>&nbsp;Contact No.
+                    </a>
+                    <button class="col-md-3 m-1 btn btn-outline-danger">
+                        <b><i class="fa-regular fa-envelope"></i></b>&nbsp;Enquiry Now
+                    </button>
+                    <a class="col-md-3 m-1 btn btn-outline-success whatsapp">
+                        <b><i class="fa-brands fa-whatsapp"></i></b>&nbsp;WhatsApp Chat
+                    </a>
+                    <a class="col-md-2 m-1 btn btn-primary user_profile">
+                        <b><i class="fa-regular fa-user"></i></i></b>&nbsp;Profile
+                    </a>
                 </div>
             </div>
+        </div>
 
-            <div class="col-md-5 p-3 pt-0 pb-0">
-                <div class="row" id="prop_table_detail">
-                    <div class="col-md-12">
-                        <div class="row" id="prop_parent">
-                            <div class="card card-body">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <b>{{data.property_type}}</b>
-                                    </div>
-                                    <div class="col-4">
-                                        {{data.property_age}} - <b>Year Old</b>
-                                    </div>
-                                    <div class="col-4">
-                                        <b>For </b>- {{data.selling_option}}
-                                    </div>
-                                    <hr>
-                                    <div class="col-4">
-                                        {{data.floor}} - <b>Floor</b>
-                                    </div>
-                                    <div class="col-4">
-                                        {{data.bhk}} - <b>B.H.K.</b>
-                                    </div>
-                                    <div class="col-4">
-                                        {{data.bathroom}} - <b>Bathroom</b>
-                                    </div>
-                                    <hr>
-                                    <div class="col-4">
-                                        {{data.balcony}} - <b>Balcony</b>
-                                    </div>
-                                    <div class="col-4">
-                                        <b>{{data.furnish_type}}
-                                        </b>
-                                    </div>
-                                    <div class="col-4">
-                                        <b>{{data.geography_area}} Sqft.</b>
-                                    </div>
-                                    <hr>
-                                    <div class="col-4">
-                                        <b>{{data.parking_type}}</b>
-                                    </div>
-                                    <div class="col-4">
-                                        {% if data.selling_option == "Rent" %}
-                                        <b>{{data.property_rent_price}}/Month</b>
-                                        {% else %}
-                                        <b>{{data.property_value}}
-                                        </b>
-                                        {% endif %}
-                                    </div>
-                                    <hr>
-                                    <div class="col-12">
-                                        From <b>{{data.from_avail_property_date}}</b> Property will be avilable
-                                    </div>
-                                    <hr>
-                                    <div class="col-sm-12">
-                                        <span><b>Property address: </b></span>
-                                        {{data.property_address}}
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-3">
-                                        <span id="{{i.id}}">
-                                            <h5 class="icon_form_contact" id="contect_icon"><i
-                                                    class="fa fa-phone text-white mt-1" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
-                                        </span>
-                                    </div>
-                                    <div class="col-3">
-                                        <span id="{{property_id}}" onclick="bookmark_property(this);">
-                                            <h5 class="icon_form_contact" id="contect_icon"><i
-                                                    class="fa fa-bookmark-o text-white mt-1" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
-                                        </span>
-                                    </div>
-                                    <div class="col-3">
-                                        <span onclick="openModal(this);" url="property_details/{{property_id}}">
-                                            <h5 class="icon_form_contact" id="contect_icon"><i
-                                                    class="fa fa-share-alt text-white mt-1" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-title="Tooltip on top"></i></h5>
-                                        </span>
-                                    </div>
-                                    <div class="col-3">
-                                        <span id="{{i.id}}" onclick="bookmark_property(this);">
-                                            <h5 class="icon_form_contact" id="contect_icon"><i
-                                                    class="fa fa-comment fa-beat text-white mt-1"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Tooltip on top"></i></h5>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="row border border-primary shadow-lg bg-body-tertiary rounded mt-5">
+            <h2 class="p-3">Other detils related to property</h2>
+            <br>
+            <div class="col-sm-12">
+                <div class="row box_data p-3">
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- modal sets -->
-<!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Launch demo modal
-</button> -->
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="btn btn-outline-primary close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card card-body saller_data_card">Something Went Wrong!</div>
-                <div class="row text-left saller_data_field">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-primary" onclick="submit_dtl(this);"
-                    id="submit_btn_dc">Submit</button>
-            </div>
-        </div>
-    </div>
-</div>
 <br>
 <div class="container container-fluid">
     <div class="tab-content mt-5">
@@ -331,12 +284,42 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_for_large_picture" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="row p-3">
+                <span class="mt-3 image_modal_container" style="width: 8% !important; overflow-x: auto;">
+                </span>
+                <div class="modal-body modal_wrapper_in_large" style="width: 92% !important;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- About End -->
+
 {% csrf_token %}
 
 <!-- javaScript code -->
-
 <script>
+    const name_to_icon = {
+        "bhk": `<i class='fa-solid fa-bed text-primary'></i>`,
+        "floor": `<i class="fa-solid fa-building text-primary"></i>`,
+        "balcony": `<i class="fa-solid fa-mountain-city text-primary"></i>`,
+        "bathroom": `<i class="fa-solid fa-bath text-primary"></i>`,
+        "furnish_type": `<i class="fa-solid fa-chair text-primary"></i>`,
+        "parking_type": `<i class="fa-solid fa-square-parking text-primary"></i>`,
+        "property_age": `<i class="fa-solid fa-calendar-days text-primary"></i>`,
+        "property_type": `<i class="fa-solid fa-house-flag text-primary"></i>`,
+        "geography_area": `<i class="fa-solid fa-chart-area text-primary"></i>`,
+        "selling_option": `<i class="fa-solid fa-cart-arrow-down text-primary"></i>`,
+        "construction_status": `<i class="fa-solid fa-signal text-primary"></i>`,
+        "property_description": `<i class="fa-solid fa-align-center text-primary"></i>`,
+    };
+    show_property_modal("{{property_id}}")
     function submit_dtl(p_dtl_btn_val) {
         var p_dtl_btn_val = $(p_dtl_btn_val).attr("id");
         var property_id = '{{ property_id }}';
@@ -440,14 +423,98 @@
         });
 
     });
-    $("#image_gallary").hover(function () {
-        $("img").hover(function () {
+    $(".image_modal_container").click(function () {
+        $(".img_in_modal").click(function () {
             var tag_name = $(this).prop("tagName");
             if (tag_name == "IMG") {
                 var img_src = $(this).attr("src");
-                $(".main_image").attr("src", img_src);
+                $(".main_picture").attr("src", img_src);
             }
         });
-    }); 
+    });
+
+    function show_property_modal(property_id) {
+        $(".box_data").empty();
+        var local_session_data = JSON.parse(sessionStorage.getItem("data"));
+        var data_object = Object();
+        for (var key in local_session_data.search_results.id) {
+            if (local_session_data.search_results.id[key] === Number(property_id)) {
+                is_value_present = true;
+                index = key;
+                continue;
+            }
+        }
+        var property_data_keys = Object.keys(local_session_data.search_results);
+        var user_data = JSON.parse(local_session_data.search_results.user_data[index]);
+        $(".contact_no").attr("href", `tel:${user_data.user_mobile}`);
+        $(".whatsapp").attr("href", `https://wa.me/${user_data.user_mobile}`);
+        $(".user_profile").attr("href", `/user-public-profile/${property_id}`);
+        var data_keys = property_data_keys;
+        for (var i = 0; i < property_data_keys.length; i++) {
+            data_object[data_keys[i]] = local_session_data.search_results[property_data_keys[i]][index];
+        }
+        for (var [key, val] of Object.entries(data_object.property_data)) {
+            if (key == "property_image") {
+                $(".main_image").attr("src", val[0]);
+                sessionStorage.setItem("image_array", JSON.stringify(val));
+            }
+            if (key != "property_image" && key != "property_video" && val.length != 0) {
+                if (key == "bhk") {
+                    $(".bhk_details").append(`${val} BHK, `);
+                }
+                if (key == "geography_area") {
+                    $(".geography_area_details").append(`${val} Sq.ft.`);
+                }
+                if (key == "property_type") {
+                    $(".property_type_details").append(`${val} For`);
+                }
+                if (key == "selling_option") {
+                    $(".selling_option_details").append(`${val} In`);
+                    if (val == "Rent") {
+                        $(".selling_option_details_for_rate").append(`${data_object.property_data.property_rent_price}/ Month`);
+                        $(".selling_value").append(`<i class="fa-regular fa-money-bill-1 text-primary"></i> ${val} In Rs. `);
+                    }
+                    else if (val == "Sale") {
+                        $(".selling_option_details_for_rate").append(`${data_object.property_data.property_value}`);
+                        $(".selling_value").append(`<i class="fa-regular fa-money-bill-1 text-primary"></i> ${val} In Rs. `);
+                    }
+                }
+                if (key == "property_address") {
+                    $(".property_address_details").append(`${val}`);
+                }
+                if (key != "from_avail_property_date" && key != "property_rent_price" && key != "property_value" && key != "property_address") {
+                    var icon_i = name_to_icon[key]
+                    key = key.replace(/_/g, ' ');
+                    key = key.charAt(0).toUpperCase() + key.slice(1);
+                    $(".box_data").append(` 
+                    <div class="col-sm-12 col-md-2 p-1"> 
+                        <div class="border text-center p-2"
+                                style="width: 100% !important; height: 124px !important;">
+                                <b class="icon_picture">${icon_i}</b>
+                                <pre></pre>
+                                <b class="value_label text-dark">${key}</b>
+                                <pre></pre>
+                                <p class="value_val">${val}</p>
+                            </div> 
+                        </div>
+                            `);
+                }
+            }
+        }
+        // console.log(JSON.parse(sessionStorage.getItem("image_array"))); 
+    }
+
+
+    function picture_show_in_modal() {
+        $(".modal_wrapper_in_large").empty();
+        $(".image_modal_container").empty();
+        var image_array = JSON.parse(sessionStorage.getItem("image_array"));
+        $(".modal_wrapper_in_large").append(`<img src="${image_array[0]}" class="w-100 main_picture"> <button type="button" class="btn-close btn bg-white" data-bs-dismiss="modal" aria-label="Close" style="position:absolute; top:20px; right:20px; height:40px; width:40px;"></button>`);
+        for (var i = 0; i < image_array.length; i++) {
+            $(".image_modal_container").append(` 
+            <img src="${image_array[i]}" class="img_in_modal mt-1"> 
+            `)
+        }
+    }
 </script>
 {% endblock %}

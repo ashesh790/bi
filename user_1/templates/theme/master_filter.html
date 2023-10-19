@@ -326,10 +326,6 @@
                 <div style="overflow: auto; display: flex;">
                     <div class="col m-2">
                         <div class="d-flex flex-nowrap button-container">
-                            <button class="btn btn-outline-primary active custom-button centered-text sale_btn"
-                                data-bs-toggle="pill" value="all" id="all"
-                                onclick="search_property_based_on_input_field_values(this, null);"
-                                style="height:29px;">All</button>
                             <button class="btn btn-outline-primary custom-button centered-text sale_btn"
                                 data-bs-toggle="pill" value="Sale" id="sell"
                                 onclick="search_property_based_on_input_field_values(this, null);"
@@ -342,8 +338,8 @@
                     </div>
                     <span id="main_container_filters" style="display: flex;">
                         <div style="width: auto; position:relative;" id="furnish_type__trash" class="col m-2 d-flex">
-                            <select class="search_field" id="furnish_type"
-                                onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
+                            <select class="search_field select_2" id="furnish_type"
+                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="">Furnish type</option>
                                 {% for i in boundry_data.furnish_type %}
                                 <option value="{{i}}">{{i}}</option>
@@ -352,8 +348,8 @@
                         </div>
                         <div style="width: auto; position:relative;" id="construction_status__trash"
                             class="col m-2 d-flex">
-                            <select class="search_field" id="construction_status"
-                                onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
+                            <select class="search_field select_2" id="construction_status"
+                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="">Construction status</option>
                                 {% for i in boundry_data.construction_status %}
                                 <option value="{{i}}">{{i}}</option>
@@ -361,8 +357,8 @@
                             </select>
                         </div>
                         <div style="width: auto; position:relative;" id="bathroom_val__trash" class="col m-2 d-flex">
-                            <select class="search_field" id="bathroom_val"
-                                onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
+                            <select class="search_field select_2" id="bathroom_val"
+                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="">Bathrooms</option>
                                 {% for i in boundry_data.bathroom_details %}
                                 <option value="{{i}}">{{i}} Bathrooms</option>
@@ -370,8 +366,8 @@
                             </select>
                         </div>
                         <div style="width: auto; position:relative;" id="balcony_val__trash" class="col m-2 d-flex">
-                            <select class="search_field" id="balcony_val"
-                                onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
+                            <select class="search_field select_2" id="balcony_val"
+                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="">Balcony</option>
                                 {% for i in boundry_data.balcony_details %}
                                 <option value="{{i}}">{{i}} Balcony</option>
@@ -381,8 +377,8 @@
                         </div>
                         <div style="width: auto; position:relative;" id="bhk_val__trash" class="col m-2 d-flex">
 
-                            <select class="search_field" id="bhk_val"
-                                onchange="search_property_based_on_input_field_values();search_field_applied(this);move_applied_to_first(this);">
+                            <select class="search_field select_2" id="bhk_val"
+                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="">BHK</option>
                                 {% for i in boundry_data.bhk_details %}
                                 <option value="{{i}}">{{i}} BHK</option>
@@ -395,16 +391,9 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12 col-md-5 col-lg-3 text-start text-lg-end wow slideInRight search_utils_btn align-left"
-        data-wow-delay="0.1s">
-        <input type="text" id="place_name" placeholder="Enter Place Name" onkeyup="delay_search()"
+    <div class="col-sm-12 col-md-5 col-lg-3 text-start text-lg-end slideInRight search_utils_btn align-left">
+        <input type="text" id="place_name" placeholder="Enter Place Name" onkeyup="delay_search()" class="m-2"
             value="{{location_fetched}}">
-        <span id="all_filter__trashDelete" class="d-none">
-            <button class="btn btn-outline-primary search_field" data-toggle="modal" id="all_filter"
-                data-target="#exampleModalCenter" onclick="search_field_applied(this);">
-                Filter &nbsp;<i class="fa fa-filter" aria-hidden="true"></i>
-            </button>
-        </span>
     </div>
 </div>
 <div class="row m-2">
@@ -440,27 +429,6 @@
         </div>
     </div>
 </center>
-<!-- Modal for property details -->
-<div class="modal fade" id="modal_for_property" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_for_property">
-    Launch demo modal
-</button>
 <script>
     // code for call property data in home page 
     var is_profile_page = "{{ user_data.user_id }}";
@@ -528,7 +496,6 @@
         real_field_name = field_name.replace("_trash_icon", "");
         $(`#${real_field_name}`).val("");
         search_property_based_on_input_field_values();
-        //
         $(`#${field_name}`).remove();
         var removed_filter_field = $(`#${real_field_name}__trash`);
         $("#main_container_filters").append(removed_filter_field);
@@ -540,7 +507,7 @@
     var property_counter = $(".property_counter");
     function search_property_based_on_input_field_values(selling_type = null, page_number = null, seller_id = null) {
 
-        seller_id = seller_id
+        seller_id = seller_id;
         var selling_option_val = "";
         if (selling_type != null) {
             selling_option_val = $(selling_type).val();
@@ -556,8 +523,7 @@
                 selling_option_val = "All";
             }
         }
-
-        var property_type = property_type_val.value;
+        var property_type = property_type_val;
         var place_name = $('#place_name').val() || "";
         var country = $('#country_based').val() || "";
         var state = $('#state_based').val() || "";
@@ -593,6 +559,7 @@
             },
             success: function (data) {
                 if (data != "None") {
+                    sessionStorage.setItem("data", JSON.stringify(data));
                     has_next = data.has_next;
                     total_pages = data.total_pages;
                     // All other data will be declared above, except property data
@@ -606,14 +573,15 @@
                         property_counter = $("#property_counter");
                     }
                     $(property_counter).empty();
+                    $(".available_property_count").text(data.property_count);
                     for (var [key, val] of Object.entries(property_data)) {
                         var is_bookmark = saved_property_list.includes(property_id[i].toString());
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
                         var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(property_id[i].toString());
                         var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
                         $(property_counter).append(` 
-                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="property-item rounded overflow-hidden border prop_item">
+                    <div class="col-lg-3 col-md-6 wow fadeInUp border-primary" data-wow-delay="0.1s">
+                    <div class="property-item rounded overflow-hidden border prop_item  shadow-lg bg-body-tertiary rounded">
                             <div class="position-relative overflow-hidden"> 
                             <div id="carouselExampleControls${property_id[i]}" class="carousel slide" data-ride="carousel">
                                     <div class="carousel-inner">
@@ -665,7 +633,7 @@
                             </small> 
                             <small class="flex-fill text-center mt-1">
                                     <h5> 
-                                    ${like_icon}
+                                        <i class="fa-regular fa-envelope"></i>
                                     </h5>
                             </small>
                             <small class="flex-fill text-center mt-1">
@@ -779,7 +747,7 @@
 
     function move_applied_to_first(applied_filter) {
 
-        property_type_val = applied_filter;
+        property_type_val = applied_filter.value;
         if ($(applied_filter).hasClass("p_type_btn")) {
             if ($(applied_filter).text() != "Clear") {
                 $(applied_filter).insertAfter(".scroller_1");
@@ -799,5 +767,9 @@
             navbar.removeClass("position-fixed top-0 z-index")
         )
     })
+    // In your Javascript (external .js resource or <script> tag)
+    $(document).ready(function () {
+        $('.select_2').select2();
+    });
 </script>
 {% endblock %}
