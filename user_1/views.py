@@ -103,7 +103,8 @@ def logout(request):
             try:
                 del request.session["username"]
                 del request.session["pk"] 
-                request.session.clear()
+                request.session.clear() 
+                logout(request)
             except:
                 print("Logout")
         return redirect("login")
@@ -516,40 +517,52 @@ def saved_property(request, remaining_property=False):
         saved_property_dict = {}
         if "pk" not in request.session:
             return redirect("/login")
-        user_id = request.session["pk"]
-        user_data = User_other_utils.objects.get(user_id = User.objects.get(pk=user_id))
-        if "saved_property" in user_data.user_other_data_json:
-            saved_property_list = user_data.user_other_data_json["saved_property"]
-        else:
-            context = {"saved_property_dict": "null"}
-            return render(request, "theme/saved_proper.html", context)
-        for i in saved_property_list:
-            try:
-                query_data = p_detail_v1.objects.get(id=i) 
-            except Exception as ex: 
-                saved_property_list.remove(i)
-                continue
-            saved_property_dict[i] = query_data.property_data
-        user_data.user_other_data_json["saved_property"] = saved_property_list 
-        user_data.save()
-        if remaining_property:
-            if len(saved_property_dict) > 0:
-                return HttpResponse(
-                    json.dumps({"saved_property_dict": saved_property_dict})
-                )
+        user_id = request.session["pk"] 
+        try: 
+            user_data = User_other_utils.objects.get(user_id = User.objects.get(pk=user_id)) 
+            if "saved_property" in user_data.user_other_data_json:
+                saved_property_list = user_data.user_other_data_json["saved_property"]
             else:
-                return HttpResponse("Empty")
-        else:
+                context = {"saved_property_dict": "null"}
+                return render(request, "theme/saved_proper.html", context)
+            for i in saved_property_list:
+                try:
+                    query_data = p_detail_v1.objects.get(id=i) 
+                except Exception as ex: 
+                    saved_property_list.remove(i)
+                    continue
+                saved_property_dict[i] = query_data.property_data 
+            user_data.user_other_data_json["saved_property"] = saved_property_list 
+            user_data.save()
+            if remaining_property:
+                if len(saved_property_dict) > 0:
+                    return HttpResponse(
+                        json.dumps({"saved_property_dict": saved_property_dict})
+                    )
+                else:
+                    return HttpResponse("Empty")
+            else:
+                context = {"saved_property_dict": saved_property_dict}
+                return render(request, "theme/saved_proper.html", context)
+        except Exception as ex: 
             context = {"saved_property_dict": saved_property_dict}
-            return render(request, "theme/saved_proper.html", context)
+            return render(request, "theme/saved_proper.html", context) 
+        
+        
     except Exception as ex:
         print(ex)
         return render(request, "theme/404.html")
 
 
 def update_profile(request):
-    user_id = request.session["username"]
-    user_data = User_other_utils.objects.get(user_id = User.objects.get(username=user_id)) 
+    user_id = request.session["username"] 
+    try:
+        user_data = User_other_utils.objects.get(user_id = User.objects.get(username=user_id)) 
+    except Exception as ex: 
+        user_data = User_other_utils.objects.create(
+            user_id=User.objects.get(username=user_id),
+            user_other_data_json= {},
+            )
     user_record = User.objects.get(username=user_id)
     user_detail = {
         "user_id": user_id,
@@ -654,16 +667,21 @@ def user_public_profile(request, property_id):
     
 
 def save_location(request):
-    if "user_id" not in request.session:
+    if "username" not in request.session:
         return HttpResponse("Do Login")
-    user_id = request.session["user_id"]
+    user_id = request.session["username"]
     latitude = request.POST["data[latitude]"]
     longitude = request.POST["data[longitude]"]
     location_number = {"latitude": latitude, "longitude": longitude}
-    request.session["location_number"] = location_number
-    login_user = User_other_utils.objects.filter(user_id = User.objects.get(pk=user_id))
-    request.session["user_id"] = user_id
-    login_user.user_other_data["location_number"] = location_number
+    request.session["location_number"] = location_number 
+    try:
+        login_user = User_other_utils.objects.get(user_id = User.objects.get(username=user_id)) 
+    except Exception as ex:
+        login_user = User_other_utils.objects.create(
+            user_id=User.objects.get(username=user_id),
+            user_other_data_json= {},
+            )
+    login_user.user_other_data_json["location_number"] = location_number
     login_user.save()
     return HttpResponse("Location saved") 
 
@@ -713,9 +731,9 @@ def google_callback(request):
             # Add other user data fields as needed
         }
         request.session['username'] = user_data['username'] 
-        request.session['pk'] = social_account.pk
-    except SocialAccount.DoesNotExist:
+        request.session['pk'] = social_account.pk 
+        return redirect('home')
+    except Exception as ex:
         # Handle the case where the user is not associated with a Google account
-        pass
+        raise ex 
 
-    return redirect('home')
