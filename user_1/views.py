@@ -671,6 +671,7 @@ def chat(request, user_id):
     return render(request, 'chat.html', {'user_id': user_id})
 
 def user_public_profile(request, property_id): 
+    saved_property_list = liked_property_list =[]
     user_data = user_all_details(property_id) 
     boundry_data = advance_filter_boundary(request)
     boundry_data = json.loads(boundry_data.content) 
