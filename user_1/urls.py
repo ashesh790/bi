@@ -35,7 +35,6 @@ urlpatterns = [
         name="user_wise_property",
     ),
     path("home", views.home, name="home"),
-    path("signup", views.sign_up, name="signup"),
     path("login", views.login_app, name="login"),
     path("logout", views.logout, name="logout"),
     path(

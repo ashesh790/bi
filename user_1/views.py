@@ -46,7 +46,7 @@ from user_1.apis.fetch_api.main_functions import (
 )
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
 from user_1.forms import UserRegisterForm
-from user_1.models import User_register, p_detail, property_utility
+from user_1.models import User_other_utils, p_detail_v1, property_utility_v1
 from django.core.serializers import serialize
 import shutil
 from django.core.files.storage import FileSystemStorage
@@ -60,7 +60,7 @@ from django.contrib.auth import authenticate, login
 
 def advance_filter(request):
     try:
-        property_data = p_detail.objects.all()
+        property_data = p_detail_v1.objects.all()
         boundry_data = advance_filter_boundary(request)
         boundry_data = json.loads(boundry_data.content)
         return render(
@@ -75,45 +75,6 @@ def advance_filter(request):
     except Exception as ex:
         return render(request, "theme/404.html")
 
-
-# Login function
-def sign_up(request):
-    try:
-        if request.method == "POST":
-            user_name = request.POST["user_name"]
-            user_email = request.POST["user_email"]
-            user_mobile = request.POST["user_number"]
-            user_psw = request.POST["user_psw"]
-            user_name.lower()
-            user_email.lower()
-            if User_register.objects.filter(user_name=user_name):
-                print("Existing User!")
-                return redirect("login")
-            if User_register.objects.filter(user_email=user_email).exists():
-                print("Email is already exist!")
-                return redirect("login")
-            if len(user_name) > 20:
-                print("USer must be under 20 character")
-                return redirect("login")
-            if not user_name.isalnum():
-                print("User name must be alphanumeric")
-                return redirect("login")
-
-            new_user = User_register.objects.create(
-                user_name=user_name,
-                user_email=user_email,
-                user_mobile=user_mobile,
-                user_psw=user_psw,
-            )
-            if new_user:
-                return redirect("login")
-            else:
-                return False
-        else:
-            return render(request, "theme/signup.html")
-    except Exception as ex:
-        print(ex)
-        return render(request, "theme/404.html")
 
 
 # sign up
@@ -151,7 +112,7 @@ def logout(request):
 
 def add_property_details(request):
     try:
-        if "user_id" not in request.session:
+        if "pk" not in request.session:
             return redirect("/login")
         if request.method == "POST" and len(request.POST) is not None:
             property_details = add_property_details_in_database(request)
@@ -237,7 +198,7 @@ def update_property(request, property_id=0):
         is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
         if request.method == "POST":
             media_data = request.FILES.getlist("images")
-            data = p_detail.objects.get(id=property_id)
+            data = p_detail_v1.objects.get(id=property_id)
             property_id = property_id
             property_image_save = []
             property_video_save = []
@@ -262,7 +223,7 @@ def update_property(request, property_id=0):
                 request, "theme/update_property.html", {"data": data, "id": property_id}
             )
         property_id = property_id
-        data = p_detail.objects.get(id=property_id)
+        data = p_detail_v1.objects.get(id=property_id)
         property_data = data.property_data
 
         return render(
@@ -291,7 +252,6 @@ def update_property(request, property_id=0):
 
 
 def manage_image_upload(request, property_id=None):
-    user_id = request.session["user_id"]
     user_icon = update_property_image(request, property_id)
     if user_icon == "True" or user_icon == "False":
         return redirect("/update_profile")
@@ -312,10 +272,10 @@ def test_html_page(request):
 
 
 def prop_table(request):
-    user_id = User_register.objects.get(user_id=request.session._session["user_id"])
+    user_id = User.objects.get(pk=request.session["pk"])
     # count for user inquiries
     # user_inq_len = len(user_id.user_other_data['inquiry_dtl'])
-    data = p_detail.objects.filter(seller_id=user_id)
+    data = p_detail_v1.objects.filter(seller_id=user_id)
     return render(
         request,
         "theme/prop_table.html",
@@ -327,12 +287,12 @@ def prop_table(request):
 
 
 def dashboard(request):
-    if "user_id" not in request.session:
+    if "username" not in request.session:
         return redirect("/login")
-    user_id = User_register.objects.get(user_id=request.session._session["user_id"])
+    user_id = User.objects.get(username=request.session["username"])
     # count for user inquiries
     # user_inq_len = len(user_id.user_other_data['inquiry_dtl'])
-    data = p_detail.objects.filter(seller_id=user_id)
+    data = p_detail_v1.objects.filter(seller_id=user_id)
     return render(
         request,
         "theme/dashboard.html",
@@ -341,8 +301,8 @@ def dashboard(request):
 
 
 def crud_property(request):
-    data = p_detail.objects.filter(
-        seller_id=User_register.objects.get(user_id=request.session._session["user_id"])
+    data = p_detail_v1.objects.filter(
+        seller_id=User.objects.get(pk=request.session["pk"])
     )
     return render(request, "record.html", {"data": data})
 
@@ -354,12 +314,9 @@ def home(request):
         if page_number is None: 
             page_number = 1 
         saved_property_list = ""
-        liked_property_list = ""
-        if "user_id" in request.session:
-            user_id = request.session["user_id"]
-            saved_property_list, liked_property_list = liked_and_saved_property_ids(
-                user_id
-            ) 
+        if "pk" in request.session:
+            user_id = request.session["pk"]
+            saved_property_list = liked_and_saved_property_ids(request,user_id) 
         boundry_data = read_static_files("data.json") 
         return render(
             request,
@@ -367,7 +324,6 @@ def home(request):
             {
                 "boundry_data": boundry_data,
                 "saved_property_list": saved_property_list,
-                "liked_property_list": liked_property_list,
             },
         )
     except Exception as ex:
@@ -403,7 +359,7 @@ def solve_property_issue(request):
             property_issue = request.POST["property_issue"]
             if "property_issue_desc" in request.POST:
                 property_issue_desc = request.POST["property_issue_desc"]
-            property_data = p_detail.objects.get(id=property_id)
+            property_data = p_detail_v1.objects.get(id=property_id)
         blocked_property_list = blocked_property(request, True)
         blocked_property_list = byte_to_dict(blocked_property_list)
         return render(request, "theme/issue.html")
@@ -415,7 +371,7 @@ def print_property_type(request):
     try:
         data = read_static_files("data.json")
         property_data = data["property_type"]
-        property_count = p_detail.objects.all()
+        property_count = p_detail_v1.objects.all()
         property_c = {}
         for i in property_count:
             if i.property_data["property_type"] in property_c:
@@ -469,7 +425,7 @@ def property_sell_option_wise(request):
 
 def show_full_property_detail(request, property_id):
     try:
-        data = p_detail.objects.get(id=property_id)
+        data = p_detail_v1.objects.get(id=property_id)
         data = data.property_data
         return render(
             request,
@@ -483,9 +439,7 @@ def show_full_property_detail(request, property_id):
 
 def inquiries_from_user(request):
     try:
-        user_data = User_register.objects.get(
-            user_id=request.session._session["user_id"]
-        )
+        user_data = User_other_utils.objects.filter(user_id = User.objects.get(pk=request.session['pk']))
         user_data = user_data.user_other_data
         return HttpResponse(json.dumps({"user_data": user_data}))
     except Exception as ex:
@@ -503,35 +457,42 @@ def test_function(request):
 
 def bookmark_property_detail(request):
     try:
-        if "user_id" not in request.session:
+        if "pk" not in request.session:
             raise Exception
-        user_id = request.session["user_id"]
+        user_id = request.session["username"]
         property_id = request.POST["property_id"]
-        user_data = User_register.objects.get(user_id=user_id)
+        user_data = User.objects.get(username=user_id) 
+        try:
+            user_other_data = User_other_utils.objects.get(user_id = User.objects.get(username=request.session['username'])) 
+        except Exception as ex: 
+            user_other_data = User_other_utils.objects.create(
+            user_id=User.objects.get(username=user_id),
+            user_other_data_json= {},
+            )
         removed_property = (
             True if "remove_saved_property" in list(request.POST) else False
         )
         if not removed_property:
-            if "saved_property" in user_data.user_other_data:
-                if property_id in user_data.user_other_data["saved_property"]:
-                    user_data.user_other_data["saved_property"].remove(property_id)
-                    user_data.save()
+            if "saved_property" in user_other_data.user_other_data_json:
+                if property_id in user_other_data.user_other_data_json["saved_property"]:
+                    user_other_data.user_other_data_json["saved_property"].remove(property_id)
+                    user_other_data.save()
                     return HttpResponse("Removed")
-            if user_data.user_other_data is not None:
+            if user_other_data is not None:
                 # user_data.user_other_data["saved_property"].append(property_id)
-                if "saved_property" not in user_data.user_other_data.keys():
-                    user_data.user_other_data["saved_property"] = [property_id]
+                if "saved_property" not in user_other_data.user_other_data_json:
+                    user_other_data.user_other_data_json["saved_property"] = [property_id]
                 else:
-                    user_data.user_other_data["saved_property"].append(property_id)
-                    saved_property_list = user_data.user_other_data["saved_property"]
-                    user_data.user_other_data["saved_property"] = list(
+                    user_other_data.user_other_data_json["saved_property"].append(property_id)
+                    saved_property_list = user_other_data.user_other_data_json["saved_property"]
+                    user_other_data.user_other_data_json["saved_property"] = list(
                         set(saved_property_list)
                     )
-                user_data.save()
+                user_other_data.save()
                 return HttpResponse("saved")
         else:
-            if property_id in user_data.user_other_data["saved_property"]:
-                user_data.user_other_data["saved_property"].remove(property_id)
+            if property_id in user_other_data.user_other_data_json["saved_property"]:
+                user_other_data.user_other_data_json["saved_property"].remove(property_id)
                 user_data.save()
             remaining_property = saved_property(request, True)
             if remaining_property.content == "Empty":
@@ -539,8 +500,7 @@ def bookmark_property_detail(request):
             else:
                 return HttpResponse(remaining_property.content)
     except Exception as ex:
-        print("Solve this: ", ex)
-        return render(request, "theme/404.html")
+        raise ex
 
 
 def google_map(request):
@@ -553,23 +513,23 @@ def google_map(request):
 def saved_property(request, remaining_property=False):
     try:
         saved_property_dict = {}
-        if "user_id" not in request.session:
+        if "pk" not in request.session:
             return redirect("/login")
-        user_id = request.session["user_id"]
-        user_data = User_register.objects.get(user_id=user_id)
-        if "saved_property" in user_data.user_other_data:
-            saved_property_list = user_data.user_other_data["saved_property"]
+        user_id = request.session["pk"]
+        user_data = User_other_utils.objects.get(user_id = User.objects.get(pk=user_id))
+        if "saved_property" in user_data.user_other_data_json:
+            saved_property_list = user_data.user_other_data_json["saved_property"]
         else:
             context = {"saved_property_dict": "null"}
             return render(request, "theme/saved_proper.html", context)
         for i in saved_property_list:
             try:
-                query_data = p_detail.objects.get(id=i) 
+                query_data = p_detail_v1.objects.get(id=i) 
             except Exception as ex: 
                 saved_property_list.remove(i)
                 continue
             saved_property_dict[i] = query_data.property_data
-        user_data.user_other_data["saved_property"] = saved_property_list 
+        user_data.user_other_data_json["saved_property"] = saved_property_list 
         user_data.save()
         if remaining_property:
             if len(saved_property_dict) > 0:
@@ -587,38 +547,36 @@ def saved_property(request, remaining_property=False):
 
 
 def update_profile(request):
-    user_id = request.session["user_id"]
-    user_data = User_register.objects.get(user_id=user_id)
+    user_id = request.session["username"]
+    user_data = User_other_utils.objects.get(user_id = User.objects.get(username=user_id)) 
+    user_record = User.objects.get(username=user_id)
     user_detail = {
         "user_id": user_id,
-        "user_name": user_data.user_name,
-        "user_email": user_data.user_email,
-        "user_mobile": user_data.user_mobile,
-        "user_psw": user_data.user_psw,
+        "user_name": user_data.user_id.username,
+        "user_email": user_data.user_id.email,
+        "user_mobile": "no_data",
     }
-    if "user_icon" in user_data.user_other_data:
-        user_detail["user_icon"] = user_data.user_other_data["user_icon"]
-    if "user_location" in user_data.user_other_data:
-        user_detail["user_location"] = (user_data.user_other_data["user_location"],)
+    if "user_icon" in user_data.user_other_data_json:
+        user_detail["user_icon"] = user_data.user_other_data_json["user_icon"]
+    if "user_location" in user_data.user_other_data_json:
+        user_detail["user_location"] = (user_data.user_other_data_json["user_location"],)
     if request.method == "POST":
         if request.content_type == "application/json":
             data = json.loads(request.body)
-            user_record = User_register.objects.get(user_id=user_id)
-            user_record.user_name = data.get("user_name")
-            user_record.user_email = data.get("user_email")
-            user_record.user_mobile = data.get("user_mobile")
-            user_record.user_psw = data.get("user_psw")
+            user_record.username = data.get("user_name")
+            user_record.email = data.get("user_email")
             if len(data["user_icon"]) > 0:
                 user_icon = str(data.get("user_icon"))
                 user_icon = user_icon.replace("C:\\fakepath\\", "")
-                user_record.user_other_data["user_icon"] = user_icon
+                user_data.user_other_data_json["user_icon"] = user_icon
             if len(data["user_location"]) > 0:
-                user_record.user_other_data["user_location"] = data.get("user_location")
+                user_data.user_other_data_json["user_location"] = data.get("user_location")
                 request.session["user_location"] = data.get("user_location")
-                request.session["user_name"] = data.get("user_name")
-            user_record.save()
+                request.session["username"] = data.get("user_name")
+            user_record.save() 
+            user_data.save()
             return JsonResponse({"Hello": "Hello"})
-    if "user_location" in user_data.user_other_data:
+    if "user_location" in user_data.user_other_data_json:
         user_detail["user_location"] = user_detail["user_location"][0]
     context = {"user_detail": user_detail}
     return render(request, "theme/profile.html", context)
@@ -629,7 +587,7 @@ def add_like_by_user(request):
         raise ValueError
     property_id = request.POST["property_id"]
     user_id = request.session["user_id"]
-    user_data = User_register.objects.get(user_id=user_id)
+    user_data = User_other_utils.objects.filter(user_id = User.objects.get(pk=user_id))
     if "liked_property" in user_data.user_other_data:
         if property_id in user_data.user_other_data["liked_property"]:
             user_data.user_other_data["liked_property"].remove(property_id)
@@ -648,19 +606,19 @@ def add_like_by_user(request):
 
 def submit_report_form(request):
     try:
-        if "user_id" not in request.session:
+        if "pk" not in request.session:
             return HttpResponse("false")
         report_data = dict()
         if request.method == "POST":
             if request.content_type == "application/json":
                 data = json.loads(request.body)
-                property_id = p_detail.objects.get(id=data["property_id"])
+                property_id = p_detail_v1.objects.get(id=data["property_id"])
                 seller_id = property_id.seller_id
                 property_report = {
                     "report_reason": data["report_reason"],
                     "report_desc": data["report_desc"],
                 }
-                property_utility.objects.create(
+                property_utility_v1.objects.create(
                     property_id=property_id,
                     seller_id=seller_id,
                     property_report=property_report,
@@ -681,7 +639,7 @@ def user_public_profile(request, property_id):
     boundry_data = json.loads(boundry_data.content) 
     if "user_id" in request.session:
         user_id = request.session["user_id"]
-        saved_property_list, liked_property_list = liked_and_saved_property_ids(
+        saved_property_list, liked_property_list = liked_and_saved_property_ids(request,
             user_id
         )
     return render(request, "theme/user_public_profile.html", 
@@ -702,7 +660,7 @@ def save_location(request):
     longitude = request.POST["data[longitude]"]
     location_number = {"latitude": latitude, "longitude": longitude}
     request.session["location_number"] = location_number
-    login_user = User_register.objects.get(user_id=user_id)
+    login_user = User_other_utils.objects.filter(user_id = User.objects.get(pk=user_id))
     request.session["user_id"] = user_id
     login_user.user_other_data["location_number"] = location_number
     login_user.save()

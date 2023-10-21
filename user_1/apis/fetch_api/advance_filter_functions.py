@@ -8,8 +8,9 @@ from staying_source.settings import MEDIA_ROOT_USER_ICON
 from user_1.apis.fetch_api.country_api import country_list
 from django.core import serializers
 from django.http import JsonResponse
-from user_1.models import User_register, p_detail
+from user_1.models import User_register, p_detail, p_detail_v1
 from django.core.paginator import Paginator
+from django.contrib.auth.models import User
 
 
 def advance_filter_boundary(request):
@@ -63,7 +64,7 @@ def search_properties(request, address_dict=None, reload_location=None):
             if value:
                 query &= Q(**{"property_data__" + field: value})
 
-    search_results = p_detail.objects.filter(query) 
+    search_results = p_detail_v1.objects.filter(query) 
     paginator = Paginator(search_results, 5) 
     page = paginator.get_page(page_number)
     page_data = page.object_list 
@@ -90,23 +91,21 @@ def search_properties(request, address_dict=None, reload_location=None):
 def user_all_details(property_id):
     try:
         name_of_files=list()
-        data = p_detail.objects.get(id=property_id)
+        data = p_detail_v1.objects.get(id=property_id)
         user_id = data.seller_id.pk
-        user_data = User_register.objects.get(pk=user_id) 
-        user_avtar_file_path = MEDIA_ROOT_USER_ICON + user_id
+        user_data = User.objects.get(pk=user_id) 
+        user_avtar_file_path = MEDIA_ROOT_USER_ICON + str(user_id)
         if os.path.isdir(user_avtar_file_path): 
             name_of_files = [i for i in os.listdir(user_avtar_file_path) if os.path.join(user_avtar_file_path, i)]
-        user_email = user_data.user_email
-        user_name = user_data.user_name
-        user_mobile = user_data.user_mobile
-        user_gender = user_data.user_gender 
+        user_email = user_data.email
+        user_name = user_data.username
+        user_mobile = "no_number"
         user_icon = name_of_files[0] if len(name_of_files) > 0 else ""
         saller_data = { 
             "user_id":user_id,
             "user_email": user_email,
             "user_name": user_name,
             "user_mobile": user_mobile,
-            "user_gender": user_gender,
             "user_icon":user_icon,
         }
         return saller_data

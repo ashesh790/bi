@@ -1,13 +1,13 @@
 import json
 import os
-from urllib import request
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
 from staying_source.settings import MEDIA_ROOT, MEDIA_ROOT_USER_ICON, MEDIA_URL
 from user_1.apis.REST_API.database import convert_string_to_object, user_wise_property
 from user_1.apis.fetch_api.advance_filter_functions import search_properties, user_all_details
-from user_1.models import User_register, p_detail, property_utility
+from user_1.models import User_other_utils, p_detail_v1, property_utility_v1 
+from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 from geopy.geocoders import Nominatim
 
@@ -39,8 +39,8 @@ def add_property_details_in_database(request):
         property_data["property_image"] = property_image_save
         property_data["property_video"] = {}
         # fetching last property detail from databases
-        property_detail = p_detail.objects.create(
-            seller_id=User_register.objects.get(user_id=seller_id),
+        property_detail = p_detail_v1.objects.create(
+            seller_id=User.objects.get(pk=seller_id),
             property_data=property_data,
         )
         return True
@@ -51,7 +51,7 @@ def add_property_details_in_database(request):
 def update_property_image(request=None, property_id=None, user_icon=None):
     if property_id == 0:
         if len(request.FILES) > 0:
-            user_id = request.session["user_id"]
+            user_id = request.session["username"]
             if os.path.exists(MEDIA_ROOT_USER_ICON + user_id):
                 user_icon = os.listdir(MEDIA_ROOT_USER_ICON + user_id)
                 for i in range(0, len(user_icon)):
@@ -66,7 +66,7 @@ def update_property_image(request=None, property_id=None, user_icon=None):
         else:
             return "False"
 
-    property_data = p_detail.objects.get(id=property_id)
+    property_data = p_detail_v1.objects.get(id=property_id)
     if request.method == "POST":
         fss = FileSystemStorage()
         data = request.FILES.getlist("images")
@@ -86,13 +86,13 @@ def update_property_image(request=None, property_id=None, user_icon=None):
 
 def get_all_property_data(property_id=None, property_type=None):
     if property_id == None:
-        data = p_detail.objects.values()
+        data = p_detail_v1.objects.values()
         data = data[0]
         data = json.dumps(data, indent=4, sort_keys=True, default=str)
     elif property_type != None:
-        data = p_detail.objects.filter(property_data__property_type=property_type)
+        data = p_detail_v1.objects.filter(property_data__property_type=property_type)
     elif property_id is not None:
-        data = p_detail.objects.get(pk=property_id)
+        data = p_detail_v1.objects.get(pk=property_id)
 
     number_of_item = 5
     paginator = Paginator(data, number_of_item)
@@ -103,7 +103,7 @@ def get_all_property_data(property_id=None, property_type=None):
 
 def delete_all_property_data(property_id):
     # if request.method=='POST':
-    instance = p_detail.objects.get(pk=property_id)
+    instance = p_detail_v1.objects.get(pk=property_id)
     property_image_data = instance.property_data["property_image"]
     for i in property_image_data:
         i = i.replace("/media/", "")
@@ -115,16 +115,9 @@ def delete_all_property_data(property_id):
     return True
 
 
-def update_property_data_record(property_id):
-    # update will be here
-    data = p_detail.objects.get(id=property_id)
-    if request.method == "POST" or request.method == "FILES":
-        pass
-    return data
-
 
 def delete_property_image_from_database(request, property_id, image_name):
-    property_data = p_detail.objects.get(id=property_id)
+    property_data = p_detail_v1.objects.get(id=property_id)
     property_image_data = MEDIA_URL + image_name
     property_data.property_data["property_image"].remove(property_image_data)
     if image_name in os.listdir(MEDIA_ROOT):
@@ -142,7 +135,7 @@ def property_bound_data():
     with open(data) as f:
         data = json.load(f)
     property_data = data["property_type"]
-    property_count = p_detail.objects.all()
+    property_count = p_detail_v1.objects.all()
     property_c = {}
     for i in property_count:
         if i.property_data["property_type"] in property_c:
@@ -166,7 +159,7 @@ def search_property_type(request, sale_type=None, property_type=None):
         if "data" in request.POST:
             property_type_core = request.POST["data"]
             if property_type_core != "all":
-                property_type_core_data = p_detail.objects.filter(
+                property_type_core_data = p_detail_v1.objects.filter(
                     property_data__property_type=property_type_core
                 )
                 paginator = Paginator(property_type_core_data, items_per_page) 
@@ -178,7 +171,7 @@ def search_property_type(request, sale_type=None, property_type=None):
                     i.property_data["user_detail"] = user_detail
                     prop_data[i.id] = i.property_data
             else:
-                property_type_core_data = p_detail.objects.all()
+                property_type_core_data = p_detail_v1.objects.all()
                 paginator = Paginator(property_type_core_data, items_per_page) 
                 property_type_core_data = paginator.page(page_number)
                 property_type_core_data = property_type_core_data.object_list
@@ -191,7 +184,7 @@ def search_property_type(request, sale_type=None, property_type=None):
                 {"prop_data": prop_data, "prop_data_type": property_type_core, "number_of_pages":number_of_pages}
             )
         else: 
-            property_type_core_data = p_detail.objects.all()
+            property_type_core_data = p_detail_v1.objects.all()
             paginator = Paginator(property_type_core_data, items_per_page) 
             property_type_core_data = paginator.page(page_number)
             property_type_core_data = property_type_core_data.object_list
@@ -206,12 +199,12 @@ def search_property_type(request, sale_type=None, property_type=None):
     if sale_type is not None and property_type is not None:
         if sale_type == "all":
             property_type = property_type
-            data = p_detail.objects.filter(property_data__property_type=property_type) 
+            data = p_detail_v1.objects.filter(property_data__property_type=property_type) 
             paginator = Paginator(data, items_per_page) 
             data = paginator.page(page_number) 
             data = data.object_list
         else:
-            data = p_detail.objects.filter(
+            data = p_detail_v1.objects.filter(
                 property_data__property_type=property_type
             ).filter(property_data__selling_option=sale_type)
         for i in data:
@@ -222,7 +215,7 @@ def search_property_type(request, sale_type=None, property_type=None):
         data = data.object_list
         return data
     if sale_type == "Sale" or sale_type == "Rent":
-        data = p_detail.objects.filter(property_data__selling_option=sale_type)
+        data = p_detail_v1.objects.filter(property_data__selling_option=sale_type)
         for i in data:
             prop_data[i.id] = i.property_data
         data = prop_data 
@@ -231,7 +224,7 @@ def search_property_type(request, sale_type=None, property_type=None):
         data = data.object_list
         return data
     elif sale_type == "all":
-        data = p_detail.objects.all()
+        data = p_detail_v1.objects.all()
         for i in data:
             prop_data[i.id] = i.property_data
         data = prop_data 
@@ -240,7 +233,7 @@ def search_property_type(request, sale_type=None, property_type=None):
         data = data.object_list
         return data
     else:
-        data = p_detail.objects.filter(property_data__property_type=property_type)
+        data = p_detail_v1.objects.filter(property_data__property_type=property_type)
         paginator = Paginator(data, items_per_page) 
         data = paginator.page(page_number) 
         data = data.object_list
@@ -248,7 +241,7 @@ def search_property_type(request, sale_type=None, property_type=None):
 
 
 def delete_all_images_from_media(property_id):
-    property_data = p_detail.objects.get(id=property_id)
+    property_data = p_detail_v1.objects.get(id=property_id)
     property_image_data = property_data.property_data["property_image"]
     for i in property_image_data:
         if i in os.listdir(MEDIA_ROOT):
@@ -271,24 +264,19 @@ def get_location_name(latitude, longitude):
     return address_dict if location else None
 
 
-def liked_and_saved_property_ids(user_id):
+def liked_and_saved_property_ids(request, user_id):
     saved_property_list = []
-    liked_property_list = []
-    user_id = user_id
-    user_data = User_register.objects.get(user_id=user_id)
-    if "saved_property" in user_data.user_other_data:
-        for property_id in user_data.user_other_data["saved_property"]:
+    user_data = User_other_utils.objects.get(user_id = User.objects.get(username=request.session['username']))
+    if "saved_property" in user_data.user_other_data_json:
+        for property_id in user_data.user_other_data_json["saved_property"]:
             saved_property_list.append(property_id)
-    if "liked_property" in user_data.user_other_data:
-        for liked_property in user_data.user_other_data["liked_property"]:
-            liked_property_list.append(liked_property)
-        return saved_property_list, liked_property_list
+        return saved_property_list
     else:
-        return saved_property_list, liked_property_list
+        return saved_property_list
 
 
 def add_like_property_count(property_id, remove_like=False):
-    property_record = p_detail.objects.get(id=property_id)
+    property_record = p_detail_v1.objects.get(id=property_id)
     if not remove_like:
         if "likes" in property_record.property_other_data:
             property_record.property_other_data["likes"] += 1
@@ -305,9 +293,9 @@ def add_like_property_count(property_id, remove_like=False):
 
 def blocked_property(request, property_details=False):
     # code remain if multile user gave same proeprty report.
-    user_id = request.session["user_id"]
-    property_utils = property_utility.objects.filter(
-        seller_id=User_register.objects.get(user_id=user_id)
+    user_id = request.session["username"]
+    property_utils = property_utility_v1.objects.filter(
+        seller_id = User.objects.get(username=user_id)
     )
     property_id_reason = {}
     if len(property_utils) > 0:
@@ -348,7 +336,7 @@ def user_profile_wise_property(user_id):
     try: 
         user_properties_list = []
         if len(user_id)>0 and user_id is not None: 
-            data = p_detail.objects.filter(seller_id=user_id)   
+            data = p_detail_v1.objects.filter(seller_id=user_id)   
             for i in data: 
                 user_properties_list.append(i)
         else: 
