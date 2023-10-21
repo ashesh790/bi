@@ -45,13 +45,15 @@ from user_1.apis.fetch_api.main_functions import (
     property_user_profile
 )
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
+from user_1.forms import UserRegisterForm
 from user_1.models import User_register, p_detail, property_utility
 from django.core.serializers import serialize
 import shutil
 from django.core.files.storage import FileSystemStorage
 from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-# from user_1.forms import MyForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login
 
 # Note: Create login and signup in single html page
 
@@ -115,20 +117,20 @@ def sign_up(request):
 
 
 # sign up
-def login(request):
-    try:
-        if not request.POST: 
-            return render(request, "theme/login.html")
+# def login(request):
+#     try:
+#         if not request.POST: 
+#             return render(request, "theme/login.html")
 
-        LOGIN_ERR = ""
-        login_status = login_user(request)
-        if login_status is False:
-            LOGIN_ERR = "Invalid Credentials"
-            return JsonResponse({"err": LOGIN_ERR})
+#         LOGIN_ERR = ""
+#         login_status = login_user(request)
+#         if login_status is False:
+#             LOGIN_ERR = "Invalid Credentials"
+#             return JsonResponse({"err": LOGIN_ERR})
 
-        return render(request, "theme/index.html")
-    except Exception as ex:
-        return render(request, "theme/404.html")
+#         return render(request, "theme/index.html")
+#     except Exception as ex:
+#         return render(request, "theme/404.html")
 
 
 # logout
@@ -727,4 +729,29 @@ def logout_view(request):
     return redirect("/") 
 
 def google_login(request): 
-    return render(request, "theme/login_google.html")
+    return render(request, "theme/login_google.html") 
+
+def register1(request):
+	if request.method == 'POST':
+		form = UserRegisterForm(request.POST) 
+		if form.is_valid():
+			form.save() 
+			messages.success(request, f'Your account has been created ! You are now able to log in')
+			return redirect('login')
+	else:
+		form = UserRegisterForm()
+	return render(request, 'auth_app/register.html', {'form': form, 'title':'register here'})
+
+def Login(request):
+	if request.method == 'POST':
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(request, username = username, password = password)
+		if user is not None:
+			form = login(request, user)
+			messages.success(request, f' welcome {username} !!')
+			return redirect('/')
+		else:
+			messages.info(request, f'account done not exit plz sign in')
+	form = AuthenticationForm()
+	return render(request, 'auth_app/login.html', {'form':form, 'title':'log in'})

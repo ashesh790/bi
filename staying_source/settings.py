@@ -75,8 +75,9 @@ ROOT_URLCONF = "staying_source.urls"
 
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ["templates"],
+        "BACKEND": "django.template.backends.django.DjangoTemplates", 
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        # "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
