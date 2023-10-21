@@ -718,4 +718,12 @@ def show_property_location_wise(request):
         elif address_dict["country"] != "" and address_dict["country"] is not None:
             location_fetched = address_dict["country"]
     property = search_properties(request, location_fetched, reload_location)
-    return property, location_fetched
+    return property, location_fetched 
+
+
+def logout_view(request): 
+    logout(request) 
+    return redirect("/") 
+
+def google_login(request): 
+    return render(request, "theme/login_google.html")

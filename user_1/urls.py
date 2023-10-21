@@ -126,5 +126,7 @@ urlpatterns = [
     path("google_map", views.google_map, name="google_map"), 
     path("chat/<str:user_id>/", views.chat, name='chat'), 
     path("property_user_profile", views.property_user_profile, name="property_user_profile"), 
-    path("user-public-profile/<str:property_id>", views.user_public_profile, name="user_public_profile")
+    path("user-public-profile/<str:property_id>", views.user_public_profile, name="user_public_profile"), 
+    path("logout_url", views.logout_view), 
+    path("google_login", views.google_login)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["9cec-1-38-182-47.ngrok-free.app", "127.0.0.1", "localhost"]
 
-
+SITE_ID = 2
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,11 +37,26 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
+    "django.contrib.staticfiles", 
+    "django.contrib.sites", 
+    "allauth", 
+    "allauth.account", 
+    "allauth.socialaccount", 
+    "allauth.socialaccount.providers.google",
     "user_1", 
     "channels",
 ]
 
+SOCIALACCOUNT_PROVIDERS = {
+    "google":{
+        "SCOPE":[
+            "profile", 
+            "email"
+        ], 
+        "AUTH_PARAMS":{"access_type":"online"}
+        
+    }
+}
 # Channels settings
 ASGI_APPLICATION = 'staying_source.routing.application'
 
@@ -52,7 +67,8 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware", 
+    "allauth.account.middleware.AccountMiddleware"
 ]
 
 ROOT_URLCONF = "staying_source.urls"
@@ -139,3 +155,12 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend", 
+    "allauth.account.auth_backends.AuthenticationBackend"
+)
+
+LOGIN_REDIRECT_URL = "/" 
+LOGOUT_REDIRECT_URL = "/" 
