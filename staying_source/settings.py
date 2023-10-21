@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     "allauth.socialaccount", 
     "allauth.socialaccount.providers.google",
     "user_1", 
-    "channels",
+    "channels", 
+    "user"
 ]
 
 SOCIALACCOUNT_PROVIDERS = {

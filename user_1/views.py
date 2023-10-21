@@ -117,20 +117,21 @@ def sign_up(request):
 
 
 # sign up
-# def login(request):
-#     try:
-#         if not request.POST: 
-#             return render(request, "theme/login.html")
-
-#         LOGIN_ERR = ""
-#         login_status = login_user(request)
-#         if login_status is False:
-#             LOGIN_ERR = "Invalid Credentials"
-#             return JsonResponse({"err": LOGIN_ERR})
-
-#         return render(request, "theme/index.html")
-#     except Exception as ex:
-#         return render(request, "theme/404.html")
+def login_app(request):
+    try:
+        if (request.method == 'POST'):
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username = username, password = password)
+            if (user is not None):
+                request.session['username'] = username
+                request.session['pk'] = user.pk
+                form = login(request, user) 
+                return redirect("home")
+        form = AuthenticationForm()
+        return render(request, 'auth_app/login.html', {'form':form, 'title':'log in'})
+    except Exception as ex: 
+        print(ex)
 
 
 # logout
@@ -138,11 +139,12 @@ def logout(request):
     try:
         if request:
             try:
-                del request.session["user_name"]
-                del request.session["user_id"]
+                del request.session["username"]
+                del request.session["pk"] 
+                request.session.clear()
             except:
                 print("Logout")
-        return render(request, "theme/login.html")
+        return redirect("login")
     except Exception as ex:
         return render(request, "theme/404.html")
 
@@ -347,7 +349,7 @@ def crud_property(request):
 
 # Render home page
 def home(request):
-    try:
+    try: 
         page_number = request.GET.get('page') 
         if page_number is None: 
             page_number = 1 
@@ -740,18 +742,4 @@ def register1(request):
 			return redirect('login')
 	else:
 		form = UserRegisterForm()
-	return render(request, 'auth_app/register.html', {'form': form, 'title':'register here'})
-
-def Login(request):
-	if request.method == 'POST':
-		username = request.POST['username']
-		password = request.POST['password']
-		user = authenticate(request, username = username, password = password)
-		if user is not None:
-			form = login(request, user)
-			messages.success(request, f' welcome {username} !!')
-			return redirect('/')
-		else:
-			messages.info(request, f'account done not exit plz sign in')
-	form = AuthenticationForm()
-	return render(request, 'auth_app/login.html', {'form':form, 'title':'log in'})
+	return render(request, 'auth_app/register.html', {'form': form, 'title':'register here'})  

@@ -18,7 +18,7 @@ def main():
     try: 
         execute_from_command_line(sys.argv) 
     except Exception as ex: 
-        print(f"Solve this: {ex}")
+        raise ex 
 
 if __name__ == '__main__':
     main() 

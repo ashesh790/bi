@@ -432,8 +432,8 @@
                     <a href="{% url 'about' %}" class="nav-item nav-link {% block about %}{% endblock %}">About</a>
                 </div>
                 <div class="navbar-nav ms-auto">
-                    {% if 'user_name' in request.session %}
-                    <span class="mt-1">{{request.session.user_name}}</span> &nbsp;
+                    {% if 'username' in request.session %}
+                    <span class="mt-1">{{request.session.username}}</span> &nbsp;
                     <a data-toggle="modal" data-target="#glassAnimals"
                         class="btn btn-outline-primary px-3 d-lg-flex bg-primary" id="logout_btn"><i
                             class="fa fa-user text-white" aria-hidden="true"></i></a> &nbsp;&nbsp;

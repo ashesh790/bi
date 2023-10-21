@@ -36,7 +36,7 @@ urlpatterns = [
     ),
     path("home", views.home, name="home"),
     path("signup", views.sign_up, name="signup"),
-    path("login", views.login, name="login"),
+    path("login", views.login_app, name="login"),
     path("logout", views.logout, name="logout"),
     path(
         "add_property_details", views.add_property_details, name="add_property_details"
@@ -128,7 +128,6 @@ urlpatterns = [
     path("property_user_profile", views.property_user_profile, name="property_user_profile"), 
     path("user-public-profile/<str:property_id>", views.user_public_profile, name="user_public_profile"), 
     path("logout_url", views.logout_view), 
-    path("google_login", views.google_login), 
-    path('login_app/', views.Login),
+    path("google_login", views.google_login),
 	path('register_app/', views.register1),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
