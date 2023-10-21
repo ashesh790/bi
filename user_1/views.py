@@ -54,6 +54,7 @@ from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
+from allauth.socialaccount.models import SocialAccount
 
 # Note: Create login and signup in single html page
 
@@ -700,4 +701,21 @@ def register1(request):
 			return redirect('login')
 	else:
 		form = UserRegisterForm()
-	return render(request, 'auth_app/register.html', {'form': form, 'title':'register here'})  
+	return render(request, 'auth_app/register.html', {'form': form, 'title':'register here'}) 
+
+
+def google_callback(request):
+    try:
+        social_account = SocialAccount.objects.get(user=request.user, provider='google')
+        user_data = {
+            'username': social_account.user.username,
+            'email': social_account.user.email,
+            # Add other user data fields as needed
+        }
+        request.session['username'] = user_data['username'] 
+        request.session['pk'] = social_account.pk
+    except SocialAccount.DoesNotExist:
+        # Handle the case where the user is not associated with a Google account
+        pass
+
+    return redirect('home')

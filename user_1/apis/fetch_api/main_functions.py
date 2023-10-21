@@ -265,13 +265,14 @@ def get_location_name(latitude, longitude):
 
 
 def liked_and_saved_property_ids(request, user_id):
-    saved_property_list = []
-    user_data = User_other_utils.objects.get(user_id = User.objects.get(username=request.session['username']))
-    if "saved_property" in user_data.user_other_data_json:
-        for property_id in user_data.user_other_data_json["saved_property"]:
-            saved_property_list.append(property_id)
+    saved_property_list = [] 
+    try:
+        user_data = User_other_utils.objects.get(user_id = User.objects.get(username=request.session['username'])) 
+        if "saved_property" in user_data.user_other_data_json:
+            for property_id in user_data.user_other_data_json["saved_property"]:
+                saved_property_list.append(property_id)
         return saved_property_list
-    else:
+    except Exception as ex: 
         return saved_property_list
 
 

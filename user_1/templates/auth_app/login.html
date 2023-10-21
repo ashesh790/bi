@@ -15,5 +15,9 @@
             <br />
         </form>
     </center>
+    <div class="mt-2 m-3">
+        {% load socialaccount %}
+        <a href="{% provider_login_url 'google' %}?next=/">Google</a>
+    </div>
 </div>
 {% endblock start %}

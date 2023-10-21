@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django import views
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import include, path, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from user_1 import views
@@ -128,5 +128,6 @@ urlpatterns = [
     path("user-public-profile/<str:property_id>", views.user_public_profile, name="user_public_profile"), 
     path("logout_url", views.logout_view), 
     path("google_login", views.google_login),
-	path('register_app/', views.register1),
+	path('register_app/', views.register1), 
+    path('accounts/google/login/callback/', views.google_callback, name='google-callback')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
