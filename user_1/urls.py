@@ -129,5 +129,5 @@ urlpatterns = [
     path("logout_url", views.logout_view), 
     path("google_login", views.google_login),
 	path('register_app/', views.register1), 
-    path('accounts/google/login/callback/', views.google_callback, name='google-callback')
+    path('http://127.0.0.1:8000/accounts/google/login/callback/', views.google_callback, name='google-callback')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

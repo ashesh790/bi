@@ -41,8 +41,8 @@ from user_1.apis.fetch_api.main_functions import (
     read_static_files,
     search_property_type,
     update_property_image,
-    user_all_details, 
-    property_user_profile
+    user_all_details,
+    property_user_profile,
 )
 from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
 from user_1.forms import UserRegisterForm
@@ -77,22 +77,21 @@ def advance_filter(request):
         return render(request, "theme/404.html")
 
 
-
 # sign up
 def login_app(request):
     try:
-        if (request.method == 'POST'):
-            username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(request, username = username, password = password)
-            if (user is not None):
-                request.session['username'] = username
-                request.session['pk'] = user.pk
-                form = login(request, user) 
+        if request.method == "POST":
+            username = request.POST["username"]
+            password = request.POST["password"]
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                request.session["username"] = username
+                request.session["pk"] = user.pk
+                form = login(request, user)
                 return redirect("home")
         form = AuthenticationForm()
-        return render(request, 'auth_app/login.html', {'form':form, 'title':'log in'})
-    except Exception as ex: 
+        return render(request, "auth_app/login.html", {"form": form, "title": "log in"})
+    except Exception as ex:
         print(ex)
 
 
@@ -102,8 +101,8 @@ def logout(request):
         if request:
             try:
                 del request.session["username"]
-                del request.session["pk"] 
-                request.session.clear() 
+                del request.session["pk"]
+                request.session.clear()
                 logout(request)
             except:
                 print("Logout")
@@ -119,9 +118,9 @@ def add_property_details(request):
         if request.method == "POST" and len(request.POST) is not None:
             property_details = add_property_details_in_database(request)
         # country_name_list = country_list(request)
-        # country_name_list = json.loads(country_name_list) 
+        # country_name_list = json.loads(country_name_list)
         data = read_static_files("data.json")
-        
+
         return render(
             request,
             "theme/add_property.html",
@@ -155,7 +154,7 @@ def show_property_detail(request, property_id):
 def delete_property(request, property_id):
     try:
         # country_name_list = country_list(request)
-        # country_name_list = json.loads(country_name_list) 
+        # country_name_list = json.loads(country_name_list)
         data = read_static_files("data.json")
         property_id = property_id
         delete_all_property_data(property_id)
@@ -311,15 +310,15 @@ def crud_property(request):
 
 # Render home page
 def home(request):
-    try: 
-        page_number = request.GET.get('page') 
-        if page_number is None: 
-            page_number = 1 
+    try:
+        page_number = request.GET.get("page")
+        if page_number is None:
+            page_number = 1
         saved_property_list = ""
         if "pk" in request.session:
             user_id = request.session["pk"]
-            saved_property_list = liked_and_saved_property_ids(request,user_id) 
-        boundry_data = read_static_files("data.json") 
+            saved_property_list = liked_and_saved_property_ids(request, user_id)
+        boundry_data = read_static_files("data.json")
         return render(
             request,
             "theme/index.html",
@@ -441,7 +440,9 @@ def show_full_property_detail(request, property_id):
 
 def inquiries_from_user(request):
     try:
-        user_data = User_other_utils.objects.filter(user_id = User.objects.get(pk=request.session['pk']))
+        user_data = User_other_utils.objects.filter(
+            user_id=User.objects.get(pk=request.session["pk"])
+        )
         user_data = user_data.user_other_data
         return HttpResponse(json.dumps({"user_data": user_data}))
     except Exception as ex:
@@ -463,30 +464,43 @@ def bookmark_property_detail(request):
             raise Exception
         user_id = request.session["username"]
         property_id = request.POST["property_id"]
-        user_data = User.objects.get(username=user_id) 
+        user_data = User.objects.get(username=user_id)
         try:
-            user_other_data = User_other_utils.objects.get(user_id = User.objects.get(username=request.session['username'])) 
-        except Exception as ex: 
+            user_other_data = User_other_utils.objects.get(
+                user_id=User.objects.get(username=request.session["username"])
+            )
+        except Exception as ex:
             user_other_data = User_other_utils.objects.create(
-            user_id=User.objects.get(username=user_id),
-            user_other_data_json= {},
+                user_id=User.objects.get(username=user_id),
+                user_other_data_json={},
             )
         removed_property = (
             True if "remove_saved_property" in list(request.POST) else False
         )
         if not removed_property:
             if "saved_property" in user_other_data.user_other_data_json:
-                if property_id in user_other_data.user_other_data_json["saved_property"]:
-                    user_other_data.user_other_data_json["saved_property"].remove(property_id)
+                if (
+                    property_id
+                    in user_other_data.user_other_data_json["saved_property"]
+                ):
+                    user_other_data.user_other_data_json["saved_property"].remove(
+                        property_id
+                    )
                     user_other_data.save()
                     return HttpResponse("Removed")
             if user_other_data is not None:
                 # user_data.user_other_data["saved_property"].append(property_id)
                 if "saved_property" not in user_other_data.user_other_data_json:
-                    user_other_data.user_other_data_json["saved_property"] = [property_id]
+                    user_other_data.user_other_data_json["saved_property"] = [
+                        property_id
+                    ]
                 else:
-                    user_other_data.user_other_data_json["saved_property"].append(property_id)
-                    saved_property_list = user_other_data.user_other_data_json["saved_property"]
+                    user_other_data.user_other_data_json["saved_property"].append(
+                        property_id
+                    )
+                    saved_property_list = user_other_data.user_other_data_json[
+                        "saved_property"
+                    ]
                     user_other_data.user_other_data_json["saved_property"] = list(
                         set(saved_property_list)
                     )
@@ -494,7 +508,9 @@ def bookmark_property_detail(request):
                 return HttpResponse("saved")
         else:
             if property_id in user_other_data.user_other_data_json["saved_property"]:
-                user_other_data.user_other_data_json["saved_property"].remove(property_id)
+                user_other_data.user_other_data_json["saved_property"].remove(
+                    property_id
+                )
                 user_data.save()
             remaining_property = saved_property(request, True)
             if remaining_property.content == "Empty":
@@ -517,9 +533,11 @@ def saved_property(request, remaining_property=False):
         saved_property_dict = {}
         if "pk" not in request.session:
             return redirect("/login")
-        user_id = request.session["pk"] 
-        try: 
-            user_data = User_other_utils.objects.get(user_id = User.objects.get(pk=user_id)) 
+        user_id = request.session["pk"]
+        try:
+            user_data = User_other_utils.objects.get(
+                user_id=User.objects.get(pk=user_id)
+            )
             if "saved_property" in user_data.user_other_data_json:
                 saved_property_list = user_data.user_other_data_json["saved_property"]
             else:
@@ -527,12 +545,12 @@ def saved_property(request, remaining_property=False):
                 return render(request, "theme/saved_proper.html", context)
             for i in saved_property_list:
                 try:
-                    query_data = p_detail_v1.objects.get(id=i) 
-                except Exception as ex: 
+                    query_data = p_detail_v1.objects.get(id=i)
+                except Exception as ex:
                     saved_property_list.remove(i)
                     continue
-                saved_property_dict[i] = query_data.property_data 
-            user_data.user_other_data_json["saved_property"] = saved_property_list 
+                saved_property_dict[i] = query_data.property_data
+            user_data.user_other_data_json["saved_property"] = saved_property_list
             user_data.save()
             if remaining_property:
                 if len(saved_property_dict) > 0:
@@ -544,25 +562,26 @@ def saved_property(request, remaining_property=False):
             else:
                 context = {"saved_property_dict": saved_property_dict}
                 return render(request, "theme/saved_proper.html", context)
-        except Exception as ex: 
+        except Exception as ex:
             context = {"saved_property_dict": saved_property_dict}
-            return render(request, "theme/saved_proper.html", context) 
-        
-        
+            return render(request, "theme/saved_proper.html", context)
+
     except Exception as ex:
         print(ex)
         return render(request, "theme/404.html")
 
 
 def update_profile(request):
-    user_id = request.session["username"] 
+    user_id = request.session["username"]
     try:
-        user_data = User_other_utils.objects.get(user_id = User.objects.get(username=user_id)) 
-    except Exception as ex: 
+        user_data = User_other_utils.objects.get(
+            user_id=User.objects.get(username=user_id)
+        )
+    except Exception as ex:
         user_data = User_other_utils.objects.create(
             user_id=User.objects.get(username=user_id),
-            user_other_data_json= {},
-            )
+            user_other_data_json={},
+        )
     user_record = User.objects.get(username=user_id)
     user_detail = {
         "user_id": user_id,
@@ -573,7 +592,9 @@ def update_profile(request):
     if "user_icon" in user_data.user_other_data_json:
         user_detail["user_icon"] = user_data.user_other_data_json["user_icon"]
     if "user_location" in user_data.user_other_data_json:
-        user_detail["user_location"] = (user_data.user_other_data_json["user_location"],)
+        user_detail["user_location"] = (
+            user_data.user_other_data_json["user_location"],
+        )
     if request.method == "POST":
         if request.content_type == "application/json":
             data = json.loads(request.body)
@@ -584,10 +605,12 @@ def update_profile(request):
                 user_icon = user_icon.replace("C:\\fakepath\\", "")
                 user_data.user_other_data_json["user_icon"] = user_icon
             if len(data["user_location"]) > 0:
-                user_data.user_other_data_json["user_location"] = data.get("user_location")
+                user_data.user_other_data_json["user_location"] = data.get(
+                    "user_location"
+                )
                 request.session["user_location"] = data.get("user_location")
                 request.session["username"] = data.get("user_name")
-            user_record.save() 
+            user_record.save()
             user_data.save()
             return JsonResponse({"Hello": "Hello"})
     if "user_location" in user_data.user_other_data_json:
@@ -601,7 +624,7 @@ def add_like_by_user(request):
         raise ValueError
     property_id = request.POST["property_id"]
     user_id = request.session["user_id"]
-    user_data = User_other_utils.objects.filter(user_id = User.objects.get(pk=user_id))
+    user_data = User_other_utils.objects.filter(user_id=User.objects.get(pk=user_id))
     if "liked_property" in user_data.user_other_data:
         if property_id in user_data.user_other_data["liked_property"]:
             user_data.user_other_data["liked_property"].remove(property_id)
@@ -644,27 +667,30 @@ def submit_report_form(request):
 
 
 def chat(request, user_id):
-    return render(request, 'chat.html', {'user_id': user_id})
+    return render(request, "chat.html", {"user_id": user_id})
 
-def user_public_profile(request, property_id): 
-    saved_property_list = liked_property_list =[]
-    user_data = user_all_details(property_id) 
+
+def user_public_profile(request, property_id):
+    saved_property_list = liked_property_list = []
+    user_data = user_all_details(property_id)
     boundry_data = advance_filter_boundary(request)
-    boundry_data = json.loads(boundry_data.content) 
+    boundry_data = json.loads(boundry_data.content)
     if "user_id" in request.session:
         user_id = request.session["user_id"]
-        saved_property_list, liked_property_list = liked_and_saved_property_ids(request,
-            user_id
+        saved_property_list, liked_property_list = liked_and_saved_property_ids(
+            request, user_id
         )
-    return render(request, "theme/user_public_profile.html", 
+    return render(
+        request,
+        "theme/user_public_profile.html",
         {
-            "user_data" : user_data, 
+            "user_data": user_data,
             "boundry_data": boundry_data["data"],
             "saved_property_list": saved_property_list,
             "liked_property_list": liked_property_list,
-        }
-    )  
-    
+        },
+    )
+
 
 def save_location(request):
     if "username" not in request.session:
@@ -673,17 +699,19 @@ def save_location(request):
     latitude = request.POST["data[latitude]"]
     longitude = request.POST["data[longitude]"]
     location_number = {"latitude": latitude, "longitude": longitude}
-    request.session["location_number"] = location_number 
+    request.session["location_number"] = location_number
     try:
-        login_user = User_other_utils.objects.get(user_id = User.objects.get(username=user_id)) 
+        login_user = User_other_utils.objects.get(
+            user_id=User.objects.get(username=user_id)
+        )
     except Exception as ex:
         login_user = User_other_utils.objects.create(
             user_id=User.objects.get(username=user_id),
-            user_other_data_json= {},
-            )
+            user_other_data_json={},
+        )
     login_user.user_other_data_json["location_number"] = location_number
     login_user.save()
-    return HttpResponse("Location saved") 
+    return HttpResponse("Location saved")
 
 
 def show_property_location_wise(request):
@@ -700,40 +728,47 @@ def show_property_location_wise(request):
         elif address_dict["country"] != "" and address_dict["country"] is not None:
             location_fetched = address_dict["country"]
     property = search_properties(request, location_fetched, reload_location)
-    return property, location_fetched 
+    return property, location_fetched
 
 
-def logout_view(request): 
-    logout(request) 
-    return redirect("/") 
+def logout_view(request):
+    logout(request)
+    return redirect("/")
 
-def google_login(request): 
-    return render(request, "theme/login_google.html") 
+
+def google_login(request):
+    return render(request, "theme/login_google.html")
+
 
 def register1(request):
-	if request.method == 'POST':
-		form = UserRegisterForm(request.POST) 
-		if form.is_valid():
-			form.save() 
-			messages.success(request, f'Your account has been created ! You are now able to log in')
-			return redirect('login')
-	else:
-		form = UserRegisterForm()
-	return render(request, 'auth_app/register.html', {'form': form, 'title':'register here'}) 
+    if request.method == "POST":
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, f"Your account has been created ! You are now able to log in"
+            )
+            return redirect("login")
+    else:
+        form = UserRegisterForm()
+    return render(
+        request, "auth_app/register.html", {"form": form, "title": "register here"}
+    )
 
 
 def google_callback(request):
     try:
-        social_account = SocialAccount.objects.get(user=request.user, provider='google')
+        social_account = SocialAccount.objects.get(
+            user=request.user.id, provider="google"
+        )
         user_data = {
-            'username': social_account.user.username,
-            'email': social_account.user.email,
+            "username": social_account.user.username,
+            "email": social_account.user.email,
             # Add other user data fields as needed
         }
-        request.session['username'] = user_data['username'] 
-        request.session['pk'] = social_account.pk 
-        return redirect('home')
+        request.session["username"] = user_data["username"]
+        request.session["pk"] = social_account.pk
+        return redirect("home")
     except Exception as ex:
         # Handle the case where the user is not associated with a Google account
-        raise ex 
-
+        raise ex
