@@ -310,7 +310,19 @@ def crud_property(request):
 
 # Render home page
 def home(request):
-    try:
+    try: 
+        if "pk" not in request.session:
+            social_account = SocialAccount.objects.get(
+                user=request.user.id, provider="google"
+            )
+            user_data = {
+                "username": social_account.user.username,
+                "email": social_account.user.email,
+                # Add other user data fields as needed
+            }
+            request.session["username"] = user_data["username"]
+            request.session["pk"] = social_account.pk 
+
         page_number = request.GET.get("page")
         if page_number is None:
             page_number = 1
