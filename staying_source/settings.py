@@ -14,7 +14,7 @@ import os
 from pathlib import Path 
 import environ
 
-from staying_source.config import DATABASE_NAME, DB_PASSWORD, DB_USERNAME, ENGINE, HOST_NAME, PORT
+from staying_source.config import DATABASE_NAME, DB_PASSWORD, DB_USERNAME, ENGINE, HOST_NAME, MEDIA_FOLDER, PORT
 
 # Initialise environment variables
 env = environ.Env()
@@ -116,7 +116,7 @@ DATABASES = {
 }
 
 # Path where media is stored
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_FOLDER)
 MEDIA_ROOT_USER_ICON = os.path.join(BASE_DIR, "media/user_icons/")
 # Base url to serve media files
 MEDIA_URL = "/media/"
