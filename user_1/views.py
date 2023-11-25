@@ -105,7 +105,7 @@ def logout(request):
                 del request.session["pk"]
                 request.session.clear()
                 logout(request)
-            except:
+            except Exception as ex:
                 raise ex 
         return redirect("login")
     except Exception as ex:

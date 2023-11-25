@@ -1,23 +1,45 @@
 {% extends "theme/master.html" %}
 {% block start %}
+{% load static %}
+<style>
+    body {
+        background-image: url({% static 'pexels-pixabay-259962.jpg' %});
+        background-repeat: no-repeat;
+        /* Full height */
+        height: 100%;
 
-<div class="content-section col-md-8 col-md-offset-2">
-    <center>
-        <form method="POST" style="border: 1px solid black; margin: 4%; padding:10%; border-radius:1%;">
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+<div class="row">
+    <div class="content-section col-md-6">
+        <form method="POST" style="margin: 4%; padding:5%; border-radius:1%; border: 1px solid #0099ff;"
+            class="bg-white">
+            <h1 style="color: #0099ff;" class="text-center">Register</h1>
+            <hr>
             {% csrf_token %}
             <fieldset class="form-group">
                 {{ form}}
             </fieldset>
             <center>
-                <button style="background: black; font-size: 2rem; padding:1%;" class="btn btn-outline-info"
-                    type="submit"><span class="glyphicon glyphicon-log-in"></span> login</button>
+                <br>
+                <button class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-log-in"></span>
+                    login</button>
+                {% load socialaccount %}
+                <a href="{% provider_login_url 'google' %}?next=/" class="btn btn-outline-info">Google</a>
+                <a href="register_app" class="btn btn-outline-info">Register</a>
             </center>
             <br />
         </form>
-    </center>
-    <div class="mt-2 m-3">
-        {% load socialaccount %}
-        <a href="{% provider_login_url 'google' %}?next=/">Google</a>
+    </div>
+    <div class="col-md-6">
+        <div
+            style="padding:2%; margin: 4%; border-radius:1%;color: #0099ff; font-weight: bolder; font-size: 100px; text-align: center;">
+            Build dreams with us!
+        </div>
     </div>
 </div>
-{% endblock start %}
+{% endblock %}
