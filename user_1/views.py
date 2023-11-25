@@ -759,7 +759,17 @@ def google_login(request):
 def register1(request):
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
-        if form.is_valid():
+        if form.is_valid(): 
+            ######################### mail system #################################### 
+            # username = form.cleaned_data.get('username')
+			# email = form.cleaned_data.get('email')
+			# htmly = get_template('email.html')
+			# d = { 'username': username }
+			# subject, from_email, to = 'welcome', 'your_email@gmail.com', email
+			# html_content = htmly.render(d)
+			# msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
+			# msg.attach_alternative(html_content, "text/html")
+			# msg.send()
             form.save()
             messages.success(
                 request, f"Your account has been created ! You are now able to log in"
