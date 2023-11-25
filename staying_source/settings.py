@@ -11,7 +11,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
-from pathlib import Path
+from pathlib import Path 
+import environ
+
+from staying_source.config import DATABASE_NAME, DB_PASSWORD, DB_USERNAME, ENGINE, HOST_NAME, MEDIA_FOLDER, PORT
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +35,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["9cec-1-38-182-47.ngrok-free.app", "127.0.0.1", "localhost"]
 
-
+SITE_ID = 2
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,11 +44,27 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
+    "django.contrib.staticfiles", 
+    "django.contrib.sites", 
+    "allauth", 
+    "allauth.account", 
+    "allauth.socialaccount", 
+    "allauth.socialaccount.providers.google",
     "user_1", 
-    "channels",
+    "channels", 
+    "user"
 ]
 
+SOCIALACCOUNT_PROVIDERS = {
+    "google":{
+        "SCOPE":[
+            "profile", 
+            "email"
+        ], 
+        "AUTH_PARAMS":{"access_type":"online"}
+        
+    }
+}
 # Channels settings
 ASGI_APPLICATION = 'staying_source.routing.application'
 
@@ -52,15 +75,17 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware", 
+    "allauth.account.middleware.AccountMiddleware"
 ]
 
 ROOT_URLCONF = "staying_source.urls"
 
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ["templates"],
+        "BACKEND": "django.template.backends.django.DjangoTemplates", 
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        # "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -81,17 +106,17 @@ WSGI_APPLICATION = "staying_source.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres_private",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "ENGINE": ENGINE,
+        "NAME": DATABASE_NAME,
+        "USER": DB_USERNAME,
+        "PASSWORD": DB_PASSWORD,
+        "HOST": HOST_NAME,
+        "PORT": PORT,
     }
 }
 
 # Path where media is stored
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_FOLDER)
 MEDIA_ROOT_USER_ICON = os.path.join(BASE_DIR, "media/user_icons/")
 # Base url to serve media files
 MEDIA_URL = "/media/"
@@ -139,3 +164,12 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend", 
+    "allauth.account.auth_backends.AuthenticationBackend"
+)
+SOCIALACCOUNT_LOGIN_ON_GET=True
+LOGIN_REDIRECT_URL = "/" 
+LOGOUT_REDIRECT_URL = "/" 

@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django import views
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import include, path, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from staying_source.config import URL
 from user_1 import views
 
 urlpatterns = [
@@ -35,8 +36,7 @@ urlpatterns = [
         name="user_wise_property",
     ),
     path("home", views.home, name="home"),
-    path("signup", views.sign_up, name="signup"),
-    path("login", views.login, name="login"),
+    path("login", views.login_app, name="login"),
     path("logout", views.logout, name="logout"),
     path(
         "add_property_details", views.add_property_details, name="add_property_details"
@@ -126,5 +126,9 @@ urlpatterns = [
     path("google_map", views.google_map, name="google_map"), 
     path("chat/<str:user_id>/", views.chat, name='chat'), 
     path("property_user_profile", views.property_user_profile, name="property_user_profile"), 
-    path("user-public-profile/<str:property_id>", views.user_public_profile, name="user_public_profile")
+    path("user-public-profile/<str:property_id>", views.user_public_profile, name="user_public_profile"), 
+    path("logout_url", views.logout_view), 
+    path("google_login", views.google_login),
+	path('register_app/', views.register1), 
+    path(f'{URL}/accounts/google/login/callback/', views.google_callback, name='google-callback')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
