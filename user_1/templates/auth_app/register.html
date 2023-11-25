@@ -1,18 +1,45 @@
 {% extends "theme/master.html" %}
 {% block start %}
+{% load static %}
+<style>
+    body {
+        background-image: url({% static 'pexels-pixabay-259962.jpg' %});
+        background-repeat: no-repeat;
+        /* Full height */
+        height: 100%;
 
-<div class="content-section col-md-12 col-md-offset-2 w-50">
-    <form method="POST" style="border: 1px solid black; margin: 4%; padding:10%; border-radius:1%;">
-        {% csrf_token %}
-        <fieldset class="form-group">
-            {{form}}
-        </fieldset>
-        <center>
-            <button class="btn btn-outline-info" type="submit">Sign
-                up</button>
-            <a href="/login" class="btn btn-outline-info">Login</a>
-        </center>
-        <br />
-    </form>
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+<div class="row">
+    <div class="content-section col-md-6">
+        <form method="POST" style="border: 1px solid #0099ff; margin: 4%; padding:5%; border-radius:1%;"
+            class="bg-white">
+            {% csrf_token %}
+            {% load socialaccount %}
+            <h1 style="color: #0099ff;" class="text-center">Register</h1>
+            <hr>
+            <fieldset class="form-group">
+                {{form}}
+            </fieldset>
+            <center>
+                <br>
+                <button class="btn btn-outline-info" type="submit">Sign
+                    up</button>
+                <a href="/login" class="btn btn-outline-info">Login</a>
+                <a href="{% provider_login_url 'google' %}?next=/" class="btn btn-outline-info">Google</a>
+            </center>
+            <br />
+        </form>
+    </div>
+    <div class="col-md-6">
+        <div
+            style="padding:2%; margin: 4%; border-radius:1%;color: #0099ff; font-weight: bolder; font-size: 100px; text-align: center;">
+            Build dreams with us!
+        </div>
+    </div>
 </div>
-{% endblock start %}
+{% endblock%}

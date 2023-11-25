@@ -1,14 +1,24 @@
 {% extends "theme/master.html" %}
 {% block start %}
+{% load static %}
 <style>
-    .form-group {
-        text-align: left;
-        width: 50%;
+    body {
+        background-image: url({% static 'pexels-pixabay-259962.jpg' %});
+        background-repeat: no-repeat;
+        /* Full height */
+        height: 100%;
+
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 </style>
-<div class="content-section col-md-8 col-md-offset-2">
-    <center>
-        <form method="POST" style="border: 1px solid black; margin: 4%; padding:10%; border-radius:1%;">
+<div class="row">
+    <div class="content-section col-md-6">
+        <form method="POST" style="margin: 4%; padding:5%; border-radius:1%;" class="bg-white">
+            <h1 style="color: #0099ff;" class="text-center">Register</h1>
+            <hr>
             {% csrf_token %}
             <fieldset class="form-group">
                 {{ form}}
@@ -23,6 +33,12 @@
             </center>
             <br />
         </form>
-    </center>
+    </div>
+    <div class="col-md-6">
+        <div
+            style="padding:2%; margin: 4%; border-radius:1%;color: #0099ff; font-weight: bolder; font-size: 100px; text-align: center;">
+            Build dreams with us!
+        </div>
+    </div>
 </div>
-{% endblock start %}
+{% endblock %}
