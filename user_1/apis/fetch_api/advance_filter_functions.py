@@ -8,7 +8,7 @@ from staying_source.settings import MEDIA_ROOT_USER_ICON
 from user_1.apis.fetch_api.country_api import country_list
 from django.core import serializers
 from django.http import JsonResponse
-from user_1.models import p_detail_v1
+from user_1.models import User_other_utils, p_detail_v1
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 
@@ -99,7 +99,8 @@ def user_all_details(property_id):
             name_of_files = [i for i in os.listdir(user_avtar_file_path) if os.path.join(user_avtar_file_path, i)]
         user_email = user_data.email
         user_name = user_data.username
-        user_mobile = "no_number"
+        user_utils_data = User_other_utils.objects.get(user_id = user_id) 
+        user_mobile = user_utils_data.user_mobile
         user_icon = name_of_files[0] if len(name_of_files) > 0 else ""
         saller_data = { 
             "user_id":user_id,

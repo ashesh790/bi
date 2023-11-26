@@ -579,6 +579,7 @@
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
                         var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(property_id[i].toString());
                         var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
+                        debugger
                         $(property_counter).append(` 
                     <div class="col-lg-3 col-md-6 wow fadeInUp border-primary" data-wow-delay="0.1s">
                     <div class="property-item rounded overflow-hidden border prop_item  shadow-lg bg-body-tertiary rounded">
@@ -620,7 +621,7 @@
                                     <i
                                     class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, 10) + '...'}
                             </p> 
-                            <p style="width:30%;">
+                            <p style="width:30%;"> 
                                     By<a href="/user-public-profile/${property_id[i]}">${JSON.parse(user_mobile[i]).user_name}</a> 
                             </p> 
                             </div>
