@@ -8,7 +8,7 @@ from staying_source.settings import MEDIA_ROOT_USER_ICON
 from user_1.apis.fetch_api.country_api import country_list
 from django.core import serializers
 from django.http import JsonResponse
-from user_1.models import User_register, p_detail, p_detail_v1
+from user_1.models import p_detail_v1
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 
@@ -112,21 +112,21 @@ def user_all_details(property_id):
     except Exception as ex:
         print(ex)
         return None 
-def search_properties_by_string(request):
-    search_string = request.POST["search_string"]
-    search_results = p_detail.objects.filter(
-        Q(property_data__property_type__icontains=search_string)
-        | Q(property_data__property_name__icontains=search_string)
-        | Q(property_data__property_address__icontains=search_string)
-        | Q(property_data__property_city__icontains=search_string)
-        | Q(property_data__property_state__icontains=search_string)
-        | Q(property_data__property_country__icontains=search_string)
-        | Q(property_data__property_zip__icontains=search_string)
-        | Q(property_data__property_description__icontains=search_string)
-        | Q(property_data__property_price__icontains=search_string)
-        | Q(property_data__property_area__icontains=search_string)
-        | Q(property_data__property_bedrooms__icontains=search_string)
-        | Q(property_data__property_bathrooms__icontains=search_string)
-        | Q(property_data__property_garage__icontains=search_string),
-    )
-    return "pass"
+# def search_properties_by_string(request):
+#     search_string = request.POST["search_string"]
+#     search_results = p_detail.objects.filter(
+#         Q(property_data__property_type__icontains=search_string)
+#         | Q(property_data__property_name__icontains=search_string)
+#         | Q(property_data__property_address__icontains=search_string)
+#         | Q(property_data__property_city__icontains=search_string)
+#         | Q(property_data__property_state__icontains=search_string)
+#         | Q(property_data__property_country__icontains=search_string)
+#         | Q(property_data__property_zip__icontains=search_string)
+#         | Q(property_data__property_description__icontains=search_string)
+#         | Q(property_data__property_price__icontains=search_string)
+#         | Q(property_data__property_area__icontains=search_string)
+#         | Q(property_data__property_bedrooms__icontains=search_string)
+#         | Q(property_data__property_bathrooms__icontains=search_string)
+#         | Q(property_data__property_garage__icontains=search_string),
+#     )
+#     return "pass"

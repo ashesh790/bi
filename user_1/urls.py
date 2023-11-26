@@ -24,17 +24,13 @@ from user_1 import views
 urlpatterns = [
     path("", views.home, name="test_html_page"),
     path("save_location", views.save_location, name="save_location"),
-    path("properties", views.p_detail_api, name="p_detail_api"),
-    path(
-        "properties/<str:property_id>/",
-        views.specific_property,
-        name="specific_property",
-    ),
-    path(
-        "saller/<str:saller_id>/",
-        views.user_wise_property,
-        name="user_wise_property",
-    ),
+    # path("properties", views.p_detail_api, name="p_detail_api"),
+    # path("properties/<str:property_id>/",views.specific_property,name="specific_property"),
+    # path(
+    #     "saller/<str:saller_id>/",
+    #     views.user_wise_property,
+    #     name="user_wise_property",
+    # ),
     path("home", views.home, name="home"),
     path("login", views.login_app, name="login"),
     path("logout", views.logout, name="logout"),
