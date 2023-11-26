@@ -579,7 +579,13 @@
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
                         var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(property_id[i].toString());
                         var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
-                        debugger
+                        var number = JSON.parse(user_mobile[i]).user_mobile;
+                        if (number == null || number == "No_data") {
+                            number = `<i class="fa-solid fa-phone-slash"></i>`;
+                        }
+                        else {
+                            number = `<a href="tel:${number}"><i class="fa fa-phone"></i></a>`;
+                        }
                         $(property_counter).append(` 
                     <div class="col-lg-3 col-md-6 wow fadeInUp border-primary" data-wow-delay="0.1s">
                     <div class="property-item rounded overflow-hidden border prop_item  shadow-lg bg-body-tertiary rounded">
@@ -629,7 +635,7 @@
                             <div class="d-flex border-top">
                             <small class="flex-fill text-center mt-1">
                                     <h5>
-                                    <a href="tel:${JSON.parse(user_mobile[i]).user_mobile}"><i class="fa fa-phone"></i></a>
+                                    ${number}
                                     </h5>
                             </small> 
                             <small class="flex-fill text-center mt-1">
