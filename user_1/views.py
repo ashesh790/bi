@@ -770,7 +770,12 @@ def register1(request):
 			# msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
 			# msg.attach_alternative(html_content, "text/html")
 			# msg.send()
-            form.save()
+            form.save() 
+            User_other_utils.objects.create(
+                user_id=User.objects.get(username=form.cleaned_data['username']),
+                user_mobile=form.cleaned_data['phone_no'],
+                user_other_data_json={},
+            )
             messages.success(
                 request, f"Your account has been created ! You are now able to log in"
             )
