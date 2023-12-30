@@ -10,12 +10,6 @@ class p_detail_v1(models.Model):
 
     def __str__(self):
         return self.name
-
-class property_utility_v1(models.Model):
-    property_id = models.ForeignKey(p_detail_v1, on_delete=models.CASCADE)
-    seller_id = models.CharField(max_length=200)
-    property_report = models.JSONField(default=dict)
-
     
 class User_other_utils(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)

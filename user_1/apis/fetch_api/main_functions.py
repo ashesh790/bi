@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 from staying_source.settings import MEDIA_ROOT, MEDIA_ROOT_USER_ICON, MEDIA_URL
 # from user_1.apis.REST_API.database import convert_string_to_object, user_wise_property
 from user_1.apis.fetch_api.advance_filter_functions import search_properties, user_all_details
-from user_1.models import User_other_utils, p_detail_v1, property_utility_v1 
+from user_1.models import User_other_utils, p_detail_v1
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 from geopy.geocoders import Nominatim
@@ -295,7 +295,7 @@ def add_like_property_count(property_id, remove_like=False):
 def blocked_property(request, property_details=False):
     # code remain if multile user gave same proeprty report.
     user_id = request.session["username"]
-    property_utils = property_utility_v1.objects.filter(
+    property_utils = p_detail_v1.objects.filter(
         seller_id = User.objects.get(username=user_id)
     )
     property_id_reason = {}

@@ -47,7 +47,7 @@ from user_1.apis.fetch_api.main_functions import (
 )
 # from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
 from user_1.forms import UserRegisterForm
-from user_1.models import User_other_utils, p_detail_v1, property_utility_v1
+from user_1.models import User_other_utils, p_detail_v1
 from django.core.serializers import serialize
 import shutil
 from django.core.files.storage import FileSystemStorage
@@ -671,7 +671,7 @@ def submit_report_form(request):
                     "report_reason": data["report_reason"],
                     "report_desc": data["report_desc"],
                 }
-                property_utility_v1.objects.create(
+                p_detail_v1.objects.create(
                     property_id=property_id,
                     seller_id=seller_id,
                     property_report=property_report,
