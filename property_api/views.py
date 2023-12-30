@@ -12,3 +12,8 @@ from rest_framework.response import Response
 class PropertyListAPIView(generics.ListAPIView):
     queryset = p_detail_v1.objects.all()
     serializer_class = property_serializer
+
+
+class Property_create_api_view(generics.CreateAPIView):
+    queryset = p_detail_v1.objects.all()
+    serializer_class = property_serializer
