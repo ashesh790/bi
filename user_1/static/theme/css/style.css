@@ -417,16 +417,6 @@
     border-color: rgba(255,255,255,0.5);
 }
 
-.footer .copyright {
-    padding: 25px 0;
-    font-size: 15px;
-    border-top: 1px solid rgba(256, 256, 256, .1);
-}
-
-.footer .copyright a {
-    color: var(--light);
-}
-
 .footer .footer-menu a {
     margin-right: 15px;
     padding-right: 15px;
