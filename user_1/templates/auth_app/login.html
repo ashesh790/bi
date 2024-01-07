@@ -18,7 +18,7 @@
     <div class="content-section col-md-6">
         <form method="POST" style="margin: 4%; padding:5%; border-radius:1%; border: 1px solid #0099ff;"
             class="bg-white">
-            <h1 style="color: #0099ff;" class="text-center">Register</h1>
+            <h1 style="color: #0099ff;" class="text-center">Login</h1>
             <hr>
             {% csrf_token %}
             <fieldset class="form-group">
@@ -28,9 +28,10 @@
                 <br>
                 <button class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-log-in"></span>
                     login</button>
-                {% load socialaccount %}
-                <a href="{% provider_login_url 'google' %}?next=/" class="btn btn-outline-info">Google</a>
-                <a href="register_app" class="btn btn-outline-info">Register</a>
+                    <hr>
+                    {% load socialaccount %}
+                <a href="{% provider_login_url 'google' %}?next=/" class="btn btn-outline-info"><i class="fa-brands fa-google"></i> Join With Google</a>
+                <a href="register_app" class="btn btn-outline-info">Don't have an account ?</a>
             </center>
             <br />
         </form>
