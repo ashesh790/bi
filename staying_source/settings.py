@@ -14,7 +14,7 @@ import os
 from pathlib import Path 
 import environ
 
-from staying_source.config import DATABASE_NAME, DB_PASSWORD, DB_USERNAME, ENGINE, HOST_NAME, MEDIA_FOLDER, PORT
+# from staying_source.config import DATABASE_NAME, DB_PASSWORD, DB_USERNAME, ENGINE, HOST_NAME, MEDIA_FOLDER, PORT
 
 # Initialise environment variables
 env = environ.Env()
@@ -34,7 +34,14 @@ SECRET_KEY = "django-insecure-+lto1knn7#db7zf9%u!@@&%7l13-z83#k(wwdf2^^a&6tw!dhq
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
+URL="http://127.0.0.1:8000"
+ENGINE="django.db.backends.postgresql"
+DATABASE_NAME="postgres_private"
+DB_USERNAME="postgres"
+DB_PASSWORD="postgres"
+HOST_NAME="localhost"
+PORT=5432
+MEDIA_FOLDER="media/"
 SITE_ID = 2
 # Application definition
 
