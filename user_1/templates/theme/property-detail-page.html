@@ -168,102 +168,6 @@
     </div>
 </div>
 
-<br>
-<div class="container container-fluid">
-    <div class="tab-content mt-5">
-        <div class="abc">
-            <h1>
-                More Similar Properties
-            </h1>
-        </div>
-        <div id="tab-1" class="tab-pane fade show p-0 active mt-3">
-            <div class="row g-4" id="filtered">
-                {% for property in property_data %}
-                <!-- {{property.id}} -->
-                <div class="col-lg-3 col-md-6 wow fadeInUp filtered_data" data-wow-delay="0.1s">
-                    <div class="property-item rounded overflow-hidden border" id="similar_prop_btn">
-                        <div class="position-relative overflow-hidden">
-                            <div id="carouselExampleControlsNoTouching{{property.id}}" class="carousel slide"
-                                data-bs-touch="false">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <a href="/property_details/{{property.id}}"><img class="img-fluid d-block w-100"
-                                                id="item_a" src="{{property.property_data.property_image|first}}"
-                                                alt=""></a>
-                                    </div>
-                                    {% if property.property_data.property_image %}
-                                    {% for j in property.property_data.property_image|slice:"1:"%}
-                                    <div class="carousel-item">
-                                        <a href="property_details/{{property.id}}"><img class="img-fluid d-block w-100"
-                                                id="item_a" src="{{j}}" alt=""></a>
-                                    </div>
-                                    {% endfor %}
-                                    {% else %}
-                                    <b>Image is not available</b>
-                                    {% endif %}
-                                </div>
-                                <b>
-                                    <button class="carousel-control-prev" type="button"
-                                        data-bs-target="#carouselExampleControlsNoTouching{{property.id}}"
-                                        data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                    </button>
-                                </b>
-                                <b>
-                                    <button class="carousel-control-next" type="button"
-                                        data-bs-target="#carouselExampleControlsNoTouching{{property.id}}"
-                                        data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                    </button>
-                                </b>
-                            </div>
-                            <div
-                                class="selling_option bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
-                                For {{property.property_data.selling_option}}</div>
-                            <div
-                                class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
-                                {{property.property_data.property_type}}</div>
-                        </div>
-                        <div class="p-2 pb-0">
-                            <a href="property_details/{{property.id}}">
-                                <span class="text-primary mb-3">
-                                    {% if property.property_data.selling_option == "Rent" %}
-
-                                    {{property.property_data.property_rent_price}}/Month
-
-                                    {% else %}
-
-                                    {{property.property_data.property_value}}
-
-                                    {% endif %}
-
-                                </span>
-                            </a>
-                            <a class="d-block mb-2 text-dark"
-                                href="property_details/{{property.id}}">{{property.property_data.property_type}} For
-                                {{property.property_data.selling_option}}
-                            </a>
-                            <a href="property_details/{{property.id}}">
-                                <i class="fa fa-map-marker-alt text-primary me-2"></i>
-                                <span class="property_address">
-                                    {{property.property_data.property_address|truncatechars:20}}
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-                <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-                    <a class="btn btn-primary py-3 px-5" href="">Browse More Property</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Property List End -->
-
 <!-- About Start -->
 <div class="container-xxl py-5">
     <div class="container">
@@ -433,76 +337,82 @@
         });
     });
 
-    function show_property_modal(property_id) {
+    function show_property_modal(property_id) { 
+        debugger
         $(".box_data").empty();
-        var local_session_data = JSON.parse(sessionStorage.getItem("data"));
-        var data_object = Object();
-        for (var key in local_session_data.search_results.id) {
-            if (local_session_data.search_results.id[key] === Number(property_id)) {
-                is_value_present = true;
-                index = key;
-                continue;
+        if (sessionStorage.getItem("data")){
+            var local_session_data = JSON.parse(sessionStorage.getItem("data"));
+            var data_object = Object();
+            for (var key in local_session_data.search_results.id) {
+                if (local_session_data.search_results.id[key] === Number(property_id)) {
+                    is_value_present = true;
+                    index = key;
+                    continue;
+                }
             }
-        }
-        var property_data_keys = Object.keys(local_session_data.search_results);
-        var user_data = JSON.parse(local_session_data.search_results.user_data[index]);
-        $(".contact_no").attr("href", `tel:${user_data.user_mobile}`);
-        $(".whatsapp").attr("href", `https://wa.me/${user_data.user_mobile}`);
-        $(".user_profile").attr("href", `/user-public-profile/${property_id}`);
-        var data_keys = property_data_keys;
-        for (var i = 0; i < property_data_keys.length; i++) {
-            data_object[data_keys[i]] = local_session_data.search_results[property_data_keys[i]][index];
-        }
-        for (var [key, val] of Object.entries(data_object.property_data)) {
-            if (key == "property_image") {
-                $(".main_image").attr("src", val[0]);
-                sessionStorage.setItem("image_array", JSON.stringify(val));
+            var property_data_keys = Object.keys(local_session_data.search_results);
+            var user_data = JSON.parse(local_session_data.search_results.user_data[index]);
+            $(".contact_no").attr("href", `tel:${user_data.user_mobile}`);
+            $(".whatsapp").attr("href", `https://wa.me/${user_data.user_mobile}`);
+            $(".user_profile").attr("href", `/user-public-profile/${property_id}`);
+            var data_keys = property_data_keys;
+            for (var i = 0; i < property_data_keys.length; i++) {
+                data_object[data_keys[i]] = local_session_data.search_results[property_data_keys[i]][index];
             }
-            if (key != "property_image" && key != "property_video" && val.length != 0) {
-                if (key == "bhk") {
-                    $(".bhk_details").append(`${val} BHK, `);
+            for (var [key, val] of Object.entries(data_object.property_data)) {
+                if (key == "property_image") {
+                    $(".main_image").attr("src", val[0]);
+                    sessionStorage.setItem("image_array", JSON.stringify(val));
                 }
-                if (key == "geography_area") {
-                    $(".geography_area_details").append(`${val} Sq.ft.`);
-                }
-                if (key == "property_type") {
-                    $(".property_type_details").append(`${val} For`);
-                }
-                if (key == "selling_option") {
-                    $(".selling_option_details").append(`${val} In`);
-                    if (val == "Rent") {
-                        $(".selling_option_details_for_rate").append(`${data_object.property_data.property_rent_price}/ Month`);
-                        $(".selling_value").append(`<i class="fa-regular fa-money-bill-1 text-primary"></i> ${val} In Rs. `);
+                if (key != "property_image" && key != "property_video" && val.length != 0) {
+                    if (key == "bhk") {
+                        $(".bhk_details").append(`${val} BHK, `);
                     }
-                    else if (val == "Sale") {
-                        $(".selling_option_details_for_rate").append(`${data_object.property_data.property_value}`);
-                        $(".selling_value").append(`<i class="fa-regular fa-money-bill-1 text-primary"></i> ${val} In Rs. `);
+                    if (key == "geography_area") {
+                        $(".geography_area_details").append(`${val} Sq.ft.`);
                     }
-                }
-                if (key == "property_address") {
-                    $(".property_address_details").append(`${val}`);
-                }
-                if (key != "from_avail_property_date" && key != "property_rent_price" && key != "property_value" && key != "property_address") {
-                    var icon_i = name_to_icon[key]
-                    key = key.replace(/_/g, ' ');
-                    key = key.charAt(0).toUpperCase() + key.slice(1);
-                    $(".box_data").append(` 
-                    <div class="col-6 col-lg-2 p-1"> 
-                        <div class="border text-center p-2"
-                                style="width: 100% !important; height: auto !important;">
-                                <b class="icon_picture">${icon_i}</b>
-                                <pre></pre>
-                                <b class="value_label text-dark">${key}</b>
-                                <pre></pre>
-                                <p class="value_val">${val}</p>
-                            </div> 
-                        </div>
-                            `);
+                    if (key == "property_type") {
+                        $(".property_type_details").append(`${val} For`);
+                    }
+                    if (key == "selling_option") {
+                        $(".selling_option_details").append(`${val} In`);
+                        if (val == "Rent") {
+                            $(".selling_option_details_for_rate").append(`${data_object.property_data.property_rent_price}/ Month`);
+                            $(".selling_value").append(`<i class="fa-regular fa-money-bill-1 text-primary"></i> ${val} In Rs. `);
+                        }
+                        else if (val == "Sale") {
+                            $(".selling_option_details_for_rate").append(`${data_object.property_data.property_value}`);
+                            $(".selling_value").append(`<i class="fa-regular fa-money-bill-1 text-primary"></i> ${val} In Rs. `);
+                        }
+                    }
+                    if (key == "property_address") {
+                        $(".property_address_details").append(`${val}`);
+                    }
+                    if (key != "from_avail_property_date" && key != "property_rent_price" && key != "property_value" && key != "property_address") {
+                        var icon_i = name_to_icon[key]
+                        key = key.replace(/_/g, ' ');
+                        key = key.charAt(0).toUpperCase() + key.slice(1);
+                        $(".box_data").append(` 
+                        <div class="col-6 col-lg-2 p-1"> 
+                            <div class="border text-center p-2"
+                                    style="width: 100% !important; height: auto !important;">
+                                    <b class="icon_picture">${icon_i}</b>
+                                    <pre></pre>
+                                    <b class="value_label text-dark">${key}</b>
+                                    <pre></pre>
+                                    <p class="value_val">${val}</p>
+                                </div> 
+                            </div>
+                                `);
+                    }
                 }
             }
         }
-        // console.log(JSON.parse(sessionStorage.getItem("image_array"))); 
+        else{
+            alert("Data Not Found");
+        }
     }
+
 
 
     function picture_show_in_modal() {
