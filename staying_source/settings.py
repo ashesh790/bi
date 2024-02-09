@@ -17,8 +17,8 @@ import environ
 # from staying_source.config import DATABASE_NAME, DB_PASSWORD, DB_USERNAME, ENGINE, HOST_NAME, MEDIA_FOLDER, PORT
 
 # Initialise environment variables
-env = environ.Env()
-environ.Env.read_env()
+# env = environ.Env()
+# environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
