@@ -1,46 +1,66 @@
-{% extends "theme/master.html" %}
-{% block start %}
-{% load static %}
+{% extends "theme/master.html" %} {% block start %} {% load static %}
 <style>
-    body {
-        background-image: url({% static 'pexels-pixabay-259962.jpg' %});
-        background-repeat: no-repeat;
-        /* Full height */
-        height: 100%;
+  body {
+    background-image: url({%static"pexels-pixabay-259962.jpg"%});
+    background-repeat: no-repeat;
+    /* Full height */
+    height: 100%;
 
-        /* Center and scale the image nicely */
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 </style>
 <div class="row">
-    <div class="content-section col-md-6">
-        <form method="POST" style="margin: 4%; padding:5%; border-radius:1%; border: 1px solid #0099ff;"
-            class="bg-white">
-            <h1 style="color: #0099ff;" class="text-center">Login</h1>
-            <hr>
-            {% csrf_token %}
-            <fieldset class="form-group">
-                {{ form}}
-            </fieldset>
-            <center>
-                <br>
-                <button class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-log-in"></span>
-                    login</button>
-                    <hr>
-                    {% load socialaccount %}
-                <a href="{% provider_login_url 'google' %}?next=/" class="btn btn-outline-info"><i class="fa-brands fa-google"></i> Join With Google</a>
-                <a href="register_app" class="btn btn-outline-info">Don't have an account ?</a>
-            </center>
-            <br />
-        </form>
+  <div class="content-section col-md-6">
+    <form
+      method="POST"
+      style="
+        margin: 4%;
+        padding: 5%;
+        border-radius: 1%;
+        border: 1px solid #0099ff;
+      "
+      class="bg-white"
+    >
+      <h1 style="color: #0099ff" class="text-center">Login</h1>
+      <hr />
+      {% csrf_token %}
+      <fieldset class="form-group">{{ form}}</fieldset>
+      <center>
+        <br />
+        <button class="btn btn-outline-info" type="submit">
+          <span class="glyphicon glyphicon-log-in"></span> login
+        </button>
+        <hr />
+        <!-- {% load socialaccount %}
+        <a
+          href="{% provider_login_url 'google' %}?next=/"
+          class="btn btn-outline-info"
+          ><i class="fa-brands fa-google"></i> Join With Google</a
+        > -->
+        <a href="register_app" class="btn btn-outline-info"
+          >Don't have an account ?</a
+        >
+      </center>
+      <br />
+    </form>
+  </div>
+  <div class="col-md-6">
+    <div
+      style="
+        padding: 2%;
+        margin: 4%;
+        border-radius: 1%;
+        color: #0099ff;
+        font-weight: bolder;
+        font-size: 100px;
+        text-align: center;
+      "
+    >
+      Build dreams with us!
     </div>
-    <div class="col-md-6">
-        <div
-            style="padding:2%; margin: 4%; border-radius:1%;color: #0099ff; font-weight: bolder; font-size: 100px; text-align: center;">
-            Build dreams with us!
-        </div>
-    </div>
+  </div>
 </div>
 {% endblock %}
