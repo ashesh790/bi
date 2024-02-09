@@ -110,14 +110,20 @@ WSGI_APPLICATION = "staying_source.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": ENGINE,
+#         "NAME": DATABASE_NAME,
+#         "USER": DB_USERNAME,
+#         "PASSWORD": DB_PASSWORD,
+#         "HOST": HOST_NAME,
+#         "PORT": PORT,
+#     }
+# }
 DATABASES = {
-    "default": {
-        "ENGINE": ENGINE,
-        "NAME": DATABASE_NAME,
-        "USER": DB_USERNAME,
-        "PASSWORD": DB_PASSWORD,
-        "HOST": HOST_NAME,
-        "PORT": PORT,
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
