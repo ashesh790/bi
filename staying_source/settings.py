@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 from pathlib import Path 
-import environ
 
 # from staying_source.config import DATABASE_NAME, DB_PASSWORD, DB_USERNAME, ENGINE, HOST_NAME, MEDIA_FOLDER, PORT
 
