@@ -12,14 +12,15 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 from pathlib import Path 
-import environ
 
-from staying_source.config import DATABASE_NAME, DB_PASSWORD, DB_USERNAME, ENGINE, HOST_NAME, MEDIA_FOLDER, PORT
-
-# Initialise environment variables
-env = environ.Env()
-environ.Env.read_env()
-
+URL="http://127.0.0.1:8000"
+ENGINE="django.db.backends.postgresql"
+DATABASE_NAME="postgres_private"
+DB_USERNAME="postgres"
+DB_PASSWORD="postgres"
+HOST_NAME="localhost"
+PORT=5432
+MEDIA_FOLDER="media/"
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -35,7 +36,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["9cec-1-38-182-47.ngrok-free.app", "127.0.0.1", "localhost"]
 
-SITE_ID = 2
+SITE_ID = 3
 # Application definition
 
 INSTALLED_APPS = [
@@ -104,14 +105,20 @@ WSGI_APPLICATION = "staying_source.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": ENGINE,
+#         "NAME": DATABASE_NAME,
+#         "USER": DB_USERNAME,
+#         "PASSWORD": DB_PASSWORD,
+#         "HOST": HOST_NAME,
+#         "PORT": PORT,
+#     }
+# }
 DATABASES = {
-    "default": {
-        "ENGINE": ENGINE,
-        "NAME": DATABASE_NAME,
-        "USER": DB_USERNAME,
-        "PASSWORD": DB_PASSWORD,
-        "HOST": HOST_NAME,
-        "PORT": PORT,
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

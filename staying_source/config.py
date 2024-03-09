@@ -1,19 +1,8 @@
-import environ 
-
-# Initialise environment variables
-env = environ.Env()
-environ.Env.read_env() 
-
-
-# databse configuration 
-ENGINE = env("ENGINE")
-DATABASE_NAME = env("DATABASE_NAME") 
-DB_USERNAME = env("DB_USERNAME") 
-DB_PASSWORD = env("DB_PASSWORD") 
-HOST_NAME = env("HOST_NAME")
-PORT = env("PORT") 
-
-
-URL = env("URL") 
-
-MEDIA_FOLDER = env("MEDIA_FOLDER")
+URL="http://127.0.0.1:7979"
+ENGINE="django.db.backends.postgresql"
+DATABASE_NAME="postgres_private"
+DB_USERNAME="postgres"
+DB_PASSWORD="postgres"
+HOST_NAME="localhost"
+PORT=5432
+MEDIA_FOLDER="media/"

@@ -778,7 +778,7 @@ def register1(request):
             )
             messages.success(
                 request, f"Your account has been created ! You are now able to log in"
-            )
+            )   
             return redirect("login")
     else:
         form = UserRegisterForm()
