@@ -42,15 +42,13 @@
         </div> <a href='home'>Find Property!</a>
         {% endif %}
         {% for key, val in saved_property_dict.items %}
-        <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="property-item rounded overflow-hidden border" id="prop_item">
-                <div class="position-relative overflow-hidden">
-                    <div id="carouselExampleControlsNoTouching{{key}}" class="carousel slide" data-interval="true"
-                        data-bs-touch="false">
-                        <div class="carousel-inner">
+        <div class="col-lg-3 col-md-6 wow fadeInUp border-primary" data-wow-delay="0.1s">
+            <div class="property-item rounded overflow-hidden border prop_item  shadow-lg bg-body-tertiary rounded">
+                    <div class="position-relative overflow-hidden"> 
+                    <div id="carouselExampleControls{{key}}" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <a href="property_details/{{key}}"><img class="img-fluid d-block w-100"
-                                        id="property_details" src="{{val.property_image|first}}" alt=""></a>
+                            <a href="property_details/{{key}}"><img class="img-fluid" style="width:100%; height: 190px;" src="{{val.property_image|first}}" alt="" loading="lazy"></a>
                             </div>
                             {% if val.property_image %}
                             {% for j in val.property_image|slice:"1:"%}
@@ -61,50 +59,75 @@
                             {% endfor %}
                             {% else %}
                             <b>Image is not available</b>
-                            {% endif %}
-                        </div>
-                        <b>
-                            <button class="carousel-control-prev" type="button"
-                                data-bs-target="#carouselExampleControlsNoTouching{{key}}" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                        </b>
-                        <b>
-                            <button class="carousel-control-next" type="button"
-                                data-bs-target="#carouselExampleControlsNoTouching{{key}}" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </b>
+                            {% endif %} 
+                            </div>
+                            <b>
+                                <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#carouselExampleControlsNoTouching{{key}}" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                            </b>
+                            <b>
+                                <button class="carousel-control-next" type="button"
+                                    data-bs-target="#carouselExampleControlsNoTouching{{key}}" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </b>
                     </div>
-                </div>
-                <div class="p-0 pb-0" id="Month_parent">
-                    <div class="p-3 pb-0 for_popup_box" style="position: relative;">
+                    <div
+                            class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                            {{val.property_type}}</div>
+                    </div>
+                    <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${property_id[i]}_popup"> 
                         <a class="d-block mb-2" href="property_details/{{key}}" id="/Month">
-                            <h5 class="text-primary mb-2">${{val.property_rent_price}}/Month</h5>
+                                <h5 class="text-primary mb-2">${{val.property_rent_price}}/Month</h5>
                         </a>
                         <a class="d-block mb-2" href="property_details/{{key}}">
-                            <b class="d-block h6 mb-2">{{val.property_type}} For
+                                <b class="d-block h6 mb-2">{{val.property_type}} For
                                 {{val.selling_option}}
-                            </b>
-                        </a>
-                        <div style="display:flex;">
+                                </b>
+                        </a> 
+                        <div style="display:flex;"> 
                             <p style="width:70%;">
-                                <i
+                                    <i
                                     class="fa fa-map-marker text-primary me-2"></i>{{val.property_address|truncatechars:20}}...
-                            </p>
+                            </p> 
+                            <p style="width:30%;"> 
+                                    By&nbsp;<a href="/user-public-profile/{{key}}">{{val.user_data.user_name}}</a> 
+                            </p> 
                         </div>
                     </div>
-                    <span id="tooltip_parent" class="p-2" prop_id="{{key}}" onclick="remove_bookmark_property(this);">
-                        <h5><i class="fa fa-bookmark" data-bs-toggle="tooltip" data-bs-placement="top"
-                                data-bs-title="Tooltip on top"></i></h5>
-                    </span>
-                    </a>
-                </div>
-                
+                    <div class="d-flex border-top">
+                    <small class="flex-fill text-center mt-1">
+                            <h5>
+                                <a href="tel:{{val.user_data.user_mobile}}"><i class="fa fa-phone"></i></a>
+                            </h5>
+                    </small> 
+                    <small class="flex-fill text-center mt-1">
+                            <h5>
+                                <a href="tel:{{val.user_data.user_email}}"><i class="fa-regular fa-envelope"></i></a>
+                            </h5>
+                    </small>
+                    <small class="flex-fill text-center mt-1">
+                            <h5>
+                            <i class="fa fa-share-alt" url="property_details/{{key}}" onclick="openModal(this);"></i>
+                            </h5>
+                    </small>
+                    
+                    <small class="flex-fill text-center mt-1">
+                            <h5>
+                            <i class="fa-solid fa-circle-info"
+                                    onclick="toggle_property_popup('modal__{{key}}_popup')"></i> 
+                            </h5> 
+                    </small>
+                    <small class="flex-fill text-center mt-1" prop_id="{{key}}" onclick="remove_bookmark_property(this);">
+                        <h5><i class="fa fa-bookmark"></i></h5>
+                    </small>
+                    </div>
             </div>
-        </div>
+            </div>
         {% endfor %}
     </div>
 </div>
