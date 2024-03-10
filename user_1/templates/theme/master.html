@@ -287,8 +287,8 @@
 
         .add_property_btn {
             position: fixed;
-            right: 10px;
-            bottom: 10px;
+            right: 20px;
+            bottom: 100px;
             z-index: 99;
             border-radius: 20px;
             border-width: 5px;
@@ -297,8 +297,8 @@
 
         .add_property_btn:hover {
             position: fixed;
-            right: 10px;
-            bottom: 10px;
+            right: 20px;
+            bottom: 100px;
             z-index: 99;
             border-radius: 20px;
             background-color: #0099ff;
@@ -425,9 +425,9 @@
                 <div class="navbar-nav ms-auto">
                     {% if 'username' in request.session %}
                     <span class="mt-1">{{request.session.username}}</span> &nbsp;
-                    <a data-toggle="modal" data-target="#glassAnimals"
+                    <button data-bs-toggle="modal" data-bs-target="#glassAnimals"
                         class="btn btn-outline-primary px-3 d-lg-flex bg-primary" id="logout_btn"><i
-                            class="fa fa-user text-white" aria-hidden="true"></i></a> &nbsp;&nbsp;
+                            class="fa fa-user text-white" aria-hidden="true"></i></button> &nbsp;&nbsp;
                     <i onclick="show_notifications()" class="fa-solid fa-bell mt-2" data-bs-toggle="modal"
                         data-bs-target="#login_modal"></i>
                     {% else%}
@@ -452,8 +452,7 @@
             </div>
         </div>
         <!-- Navbar End -->
-        <!-- Modal for user profile -->
-        <div class="login_modal fade" id="glassAnimals" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="login_modal fade" id="glassAnimals" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                 <div class="modal-content">
@@ -478,8 +477,6 @@
         {% block main_content %}
 
         {% endblock %}
-
-
         <!-- Back to Top -->
         {% block btn_shortcut%}<a href="{% url 'add_property_details' %}" class="btn btn-primary add_property_btn">Add
             Property</a>{% endblock %}
