@@ -584,12 +584,10 @@
                         var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(property_id[i].toString());
                         var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
                         var number = JSON.parse(user_mobile[i]).user_mobile;
-                        if (number == null || number == "No_data") {
-                            number = `<i class="fa-solid fa-phone-slash"></i>`;
-                        }
-                        else {
-                            number = `<a href="tel:${number}"><i class="fa fa-phone"></i></a>`;
-                        }
+                        var email = JSON.parse(user_mobile[i]).user_email;
+                        number = (number == null || number == undefined) ? `<i class="fa-solid fa-phone-slash"></i>` : `<a href="tel:${number}"><i class="fa fa-phone"></i></a>`;
+                        email = (email == null || email == undefined) ? `` : `<a href="tel:${email}"><i class="fa-regular fa-envelope"></i></a>`;
+
                         $(property_counter).append(` 
                     <div class="col-lg-3 col-md-6 wow fadeInUp border-primary" data-wow-delay="0.1s">
                     <div class="property-item rounded overflow-hidden border prop_item  shadow-lg bg-body-tertiary rounded">
@@ -644,7 +642,7 @@
                             </small> 
                             <small class="flex-fill text-center mt-1">
                                     <h5> 
-                                        <i class="fa-regular fa-envelope"></i>
+                                        ${email}
                                     </h5>
                             </small>
                             <small class="flex-fill text-center mt-1">
