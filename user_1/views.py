@@ -603,7 +603,7 @@ def update_profile(request):
         "user_id": user_id,
         "user_name": user_data.user_id.username,
         "user_email": user_data.user_id.email,
-        "user_mobile": user_data.user_other_data_json['user_mobile'],
+        "user_mobile": user_data.user_other_data_json['user_mobile'] if "user_mobile" in user_data.user_other_data_json else "",
     }
     if "user_icon" in user_data.user_other_data_json:
         user_detail["user_icon"] = user_data.user_other_data_json["user_icon"]
@@ -626,6 +626,7 @@ def update_profile(request):
                 )
                 request.session["user_location"] = data.get("user_location")
                 request.session["username"] = data.get("user_name")
+            user_data.user_other_data_json["user_mobile"] = data['user_mobile']
             user_record.save()
             user_data.save()
             return JsonResponse({"Hello": "Hello"})
