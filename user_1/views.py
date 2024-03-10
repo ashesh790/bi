@@ -566,6 +566,7 @@ def saved_property(request, remaining_property=False):
                     saved_property_list.remove(i)
                     continue
                 saved_property_dict[i] = query_data.property_data
+                saved_property_dict[i]['user_data'] = ((user_all_details(i)))
             user_data.user_other_data_json["saved_property"] = saved_property_list
             user_data.save()
             if remaining_property:
