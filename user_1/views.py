@@ -671,15 +671,13 @@ def submit_report_form(request):
                     "report_reason": data["report_reason"],
                     "report_desc": data["report_desc"],
                 }
-                p_detail_v1.objects.create(
-                    property_id=property_id,
-                    seller_id=seller_id,
-                    property_report=property_report,
-                )
-        return JsonResponse({"status": "success"})
+                property_data = p_detail_v1.objects.get(id=data["property_id"])
+                property_data.seller_id=seller_id
+                property_data.property_other_data=property_report
+                property_data.save()
+                return JsonResponse({"status": "success"})
     except Exception as ex:
-        print(ex)
-        return JsonResponse({"success": "error"})
+        raise ex 
 
 
 def chat(request, user_id):
