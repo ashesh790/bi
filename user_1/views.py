@@ -527,7 +527,7 @@ def bookmark_property_detail(request):
                 user_other_data.user_other_data_json["saved_property"].remove(
                     property_id
                 )
-                user_data.save()
+                user_other_data.save()
             remaining_property = saved_property(request, True)
             if remaining_property.content == "Empty":
                 return HttpResponse("Empty")

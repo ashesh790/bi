@@ -79,24 +79,24 @@
                         </b>
                     </div>
                 </div>
-                <div class="p-4 pb-0" id="Month_parent">
-                    <a class="d-block mb-2" href="property_details/{{key}}" id="/Month"><b
-                            class="text-primary mb-3">{{val.property_rent_price}}/Month
-                        </b>
-                        <span class="dot"></span>
-                        <span class="text-dark">
-                            <span class="text-primary"><b>{{val.property_type}}</b></span>,
-                            For
-                            <span class="text-primary"><b></b>{{val.selling_option}}</b></span>
-                        </span>
-                        <a href="property_details/{{key}}">
-                            <i class="fa fa-map-marker-alt text-primary me-2">
-                            </i>
-                            <span class="property_address">
-                                {{val.property_address|truncatechars:20}}...
-                            </span>
+                <div class="p-0 pb-0" id="Month_parent">
+                    <div class="p-3 pb-0 for_popup_box" style="position: relative;"> 
+                        <a class="d-block mb-2" href="property_details/{{key}}" id="/Month">
+                                <h5 class="text-primary mb-2">${{val.property_rent_price}}/Month</h5>
                         </a>
-                        <span id="tooltip_parent" prop_id="{{key}}" onclick="remove_bookmark_property(this);">
+                        <a class="d-block mb-2" href="property_details/{{key}}">
+                                <b class="d-block h6 mb-2">{{val.property_type}} For
+                                    {{val.selling_option}}
+                                </b>
+                        </a> 
+                        <div style="display:flex;"> 
+                            <p style="width:70%;">
+                                    <i
+                                    class="fa fa-map-marker text-primary me-2"></i>{{val.property_address|truncatechars:20}}...
+                            </p> 
+                        </div>
+                    </div>
+                        <span id="tooltip_parent" class="p-2" prop_id="{{key}}" onclick="remove_bookmark_property(this);">
                             <h5><i class="fa fa-bookmark" data-bs-toggle="tooltip" data-bs-placement="top"
                                     data-bs-title="Tooltip on top"></i></h5>
                         </span>
@@ -111,6 +111,7 @@
     var maxLength = 20;
 
     function remove_bookmark_property(property_id) {
+        debugger
         var property_id = $(property_id).attr("prop_id");
         $.ajax({
             url: "{% url 'bookmark_property_detail' %}",
