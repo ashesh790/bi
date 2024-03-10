@@ -80,28 +80,29 @@
                     </div>
                 </div>
                 <div class="p-0 pb-0" id="Month_parent">
-                    <div class="p-3 pb-0 for_popup_box" style="position: relative;"> 
+                    <div class="p-3 pb-0 for_popup_box" style="position: relative;">
                         <a class="d-block mb-2" href="property_details/{{key}}" id="/Month">
-                                <h5 class="text-primary mb-2">${{val.property_rent_price}}/Month</h5>
+                            <h5 class="text-primary mb-2">${{val.property_rent_price}}/Month</h5>
                         </a>
                         <a class="d-block mb-2" href="property_details/{{key}}">
-                                <b class="d-block h6 mb-2">{{val.property_type}} For
-                                    {{val.selling_option}}
-                                </b>
-                        </a> 
-                        <div style="display:flex;"> 
+                            <b class="d-block h6 mb-2">{{val.property_type}} For
+                                {{val.selling_option}}
+                            </b>
+                        </a>
+                        <div style="display:flex;">
                             <p style="width:70%;">
-                                    <i
+                                <i
                                     class="fa fa-map-marker text-primary me-2"></i>{{val.property_address|truncatechars:20}}...
-                            </p> 
+                            </p>
                         </div>
                     </div>
-                        <span id="tooltip_parent" class="p-2" prop_id="{{key}}" onclick="remove_bookmark_property(this);">
-                            <h5><i class="fa fa-bookmark" data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="Tooltip on top"></i></h5>
-                        </span>
+                    <span id="tooltip_parent" class="p-2" prop_id="{{key}}" onclick="remove_bookmark_property(this);">
+                        <h5><i class="fa fa-bookmark" data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-title="Tooltip on top"></i></h5>
+                    </span>
                     </a>
                 </div>
+                
             </div>
         </div>
         {% endfor %}
