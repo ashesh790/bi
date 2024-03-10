@@ -603,7 +603,7 @@ def update_profile(request):
         "user_id": user_id,
         "user_name": user_data.user_id.username,
         "user_email": user_data.user_id.email,
-        "user_mobile": "no_data",
+        "user_mobile": user_data.user_other_data_json['user_mobile'],
     }
     if "user_icon" in user_data.user_other_data_json:
         user_detail["user_icon"] = user_data.user_other_data_json["user_icon"]
@@ -769,10 +769,10 @@ def register1(request):
 			# msg.attach_alternative(html_content, "text/html")
 			# msg.send()
             form.save() 
+            user_data = {'user_mobile': form.cleaned_data['phone_no']}  
             User_other_utils.objects.create(
                 user_id=User.objects.get(username=form.cleaned_data['username']),
-                user_mobile=form.cleaned_data['phone_no'],
-                user_other_data_json={},
+                user_other_data_json=user_data,
             )
             messages.success(
                 request, f"Your account has been created ! You are now able to log in"

@@ -39,7 +39,7 @@ def add_property_details_in_database(request):
         property_data["property_image"] = property_image_save
         property_data["property_video"] = {}
         # fetching last property detail from databases
-        property_detail = p_detail_v1.objects.create(
+        p_detail_v1.objects.create(
             seller_id=User.objects.get(pk=seller_id),
             property_data=property_data,
         )
