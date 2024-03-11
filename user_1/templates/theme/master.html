@@ -187,6 +187,7 @@
             overflow: hidden;
             outline: 0px;
         }
+
         .btn_profile {
             border-left: 2px solid #0099ff !important;
             border-top: 0;
@@ -453,27 +454,28 @@
         <!-- Navbar End -->
         <div class="modal fade " id="settingModal" tabindex="-1" aria-labelledby="settingModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="settingModalLabel">Settings</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="settingModalLabel">Settings</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <a href="{% url 'setting_profile' %}" class="btn w-100 btn_profile">Profile</a>
+                        <a href="{% url 'saved_property' %}" class="btn w-100 btn_profile">Saved Property</a>
+                        <a href="{% url 'dashboard' %}" class="btn w-100 btn_profile">Manage Property</a>
+                        <!-- <a href="{% url 'solve_property_issue' %}" class="btn w-100 btn_profile">Solve issue</a> -->
+                        <hr>
+                        <a href="logout" class="btn w-100 btn_profile">Logout</a>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <a href="{% url 'setting_profile' %}" class="btn w-100 btn_profile">Profile</a>
-                    <a href="{% url 'saved_property' %}" class="btn w-100 btn_profile">Saved Property</a>
-                    <a href="{% url 'dashboard' %}" class="btn w-100 btn_profile">Manage Property</a>
-                    <!-- <a href="{% url 'solve_property_issue' %}" class="btn w-100 btn_profile">Solve issue</a> -->
-                    <hr>
-                    <a href="logout" class="btn w-100 btn_profile">Logout</a>
-                </div>
-              </div>
             </div>
-          </div>
+        </div>
         {% block main_content %}
 
         {% endblock %}
-<!-- Back to Top -->
-        {% block btn_shortcut%}<a href="{% url 'add_property_details' %}" class="btn btn-primary add_property_btn d-none">Add
+        <!-- Back to Top -->
+        {% block btn_shortcut%}<a href="{% url 'add_property_details' %}"
+            class="btn btn-primary add_property_btn d-none">Add
             Property</a>{% endblock %}
     </div>
 

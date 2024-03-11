@@ -2,16 +2,20 @@
 {% block manage_property %}active{% endblock %}
 {% block main_content %}
 <style>
-    #main{
+    #main {
         padding: 0px;
     }
-    #scroller{
-        overflow: auto; 
-        display:flex;
+
+    #scroller {
+        overflow: auto;
+        display: flex;
     }
-    #dashboard_btn, #list_btn{
-        margin:10px;
+
+    #dashboard_btn,
+    #list_btn {
+        margin: 10px;
     }
+
     .p_type_btn {
         border-radius: 20px;
         border: 1px solid white;
@@ -45,7 +49,7 @@
             <!-- <button class="col-md-2 btn p_type_btn btn-outline-primary text-white border-white add_property_page"
                 style="margin:10px;" value="all"><a href="{% url 'add_property_details' %}">Add new
                     property</a></button> -->
-            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn"  id="dashboard_btn"
+            <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" id="dashboard_btn"
                 value="all"><a href="{% url 'dashboard' %}">Property dashboard</a></button>
             <button class="col-md-2 btn btn-outline-primary text-white border-white p_type_btn" id="list_btn">
                 <a href="{% url 'prop_table' %}">Property list</a></button>
