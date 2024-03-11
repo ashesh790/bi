@@ -480,7 +480,6 @@ def bookmark_property_detail(request):
             raise Exception
         user_id = request.session["username"]
         property_id = request.POST["property_id"]
-        user_data = User.objects.get(username=user_id)
         try:
             user_other_data = User_other_utils.objects.get(
                 user_id=User.objects.get(username=request.session["username"])
