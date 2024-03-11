@@ -757,7 +757,7 @@
     function move_applied_to_first(applied_filter) {
 
         property_type_val = applied_filter.value;
-                if ($(applied_filter).hasClass("p_type_btn")) {
+        if ($(applied_filter).hasClass("p_type_btn")) {
             if ($(applied_filter).text() != "Clear") {
                 $(applied_filter).insertAfter(".scroller_1");
             }

@@ -73,20 +73,20 @@
             var error = '';
             var err_html = '';
 
-            if (name.trim() === '') { 
+            if (name.trim() === '') {
                 error = 'Please enter your name.';
                 // Display the error message, if any 
                 err_html = `<span id="error-message" class="text-danger">${error}</span>`;
                 $("#name_label").after(err_html);
                 return false;
-            } 
-            if (name.length < 3) { 
+            }
+            if (name.length < 3) {
                 error = 'Username must be at least 3 characters long.';
                 // Display the error message, if any 
                 err_html = `<span id="error-message" class="text-danger">${error}</span>`;
                 $("#name_label").after(err_html);
                 return false;
-            } 
+            }
 
             if (number.trim() === '') {
                 error = 'Please enter your contact number.';
