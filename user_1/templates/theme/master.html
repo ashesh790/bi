@@ -179,16 +179,14 @@
         .notification_modal {
             position: fixed;
             top: 0px;
-            right: 20px;
             left: auto;
             z-index: 1060;
-            width: 30%;
+            width: 100%;
             height: 100%;
             display: none;
             overflow: hidden;
             outline: 0px;
         }
-
         .btn_profile {
             border-left: 2px solid #0099ff !important;
             border-top: 0;
@@ -426,7 +424,7 @@
                 <div class="navbar-nav ms-auto">
                     {% if 'username' in request.session %}
                     <span class="mt-1">{{request.session.username}}</span> &nbsp;
-                    <button data-bs-toggle="modal" data-bs-target="#glassAnimals"
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#settingModal"
                         class="btn btn-outline-primary px-3 d-lg-flex bg-primary" id="logout_btn"><i
                             class="fa fa-user text-white" aria-hidden="true"></i></button> &nbsp;&nbsp;
                     <i onclick="show_notifications()" class="fa-solid fa-bell mt-2" data-bs-toggle="modal"
@@ -439,12 +437,12 @@
         </nav>
         <!-- Button trigger modal -->
         <!-- Modal -->
-        <div class="notification_modal fade" id="login_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        <div class="notification_modal fade" id="login_modal" tabindex="-1" aria-labelledby="login_modal"
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Notifications</h1>
+                        <h1 class="modal-title fs-5" id="login_modal">Notifications</h1>
                     </div>
                     <div class="modal-body">
                         <div id="notifications"></div>
@@ -453,28 +451,24 @@
             </div>
         </div>
         <!-- Navbar End -->
-        <div class="login_modal fade" id="glassAnimals" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Manage your self</h5>
-                        <button type="button" class="close btn btn-outline-primary" data-dismiss="modal"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <a href="{% url 'setting_profile' %}" class="btn w-100 btn_profile">Profile</a>
-                        <a href="{% url 'saved_property' %}" class="btn w-100 btn_profile">Saved Property</a>
-                        <a href="{% url 'dashboard' %}" class="btn w-100 btn_profile">Manage Property</a>
-                        <!-- <a href="{% url 'solve_property_issue' %}" class="btn w-100 btn_profile">Solve issue</a> -->
-                        <hr>
-                        <a href="logout" class="btn w-100 btn_profile">Logout</a>
-                    </div>
+        <div class="modal fade " id="settingModal" tabindex="-1" aria-labelledby="settingModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="settingModalLabel">Settings</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="modal-body">
+                    <a href="{% url 'setting_profile' %}" class="btn w-100 btn_profile">Profile</a>
+                    <a href="{% url 'saved_property' %}" class="btn w-100 btn_profile">Saved Property</a>
+                    <a href="{% url 'dashboard' %}" class="btn w-100 btn_profile">Manage Property</a>
+                    <!-- <a href="{% url 'solve_property_issue' %}" class="btn w-100 btn_profile">Solve issue</a> -->
+                    <hr>
+                    <a href="logout" class="btn w-100 btn_profile">Logout</a>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
         {% block main_content %}
 
         {% endblock %}
