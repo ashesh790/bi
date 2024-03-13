@@ -45,12 +45,6 @@
         }
 
         
-        .add_property_button{
-                display: block;
-            }
-            .add_property_button_lg{
-                display: none;
-            }
         @media screen and (max-width: 820px) {
             .navbar_main {
                 height: auto;
@@ -91,7 +85,7 @@
                 margin-bottom: 10px !important;
                 border-radius: 20px !important;
                 width: 100% !important;
-            }
+            } 
         }
 
         @media screen and (max-width: 920px) {
@@ -110,12 +104,6 @@
 
             #search_by_place_label {
                 width: 100%;
-            }
-            .add_property_button{
-                display: block;
-            }
-            .add_property_button_lg{
-                display: none;
             }
         }
 
@@ -416,14 +404,14 @@
                 <img src="{% static 'theme/img/favicon.ico' %}">
             </a>
             <a href="{% url 'add_property_details' %}" class="nav-item nav-link text-primary add_property_button"><button class="btn btn-outline-primary">
-                Add PROPERTY
+                ADD PROPERTY
                 </button>
                 </a>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon">.</span>
             </button>
-            <div class="collapse navbar-collapse align-items-center" id="navbarCollapse">
-                <div class="navbar-nav ml-auto">
+            <div class="collapse navbar-collapse container-fluid-nav text-start" id="navbarCollapse">
+                <div class="navbar-nav ms-auto">
                     <a href="{% url 'home' %}" class="nav-item nav-link {% block home %}{% endblock %}">Home</a>
                     <a href="{% url 'saved_property' %}"
                         class="nav-item nav-link {% block saved_property %}{% endblock %}">Saved Property</a>
@@ -434,7 +422,6 @@
                     <a href="{% url 'contact' %}"
                         class="nav-item nav-link {% block contact %}{% endblock %}">Contact</a>
                     <a href="{% url 'about' %}" class="nav-item nav-link {% block about %}{% endblock %}">About</a>
-                    <a href="{% url 'add_property_details' %}" class="nav-item nav-link text-primary add_property_button_lg">Add Property</a>
                 </div>
                 <div class="navbar-nav ms-auto">
                     {% if 'username' in request.session %}
@@ -630,7 +617,7 @@
     {% block start %}
     {% endblock %}
     <!-- Footer Start -->
-    <footer class="container-fluid bg-dark text-white-50 footer wow fadeIn" data-wow-delay="0.1s">
+    <footer class="container-fluid bg-dark text-white-50 footer wow fadeIn" data-wow-delay="0.1s" style="margin-bottom: -100px !important;">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
