@@ -24,7 +24,7 @@
             <hr>
             {% csrf_token %}
             <fieldset class="form-group">
-                {{ form}}
+                {{form.as_p}}
             </fieldset>
             <center>
                 <br>
