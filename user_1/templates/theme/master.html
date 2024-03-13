@@ -44,10 +44,13 @@
             cursor: pointer;
         }
 
-        .navbar_main {
-            height: 40px;
-        }
-
+        
+        .add_property_button{
+                display: block;
+            }
+            .add_property_button_lg{
+                display: none;
+            }
         @media screen and (max-width: 820px) {
             .navbar_main {
                 height: auto;
@@ -107,6 +110,12 @@
 
             #search_by_place_label {
                 width: 100%;
+            }
+            .add_property_button{
+                display: block;
+            }
+            .add_property_button_lg{
+                display: none;
             }
         }
 
@@ -374,6 +383,7 @@
         .btn-outline-primary:hove {
             color: white !important;
         }
+        
     </style>
 </head>
 
@@ -403,8 +413,12 @@
                         <img class="img-fluid" src="{% static 'theme/img/icon-deal.png' %}" alt="Icon" style="width: 30px; height: 30px;">
                     </div> -->
                 <!-- <h1 class="m-0 text-primary">audrr.com</h1> -->
-                <h4 class="m-0 text-primary">xyz</h4>
+                <img src="{% static 'theme/img/favicon.ico' %}">
             </a>
+            <a href="{% url 'add_property_details' %}" class="nav-item nav-link text-primary add_property_button"><button class="btn btn-outline-primary">
+                Add PROPERTY
+                </button>
+                </a>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon">.</span>
             </button>
@@ -420,7 +434,7 @@
                     <a href="{% url 'contact' %}"
                         class="nav-item nav-link {% block contact %}{% endblock %}">Contact</a>
                     <a href="{% url 'about' %}" class="nav-item nav-link {% block about %}{% endblock %}">About</a>
-                    <a href="{% url 'add_property_details' %}" class="nav-item nav-link text-primary">Add Property</a>
+                    <a href="{% url 'add_property_details' %}" class="nav-item nav-link text-primary add_property_button_lg">Add Property</a>
                 </div>
                 <div class="navbar-nav ms-auto">
                     {% if 'username' in request.session %}
