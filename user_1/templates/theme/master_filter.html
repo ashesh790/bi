@@ -577,7 +577,7 @@
                         property_counter = $("#property_counter");
                     }
                     $(property_counter).empty();
-                    $(".available_property_count").text(data.property_count);
+                    $(".available_property_count").val("Total added Properties: "+data.property_count).css({"font-weight": "bold"});
                     for (var [key, val] of Object.entries(property_data)) {
                         var is_bookmark = saved_property_list.includes(property_id[i].toString());
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;

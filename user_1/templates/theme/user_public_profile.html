@@ -16,20 +16,17 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-12">
-            <div class="row text-center">
-                <div class="col-sm-12 col-md-1">
+            <div class="row text-center align-items-center">
+                <div class="col-sm-12 col-md-1 p-2">
                     <span class="text-dark"><img class="user_pic"
-                            src="/media/user_icons/{{user_data.user_id}}/{{user_data.user_icon}}"
-                            alt="Your Image"></span>
+                            src="/media/user_icons/{{user_data.user_name}}/{{user_data.user_icon}}"
+                            alt="Your Image">{{user_data.user_name}}</span>
                 </div>
-                <div class="col-sm-12 col-md-1">
-                    <span class="total_properties_listed_label">Properties: <span
-                            class="available_property_count"></span></span>
-                </div>
-                <div class="col-sm-12 col-md-4">
+                
+                <div class="col-sm-12 col-md-4 p-2">
                     <div class="input-group">
                         <input type="text" class="form-control" aria-label="{{user_data.user_email}}"
-                            value="{{user_data.user_email}}">
+                            value="{{user_data.user_email}}" disabled>
                         <span class="input-group-text">
                             <a href="mailto:{{user_data.user_email}}">
                                 <i class="fa-solid fa-paper-plane"></i>
@@ -37,15 +34,17 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-3">
+                <div class="col-sm-12 col-md-3 p-2">
                     <div class="input-group">
                         <a class="input-group-text" href="tel:{{user_data.user_mobile}}"><i class="fa fa-phone"></i></a>
                         <input type="text" class="form-control text-center" aria-label="{{user_data.user_mobile}}"
-                            value="{{user_data.user_mobile}}">
+                            value="{{user_data.user_mobile}}" disabled>
                         <span class="input-group-text" onclick="copy_contact_number()"><i class="fa fa-copy"></i></span>
                     </div>
                 </div>
-
+                <div class="col-sm-12 col-md-3 text-start p-2">
+                            <input type="text" class="available_property_count form-control text-center" value="" disabled>
+                </div>
             </div>
             <hr>
             <div class="row" id="property_counter"></div>
