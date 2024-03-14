@@ -100,7 +100,7 @@ def user_all_details(property_id):
         user_email = user_data.email
         user_name = user_data.username
         user_utils_data = User_other_utils.objects.get(user_id = user_id) 
-        user_mobile = user_utils_data.user_other_data_json['user_mobile']
+        user_mobile = user_utils_data.user_mobile
         user_icon = name_of_files[0] if len(name_of_files) > 0 else ""
         saller_data = { 
             "user_id":user_id,
