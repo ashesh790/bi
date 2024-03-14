@@ -13,7 +13,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
-from user_1 import serializers
 # from user_1.apis.REST_API.database import (
 #     p_detail_api,
 #     specific_property,
@@ -45,7 +44,6 @@ from user_1.apis.fetch_api.main_functions import (
     user_all_details,
     property_user_profile,
 )
-# from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
 from user_1.forms import UserRegisterForm
 from user_1.models import User_other_utils, p_detail_v1
 from django.core.serializers import serialize
