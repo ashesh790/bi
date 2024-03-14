@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-
 class UserRegisterForm(UserCreationForm):
     username= forms.CharField(max_length=10,widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -10,10 +9,10 @@ class UserRegisterForm(UserCreationForm):
     last_name = forms.CharField(max_length = 20,widget=forms.TextInput(attrs={'class': 'form-control'})) 
     password1 = forms.CharField(max_length=128, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     password2 = forms.CharField(max_length=128, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    
+    is_brocker = forms.BooleanField(label='Are you brocker ?', required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
     class Meta:
         model = User
-        fields = ['username', 'email', 'phone_no', 'password1', 'password2', 'first_name', 'last_name']
+        fields = ['username', 'email', 'phone_no', 'password1', 'password2', 'first_name', 'last_name', 'is_brocker']
 
 class AuthenticationForm(forms.Form):
     username = forms.CharField(max_length=254, widget=forms.TextInput(attrs={'class': 'form-control'}))
