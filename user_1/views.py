@@ -768,10 +768,12 @@ def register1(request):
 			# msg.attach_alternative(html_content, "text/html")
 			# msg.send()
             form.save() 
-            user_data = {'user_mobile': form.cleaned_data['phone_no']}  
+            user_data = {}  
             User_other_utils.objects.create(
                 user_id=User.objects.get(username=form.cleaned_data['username']),
                 user_other_data_json=user_data,
+                user_mobile = form.cleaned_data['phone_no'],
+                is_brocker = form.cleaned_data['is_brocker']
             )
             messages.success(
                 request, f"Your account has been created ! You are now able to log in"

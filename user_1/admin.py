@@ -29,7 +29,7 @@ class p_detail_v1_admin(admin.ModelAdmin):
     list_display = ["id", "seller_id", "property_data", "property_other_data"]
 
 class User_other_utils_admin(admin.ModelAdmin): 
-    list_display = ["user_id", "user_mobile", "user_other_data_json"]
+    list_display = ["user_id", "user_mobile", "user_other_data_json", "is_brocker"]
 # Register your models here.
 
 # admin.site.register(property_utility, property_utility_admin)
