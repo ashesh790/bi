@@ -32,8 +32,6 @@ class User_other_utils_admin(admin.ModelAdmin):
     list_display = ["user_id", "user_mobile", "user_other_data_json"]
 # Register your models here.
 
-# admin.site.register(User_register, User_register_admin)
-# admin.site.register(p_detail, p_detail_admin)
 # admin.site.register(property_utility, property_utility_admin)
 admin.site.register(p_detail_v1, p_detail_v1_admin)
 admin.site.register(User_other_utils, User_other_utils_admin)
