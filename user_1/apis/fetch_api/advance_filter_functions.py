@@ -94,7 +94,7 @@ def user_all_details(property_id):
         data = p_detail_v1.objects.get(id=property_id)
         user_id = data.seller_id.pk
         user_data = User.objects.get(pk=user_id) 
-        user_avtar_file_path = MEDIA_ROOT_USER_ICON + str(user_id)
+        user_avtar_file_path = MEDIA_ROOT_USER_ICON + str(user_data.username)
         if os.path.isdir(user_avtar_file_path): 
             name_of_files = [i for i in os.listdir(user_avtar_file_path) if os.path.join(user_avtar_file_path, i)]
         user_email = user_data.email

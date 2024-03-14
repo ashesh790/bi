@@ -44,10 +44,7 @@
             cursor: pointer;
         }
 
-        .navbar_main {
-            height: 40px;
-        }
-
+        
         @media screen and (max-width: 820px) {
             .navbar_main {
                 height: auto;
@@ -88,7 +85,7 @@
                 margin-bottom: 10px !important;
                 border-radius: 20px !important;
                 width: 100% !important;
-            }
+            } 
         }
 
         @media screen and (max-width: 920px) {
@@ -179,10 +176,9 @@
         .notification_modal {
             position: fixed;
             top: 0px;
-            right: 20px;
             left: auto;
             z-index: 1060;
-            width: 30%;
+            width: 100%;
             height: 100%;
             display: none;
             overflow: hidden;
@@ -288,8 +284,8 @@
         .add_property_btn {
             position: fixed;
             right: 20px;
-            bottom: 100px;
-            z-index: 99;
+            bottom: 10px;
+            z-index: 1;
             border-radius: 20px;
             border-width: 5px;
             border: dotted;
@@ -298,7 +294,7 @@
         .add_property_btn:hover {
             position: fixed;
             right: 20px;
-            bottom: 100px;
+            bottom: 10px;
             z-index: 99;
             border-radius: 20px;
             background-color: #0099ff;
@@ -375,6 +371,7 @@
         .btn-outline-primary:hove {
             color: white !important;
         }
+        
     </style>
 </head>
 
@@ -386,10 +383,10 @@
             <input type="text" class="form-control" id="longitude" value="" hidden>
         </div>
     </div>
-    <div class="container-xxl bg-white p-0">
+    <div class="container-xxl p-0"> 
         <!-- Spinner Start -->
         <div id="spinner"
-            class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            class="show position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" id="loading" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
@@ -398,19 +395,23 @@
 
 
         <!-- Navbar Start -->
-        <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4 navbar_main">
+        <nav class="navbar navbar-expand-lg navbar-light py-0 px-4 navbar_main">
             <a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center text-center">
                 <!-- <div class="icon p-2 me-2">
                         <img class="img-fluid" src="{% static 'theme/img/icon-deal.png' %}" alt="Icon" style="width: 30px; height: 30px;">
                     </div> -->
                 <!-- <h1 class="m-0 text-primary">audrr.com</h1> -->
-                <h4 class="m-0 text-primary">xyz</h4>
+                <img src="{% static 'theme/img/favicon.ico' %}">
             </a>
+            <a href="{% url 'add_property_details' %}" class="nav-item nav-link text-primary add_property_button"><button class="btn btn-outline-primary">
+                ADD PROPERTY
+                </button>
+                </a>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon">.</span>
             </button>
-            <div class="collapse navbar-collapse align-items-center" id="navbarCollapse">
-                <div class="navbar-nav ml-auto">
+            <div class="collapse navbar-collapse container-fluid-nav text-start" id="navbarCollapse">
+                <div class="navbar-nav ms-auto">
                     <a href="{% url 'home' %}" class="nav-item nav-link {% block home %}{% endblock %}">Home</a>
                     <a href="{% url 'saved_property' %}"
                         class="nav-item nav-link {% block saved_property %}{% endblock %}">Saved Property</a>
@@ -425,7 +426,7 @@
                 <div class="navbar-nav ms-auto">
                     {% if 'username' in request.session %}
                     <span class="mt-1">{{request.session.username}}</span> &nbsp;
-                    <button data-bs-toggle="modal" data-bs-target="#glassAnimals"
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#settingModal"
                         class="btn btn-outline-primary px-3 d-lg-flex bg-primary" id="logout_btn"><i
                             class="fa fa-user text-white" aria-hidden="true"></i></button> &nbsp;&nbsp;
                     <i onclick="show_notifications()" class="fa-solid fa-bell mt-2" data-bs-toggle="modal"
@@ -438,12 +439,12 @@
         </nav>
         <!-- Button trigger modal -->
         <!-- Modal -->
-        <div class="notification_modal fade" id="login_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        <div class="notification_modal fade" id="login_modal" tabindex="-1" aria-labelledby="login_modal"
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Notifications</h1>
+                        <h1 class="modal-title fs-5" id="login_modal">Notifications</h1>
                     </div>
                     <div class="modal-body">
                         <div id="notifications"></div>
@@ -452,16 +453,12 @@
             </div>
         </div>
         <!-- Navbar End -->
-        <div class="login_modal fade" id="glassAnimals" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal fade " id="settingModal" tabindex="-1" aria-labelledby="settingModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Manage your self</h5>
-                        <button type="button" class="close btn btn-outline-primary" data-dismiss="modal"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <h1 class="modal-title fs-5" id="settingModalLabel">Settings</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <a href="{% url 'setting_profile' %}" class="btn w-100 btn_profile">Profile</a>
@@ -478,7 +475,8 @@
 
         {% endblock %}
         <!-- Back to Top -->
-        {% block btn_shortcut%}<a href="{% url 'add_property_details' %}" class="btn btn-primary add_property_btn">Add
+        {% block btn_shortcut%}<a href="{% url 'add_property_details' %}"
+            class="btn btn-primary add_property_btn d-none">Add
             Property</a>{% endblock %}
     </div>
 
@@ -619,7 +617,7 @@
     {% block start %}
     {% endblock %}
     <!-- Footer Start -->
-    <footer class="container-fluid bg-dark text-white-50 footer wow fadeIn fixed-bottom" data-wow-delay="0.1s">
+    <footer class="container-fluid bg-dark text-white-50 footer wow fadeIn" data-wow-delay="0.1s" style="margin-bottom: -100px !important;">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">

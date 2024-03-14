@@ -34,23 +34,23 @@
         right: 10px;
     }
 </style>
-<div class="container-fluid pt-4 px-4">
-    <div class="row bg-light rounded mx-0 p-2 property_container">
+<div class="container-fluid pt-4">
+    <div class="row rounded mx-0 p-2 g-4 property_container">
         {% if not saved_property_dict or saved_property_dict == "null" %}
         <div>
             <h5>No more saved property</h5>
         </div> <a href='home'>Find Property!</a>
         {% endif %}
         {% for key, val in saved_property_dict.items %}
-        <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="property-item rounded overflow-hidden border" id="prop_item">
+        <div class="col-lg-3 col-md-6 wow fadeInUp border-primary" data-wow-delay="0.1s">
+            <div class="property-item rounded overflow-hidden border prop_item  shadow-lg bg-body-tertiary rounded">
                 <div class="position-relative overflow-hidden">
-                    <div id="carouselExampleControlsNoTouching{{key}}" class="carousel slide" data-interval="true"
-                        data-bs-touch="false">
+                    <div id="carouselExampleControls{{key}}" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <a href="property_details/{{key}}"><img class="img-fluid d-block w-100"
-                                        id="property_details" src="{{val.property_image|first}}" alt=""></a>
+                                <a href="property_details/{{key}}"><img class="img-fluid"
+                                        style="width:100%; height: 190px;" src="{{val.property_image|first}}" alt=""
+                                        loading="lazy"></a>
                             </div>
                             {% if val.property_image %}
                             {% for j in val.property_image|slice:"1:"%}
@@ -63,44 +63,56 @@
                             <b>Image is not available</b>
                             {% endif %}
                         </div>
-                        <b>
-                            <button class="carousel-control-prev" type="button"
-                                data-bs-target="#carouselExampleControlsNoTouching{{key}}" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
+                    </div>
+                    <div class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                        {{val.property_type}}</div>
+                </div>
+                <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${property_id[i]}_popup">
+                    <a class="d-block mb-2" href="property_details/{{key}}" id="/Month">
+                        <h5 class="text-primary mb-2">${{val.property_rent_price}}/Month</h5>
+                    </a>
+                    <a class="d-block mb-2" href="property_details/{{key}}">
+                        <b class="d-block h6 mb-2">{{val.property_type}} For
+                            {{val.selling_option}}
                         </b>
-                        <b>
-                            <button class="carousel-control-next" type="button"
-                                data-bs-target="#carouselExampleControlsNoTouching{{key}}" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </b>
+                    </a>
+                    <div style="display:flex;">
+                        <p style="width:70%;">
+                            <i
+                                class="fa fa-map-marker text-primary me-2"></i>{{val.property_address|truncatechars:20}}...
+                        </p>
+                        <p style="width:30%;">
+                            By&nbsp;<a href="/user-public-profile/{{key}}">{{val.user_data.user_name}}</a>
+                        </p>
                     </div>
                 </div>
-                <div class="p-4 pb-0" id="Month_parent">
-                    <a class="d-block mb-2" href="property_details/{{key}}" id="/Month"><b
-                            class="text-primary mb-3">{{val.property_rent_price}}/Month
-                        </b>
-                        <span class="dot"></span>
-                        <span class="text-dark">
-                            <span class="text-primary"><b>{{val.property_type}}</b></span>,
-                            For
-                            <span class="text-primary"><b></b>{{val.selling_option}}</b></span>
-                        </span>
-                        <a href="property_details/{{key}}">
-                            <i class="fa fa-map-marker-alt text-primary me-2">
-                            </i>
-                            <span class="property_address">
-                                {{val.property_address|truncatechars:20}}...
-                            </span>
-                        </a>
-                        <span id="tooltip_parent" prop_id="{{key}}" onclick="remove_bookmark_property(this);">
-                            <h5><i class="fa fa-bookmark" data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="Tooltip on top"></i></h5>
-                        </span>
-                    </a>
+                <div class="d-flex border-top">
+                    <small class="flex-fill text-center mt-1">
+                        <h5>
+                            <a href="tel:{{val.user_data.user_mobile}}"><i class="fa fa-phone"></i></a>
+                        </h5>
+                    </small>
+                    <small class="flex-fill text-center mt-1">
+                        <h5>
+                            <a href="tel:{{val.user_data.user_email}}"><i class="fa-regular fa-envelope"></i></a>
+                        </h5>
+                    </small>
+                    <small class="flex-fill text-center mt-1">
+                        <h5>
+                            <i class="fa fa-share-alt" url="property_details/{{key}}" onclick="openModal(this);"></i>
+                        </h5>
+                    </small>
+
+                    <small class="flex-fill text-center mt-1">
+                        <h5>
+                            <i class="fa-solid fa-circle-info"
+                                onclick="toggle_property_popup('modal__{{key}}_popup')"></i>
+                        </h5>
+                    </small>
+                    <small class="flex-fill text-center mt-1" prop_id="{{key}}"
+                        onclick="remove_bookmark_property(this);">
+                        <h5><i class="fa fa-bookmark"></i></h5>
+                    </small>
                 </div>
             </div>
         </div>
@@ -122,53 +134,76 @@
             },
             success: function (response) {
                 if (response != "Empty") {
-
                     data = JSON.parse(response)
                     data = data.saved_property_dict
                     $(".property_container").empty();
                     $.each(data, function (key, val) {
                         $(".property_container").append(` 
-                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="property-item rounded overflow-hidden border" style="height:300px !important;">
-                                <div class="position-relative overflow-hidden"> 
-                                    <div id="carouselExampleControls${key}" class="carousel slide" data-ride="carousel">
-                                        <div class="carousel-inner">
-                                            
-                                          <div class="carousel-item active">
-                                            <a href="/property_details/${key}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt=""></a>
-                                          </div>
-                                          ${val.property_image.slice(1).map(path => `<div class="carousel-item">
+                        <div class="col-lg-3 col-md-6 wow fadeInUp border-primary" data-wow-delay="0.1s">
+            <div class="property-item rounded overflow-hidden border prop_item  shadow-lg bg-body-tertiary rounded">
+                    <div class="position-relative overflow-hidden"> 
+                    <div id="carouselExampleControls${key}" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                            <div class="carousel-item active">
+                            <a href="property_details/${key}"><img class="img-fluid" style="width:100%; height: 190px;" src="${val.property_image[0]}" alt="" loading="lazy"></a>
+                            </div>
+                            ${val.property_image.slice(1).map(path => `<div class="carousel-item">
                                             <a href="/property_details/${key}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;"></a>
                                           </div>`).join('')} 
-
-                                        </div>
-                                        <a class="carousel-control-prev" href="#carouselExampleControls${key}" role="button" data-slide="prev">
-                                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                          <span class="sr-only">Previous</span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#carouselExampleControls${key}" role="button" data-slide="next">
-                                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                          <span class="sr-only">Next</span>
-                                        </a>
-                                      </div>
-                                    <div
-                                        class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
-                                        ${val.property_type}</div>
-                                </div>
-                                <div class="p-3 pb-0" style="position: relative;">  
-                                    <a href="/property_details/${key}" class="text-dark d-block">
-                                    <b class="text-primary mb-3">${val.property_rent_price}/Month</b>
-                                <span class="dot"></span>
-                                <span class="text-primary">${val.property_type}</span>&nbsp;<span class="dot"></span><span class="text-primary">&nbsp;${val.selling_option}</span></a>
-                                    <a href="/property_details/${key}">
-                                        <span><i class="fa fa-map-marker-alt text-primary me-2"></i><span class="text-primary">${val.property_address.slice(0, maxLength) + '...'}</span></span> 
-                                    </a> 
-                                    <span style="position: absolute; bottom:0; right:10px;" id="tooltip_parent" prop_id="${key}" onclick="remove_bookmark_property(this);">
-                                        <h5><i class="fa fa-bookmark" aria-hidden="true"></i></h5>
-                                    </span>z
-                                </div>
                             </div>
+                    </div>
+                    <div
+                            class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                            ${val.property_type}</div>
+                    </div>
+                    <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${key}_popup"> 
+                        <a class="d-block mb-2" href="property_details/${key}" id="/Month">
+                                <h5 class="text-primary mb-2">$${val.property_rent_price}/Month</h5>
+                        </a>
+                        <a class="d-block mb-2" href="property_details/${key}">
+                                <b class="d-block h6 mb-2">${val.property_type} For
+                                ${val.property_rent_price}
+                                </b>
+                        </a> 
+                        <div style="display:flex;"> 
+                            <p style="width:70%;">
+                                    <i
+                                    class="fa fa-map-marker text-primary me-2"></i>${val.property_address}...
+                            </p> 
+                            <p style="width:30%;"> 
+                                    By&nbsp;<a href="/user-public-profile/${key}">${val.user_data.user_name}</a> 
+                            </p> 
                         </div>
+                    </div>
+                    <div class="d-flex border-top">
+                    <small class="flex-fill text-center mt-1">
+                            <h5>
+                                <a href="tel:${val.user_data.user_mobile}"><i class="fa fa-phone"></i></a>
+                            </h5>
+                    </small> 
+                    <small class="flex-fill text-center mt-1">
+                            <h5>
+                                <a href="tel:${val.user_data.user_email}"><i class="fa-regular fa-envelope"></i></a>
+                            </h5>
+                    </small>
+                    <small class="flex-fill text-center mt-1">
+                            <h5>
+                            <i class="fa fa-share-alt" url="property_details/${key}" onclick="openModal(this);"></i>
+                            </h5>
+                    </small>
+                    
+                    <small class="flex-fill text-center mt-1">
+                            <h5>
+                            <i class="fa-solid fa-circle-info"
+                                    onclick="toggle_property_popup('modal__${key}_popup')"></i> 
+                            </h5> 
+                    </small>
+                    <small class="flex-fill text-center mt-1" prop_id="${key}" onclick="remove_bookmark_property(this);">
+                        <h5><i class="fa fa-bookmark"></i></h5>
+                    </small>
+                    </div>
+            </div>
+            </div>
                         `);
                     });
                 }

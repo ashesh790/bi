@@ -13,7 +13,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
-from user_1 import serializers
 # from user_1.apis.REST_API.database import (
 #     p_detail_api,
 #     specific_property,
@@ -45,7 +44,6 @@ from user_1.apis.fetch_api.main_functions import (
     user_all_details,
     property_user_profile,
 )
-# from user_1.apis.fetch_api.state_management.handle_state import login_user, signup_user
 from user_1.forms import UserRegisterForm
 from user_1.models import User_other_utils, p_detail_v1
 from django.core.serializers import serialize
@@ -480,7 +478,6 @@ def bookmark_property_detail(request):
             raise Exception
         user_id = request.session["username"]
         property_id = request.POST["property_id"]
-        user_data = User.objects.get(username=user_id)
         try:
             user_other_data = User_other_utils.objects.get(
                 user_id=User.objects.get(username=request.session["username"])
@@ -527,7 +524,7 @@ def bookmark_property_detail(request):
                 user_other_data.user_other_data_json["saved_property"].remove(
                     property_id
                 )
-                user_data.save()
+                user_other_data.save()
             remaining_property = saved_property(request, True)
             if remaining_property.content == "Empty":
                 return HttpResponse("Empty")
@@ -566,6 +563,7 @@ def saved_property(request, remaining_property=False):
                     saved_property_list.remove(i)
                     continue
                 saved_property_dict[i] = query_data.property_data
+                saved_property_dict[i]['user_data'] = ((user_all_details(i)))
             user_data.user_other_data_json["saved_property"] = saved_property_list
             user_data.save()
             if remaining_property:
@@ -603,7 +601,7 @@ def update_profile(request):
         "user_id": user_id,
         "user_name": user_data.user_id.username,
         "user_email": user_data.user_id.email,
-        "user_mobile": "no_data",
+        "user_mobile": user_data.user_mobile
     }
     if "user_icon" in user_data.user_other_data_json:
         user_detail["user_icon"] = user_data.user_other_data_json["user_icon"]
@@ -626,6 +624,7 @@ def update_profile(request):
                 )
                 request.session["user_location"] = data.get("user_location")
                 request.session["username"] = data.get("user_name")
+            user_data.user_mobile = data['user_mobile']
             user_record.save()
             user_data.save()
             return JsonResponse({"Hello": "Hello"})
@@ -671,15 +670,13 @@ def submit_report_form(request):
                     "report_reason": data["report_reason"],
                     "report_desc": data["report_desc"],
                 }
-                p_detail_v1.objects.create(
-                    property_id=property_id,
-                    seller_id=seller_id,
-                    property_report=property_report,
-                )
-        return JsonResponse({"status": "success"})
+                property_data = p_detail_v1.objects.get(id=data["property_id"])
+                property_data.seller_id=seller_id
+                property_data.property_other_data=property_report
+                property_data.save()
+                return JsonResponse({"status": "success"})
     except Exception as ex:
-        print(ex)
-        return JsonResponse({"success": "error"})
+        raise ex 
 
 
 def chat(request, user_id):
@@ -771,10 +768,12 @@ def register1(request):
 			# msg.attach_alternative(html_content, "text/html")
 			# msg.send()
             form.save() 
+            user_data = {}  
             User_other_utils.objects.create(
                 user_id=User.objects.get(username=form.cleaned_data['username']),
-                user_mobile=form.cleaned_data['phone_no'],
-                user_other_data_json={},
+                user_other_data_json=user_data,
+                user_mobile = form.cleaned_data['phone_no'],
+                is_brocker = form.cleaned_data['is_brocker']
             )
             messages.success(
                 request, f"Your account has been created ! You are now able to log in"

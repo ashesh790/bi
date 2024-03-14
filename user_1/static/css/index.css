@@ -2,10 +2,6 @@ body {
   overflow-x: hidden;
 }
 
-#exampleModalLabel {
-  color: #193549 !important;
-}
-
 .main-container {
   color: rgb(255, 240, 240);
   background-color: rgb(0, 18, 56);

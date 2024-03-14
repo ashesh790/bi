@@ -39,7 +39,7 @@ def add_property_details_in_database(request):
         property_data["property_image"] = property_image_save
         property_data["property_video"] = {}
         # fetching last property detail from databases
-        property_detail = p_detail_v1.objects.create(
+        p_detail_v1.objects.create(
             seller_id=User.objects.get(pk=seller_id),
             property_data=property_data,
         )
@@ -302,10 +302,9 @@ def blocked_property(request, property_details=False):
     if len(property_utils) > 0:
         count = 0
         for i in property_utils:
-            count += 1
-            property_id_reason[f"{i.property_id.id}__{count}"] = i.property_report[
-                "report_reason"
-            ]
+            if "report_reason" in i.property_other_data:
+                count += 1
+                property_id_reason[f"{i.id}__{count}"] = i.property_other_data["report_reason"]
         data = json.dumps(property_id_reason)
         return HttpResponse(data)
     else:

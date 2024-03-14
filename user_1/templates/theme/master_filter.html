@@ -327,6 +327,10 @@
                     <div class="col m-2">
                         <div class="d-flex flex-nowrap button-container">
                             <button class="btn btn-outline-primary custom-button centered-text sale_btn"
+                                data-bs-toggle="pill" value="all" id="all"
+                                onclick="search_property_based_on_input_field_values(this, null);"
+                                style="height:29px;">All</button>
+                            <button class="btn btn-outline-primary custom-button centered-text sale_btn"
                                 data-bs-toggle="pill" value="Sale" id="sell"
                                 onclick="search_property_based_on_input_field_values(this, null);"
                                 style="height:29px;">Sale</button>
@@ -573,19 +577,17 @@
                         property_counter = $("#property_counter");
                     }
                     $(property_counter).empty();
-                    $(".available_property_count").text(data.property_count);
+                    $(".available_property_count").val("Total added Properties: "+data.property_count).css({"font-weight": "bold"});
                     for (var [key, val] of Object.entries(property_data)) {
                         var is_bookmark = saved_property_list.includes(property_id[i].toString());
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
                         var is_liked = liked_property_list == undefined ? false : liked_property_list.includes(property_id[i].toString());
                         var like_icon = `<i class="${is_liked ? 'fa-solid' : 'fa-regular'} fa-heart saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="like_prperty(this); $(this).toggleClass('fa-solid fa-regular');"></i>`;
                         var number = JSON.parse(user_mobile[i]).user_mobile;
-                        if (number == null || number == "No_data") {
-                            number = `<i class="fa-solid fa-phone-slash"></i>`;
-                        }
-                        else {
-                            number = `<a href="tel:${number}"><i class="fa fa-phone"></i></a>`;
-                        }
+                        var email = JSON.parse(user_mobile[i]).user_email;
+                        number = (number == null || number == undefined) ? `<i class="fa-solid fa-phone-slash"></i>` : `<a href="tel:${number}"><i class="fa fa-phone"></i></a>`;
+                        email = (email == null || email == undefined) ? `` : `<a href="tel:${email}"><i class="fa-regular fa-envelope"></i></a>`;
+
                         $(property_counter).append(` 
                     <div class="col-lg-3 col-md-6 wow fadeInUp border-primary" data-wow-delay="0.1s">
                     <div class="property-item rounded overflow-hidden border prop_item  shadow-lg bg-body-tertiary rounded">
@@ -600,37 +602,29 @@
                                             <a href="/property_details/${property_id[i]}"><img class="d-block w-100" src="${path}" loading="lazy" style="width:100%; height: 190px;" loading="lazy"></a>
                                     </div>`).join('')} 
                                     </div>
-                                    <a class="carousel-control-prev" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="carousel-control-next" href="#carouselExampleControls${property_id[i]}" role="button" data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                    </a>
                             </div>
                             <div
                                     class="bg-primary rounded-top text-light position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
                                     ${val.property_type}</div>
                             </div>
                             <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${property_id[i]}_popup"> 
-                            <a class="d-block mb-2" href="property_details/${property_id[i]}" id="/Month">
-                                    <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
-                            </a>
-                            <a class="d-block mb-2" href="property_details/${property_id[i]}">
-                                    <b class="d-block h6 mb-2">${val.property_type} For
-                                    ${val.selling_option}
-                                    </b>
-                            </a> 
-                            <div style="display:flex;"> 
-                            <p style="width:70%;">
-                                    <i
-                                    class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, 10) + '...'}
-                            </p> 
-                            <p style="width:30%;"> 
-                                    By&nbsp;<a href="/user-public-profile/${property_id[i]}">${JSON.parse(user_mobile[i]).user_name}</a> 
-                            </p> 
-                            </div>
+                                <a class="d-block mb-2" href="property_details/${property_id[i]}" id="/Month">
+                                        <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
+                                </a>
+                                <a class="d-block mb-2" href="property_details/${property_id[i]}">
+                                        <b class="d-block h6 mb-2">${val.property_type} For
+                                        ${val.selling_option}
+                                        </b>
+                                </a> 
+                                <div style="display:flex;"> 
+                                    <p style="width:70%;">
+                                            <i
+                                            class="fa fa-map-marker text-primary me-2"></i>${val.property_address.slice(0, 10) + '...'}
+                                    </p> 
+                                    <p style="width:30%;"> 
+                                            By&nbsp;<a href="/user-public-profile/${property_id[i]}">${JSON.parse(user_mobile[i]).user_name}</a> 
+                                    </p> 
+                                </div>
                             </div>
                             <div class="d-flex border-top">
                             <small class="flex-fill text-center mt-1">
@@ -640,7 +634,7 @@
                             </small> 
                             <small class="flex-fill text-center mt-1">
                                     <h5> 
-                                        <i class="fa-regular fa-envelope"></i>
+                                        ${email}
                                     </h5>
                             </small>
                             <small class="flex-fill text-center mt-1">
