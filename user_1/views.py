@@ -12,7 +12,9 @@ from django.template import loader
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
-from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
+from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL 
+from django.contrib.auth import logout
+
 # from user_1.apis.REST_API.database import (
 #     p_detail_api,
 #     specific_property,
@@ -95,13 +97,14 @@ def login_app(request):
 
 
 # logout
-def logout(request):
+def logout_view(request):
     try:
         if request:
             try:
                 del request.session["username"]
                 del request.session["pk"]
                 request.session.clear()
+                request.session.flush()
                 logout(request)
             except Exception as ex:
                 raise ex 
@@ -679,10 +682,6 @@ def submit_report_form(request):
         raise ex 
 
 
-def chat(request, user_id):
-    return render(request, "chat.html", {"user_id": user_id})
-
-
 def user_public_profile(request, property_id):
     saved_property_list = liked_property_list = []
     user_data = user_all_details(property_id)
@@ -742,11 +741,6 @@ def show_property_location_wise(request):
             location_fetched = address_dict["country"]
     property = search_properties(request, location_fetched, reload_location)
     return property, location_fetched
-
-
-def logout_view(request):
-    logout(request)
-    return redirect("/")
 
 
 def google_login(request):
