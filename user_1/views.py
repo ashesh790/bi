@@ -1,6 +1,7 @@
 import json
 from venv import logger
 from numpy import generic
+import pyotp
 import requests
 import re
 import pandas as pd
@@ -14,6 +15,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL 
 from django.contrib.auth import logout
+from django.core.mail import send_mail
 
 # from user_1.apis.REST_API.database import (
 #     p_detail_api,
@@ -47,7 +49,7 @@ from user_1.apis.fetch_api.main_functions import (
     property_user_profile,
 )
 from user_1.forms import UserRegisterForm
-from user_1.models import User_other_utils, p_detail_v1
+from user_1.models import OTP, User_other_utils, p_detail_v1
 from django.core.serializers import serialize
 import shutil
 from django.core.files.storage import FileSystemStorage
@@ -796,3 +798,65 @@ def google_callback(request):
     except Exception as ex:
         # Handle the case where the user is not associated with a Google account
         raise ex
+
+def send_otp_mail(request):
+    if not request.method == 'POST':
+        return render(request, 'send_otp.html')
+    
+    email = request.POST.get('email')
+    user = User.objects.filter(email=email).first()
+    
+    if not user:
+        return render(request, 'send_otp.html', {'message': 'Email not found'}) 
+    
+    # Generate OTP
+    otp_secret = pyotp.random_base32()
+    otp = pyotp.TOTP(otp_secret, interval=180)
+    otp_code = otp.now()
+
+    # Save OTP to the database
+    otp_obj, created = OTP.objects.get_or_create(user=user, email=email)
+    otp_obj.otp_secret = otp_secret
+    otp_obj.save()
+
+    # Send OTP via email
+    subject = 'Your OTP for Login'
+    message = f'Your OTP for login is: {otp_code}'
+    from_email = 'asheshtparmar@gmail.com'  # Update with your email
+    recipient_list = [email]
+
+    # Add Phone OTP API
+
+    send_mail(subject, message, from_email, recipient_list)
+
+    return redirect('verify_otp_mail')
+        
+    
+
+def verify_otp_mail(request):
+    if not request.method == 'POST':
+        return render(request, 'verify_otp.html')
+    
+    email = request.POST.get('email')
+    otp_code = request.POST.get('otp')
+    
+    otp_obj = OTP.objects.filter(email=email).first()
+    
+    if not otp_obj:
+        return render(request, 'verify_otp.html', {'message': 'OTP not found'})
+    
+    otp = pyotp.TOTP(otp_obj.otp_secret, interval=180)
+    print("Email OTP secret: " + otp_obj.otp_secret)
+    print("OTP Code: " + otp_code)
+    print("Is success: " + str(otp.verify(otp_code)))    
+    if not otp.verify(otp_code):
+        return render(request, 'verify_otp.html', {'message': 'Invalid OTP'})
+    
+    otp_obj.is_verified = True
+    otp_obj.save()
+    user = authenticate(request, username=otp_obj.user.username)
+    if not user:
+        return redirect('login')
+    
+    login(request, user)
+    return redirect('/')
