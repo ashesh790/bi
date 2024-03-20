@@ -128,4 +128,5 @@ urlpatterns = [
     path(f'{URL}/accounts/google/login/callback/', views.google_callback, name='google-callback'),
     path('send_otp_mail/', views.send_otp_mail, name='send_otp_mail'),
     path('verify_otp_mail/', views.verify_otp_mail, name='verify_otp_mail'),
+    path("login_v2", views.login_v2, name="login_v2")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

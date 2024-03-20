@@ -829,7 +829,7 @@ def send_otp_mail(request):
 
     send_mail(subject, message, from_email, recipient_list)
 
-    return redirect('verify_otp_mail')
+    return HttpResponse({"status": "success"})
         
     
 
@@ -843,14 +843,14 @@ def verify_otp_mail(request):
     otp_obj = OTP.objects.filter(email=email).first()
     
     if not otp_obj:
-        return render(request, 'verify_otp.html', {'message': 'OTP not found'})
+        return redirect('login')
     
-    otp = pyotp.TOTP(otp_obj.otp_secret, interval=180)
+    otp = pyotp.TOTP(otp_obj.otp_secret, interval=1000)
     print("Email OTP secret: " + otp_obj.otp_secret)
     print("OTP Code: " + otp_code)
     print("Is success: " + str(otp.verify(otp_code)))    
     if not otp.verify(otp_code):
-        return render(request, 'verify_otp.html', {'message': 'Invalid OTP'})
+        return redirect('login')
     
     otp_obj.is_verified = True
     otp_obj.save()
@@ -859,4 +859,7 @@ def verify_otp_mail(request):
         return redirect('login')
     
     login(request, user)
-    return redirect('/')
+    return HttpResponse({"status": "success"}) 
+
+def login_v2(request):
+    return render(request, "auth_app/login_v2.html")
