@@ -33,7 +33,7 @@ urlpatterns = [
     # ),
     path("home", views.home, name="home"),
     path("login", views.login_app, name="login"),
-    path("logout", views.logout, name="logout"),
+    path("logout", views.logout_view, name="logout"),
     path(
         "add_property_details", views.add_property_details, name="add_property_details"
     ),
@@ -120,11 +120,13 @@ urlpatterns = [
         "solve_property_issue", views.solve_property_issue, name="solve_property_issue"
     ),
     path("google_map", views.google_map, name="google_map"), 
-    path("chat/<str:user_id>/", views.chat, name='chat'), 
     path("property_user_profile", views.property_user_profile, name="property_user_profile"), 
-    path("user-public-profile/<str:property_id>", views.user_public_profile, name="user_public_profile"), 
+    path("user-public-profile/<str:property_id>/", views.user_public_profile, name="user_public_profile"), 
     path("logout_url", views.logout_view), 
     path("google_login", views.google_login),
 	path('register_app/', views.register1), 
-    path(f'{URL}/accounts/google/login/callback/', views.google_callback, name='google-callback')
+    path(f'{URL}/accounts/google/login/callback/', views.google_callback, name='google-callback'),
+    path('send_otp_mail/', views.send_otp_mail, name='send_otp_mail'),
+    path('verify_otp_mail/', views.verify_otp_mail, name='verify_otp_mail'),
+    path("login_v2", views.login_v2, name="login_v2")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

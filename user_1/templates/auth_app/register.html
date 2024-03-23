@@ -3,7 +3,7 @@
 {% load static %}
 <style>
     body {
-        background-image: url({% static 'pexels-pixabay-259962.jpg' %});
+        background-image: url("{% static 'pexels-pixabay-259962.jpg' %}");
         background-repeat: no-repeat;
         /* Full height */
         height: 100%;
@@ -25,6 +25,9 @@
             <fieldset class="form-group">
                 {{form.as_p}}
             </fieldset>
+            <input type="text" id="otp" name="otp" required>
+            <button type="button" onclick="send_otp()">Send OTP</button>
+            <button type="button" onclick="verify_otp()">Verify OTP</button>
             <center>
                 <br>
                 <button class="btn btn-outline-info" type="submit">Sign
@@ -43,4 +46,51 @@
         </div>
     </div>
 </div>
+<script>
+    function send_otp() {
+    const email = $('input[name="email"]').val();
+    var headers = {
+        email: email,
+        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+      }
+    $.ajax({
+      url: '{% url "send_otp_mail" %}',
+      method: 'POST',
+      data: headers,
+      success: function(data) {
+        alert("Email sent to your email.");
+      },
+      error: function(xhr, textStatus, errorThrown) {
+        alert("An error cooured.");
+      }
+    });
+  }
+
+
+  function verify_otp() {
+    const email = $('input[name="email"]').val();
+    const otp = $('#otp').val();
+    var headers = {
+        email: email,
+        otp: otp,
+        csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+      }
+    $.ajax({
+      url: '{% url "verify_otp_mail" %}',
+      method: 'POST',
+      data: headers, 
+      success: function(data) {
+        if (data === 'Success') {
+          window.location.href = "/home"; 
+        }
+      },
+      error: function(xhr, textStatus, errorThrown) {
+        console.error('Error:', errorThrown);
+        alert('An error occurred.');
+      }
+    });
+  }
+
+
+</script>
 {% endblock%}

@@ -1,6 +1,7 @@
 import json
 from venv import logger
 from numpy import generic
+import pyotp
 import requests
 import re
 import pandas as pd
@@ -12,7 +13,10 @@ from django.template import loader
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
-from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
+from staying_source.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL 
+from django.contrib.auth import logout
+from django.core.mail import send_mail
+
 # from user_1.apis.REST_API.database import (
 #     p_detail_api,
 #     specific_property,
@@ -45,7 +49,7 @@ from user_1.apis.fetch_api.main_functions import (
     property_user_profile,
 )
 from user_1.forms import UserRegisterForm
-from user_1.models import User_other_utils, p_detail_v1
+from user_1.models import OTP, User_other_utils, p_detail_v1
 from django.core.serializers import serialize
 import shutil
 from django.core.files.storage import FileSystemStorage
@@ -95,13 +99,14 @@ def login_app(request):
 
 
 # logout
-def logout(request):
+def logout_view(request):
     try:
         if request:
             try:
                 del request.session["username"]
                 del request.session["pk"]
                 request.session.clear()
+                request.session.flush()
                 logout(request)
             except Exception as ex:
                 raise ex 
@@ -679,10 +684,6 @@ def submit_report_form(request):
         raise ex 
 
 
-def chat(request, user_id):
-    return render(request, "chat.html", {"user_id": user_id})
-
-
 def user_public_profile(request, property_id):
     saved_property_list = liked_property_list = []
     user_data = user_all_details(property_id)
@@ -744,11 +745,6 @@ def show_property_location_wise(request):
     return property, location_fetched
 
 
-def logout_view(request):
-    logout(request)
-    return redirect("/")
-
-
 def google_login(request):
     return render(request, "theme/login_google.html")
 
@@ -802,3 +798,60 @@ def google_callback(request):
     except Exception as ex:
         # Handle the case where the user is not associated with a Google account
         raise ex
+
+def send_otp_mail(request):
+    if request.method == 'POST':
+        response = HttpResponse()
+        email = request.POST.get('email')
+        user = User.objects.filter(email=email).first()
+
+        if not user:
+            return render(request, 'send_otp.html', {'message': 'Email not found'}) 
+
+        # Generate OTP secret
+        otp_secret = pyotp.random_base32()
+
+        # Save OTP secret to the database
+        otp_obj, created = OTP.objects.get_or_create(user=user, email=email)
+        otp_obj.otp_secret = otp_secret
+        otp_obj.save()
+
+        # Generate OTP
+        otp = pyotp.TOTP(otp_secret, interval=30)
+        otp_code = otp.now()
+
+        # Send OTP via email
+        subject = 'Your OTP for Login'
+        message = f'Your OTP for login is: {otp_code}'
+        from_email = 'asheshtparmar@gmail.com'  # Update with your email
+        recipient_list = [email]
+        if send_mail(subject, message, from_email, recipient_list): 
+            request.session['user_otp'] = str(otp_code)
+
+        return HttpResponse({"status": "success"})
+
+    else:
+        return render(request, 'send_otp.html')
+            
+
+def verify_otp_mail(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        otp_code = request.POST.get('otp') 
+        otp_obj = OTP.objects.filter(email=email).first()
+        session_otp = request.session['user_otp']
+        if not otp_obj:
+            return render(request, 'verify_otp.html')  
+
+        if session_otp == otp_code:
+            print("Verified")
+            otp_obj.is_verified = True
+            otp_obj.save()
+            return HttpResponse("200")
+        else:
+            return render(request, 'auth_app/register_app.html')  
+    else:
+        return render(request, 'auth_app/register_app.html.html')  
+
+def login_v2(request):
+    return render(request, "auth_app/register_app")

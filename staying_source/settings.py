@@ -69,6 +69,13 @@ SOCIALACCOUNT_PROVIDERS = {
 # Channels settings
 ASGI_APPLICATION = 'staying_source.routing.application'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Replace with your SMTP server
+EMAIL_PORT = 587  # Use the appropriate port for your SMTP server
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'asheshtparmar@gmail.com'  # Replace with your email
+EMAIL_HOST_PASSWORD = 'fqdh ohhi zuha abdk'
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

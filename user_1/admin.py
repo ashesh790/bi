@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from user_1.models import User_other_utils, p_detail_v1
+from user_1.models import OTP, User_other_utils, p_detail_v1
 
 
 class User_register_admin(admin.ModelAdmin):
@@ -35,3 +35,4 @@ class User_other_utils_admin(admin.ModelAdmin):
 # admin.site.register(property_utility, property_utility_admin)
 admin.site.register(p_detail_v1, p_detail_v1_admin)
 admin.site.register(User_other_utils, User_other_utils_admin)
+admin.site.register(OTP)
