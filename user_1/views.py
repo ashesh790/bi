@@ -772,6 +772,13 @@ def register_app(request):
                 user_mobile = form.cleaned_data['phone_no'],
                 is_brocker = form.cleaned_data['is_brocker']
             )
+            user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            if user is not None:
+                request.session["username"] = form.cleaned_data['username']
+                request.session["email"] = form.cleaned_data['email']
+                request.session["pk"] = user.pk
+                form = login(request, user)
+                return redirect("home")
             messages.success(
                 request, f"Your account has been created ! You are now able to log in"
             )   
