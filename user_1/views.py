@@ -800,66 +800,58 @@ def google_callback(request):
         raise ex
 
 def send_otp_mail(request):
-    if not request.method == 'POST':
+    if request.method == 'POST':
+        response = HttpResponse()
+        email = request.POST.get('email')
+        user = User.objects.filter(email=email).first()
+
+        if not user:
+            return render(request, 'send_otp.html', {'message': 'Email not found'}) 
+
+        # Generate OTP secret
+        otp_secret = pyotp.random_base32()
+
+        # Save OTP secret to the database
+        otp_obj, created = OTP.objects.get_or_create(user=user, email=email)
+        otp_obj.otp_secret = otp_secret
+        otp_obj.save()
+
+        # Generate OTP
+        otp = pyotp.TOTP(otp_secret, interval=30)
+        otp_code = otp.now()
+
+        # Send OTP via email
+        subject = 'Your OTP for Login'
+        message = f'Your OTP for login is: {otp_code}'
+        from_email = 'asheshtparmar@gmail.com'  # Update with your email
+        recipient_list = [email]
+        if send_mail(subject, message, from_email, recipient_list): 
+            request.session['user_otp'] = str(otp_code)
+
+        return HttpResponse({"status": "success"})
+
+    else:
         return render(request, 'send_otp.html')
-    
-    email = request.POST.get('email')
-    user = User.objects.filter(email=email).first()
-    
-    if not user:
-        return render(request, 'send_otp.html', {'message': 'Email not found'}) 
-    
-    # Generate OTP
-    otp_secret = pyotp.random_base32()
-    otp = pyotp.TOTP(otp_secret, interval=180)
-    otp_code = otp.now()
-
-    # Save OTP to the database
-    otp_obj, created = OTP.objects.get_or_create(user=user, email=email)
-    otp_obj.otp_secret = otp_secret
-    otp_obj.save()
-
-    # Send OTP via email
-    subject = 'Your OTP for Login'
-    message = f'Your OTP for login is: {otp_code}'
-    from_email = 'asheshtparmar@gmail.com'  # Update with your email
-    recipient_list = [email]
-
-    # Add Phone OTP API
-
-    send_mail(subject, message, from_email, recipient_list)
-
-    return HttpResponse({"status": "success"})
-        
-    
+            
 
 def verify_otp_mail(request):
-    if not request.method == 'POST':
-        return render(request, 'verify_otp.html')
-    
-    email = request.POST.get('email')
-    otp_code = request.POST.get('otp')
-    
-    otp_obj = OTP.objects.filter(email=email).first()
-    
-    if not otp_obj:
-        return redirect('login')
-    
-    otp = pyotp.TOTP(otp_obj.otp_secret, interval=1000)
-    print("Email OTP secret: " + otp_obj.otp_secret)
-    print("OTP Code: " + otp_code)
-    print("Is success: " + str(otp.verify(otp_code)))    
-    if not otp.verify(otp_code):
-        return redirect('login')
-    
-    otp_obj.is_verified = True
-    otp_obj.save()
-    user = authenticate(request, username=otp_obj.user.username)
-    if not user:
-        return redirect('login')
-    
-    login(request, user)
-    return HttpResponse({"status": "success"}) 
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        otp_code = request.POST.get('otp') 
+        otp_obj = OTP.objects.filter(email=email).first()
+        session_otp = request.session['user_otp']
+        if not otp_obj:
+            return render(request, 'verify_otp.html')  
+
+        if session_otp == otp_code:
+            print("Verified")
+            otp_obj.is_verified = True
+            otp_obj.save()
+            return HttpResponse("200")
+        else:
+            return render(request, 'auth_app/register_app.html')  
+    else:
+        return render(request, 'auth_app/register_app.html.html')  
 
 def login_v2(request):
-    return render(request, "auth_app/login_v2.html")
+    return render(request, "auth_app/register_app")

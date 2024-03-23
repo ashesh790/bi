@@ -80,10 +80,8 @@
       method: 'POST',
       data: headers, 
       success: function(data) {
-        alert(data.message);
-        if (data.message === 'Login successful') {
-          // Redirect to the desired page upon successful login
-          alert('Verified.');  // Replace with your home URL
+        if (data === 'Success') {
+          window.location.href = "/home"; 
         }
       },
       error: function(xhr, textStatus, errorThrown) {
