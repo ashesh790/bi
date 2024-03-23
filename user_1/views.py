@@ -749,10 +749,11 @@ def google_login(request):
     return render(request, "theme/login_google.html")
 
 
-def register1(request):
+def register_app(request):
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid(): 
+            # TODO : Send user to welcome mail 
             ######################### mail system #################################### 
             # username = form.cleaned_data.get('username')
 			# email = form.cleaned_data.get('email')

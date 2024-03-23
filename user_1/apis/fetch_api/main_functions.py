@@ -4,7 +4,6 @@ from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
 from staying_source.settings import MEDIA_ROOT, MEDIA_ROOT_USER_ICON, MEDIA_URL
-# from user_1.apis.REST_API.database import convert_string_to_object, user_wise_property
 from user_1.apis.fetch_api.advance_filter_functions import search_properties, user_all_details
 from user_1.models import User_other_utils, p_detail_v1
 from django.contrib.auth.models import User
@@ -38,7 +37,6 @@ def add_property_details_in_database(request):
             property_data[i] = request.POST[i]
         property_data["property_image"] = property_image_save
         property_data["property_video"] = {}
-        # fetching last property detail from databases
         p_detail_v1.objects.create(
             seller_id=User.objects.get(pk=seller_id),
             property_data=property_data,
@@ -102,7 +100,6 @@ def get_all_property_data(property_id=None, property_type=None):
 
 
 def delete_all_property_data(property_id):
-    # if request.method=='POST':
     instance = p_detail_v1.objects.get(pk=property_id)
     property_image_data = instance.property_data["property_image"]
     for i in property_image_data:
@@ -293,7 +290,7 @@ def add_like_property_count(property_id, remove_like=False):
 
 
 def blocked_property(request, property_details=False):
-    # code remain if multile user gave same proeprty report.
+    # TODO: code remain if multile user gave same proeprty report.
     user_id = request.session["username"]
     property_utils = p_detail_v1.objects.filter(
         seller_id = User.objects.get(username=user_id)

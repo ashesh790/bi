@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User 
 # Create your models here.
 
+
+# TODO: Solve issue with __self__ 
 class p_detail_v1(models.Model):
     seller_id = models.ForeignKey(User, on_delete=models.CASCADE)
     property_data = models.JSONField()
