@@ -49,6 +49,9 @@
         $("#otpVerify").modal("show");
         var user_email = "{{request.session.email}}";
         $("#verify_email_field").val(user_email);
-    }  
+    }
+    setTimeout(function(){
+        otp_verification();
+    }, 2000)  
 </script>
 {% endblock %}
