@@ -44,7 +44,7 @@
             cursor: pointer;
         }
 
-        
+
         @media screen and (max-width: 820px) {
             .navbar_main {
                 height: auto;
@@ -85,7 +85,7 @@
                 margin-bottom: 10px !important;
                 border-radius: 20px !important;
                 width: 100% !important;
-            } 
+            }
         }
 
         @media screen and (max-width: 920px) {
@@ -371,269 +371,301 @@
         .btn-outline-primary:hove {
             color: white !important;
         }
-        
     </style>
 </head>
 
-<body>
-    {% csrf_token %}
-    <div class="col-md-12 m-3 d-none">
-        <div class="form-floating">
-            <input type="text" class="form-control" id="latitude" value="" hidden>
-            <input type="text" class="form-control" id="longitude" value="" hidden>
-        </div>
-    </div>
-    <div class="container-xxl p-0"> 
-        <!-- Spinner Start -->
-        <div id="spinner"
-            class="show position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" id="loading" role="status">
-                <span class="sr-only">Loading...</span>
+    <body>
+        {% csrf_token %}
+        <div class="col-md-12 m-3 d-none">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="latitude" value="" hidden>
+                <input type="text" class="form-control" id="longitude" value="" hidden>
             </div>
         </div>
-        <!-- Spinner End -->
+        <div class="container-xxl p-0">
+            <!-- Spinner Start -->
+            <div id="spinner"
+                class="show position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+                <div class="spinner-border text-primary" id="loading" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <!-- Spinner End -->
 
 
-        <!-- Navbar Start -->
-        <nav class="navbar navbar-expand-lg navbar-light py-0 px-4 navbar_main">
-            <a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center text-center">
-                <!-- <div class="icon p-2 me-2">
-                        <img class="img-fluid" src="{% static 'theme/img/icon-deal.png' %}" alt="Icon" style="width: 30px; height: 30px;">
-                    </div> -->
-                <!-- <h1 class="m-0 text-primary">audrr.com</h1> -->
-                <img src="{% static 'theme/img/favicon.ico' %}">
-            </a>
-            <a href="{% url 'add_property_details' %}" class="nav-item nav-link text-primary add_property_button"><button class="btn btn-outline-primary">
-                ADD PROPERTY
-                </button>
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand-lg navbar-light py-0 px-4 navbar_main">
+                <a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center text-center">
+                    <!-- <div class="icon p-2 me-2">
+                            <img class="img-fluid" src="{% static 'theme/img/icon-deal.png' %}" alt="Icon" style="width: 30px; height: 30px;">
+                        </div> -->
+                    <!-- <h1 class="m-0 text-primary">audrr.com</h1> -->
+                    <img src="{% static 'theme/img/favicon.ico' %}">
                 </a>
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon">.</span>
-            </button>
-            <div class="collapse navbar-collapse container-fluid-nav text-start" id="navbarCollapse">
-                <div class="navbar-nav ms-auto">
-                    <a href="{% url 'home' %}" class="nav-item nav-link {% block home %}{% endblock %}">Home</a>
-                    <a href="{% url 'saved_property' %}"
-                        class="nav-item nav-link {% block saved_property %}{% endblock %}">Saved Property</a>
-                    <a href="{% url 'dashboard' %}"
-                        class="nav-item nav-link {% block manage_property %}{% endblock %}">Manage property</a>
-                    <!-- <a href="{% url 'property_agent' %}"
-                        class="nav-item nav-link {% block property_agent %}{% endblock %}">Property Agent</a> -->
-                    <a href="{% url 'contact' %}"
-                        class="nav-item nav-link {% block contact %}{% endblock %}">Contact</a>
-                    <a href="{% url 'about' %}" class="nav-item nav-link {% block about %}{% endblock %}">About</a>
-                </div>
-                <div class="navbar-nav ms-auto">
-                    {% if 'username' in request.session %}
-                    <span class="mt-1">{{request.session.username}}</span> &nbsp;
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#settingModal"
-                        class="btn btn-outline-primary px-3 d-lg-flex bg-primary" id="logout_btn"><i
-                            class="fa fa-user text-white" aria-hidden="true"></i></button> &nbsp;&nbsp;
-                    <i onclick="show_notifications()" class="fa-solid fa-bell mt-2" data-bs-toggle="modal"
-                        data-bs-target="#login_modal"></i>
-                    {% else%}
-                    <a href="login" class="btn btn-primary px-3 d-lg-flex" id="login_btn_2">Login</a>
-                    {% endif %}
-                </div>
-            </div>
-        </nav>
-        <!-- Button trigger modal -->
-        <!-- Modal -->
-        <div class="notification_modal fade" id="login_modal" tabindex="-1" aria-labelledby="login_modal"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="login_modal">Notifications</h1>
+                <a href="{% url 'add_property_details' %}"
+                    class="nav-item nav-link text-primary add_property_button"><button class="btn btn-outline-primary">
+                        ADD PROPERTY
+                    </button>
+                </a>
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon">.</span>
+                </button>
+                <div class="collapse navbar-collapse container-fluid-nav text-start" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto">
+                        <a href="{% url 'home' %}" class="nav-item nav-link {% block home %}{% endblock %}">Home</a>
+                        <a href="{% url 'saved_property' %}"
+                            class="nav-item nav-link {% block saved_property %}{% endblock %}">Saved Property</a>
+                        <a href="{% url 'dashboard' %}"
+                            class="nav-item nav-link {% block manage_property %}{% endblock %}">Manage property</a>
+                        <!-- <a href="{% url 'property_agent' %}"
+                            class="nav-item nav-link {% block property_agent %}{% endblock %}">Property Agent</a> -->
+                        <a href="{% url 'contact' %}"
+                            class="nav-item nav-link {% block contact %}{% endblock %}">Contact</a>
+                        <a href="{% url 'about' %}" class="nav-item nav-link {% block about %}{% endblock %}">About</a>
                     </div>
-                    <div class="modal-body">
-                        <div id="notifications"></div>
+                    <div class="navbar-nav ms-auto">
+                        {% if 'username' in request.session %}
+                        <span class="mt-1">{{request.session.username}}</span> &nbsp;
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#settingModal"
+                            class="btn btn-outline-primary px-3 d-lg-flex bg-primary" id="logout_btn"><i
+                                class="fa fa-user text-white" aria-hidden="true"></i></button> &nbsp;&nbsp;
+                        <i onclick="show_notifications()" class="fa-solid fa-bell mt-2" data-bs-toggle="modal"
+                            data-bs-target="#login_modal"></i>
+                        {% else%}
+                        <a href="login" class="btn btn-primary px-3 d-lg-flex" id="login_btn_2">Login</a>
+                        {% endif %}
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- Navbar End -->
-        <div class="modal fade " id="settingModal" tabindex="-1" aria-labelledby="settingModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="settingModalLabel">Settings</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <a href="{% url 'setting_profile' %}" class="btn w-100 btn_profile">Profile</a>
-                        <a href="{% url 'saved_property' %}" class="btn w-100 btn_profile">Saved Property</a>
-                        <a href="{% url 'dashboard' %}" class="btn w-100 btn_profile">Manage Property</a>
-                        <!-- <a href="{% url 'solve_property_issue' %}" class="btn w-100 btn_profile">Solve issue</a> -->
-                        <hr>
-                        <a href="logout" class="btn w-100 btn_profile">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% block main_content %}
-
-        {% endblock %}
-        <!-- Back to Top -->
-        {% block btn_shortcut%}<a href="{% url 'add_property_details' %}"
-            class="btn btn-primary add_property_btn d-none">Add
-            Property</a>{% endblock %}
-    </div>
-
-    <!-- Universal modals -->
-    <div id="shareModal" class="share_modal">
-        <!-- Modal content -->
-        <div class="share-modal-content">
-            <button type="button" class="btn btn-primary-outline" onclick="shareURL()" data-bs-placement="top"
-                data-bs-title="Tooltip on top">Share on WhatsApp</button>
-            <button type="button" class="btn btn-primary-outline" onclick="copyURL()">Copy URL</button>
-        </div>
-    </div>
-
-    <!-- Modal for report a property -->
-    <div class="modal fade" id="report_form" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="report_form_label" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="report_form_label">Why are you reporting this post?</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="form-group">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="report_reason" id="spam"
-                                    value="spam">
-                                <label class="form-check-label" for="spam">
-                                    It's spam
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="report_reason" id="nudity"
-                                    value="nudity">
-                                <label class="form-check-label" for="nudity">
-                                    Nudity or sexual activity
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="report_reason" id="hateSpeech"
-                                    value="hateSpeech">
-                                <label class="form-check-label" for="hateSpeech">
-                                    Hate speech or symbols
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="report_reason" id="violence"
-                                    value="violence">
-                                <label class="form-check-label" for="violence">
-                                    Violence or dangerous organizations
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="report_reason" id="illegalSale"
-                                    value="illegalSale">
-                                <label class="form-check-label" for="illegalSale">
-                                    Sale of illegal or regulated goods
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="report_reason" id="bullying"
-                                    value="bullying">
-                                <label class="form-check-label" for="bullying">
-                                    Bullying or harassment
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="report_reason"
-                                    id="intellectualProperty" value="intellectualProperty">
-                                <label class="form-check-label" for="intellectualProperty">
-                                    Intellectual property violation
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="report_reason" id="suicide"
-                                    value="suicide">
-                                <label class="form-check-label" for="suicide">
-                                    Suicide or self-injury
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="report_reason" id="eatingDisorders"
-                                    value="eatingDisorders">
-                                <label class="form-check-label" for="eatingDisorders">
-                                    Eating disorders
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="report_reason" id="scam"
-                                    value="scam">
-                                <label class="form-check-label" for="scam">
-                                    Scam or fraud
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="report_reason" id="falseInfo"
-                                    value="falseInfo">
-                                <label class="form-check-label" for="falseInfo">
-                                    False information
-                                </label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="report_reason" id="dontLike"
-                                    value="dontLike">
-                                <label class="form-check-label" for="dontLike">
-                                    I just don't like it
-                                </label>
-                            </div>
-                            <div class="mt-3">
-                                <label>Any other complaints?</label>
-                                <textarea class="form-control" id="report_desc" rows="3"></textarea>
-                                <p class="mt-1 text-danger">NOTE: Our team will provide solution for this. Thank
-                                    You!
-                                </p>
-                            </div>
+            </nav>
+            <!-- Button trigger modal -->
+            <!-- Modal -->
+            <div class="notification_modal fade" id="login_modal" tabindex="-1" aria-labelledby="login_modal"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="login_modal">Notifications</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div id="notifications"></div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" value="" id="modal_property_id"
-                        onclick="submit_report_form(this);">Send Report</button>
+            </div>
+            <!-- Navbar End -->
+            <div class="modal fade " id="settingModal" tabindex="-1" aria-labelledby="settingModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="settingModalLabel">Settings</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <a href="{% url 'setting_profile' %}" class="btn w-100 btn_profile">Profile</a>
+                            <a href="{% url 'saved_property' %}" class="btn w-100 btn_profile">Saved Property</a>
+                            <a href="{% url 'dashboard' %}" class="btn w-100 btn_profile">Manage Property</a>
+                            <!-- <a href="{% url 'solve_property_issue' %}" class="btn w-100 btn_profile">Solve issue</a> -->
+                            <hr>
+                            <a href="logout" class="btn w-100 btn_profile">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% block main_content %}
+
+            {% endblock %}
+            <!-- Back to Top -->
+            {% block btn_shortcut%}<a href="{% url 'add_property_details' %}"
+                class="btn btn-primary add_property_btn d-none">Add
+                Property</a>{% endblock %}
+        </div>
+
+        <!-- Universal modals -->
+        <div id="shareModal" class="share_modal">
+            <!-- Modal content -->
+            <div class="share-modal-content">
+                <button type="button" class="btn btn-primary-outline" onclick="shareURL()" data-bs-placement="top"
+                    data-bs-title="Tooltip on top">Share on WhatsApp</button>
+                <button type="button" class="btn btn-primary-outline" onclick="copyURL()">Copy URL</button>
+            </div>
+        </div>
+
+        <!-- Modal for report a property -->
+        <div class="modal fade" id="report_form" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="report_form_label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="report_form_label">Why are you reporting this post?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="report_reason" id="spam"
+                                        value="spam">
+                                    <label class="form-check-label" for="spam">
+                                        It's spam
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="report_reason" id="nudity"
+                                        value="nudity">
+                                    <label class="form-check-label" for="nudity">
+                                        Nudity or sexual activity
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="report_reason" id="hateSpeech"
+                                        value="hateSpeech">
+                                    <label class="form-check-label" for="hateSpeech">
+                                        Hate speech or symbols
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="report_reason" id="violence"
+                                        value="violence">
+                                    <label class="form-check-label" for="violence">
+                                        Violence or dangerous organizations
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="report_reason" id="illegalSale"
+                                        value="illegalSale">
+                                    <label class="form-check-label" for="illegalSale">
+                                        Sale of illegal or regulated goods
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="report_reason" id="bullying"
+                                        value="bullying">
+                                    <label class="form-check-label" for="bullying">
+                                        Bullying or harassment
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="report_reason"
+                                        id="intellectualProperty" value="intellectualProperty">
+                                    <label class="form-check-label" for="intellectualProperty">
+                                        Intellectual property violation
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="report_reason" id="suicide"
+                                        value="suicide">
+                                    <label class="form-check-label" for="suicide">
+                                        Suicide or self-injury
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="report_reason" id="eatingDisorders"
+                                        value="eatingDisorders">
+                                    <label class="form-check-label" for="eatingDisorders">
+                                        Eating disorders
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="report_reason" id="scam"
+                                        value="scam">
+                                    <label class="form-check-label" for="scam">
+                                        Scam or fraud
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="report_reason" id="falseInfo"
+                                        value="falseInfo">
+                                    <label class="form-check-label" for="falseInfo">
+                                        False information
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="report_reason" id="dontLike"
+                                        value="dontLike">
+                                    <label class="form-check-label" for="dontLike">
+                                        I just don't like it
+                                    </label>
+                                </div>
+                                <div class="mt-3">
+                                    <label>Any other complaints?</label>
+                                    <textarea class="form-control" id="report_desc" rows="3"></textarea>
+                                    <p class="mt-1 text-danger">NOTE: Our team will provide solution for this. Thank
+                                        You!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" value="" id="modal_property_id"
+                            onclick="submit_report_form(this);">Send Report</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    {% block start %}
-    {% endblock %}
-    <!-- Footer Start -->
-    <footer class="container-fluid bg-dark text-white-50 footer wow fadeIn" data-wow-delay="0.1s" style="margin-bottom: -100px !important;">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    &copy; <a class="border-bottom" href="#">audrr.com</a>, All Right Reserved.
-                    <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                    Designed By <a class="border-bottom" href="https://htmlcodex.com">auddr LLC</a>
+        {% block start %}
+        {% endblock %}
+        <!-- Footer Start -->
+        <footer class="container-fluid bg-dark text-white-50 footer wow fadeIn" data-wow-delay="0.1s"
+            style="margin-bottom: -100px !important;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="#">audrr.com</a>, All Right Reserved.
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        Designed By <a class="border-bottom" href="https://htmlcodex.com">auddr LLC</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Modal for otp verification -->
+        <div class="modal fade" id="otpVerify" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="otpVerifyLabel">Verify email for better conversation</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label>Email: </label>
+                            <input class="form-control" id="verify_email_field" disabled>
+                        </div>
+                        <div class="row">
+                            <label>Enter OTP: </label>
+
+                            <div class="col-md-8">
+                        <input class="form-control" id="verify_otp"> 
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-secondary">Send OTP</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Skip now</button>
+                        <button type="button" class="btn btn-primary">Verify</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </footer>
-
-    <!-- Footer End -->
-</body>
-
+    </body>
 </html>
 <script>
+    $(".modal-body").append("<p class='mt-2'>Email valid for 10 Mins</p>");
     $(document).ready(function () {
         $("#showToaster").on("click", function () {
             $.fn.toaster("Link Copied", {

@@ -27,7 +27,6 @@
     <div class="tab-content">
         <div id="tab-1" class="tab-pane fade show p-0 active">
             <div class="row g-4 property_counter gallery" id="prop_count_gallery">
-
             </div>
             <div class="pagination">
                 {% for i in page_range %}
@@ -45,5 +44,11 @@
     // clear redundunt session variable 
     sessionStorage.removeItem("seller_id");
 
+    
+    function otp_verification(){
+        $("#otpVerify").modal("show");
+        var user_email = "{{request.session.email}}";
+        $("#verify_email_field").val(user_email);
+    }  
 </script>
 {% endblock %}

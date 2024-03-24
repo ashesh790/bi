@@ -328,6 +328,7 @@ def home(request):
                 } 
                 request.session["username"] = user_data["username"]
                 request.session["pk"] = is_auth.pk
+                request.session['email'] = user_data['email']
             except Exception as ex: 
                 return redirect("login")
         page_number = request.GET.get("page")
@@ -336,7 +337,11 @@ def home(request):
         saved_property_list = ""
         if "pk" in request.session:
             user_id = request.session["pk"]
+            is_auth = User.objects.get(
+                pk=user_id
+                ) 
             saved_property_list = liked_and_saved_property_ids(request, user_id)
+            request.session['email'] = is_auth.email
         boundry_data = read_static_files("data.json")
         return render(
             request,
