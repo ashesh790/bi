@@ -41,6 +41,7 @@ from user_1.apis.fetch_api.main_functions import (
     delete_property_image_from_database,
     get_all_property_data,
     get_location_name,
+    is_field_verified,
     liked_and_saved_property_ids,
     read_static_files,
     search_property_type,
@@ -342,6 +343,7 @@ def home(request):
                 ) 
             saved_property_list = liked_and_saved_property_ids(request, user_id)
             request.session['email'] = is_auth.email
+            is_email_verified = is_field_verified(user_id) 
         boundry_data = read_static_files("data.json")
         return render(
             request,
@@ -349,6 +351,7 @@ def home(request):
             {
                 "boundry_data": boundry_data,
                 "saved_property_list": saved_property_list,
+                "is_email_verified": is_email_verified
             },
         )
     except Exception as ex:
@@ -866,5 +869,3 @@ def verify_otp_mail(request):
     else:
         return render(request, 'auth_app/register_app.html.html')  
 
-def login_v2(request):
-    return render(request, "auth_app/register_app")

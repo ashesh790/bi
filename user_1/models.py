@@ -18,7 +18,8 @@ class User_other_utils(models.Model):
     user_mobile = models.CharField(max_length=200, null=True)
     user_other_data_json = models.JSONField(default=dict)
     is_brocker = models.BooleanField(default = False)
-
+    is_email_verified = models.BooleanField(default = False)
+    is_number_verified = models.BooleanField(default = False)
     def save(self, *args, **kwargs):
         # Extracting mobile key from JSON field and storing it in user_mobile column
         if 'user_mobile' in self.user_other_data_json:

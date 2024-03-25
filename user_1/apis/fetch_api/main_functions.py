@@ -352,4 +352,10 @@ def read_static_files(file_name):
         ) 
     with open(file_path) as f:
         file_data = json.load(f)
-    return file_data	
+    return file_data 
+
+def is_field_verified(primary_key): 
+    user = User_other_utils.objects.get(pk=primary_key)
+    if user.is_email_verified: 
+        return 1
+    return 0
