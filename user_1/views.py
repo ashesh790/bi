@@ -863,6 +863,9 @@ def verify_otp_mail(request):
             print("Verified")
             otp_obj.is_verified = True
             otp_obj.save()
+            user_other_utils = User_other_utils.objects.get(pk = request.session['pk'])
+            user_other_utils.is_email_verified = True 
+            user_other_utils.save()
             return HttpResponse("200")
         else:
             return render(request, 'auth_app/register_app.html')  

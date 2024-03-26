@@ -641,7 +641,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label>Email: </label>
+                            <label id="email_lable">Your Email: </label>
                             <input class="form-control" id="verify_email_field" disabled>
                         </div>
                         <div class="row">
@@ -651,13 +651,13 @@
                         <input class="form-control" id="verify_otp"> 
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-secondary">Send OTP</button>
+                                <button class="btn btn-secondary" onclick="send_otp_mail()">Send OTP</button>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Skip now</button>
-                        <button type="button" class="btn btn-primary">Verify</button>
+                        <button type="button" class="btn btn-primary" onclick="verify_otp_mail()">Verify</button>
                     </div>
                 </div>
             </div>
@@ -665,7 +665,6 @@
     </body>
 </html>
 <script>
-    $(".modal-body").append("<p class='mt-2'>Email valid for 10 Mins</p>");
     $(document).ready(function () {
         $("#showToaster").on("click", function () {
             $.fn.toaster("Link Copied", {
