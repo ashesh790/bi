@@ -27,7 +27,6 @@
     <div class="tab-content">
         <div id="tab-1" class="tab-pane fade show p-0 active">
             <div class="row g-4 property_counter gallery" id="prop_count_gallery">
-
             </div>
             <div class="pagination">
                 {% for i in page_range %}
@@ -45,5 +44,60 @@
     // clear redundunt session variable 
     sessionStorage.removeItem("seller_id");
 
+
+    function otp_verification() {
+        var is_verified = "{{is_email_verified}}";
+        if (is_verified == "0") {
+            $("#otpVerify").modal("show");
+            var user_email = "{{request.session.email}}";
+            if (user_email.length >1){
+                $("#verify_email_field").val(user_email);
+            }
+            else{
+                $("#verify_email_field").attr("disabled", false);
+                $("#email_lable").text("Enter your email to verify:");
+            }
+        }
+    } 
+    function send_otp_mail(){ 
+        var email = $("#verify_email_field").val(); 
+        $.ajax({
+            type: "POST", 
+            url: "{% url 'send_otp_mail' %}",
+            data: {
+                email : email, 
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+            }, 
+            success: function(response){
+                $(".modal-body").append("<p class='mt-2'>OTP sent and valid for <span class='text-secondary'>10</span> Minutes.</p>");
+            },
+            error: function (error){
+                $(".modal-body").append("<p class='mt-2 text-danger'>Something went wrong !</p>");
+            }
+        })
+    } 
+
+    function verify_otp_mail(){ 
+        var email = $("#verify_email_field").val();
+        var otp = $("#verify_otp").val();
+        $.ajax({
+            type: "POST", 
+            url: "{% url 'verify_otp_mail' %}",
+            data: {
+                email : email,
+                otp: otp,
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+            }, 
+            success: function(response){
+                window.location.href = "/"; 
+            },
+            error: function (error){
+                $(".modal-body").append("<p class='mt-2 text-danger'>Something went wrong !</p>");
+            }
+        })
+    }
+    setTimeout(function () {
+        otp_verification();
+    }, 2000)  
 </script>
 {% endblock %}

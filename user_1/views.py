@@ -41,6 +41,7 @@ from user_1.apis.fetch_api.main_functions import (
     delete_property_image_from_database,
     get_all_property_data,
     get_location_name,
+    is_field_verified,
     liked_and_saved_property_ids,
     read_static_files,
     search_property_type,
@@ -328,6 +329,7 @@ def home(request):
                 } 
                 request.session["username"] = user_data["username"]
                 request.session["pk"] = is_auth.pk
+                request.session['email'] = user_data['email']
             except Exception as ex: 
                 return redirect("login")
         page_number = request.GET.get("page")
@@ -336,7 +338,12 @@ def home(request):
         saved_property_list = ""
         if "pk" in request.session:
             user_id = request.session["pk"]
+            is_auth = User.objects.get(
+                pk=user_id
+                ) 
             saved_property_list = liked_and_saved_property_ids(request, user_id)
+            request.session['email'] = is_auth.email
+            is_email_verified = is_field_verified(user_id) 
         boundry_data = read_static_files("data.json")
         return render(
             request,
@@ -344,6 +351,7 @@ def home(request):
             {
                 "boundry_data": boundry_data,
                 "saved_property_list": saved_property_list,
+                "is_email_verified": is_email_verified
             },
         )
     except Exception as ex:
@@ -772,6 +780,13 @@ def register_app(request):
                 user_mobile = form.cleaned_data['phone_no'],
                 is_brocker = form.cleaned_data['is_brocker']
             )
+            user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            if user is not None:
+                request.session["username"] = form.cleaned_data['username']
+                request.session["email"] = form.cleaned_data['email']
+                request.session["pk"] = user.pk
+                form = login(request, user)
+                return redirect("home")
             messages.success(
                 request, f"Your account has been created ! You are now able to log in"
             )   
@@ -848,11 +863,12 @@ def verify_otp_mail(request):
             print("Verified")
             otp_obj.is_verified = True
             otp_obj.save()
+            user_other_utils = User_other_utils.objects.get(pk = request.session['pk'])
+            user_other_utils.is_email_verified = True 
+            user_other_utils.save()
             return HttpResponse("200")
         else:
             return render(request, 'auth_app/register_app.html')  
     else:
         return render(request, 'auth_app/register_app.html.html')  
 
-def login_v2(request):
-    return render(request, "auth_app/register_app")
