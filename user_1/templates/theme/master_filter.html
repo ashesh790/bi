@@ -747,7 +747,7 @@
     });
 
     function move_applied_to_first(applied_filter) {
-
+        $(".p_type_btn").removeClass("active_btn");
         property_type_val = applied_filter.value;
         if ($(applied_filter).hasClass("p_type_btn")) {
             if ($(applied_filter).text() != "Clear") {
@@ -758,6 +758,7 @@
             var applied_filter = $(applied_filter).attr("id");
             $(`#${applied_filter}__trash`).prependTo("#main_container_filters");
         }
+        $(applied_filter).addClass("active_btn");
     }
     const navbar = $(".scroller_main");
     window.addEventListener("scroll", () => {
