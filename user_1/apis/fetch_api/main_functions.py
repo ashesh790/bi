@@ -355,7 +355,10 @@ def read_static_files(file_name):
     return file_data 
 
 def is_field_verified(primary_key): 
-    user = User_other_utils.objects.get(pk=primary_key)
-    if user.is_email_verified: 
-        return 1
-    return 0
+    try:
+        user = User_other_utils.objects.get(pk=primary_key)
+        if user.is_email_verified: 
+            return 1
+        return 0
+    except Exception as ex: 
+        return 0

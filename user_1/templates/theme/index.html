@@ -69,10 +69,10 @@
                 csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
             }, 
             success: function(response){
-                $(".modal-body").append("<p class='mt-2'>OTP sent and valid for <span class='text-secondary'>10</span> Minutes.</p>");
+                $(".otp_verify_modal").append("<p class='mt-2'>OTP sent and valid for <span class='text-secondary'>10</span> Minutes.</p>");
             },
             error: function (error){
-                $(".modal-body").append("<p class='mt-2 text-danger'>Something went wrong !</p>");
+                $(".otp_verify_modal").append("<p class='mt-2 text-danger'>Something went wrong !</p>");
             }
         })
     } 
