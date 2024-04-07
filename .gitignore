@@ -10,12 +10,10 @@ user_1/migrations/__pycache__/urls.cpython-311.pyc
 user_1/apis/fetch_api/__pycache__ 
 user_1/apis/fetch_api/state_management/__pycache__ 
 media/
-.venv
+venv
 .myvenv
 bi 
-database 
-venv_1
-venv2 
+database
 *.pyc
 user_1/fetch_api/__pycache__/main_functions.cpython-311.pyc 
 user_1/__pycache__/urls.cpython-311.pyc
