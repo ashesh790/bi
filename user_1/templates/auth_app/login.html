@@ -2,7 +2,7 @@
 {% block start %}
 {% load static %}
 {% load socialaccount %}
-
+{% csrf_token %} 
 <style>
     body {
         background-image: url({% static 'pexels-pixabay-259962.jpg' %});

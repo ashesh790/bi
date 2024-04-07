@@ -110,64 +110,65 @@
 </style>
 <!-- Property List Start -->
 <div class="container-fluid">
-<div class="row p-2">
-    <div class="col-12">
-        <div class="row border border-primary shadow-lg bg-body-tertiary rounded">
-            <div class="col-sm-12 col-md-5 col-lg-5 position-relative">
-                <img class="img-fluid d-block main_image p-2" id="prop_a" src="" alt="">
-                <span class="position-absolute picture_label" data-bs-toggle="modal"
-                    data-bs-target="#modal_for_large_picture" onclick="picture_show_in_modal();">Zoom Image</span>
-            </div>
-            <div class="col-sm-12 col-md-7 col-lg-7 mt-3">
-                <h4>
-                    <span class="bhk_details"></span>
-                    <span class="geography_area_details"></span>
-                    <span class="property_type_details"></span>
-                    <span class="selling_option_details"></span>
-                    <span class="property_address_details"></span>
-                </h4>
-                <hr>
-                <h5><i class="fa-solid fa-location-dot text-primary"></i> <span class="property_address_details"></span>
-                </h5>
-                <hr>
-                <h6 class="selling_option_details_for_rate"><b class="selling_value"></b></h6>
-                <hr>
-                <i url="property_details/2" onclick="openModal(this);" style="font-style:normal;">
-                    <i class="fa fa-share-alt text-primary" aria-hidden="true"></i>&nbsp;Share this property
-                </i>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <i style="font-style:normal;">
-                    <i class="fa-solid fa-circle-info text-primary"></i> Property
-                    Feedback
-                </i>
-                <hr>
-                <div class="row p-2">
-                    <a class="col-md-3 m-1 btn btn-outline-primary contact_no">
-                        <b><i class="fa fa-phone" aria-hidden="true"></b></i>&nbsp;Contact No.
-                    </a>
-                    <button class="col-md-3 m-1 btn btn-outline-danger">
-                        <b><i class="fa-regular fa-envelope"></i></b>&nbsp;Enquiry Now
-                    </button>
-                    <a class="col-md-3 m-1 btn btn-outline-success whatsapp" target="_blank">
-                        <b><i class="fa-brands fa-whatsapp"></i></b>&nbsp;WhatsApp Chat
-                    </a>
-                    <a class="col-md-2 m-1 btn btn-primary user_profile">
-                        <b><i class="fa-regular fa-user"></i></i></b>&nbsp;Profile
-                    </a>
+    <div class="row p-2">
+        <div class="col-12">
+            <div class="row border border-primary shadow-lg bg-body-tertiary rounded">
+                <div class="col-sm-12 col-md-5 col-lg-5 position-relative">
+                    <img class="img-fluid d-block main_image p-2" id="prop_a" src="" alt="">
+                    <span class="position-absolute picture_label" data-bs-toggle="modal"
+                        data-bs-target="#modal_for_large_picture" onclick="picture_show_in_modal();">Zoom Image</span>
+                </div>
+                <div class="col-sm-12 col-md-7 col-lg-7 mt-3">
+                    <h4>
+                        <span class="bhk_details"></span>
+                        <span class="geography_area_details"></span>
+                        <span class="property_type_details"></span>
+                        <span class="selling_option_details"></span>
+                        <span class="property_address_details"></span>
+                    </h4>
+                    <hr>
+                    <h5><i class="fa-solid fa-location-dot text-primary"></i> <span
+                            class="property_address_details"></span>
+                    </h5>
+                    <hr>
+                    <h6 class="selling_option_details_for_rate"><b class="selling_value"></b></h6>
+                    <hr>
+                    <i url="property_details/2" onclick="openModal(this);" style="font-style:normal;">
+                        <i class="fa fa-share-alt text-primary" aria-hidden="true"></i>&nbsp;Share this property
+                    </i>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <i style="font-style:normal;">
+                        <i class="fa-solid fa-circle-info text-primary"></i> Property
+                        Feedback
+                    </i>
+                    <hr>
+                    <div class="row p-2">
+                        <a class="col-md-3 m-1 btn btn-outline-primary contact_no">
+                            <b><i class="fa fa-phone" aria-hidden="true"></b></i>&nbsp;Contact No.
+                        </a>
+                        <button class="col-md-3 m-1 btn btn-outline-danger">
+                            <b><i class="fa-regular fa-envelope"></i></b>&nbsp;Enquiry Now
+                        </button>
+                        <a class="col-md-3 m-1 btn btn-outline-success whatsapp" target="_blank">
+                            <b><i class="fa-brands fa-whatsapp"></i></b>&nbsp;WhatsApp Chat
+                        </a>
+                        <a class="col-md-2 m-1 btn btn-primary user_profile">
+                            <b><i class="fa-regular fa-user"></i></i></b>&nbsp;Profile
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row border border-primary shadow-lg bg-body-tertiary rounded mt-5">
-            <h2 class="p-3">Other details related to property</h2>
-            <br>
-            <div class="col-sm-12">
-                <div class="row box_data p-3">
+            <div class="row border border-primary shadow-lg bg-body-tertiary rounded mt-5">
+                <h2 class="p-3">Other details related to property</h2>
+                <br>
+                <div class="col-sm-12">
+                    <div class="row box_data p-3">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 <br>
 <div class="container container-fluid">
@@ -203,7 +204,7 @@
                                     <b>Image is not available</b>
                                     {% endif %}
                                 </div>
-                                
+
                             </div>
                             <div
                                 class="selling_option bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
@@ -289,7 +290,8 @@
 {% csrf_token %}
 
 <!-- javaScript code -->
-<script>
+<script> 
+var local_session_data = '';
     const name_to_icon = {
         "bhk": `<i class='fa-solid fa-bed text-primary'></i>`,
         "floor": `<i class="fa-solid fa-building text-primary"></i>`,
@@ -304,7 +306,9 @@
         "construction_status": `<i class="fa-solid fa-signal text-primary"></i>`,
         "property_description": `<i class="fa-solid fa-align-center text-primary"></i>`,
     };
-    show_property_modal("{{property_id}}")
+    if (!show_property_modal("{{property_id}}")){
+        search_property_based_on_id("{{property_id}}"); 
+    }
     function submit_dtl(p_dtl_btn_val) {
         var p_dtl_btn_val = $(p_dtl_btn_val).attr("id");
         var property_id = '{{ property_id }}';
@@ -418,25 +422,63 @@
         });
     });
 
+    function search_property_based_on_id(property_id) {
+        var search_object = new Object();
+        if (property_id != "") { search_object.id = property_id };
+        $.ajax({
+            url: "{% url 'search_properties' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+                "search_object": JSON.stringify(search_object),
+            },
+            success: function (property_data) { 
+                debugger
+                print_property_objext(property_data, property_id); 
+            }
+
+        });
+
+    }
+
     function show_property_modal(property_id) {
         $(".box_data").empty();
-        var local_session_data = JSON.parse(sessionStorage.getItem("data"));
-        var data_object = Object();
-        for (var key in local_session_data.search_results.id) {
-            if (local_session_data.search_results.id[key] === Number(property_id)) {
+        local_session_data = JSON.parse(sessionStorage.getItem("data")); 
+        if (local_session_data == null){
+            return false;
+        } 
+        print_property_objext(local_session_data, property_id);
+        // console.log(JSON.parse(sessionStorage.getItem("image_array"))); 
+    }
+
+
+    function print_property_objext(property_data, property_id){ 
+        $(".box_data").empty();
+        $(".bhk_details").empty();
+        $(".geography_area_details").empty();
+        $(".property_type_details").empty();
+        $(".selling_option_details").empty();
+        $(".selling_option_details_for_rate").empty();
+        $(".selling_value").empty();
+        $(".selling_option_details_for_rate").empty();
+        $(".selling_value").empty();
+        $(".property_address_details").empty();
+        var data_object = Object(); 
+        for (var key in property_data.search_results.id) {
+            if (property_data.search_results.id[key] === Number(property_id)) {
                 is_value_present = true;
                 index = key;
                 continue;
             }
         }
-        var property_data_keys = Object.keys(local_session_data.search_results);
-        var user_data = JSON.parse(local_session_data.search_results.user_data[index]);
+                var property_data_keys = Object.keys(property_data.search_results);
+        var user_data = JSON.parse(property_data.search_results.user_data[index]);
         $(".contact_no").attr("href", `tel:${user_data.user_mobile}`);
         $(".whatsapp").attr("href", `https://wa.me/${user_data.user_mobile}`);
         $(".user_profile").attr("href", `/user-public-profile/${property_id}`);
         var data_keys = property_data_keys;
         for (var i = 0; i < property_data_keys.length; i++) {
-            data_object[data_keys[i]] = local_session_data.search_results[property_data_keys[i]][index];
+            data_object[data_keys[i]] = property_data.search_results[property_data_keys[i]][index];
         }
         for (var [key, val] of Object.entries(data_object.property_data)) {
             if (key == "property_image") {
@@ -486,10 +528,7 @@
                 }
             }
         }
-        // console.log(JSON.parse(sessionStorage.getItem("image_array"))); 
     }
-
-
     function picture_show_in_modal() {
         $(".modal_wrapper_in_large").empty();
         $(".image_modal_container").empty();

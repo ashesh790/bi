@@ -28,9 +28,9 @@ def advance_filter_boundary(request):
 
 
 def search_properties(request, address_dict=None, reload_location=None): 
-    page_number = request.POST['page_number'] 
+    page_number = request.POST.get('page_number', "1") 
     seller_id = False
-    if len(page_number) == 0: 
+    if len(page_number) == 0 or page_number is None: 
         page_number = 1
     if reload_location is not None:
         address_dict = {"place_name": address_dict}
@@ -53,17 +53,19 @@ def search_properties(request, address_dict=None, reload_location=None):
                 property_details.pop("selling_option")
     query = Q()
     for field, value in property_details.items(): 
-        if field == "seller_id": 
-            seller_id = True
-            query &= Q(**{"seller_id": value})
-        elif field == "place_name":
-            query &= Q(**{"property_data__place_name__icontains": value})
-        elif field == "property_type":
-            query &= Q(**{"property_data__property_type__icontains": value})
-        else:
-            if value:
-                query &= Q(**{"property_data__" + field: value})
-
+        if field != "id":
+            if field == "seller_id": 
+                seller_id = True
+                query &= Q(**{"seller_id": value})
+            elif field == "place_name":
+                query &= Q(**{"property_data__place_name__icontains": value})
+            elif field == "property_type":
+                query &= Q(**{"property_data__property_type__icontains": value})
+            else:
+                if value:
+                    query &= Q(**{"property_data__" + field: value})
+        else: 
+            query &= Q(**{"id": value})
     search_results = p_detail_v1.objects.filter(query) 
     paginator = Paginator(search_results, 5) 
     page = paginator.get_page(page_number)
