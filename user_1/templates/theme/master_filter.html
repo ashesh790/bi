@@ -360,14 +360,9 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <div style="width: auto; position:relative;" id="bathroom_val__trash" class="col m-2 d-flex">
-                            <select class="search_field select_2" id="bathroom_val"
-                                onchange="search_property_based_on_input_field_values();search_field_applied(this);">
-                                <option value="">Bathrooms</option>
-                                {% for i in boundry_data.bathroom_details %}
-                                <option value="{{i}}">{{i}} Bathrooms</option>
-                                {% endfor %}
-                            </select>
+                        <div style="width: auto; position:relative;" id="bathroom_val__trash" class="col m-2 d-flex form-floating">
+                            <input class="form-control search_field" id="bathroom_val" type="number" onkeyup="search_property_based_on_input_field_values()" min="1"> 
+                            <label for="floatingPassword">Bathrooms</label>
                         </div>
                         <div style="width: auto; position:relative;" id="balcony_val__trash" class="col m-2 d-flex">
                             <select class="search_field select_2" id="balcony_val"

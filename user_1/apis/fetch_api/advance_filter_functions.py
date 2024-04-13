@@ -67,7 +67,7 @@ def search_properties(request, address_dict=None, reload_location=None):
         else: 
             query &= Q(**{"id": value})
     search_results = p_detail_v1.objects.filter(query) 
-    paginator = Paginator(search_results, 5) 
+    paginator = Paginator(search_results, 10) 
     page = paginator.get_page(page_number)
     page_data = page.object_list 
     property_count = len(search_results)
