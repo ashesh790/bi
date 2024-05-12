@@ -16,7 +16,7 @@ from pathlib import Path
 URL="http://127.0.0.1:8000"
 ENGINE="django.db.backends.postgresql"
 DATABASE_NAME="postgres_private"
-DB_USERNAME="postgres"
+DB_USERNAME="myprojectuser"
 DB_PASSWORD="postgres"
 HOST_NAME="localhost"
 PORT=5432
