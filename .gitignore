@@ -20,3 +20,5 @@ user_1/__pycache__/urls.cpython-311.pyc
 user_1/apis/REST_API/__pycache__/database.cpython-311.pyc
 user_1/migrations/__pycache__
 user_1/migrations/__init__.py
+*__pycache__ 
+user_1/__pycache__

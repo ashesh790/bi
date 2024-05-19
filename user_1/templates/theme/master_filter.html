@@ -360,7 +360,8 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <div style="width: auto; position:relative;" id="bathroom_val__trash" class="col m-2 d-flex">
+                        <div style="width: auto; position:relative;" id="bathroom_val__trash"
+                            class="col m-2 d-flex form-floating">
                             <select class="search_field select_2" id="bathroom_val"
                                 onchange="search_property_based_on_input_field_values();search_field_applied(this);">
                                 <option value="">Bathrooms</option>
@@ -577,7 +578,7 @@
                         property_counter = $("#property_counter");
                     }
                     $(property_counter).empty();
-                    $(".available_property_count").val("Total added Properties: "+data.property_count).css({"font-weight": "bold"});
+                    $(".available_property_count").val("Total added Properties: " + data.property_count).css({ "font-weight": "bold" });
                     for (var [key, val] of Object.entries(property_data)) {
                         var is_bookmark = saved_property_list.includes(property_id[i].toString());
                         var bookmark_icon = `<i class="fa ${is_bookmark ? 'fa-bookmark' : 'fa-bookmark-o'} saved_property" aria-hidden="true" prop_id="${property_id[i]}" onclick="bookmark_property(this); $(this).toggleClass('fa-bookmark-o fa-bookmark');"></i>`;
@@ -586,7 +587,7 @@
                         var number = JSON.parse(user_mobile[i]).user_mobile;
                         var email = JSON.parse(user_mobile[i]).user_email;
                         number = (number == null || number == undefined) ? `<i class="fa-solid fa-phone-slash"></i>` : `<a href="tel:${number}"><i class="fa fa-phone"></i></a>`;
-                        email = (email == null || email == undefined) ? `` : `<a href="tel:${email}"><i class="fa-regular fa-envelope"></i></a>`;
+                        email = (email == null || email == undefined) ? `` : `<a href="mailto:${email}"><i class="fa-regular fa-envelope"></i></a>`;
 
                         $(property_counter).append(` 
                     <div class="col-lg-3 col-md-6 wow fadeInUp border-primary" data-wow-delay="0.1s">
