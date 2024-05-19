@@ -587,7 +587,7 @@
                         var number = JSON.parse(user_mobile[i]).user_mobile;
                         var email = JSON.parse(user_mobile[i]).user_email;
                         number = (number == null || number == undefined) ? `<i class="fa-solid fa-phone-slash"></i>` : `<a href="tel:${number}"><i class="fa fa-phone"></i></a>`;
-                        email = (email == null || email == undefined) ? `` : `<a href="tel:${email}"><i class="fa-regular fa-envelope"></i></a>`;
+                        email = (email == null || email == undefined) ? `` : `<a href="mailto:${email}"><i class="fa-regular fa-envelope"></i></a>`;
 
                         $(property_counter).append(` 
                     <div class="col-lg-3 col-md-6 wow fadeInUp border-primary" data-wow-delay="0.1s">
