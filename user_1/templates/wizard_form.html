@@ -13,16 +13,9 @@
     label {
         display: flex;
         cursor: pointer;
-        font-weight: 500;
+        font-weight: auto;
         position: relative;
-        overflow: hidden;
         margin-bottom: 0.375em;
-        /* Accessible outline */
-        /* Remove comment to use */
-        /* &:focus-within {
-		 outline: .125em solid $primary-color;
-	}
-	 */
     }
 
     label input {
@@ -35,7 +28,7 @@
     }
 
     label input:checked+span:before {
-        box-shadow: inset 0 0 0 0.4375em #00005c;
+        box-shadow: inset 0 0 0 0.4375em #0099ff;
     }
 
     label span {
@@ -63,27 +56,34 @@
         box-shadow: inset 0 0 0 0.125em #00005c;
     }
 </style>
-<form method="post" action="add_property_details" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="container mt-5">
+<div class="container mt-5">
+
+    <form method="post" action="add_property_details" enctype="multipart/form-data">
+        {% csrf_token %}
         <div id="wizard" class="wizard">
             <div class="wizard-step active">
                 <h2>Property Basic Details</h2>
-                <div class="row">
-                    <div class="col-xl-3 col-md-6 col-sm-12 mb-3 selling_option">
-                        <div id="selling_option_div d-flex">
-                            <label>
-                                <input type="radio" name="radio" checked />
-                                <span>Sale</span>
+                <div class="row p-5">
+                    <div class="col-sm-12 mb-3 selling_option">
+                        <div id="selling_option_div" class="d-flex row">
+                            <label class="col-sm-12 col-md-6 col-xl-2">
+                                <input type="radio" name="p_deal" value="sell" checked onchange="p_deal_master()" />
+                                <span>Sell</span>
                             </label>
-                            <label>
-                                <input type="radio" name="radio" />
+                            <label class="col-sm-12 col-md-6 col-xl-2">
+                                <input type="radio" name="p_deal" value="rent" onchange="p_deal_master()" />
                                 <span>Rent</span>
                             </label>
-                            <label>
-                                <input type="radio" name="radio" />
-                                <span>Rent & Sale</span>
+                            <label class="col-sm-12 col-md-6 col-xl-2">
+                                <input type="radio" name="p_deal" value="rent_sell" onchange="p_deal_master()" />
+                                <span>Rent & Sell</span>
                             </label>
+                        </div>
+                        <hr>
+                        <div id="p_deal_master" class="row d-flex-wrap pt-2">
+                        </div>
+                        <hr>
+                        <div id="p_deal_types" class="row d-flex-wrap pt-2">
                         </div>
                     </div>
                 </div>
@@ -102,9 +102,93 @@
                 <button class="btn btn-success finish" type="button">Finish</button>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
+
 <script>
+    var p_types = `
+<label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_type" value="apartment" checked />
+                <span>Flat/Apartment</span>
+            </label> 
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_type" value="house" />
+                <span>House</span>
+            </label> 
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_type" value="villa" />
+                <span>Villa</span>
+            </label> 
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_type" value="plot_lend" />
+                <span>Plot/Land</span>
+            </label> 
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_type" value="office" />
+                <span>Office</span>
+            </label>
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_type" value="building" />
+                <span>Building</span>
+            </label> 
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_type" value="townhouse" />
+                <span>Town House</span>
+            </label> 
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_type" value="commercial" />
+                <span>Commercial</span>
+            </label> 
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_type" value="industrial" />
+                <span>Industrial</span> 
+            </label> 
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_type" value="retail" />
+                <span>Retail</span> 
+            </label> 
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_type" value="other" />
+                <span>Other</span>
+            </label>
+    `;
+
+    var p_master_type = `
+    <label class="col-sm-12 col-md-6 col-xl-2">
+        <input type="radio" name="p_master_type" value="residential" onchange="p_deal_types()"/>
+        <span>Recidential</span> 
+    </label> 
+    <label class="col-sm-12 col-md-6 col-xl-2">
+        <input type="radio" name="p_master_type" value="commercial" onchange="p_deal_types()"/>
+        <span>Commercial</span>
+    </label>
+    ` ;
+    function p_deal_master() {
+        var p_deal = $("input[name='p_deal']:checked").val();
+        if (p_deal == "sell") {
+            $("#p_deal_master").html(p_master_type);
+        }
+        else if (p_deal == "rent") {
+            $("#p_deal_master").html(p_master_type);
+        }
+        else {
+            $("#p_deal_master").html(p_master_type);
+        }
+    }
+    function p_deal_types() {
+        var p_deal = $("input[name='p_master_type']:checked").val();
+        if (p_deal == "sell") {
+            $("#p_deal_types").html(p_types);
+        }
+        else if (p_deal == "rent") {
+            $("#p_deal_types").html(p_types);
+        }
+        else {
+            $("#p_deal_types").html(p_types);
+        }
+    }
+
+    p_deal_master();
     $(document).ready(function () {
         var currentStep = 0;
         var steps = $('.wizard-step');
