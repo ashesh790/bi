@@ -127,5 +127,6 @@ urlpatterns = [
 	path('register_app/', views.register_app, name="register_app"), 
     path(f'{URL}/accounts/google/login/callback/', views.google_callback, name='google-callback'),
     path('send_otp_mail/', views.send_otp_mail, name='send_otp_mail'),
-    path('verify_otp_mail/', views.verify_otp_mail, name='verify_otp_mail'),
+    path('verify_otp_mail/', views.verify_otp_mail, name='verify_otp_mail'), 
+    path("wizard_form", views.wizard_form, name="wizard_form")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

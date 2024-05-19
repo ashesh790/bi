@@ -872,3 +872,29 @@ def verify_otp_mail(request):
     else:
         return render(request, 'auth_app/register_app.html.html')  
 
+
+
+def wizard_form(request): 
+    if "pk" not in request.session:
+            return redirect("/login")
+    if request.method == "POST" and len(request.POST) is not None:
+        property_details = add_property_details_in_database(request)
+    # country_name_list = country_list(request)
+    # country_name_list = json.loads(country_name_list)
+    data = read_static_files("data.json")
+
+    return render(
+        request,
+        "wizard_form.html",
+        {
+            "property_type": data["property_type"],
+            "deal_option": data["deal_option"],
+            "construction_status": data["construction_status"],
+            "furnish_type": data["furnish_type"],
+            "bhk_details": data["bhk_details"],
+            "bathroom_details": data["bathroom_details"],
+            "balcony_details": data["balcony_details"],
+            "parking_details": data["parking_details"],
+            "add_property_details": "add_property_page",
+        },
+    )

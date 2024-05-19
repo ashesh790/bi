@@ -610,7 +610,7 @@
                             </div>
                             <div class="p-3 pb-0 for_popup_box" style="position: relative;" id="modal__${property_id[i]}_popup"> 
                                 <a class="d-block mb-2" href="property_details/${property_id[i]}" id="/Month">
-                                        <h5 class="text-primary mb-2">$${val.property_rent_price}</h5>
+                                        <h5 class="text-primary mb-2">$${val.property_rent_price ? val.property_rent_price : val.property_value}</h5>
                                 </a>
                                 <a class="d-block mb-2" href="property_details/${property_id[i]}">
                                         <b class="d-block h6 mb-2">${val.property_type} For
