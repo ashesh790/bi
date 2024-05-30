@@ -24,7 +24,9 @@
     }
 
     label input:checked+span {
-        background-color: #d6d6e5;
+        background-color: #5db8f5;
+        width: 100%;
+        color: white;
     }
 
     label input:checked+span:before {
@@ -43,7 +45,7 @@
         background-color: #d6d6e5;
     }
 
-    label span:before {
+    .wizard-step label span:before {
         display: flex;
         flex-shrink: 0;
         content: "";
@@ -90,14 +92,56 @@
                 <button class="btn btn-primary next" type="button">Next</button>
             </div>
             <div class="wizard-step">
-                <h2>Property Features</h2>
-                <p>Content for step 2.</p>
+                <h2>Property Address</h2>
+                <div class="row p-5">
+                    <div class="col-sm-12 mb-3 selling_option">
+                        <label class="form-lable">Enter Address: </label>
+                        <textarea class="form-control" placeholder="Enter Address" id="p_address"></textarea>
+                    </div>
+                    <div class="col-sm-12 mb-3 selling_option">
+                        <label class="form-lable">City: </label>
+                        <input class="form-control" placeholder="Ex.: Delhi" id="p_city">
+                    </div>
+                    <div class="col-sm-12 mb-3 selling_option">
+                        <label class="form-lable">State: </label>
+                        <input class="form-control" placeholder="Ex.: Gujarat" id="p_state">
+                    </div>
+                    <div class="col-sm-12 mb-3 selling_option">
+                        <label class="form-lable">State: </label>
+                        <input class="form-control" placeholder="Ex.: India" id="p_country">
+                    </div>
+                </div>
                 <button class="btn btn-secondary prev" type="button">Previous</button>
-                <button class="btn btn-primary next">Next</button>
+                <button class="btn btn-primary next" type="button">Next</button>
             </div>
             <div class="wizard-step">
-                <h2>Property Media</h2>
-                <p>Content for step 3.</p>
+                <h2>Property Details</h2>
+                <div class="row p-5" id="increase_bhk">
+                    <label class="col-sm-12 col-md-6 col-xl-2">
+                        <input type="radio" name="p_bhk" value="1_rk" />
+                        <span>1 RK</span>
+                    </label>
+                    <label class="col-sm-12 col-md-6 col-xl-2">
+                        <input type="radio" name="p_bhk" value="1" />
+                        <span>1 BHK</span>
+                    </label>
+                    <label class="col-sm-12 col-md-6 col-xl-2">
+                        <input type="radio" name="p_bhk" value="2" />
+                        <span>2 BHK</span>
+                    </label>
+                    <label class="col-sm-12 col-md-6 col-xl-2">
+                        <input type="radio" name="p_bhk" value="3" />
+                        <span>3 BHK</span>
+                    </label>
+                    <label class="col-sm-12 col-md-6 col-xl-2">
+                        <input type="radio" name="p_bhk" value="4" />
+                        <span>4 BHK</span>
+                    </label>
+                    <label class="col-sm-12 col-md-6 col-xl-2">
+                        <input type="radio" name="p_bhk" value="increase" onclick="increase_bhk()" />
+                        <span>5+ BHK</span>
+                    </label>
+                </div>
                 <button class="btn btn-secondary prev" type="button">Previous</button>
                 <button class="btn btn-success finish" type="button">Finish</button>
             </div>
@@ -107,7 +151,7 @@
 
 <script>
     var p_types = `
-<label class="col-sm-12 col-md-6 col-xl-2">
+            <label class="col-sm-12 col-md-6 col-xl-2">
                 <input type="radio" name="p_type" value="apartment" checked />
                 <span>Flat/Apartment</span>
             </label> 
@@ -146,11 +190,15 @@
             <label class="col-sm-12 col-md-6 col-xl-2">
                 <input type="radio" name="p_type" value="retail" />
                 <span>Retail</span> 
+            </label>   
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_type" value="row_house" />
+                <span>Row House</span>
             </label> 
             <label class="col-sm-12 col-md-6 col-xl-2">
                 <input type="radio" name="p_type" value="other" />
                 <span>Other</span>
-            </label>
+            </label> 
     `;
 
     var p_master_type = `
@@ -163,6 +211,55 @@
         <span>Commercial</span>
     </label>
     ` ;
+
+    function increase_bhk() {
+        $("#increase_bhk").html(` 
+        <label class="col-sm-12 col-md-6 col-xl-2">
+                        <input type="radio" name="p_bhk" value="1_rk" />
+                        <span>1 RK</span>
+                    </label>
+                    <label class="col-sm-12 col-md-6 col-xl-2">
+                        <input type="radio" name="p_bhk" value="1" />
+                        <span>1 BHK</span>
+                    </label>
+                    <label class="col-sm-12 col-md-6 col-xl-2">
+                        <input type="radio" name="p_bhk" value="2" />
+                        <span>2 BHK</span>
+                    </label>
+                    <label class="col-sm-12 col-md-6 col-xl-2">
+                        <input type="radio" name="p_bhk" value="3" />
+                        <span>3 BHK</span>
+                    </label>
+                    <label class="col-sm-12 col-md-6 col-xl-2">
+                        <input type="radio" name="p_bhk" value="4" />
+                        <span>4 BHK</span>
+                    </label>
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_bhk" value="5" />
+                <span>5 BHK</span>
+            </label> 
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_bhk" value="6" />
+                <span>6 BHK</span>
+            </label>
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_bhk" value="7" />
+                <span>7 BHK</span>
+            </label>
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_bhk" value="8" />
+                <span>8 BHK</span>
+            </label>
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_bhk" value="9" />
+                <span>9 BHK</span>
+            </label>
+            <label class="col-sm-12 col-md-6 col-xl-2">
+                <input type="radio" name="p_bhk" value="10" />
+                <span>10 BHK</span>
+            </label>
+        `);
+    }
     function p_deal_master() {
         var p_deal = $("input[name='p_deal']:checked").val();
         if (p_deal == "sell") {
@@ -176,20 +273,11 @@
         }
     }
     function p_deal_types() {
-        var p_deal = $("input[name='p_master_type']:checked").val();
-        if (p_deal == "sell") {
-            $("#p_deal_types").html(p_types);
-        }
-        else if (p_deal == "rent") {
-            $("#p_deal_types").html(p_types);
-        }
-        else {
-            $("#p_deal_types").html(p_types);
-        }
+        $("#p_deal_types").html(p_types);
     }
-
-    p_deal_master();
     $(document).ready(function () {
+        p_deal_types();
+        p_deal_master();
         var currentStep = 0;
         var steps = $('.wizard-step');
 
@@ -213,7 +301,8 @@
         });
 
         $('.finish').click(function () {
-            alert('Wizard finished!');
+            e.preventDefault();
+            console.log("Success Baby");
         });
 
         showStep(currentStep);
