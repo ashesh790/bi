@@ -5,6 +5,9 @@ AUTOFLAKE = autoflake
 # Directories
 SRC_DIR = *.py 
 
+app:
+	@python manage.py runserver
+
 # Targets
 .PHONY: format
 format:
