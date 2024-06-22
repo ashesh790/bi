@@ -11,11 +11,23 @@
     }
 
     label {
-        display: flex;
+        display: inline-flex;
+        /* Change from flex to inline-flex */
         cursor: pointer;
         font-weight: auto;
         position: relative;
         margin-bottom: 0.375em;
+        margin-right: 1em;
+        /* Add margin to separate the labels horizontally */
+    }
+
+    label span {
+        display: inline-flex;
+        /* Change from flex to inline-flex */
+        align-items: center;
+        padding: 0.375em 0.75em 0.375em 0.375em;
+        border-radius: 99em;
+        transition: 0.25s ease;
     }
 
     label input {
@@ -33,20 +45,14 @@
         box-shadow: inset 0 0 0 0.4375em #0099ff;
     }
 
-    label span {
-        display: flex;
-        align-items: center;
-        padding: 0.375em 0.75em 0.375em 0.375em;
-        border-radius: 99em;
-        transition: 0.25s ease;
-    }
 
     label span:hover {
         background-color: #d6d6e5;
     }
 
     .wizard-step label span:before {
-        display: flex;
+        display: inline-flex;
+        /* Change from flex to inline-flex */
         flex-shrink: 0;
         content: "";
         background-color: #fff;
@@ -116,36 +122,68 @@
             </div>
             <div class="wizard-step">
                 <h2>Property Details</h2>
-                <div class="row p-5" id="increase_bhk">
-                    <label class="col-sm-12 col-md-6 col-xl-2">
-                        <input type="radio" name="p_bhk" value="1_rk" />
-                        <span>1 RK</span>
-                    </label>
-                    <label class="col-sm-12 col-md-6 col-xl-2">
-                        <input type="radio" name="p_bhk" value="1" />
-                        <span>1 BHK</span>
-                    </label>
-                    <label class="col-sm-12 col-md-6 col-xl-2">
-                        <input type="radio" name="p_bhk" value="2" />
-                        <span>2 BHK</span>
-                    </label>
-                    <label class="col-sm-12 col-md-6 col-xl-2">
-                        <input type="radio" name="p_bhk" value="3" />
-                        <span>3 BHK</span>
-                    </label>
-                    <label class="col-sm-12 col-md-6 col-xl-2">
-                        <input type="radio" name="p_bhk" value="4" />
-                        <span>4 BHK</span>
-                    </label>
-                    <label class="col-sm-12 col-md-6 col-xl-2">
-                        <input type="radio" name="p_bhk" value="increase" onclick="increase_bhk()" />
-                        <span>5+ BHK</span>
-                    </label>
+                <div class="p-5">
+                    <div class="col-12">
+                        <div id="row" class="increase_bhk d-flex flex-wrap">
+                            <label class="col-sm-12 col-md-6 col-xl-2">
+                                <input type="radio" name="p_bhk" value="1_rk" />
+                                <span>1 RK</span>
+                            </label>
+                            <label class="col-sm-12 col-md-6 col-xl-2">
+                                <input type="radio" name="p_bhk" value="1" />
+                                <span>1 BHK</span>
+                            </label>
+                            <label class="col-sm-12 col-md-6 col-xl-2">
+                                <input type="radio" name="p_bhk" value="2" />
+                                <span>2 BHK</span>
+                            </label>
+                            <label class="col-sm-12 col-md-6 col-xl-2">
+                                <input type="radio" name="p_bhk" value="3" />
+                                <span>3 BHK</span>
+                            </label>
+                            <label class="col-sm-12 col-md-6 col-xl-2">
+                                <input type="radio" name="p_bhk" value="4" />
+                                <span>4 BHK</span>
+                            </label>
+                            <label class="col-sm-12 col-md-6 col-xl-2">
+                                <input type="radio" name="p_bhk" value="increase" onclick="increase_bhk()" />
+                                <span>5+ BHK</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row p-5">
+                        <label class="col-sm-12 col-md-6 col-xl-2">
+                            <input type="radio" name="p_furnish" value="furnished" />
+                            <span>Furnished</span>
+                        </label>
+                        <label class="col-sm-12 col-md-6 col-xl-2">
+                            <input type="radio" name="p_furnish" value="semifurnished" />
+                            <span>Semi-Furnished</span>
+                        </label>
+                        <label class="col-sm-12 col-md-6 col-xl-2">
+                            <input type="radio" name="p_furnish" value="unfurnished" />
+                            <span>Unfurnished</span>
+                        </label>
+                    </div>
+                    <hr>
+                    <div class="row p-5">
+                        <label class="col-sm-12 col-md-6 col-xl-2">
+                            <input type="radio" name="p_furnish" value="new_launch" />
+                            <span>New Launch</span>
+                        </label>
+                        <label class="col-sm-12 col-md-6 col-xl-2">
+                            <input type="radio" name="p_furnish" value="ready_to_move" />
+                            <span>Ready to Move</span>
+                        </label>
+                        <label class="col-sm-12 col-md-6 col-xl-2">
+                            <input type="radio" name="p_furnish" value="underconstruction" />
+                            <span>Under Construction</span>
+                        </label>
+                    </div>
                 </div>
                 <button class="btn btn-secondary prev" type="button">Previous</button>
                 <button class="btn btn-success finish" type="button">Finish</button>
             </div>
-        </div>
     </form>
 </div>
 
@@ -213,52 +251,21 @@
     ` ;
 
     function increase_bhk() {
-        $("#increase_bhk").html(` 
-        <label class="col-sm-12 col-md-6 col-xl-2">
-                        <input type="radio" name="p_bhk" value="1_rk" />
-                        <span>1 RK</span>
-                    </label>
-                    <label class="col-sm-12 col-md-6 col-xl-2">
-                        <input type="radio" name="p_bhk" value="1" />
-                        <span>1 BHK</span>
-                    </label>
-                    <label class="col-sm-12 col-md-6 col-xl-2">
-                        <input type="radio" name="p_bhk" value="2" />
-                        <span>2 BHK</span>
-                    </label>
-                    <label class="col-sm-12 col-md-6 col-xl-2">
-                        <input type="radio" name="p_bhk" value="3" />
-                        <span>3 BHK</span>
-                    </label>
-                    <label class="col-sm-12 col-md-6 col-xl-2">
-                        <input type="radio" name="p_bhk" value="4" />
-                        <span>4 BHK</span>
-                    </label>
-            <label class="col-sm-12 col-md-6 col-xl-2">
-                <input type="radio" name="p_bhk" value="5" />
-                <span>5 BHK</span>
-            </label> 
-            <label class="col-sm-12 col-md-6 col-xl-2">
-                <input type="radio" name="p_bhk" value="6" />
-                <span>6 BHK</span>
-            </label>
-            <label class="col-sm-12 col-md-6 col-xl-2">
-                <input type="radio" name="p_bhk" value="7" />
-                <span>7 BHK</span>
-            </label>
-            <label class="col-sm-12 col-md-6 col-xl-2">
-                <input type="radio" name="p_bhk" value="8" />
-                <span>8 BHK</span>
-            </label>
-            <label class="col-sm-12 col-md-6 col-xl-2">
-                <input type="radio" name="p_bhk" value="9" />
-                <span>9 BHK</span>
-            </label>
-            <label class="col-sm-12 col-md-6 col-xl-2">
-                <input type="radio" name="p_bhk" value="10" />
-                <span>10 BHK</span>
-            </label>
-        `);
+        $("#increase_bhk").html('');
+        $("#increase_bhk").append(`
+                <label class="col-sm-12 col-md-6 col-xl-2">
+                    <input type="radio" name="p_bhk" value="1_rk" />
+                    <span>1 RK</span>
+                </label>
+            `);
+        for (let i = 1; i <= 10; i++) {
+            $("#increase_bhk").append(`
+                <label class="col-sm-12 col-md-6 col-xl-2">
+                    <input type="radio" name="p_bhk" value="${i}" />
+                    <span>${i} BHK</span>
+                </label>
+            `);
+        }
     }
     function p_deal_master() {
         var p_deal = $("input[name='p_deal']:checked").val();
