@@ -72,7 +72,7 @@
                 $(".otp_verify_modal").append("<p class='mt-2'>OTP sent and valid for <span class='text-secondary'>10</span> Minutes.</p>");
             },
             error: function (error){
-                $(".otp_verify_modal").append("<p class='mt-2 text-danger'>Something went wrong !</p>");
+                $(".otp_verify_modal").append(error);
             }
         })
     } 

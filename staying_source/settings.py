@@ -16,7 +16,7 @@ from pathlib import Path
 URL="http://127.0.0.1:8000"
 ENGINE="django.db.backends.postgresql"
 DATABASE_NAME="postgres_private"
-DB_USERNAME="myprojectuser"
+DB_USERNAME="postgres"
 DB_PASSWORD="postgres"
 HOST_NAME="localhost"
 PORT=5432
@@ -112,22 +112,22 @@ WSGI_APPLICATION = "staying_source.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": ENGINE,
-#         "NAME": DATABASE_NAME,
-#         "USER": DB_USERNAME,
-#         "PASSWORD": DB_PASSWORD,
-#         "HOST": HOST_NAME,
-#         "PORT": PORT,
-#     }
-# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": ENGINE,
+        "NAME": DATABASE_NAME,
+        "USER": DB_USERNAME,
+        "PASSWORD": DB_PASSWORD,
+        "HOST": HOST_NAME,
+        "PORT": PORT,
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_FOLDER)

@@ -41,6 +41,7 @@ tzdata = "^2024.2"
 cryptography = "^44.0.0"
 geocoder = "^1.38.1"
 geopy = "^2.4.1"
+psycopg2-binary = "^2.9.10"
 
 
 [build-system]
